@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: bff
-        image: tkdqja9573/bff:latest
+        image: tkdqja9573/ssafy-tailored-bff:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

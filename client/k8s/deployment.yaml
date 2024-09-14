@@ -27,8 +27,8 @@ spec:
     spec:
       containers:
       - name: client
-        image: tkdqja9573/ssafy-tailored-client:latest
-        imagePullPolicy: Always
+        image: tkdqja9573/ssafy-tailored-client
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
         readinessProbe:

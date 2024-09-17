@@ -35,28 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-# Gradle
-.gradle/
-
-# Maven
-target/
-
-# IntelliJ
-.idea/
-
-# Logs
-logs/
-*.log
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Spring Boot specific
-*.jar
-*.war
-*.zip
-
-# Environment variables
-.env

@@ -54,12 +54,12 @@ function TranslatedBottom() {
   }, [pathname]);
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-none flex justify-beteen">
+    <div className="fixed bottom-0 left-0 w-full bg-none flex justify-between">
       <div
         className="relative w-[50vw] rounded-none"
       >
         <div
-          className="w-[50vw] h-[10vh] bg-black rounded-tr-[10px] bg-[#E4FEFF]"
+          className="w-[50vw] h-[10vh] rounded-tr-[10px] bg-[#E4FEFF]"
           style={{
             transform: "skew(30deg) translate(-20px, 0px)",
             boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)",
@@ -94,7 +94,7 @@ function TranslatedBottom() {
       </div>
       <div className="w-[50vw] rounded-none">
         <div
-          className="w-[50vw] h-[10vh] bg-black rounded-tl-[10px] bg-[#E4FEFF]"
+          className="w-[50vw] h-[10vh] rounded-tl-[10px] bg-[#E4FEFF]"
           style={{
             transform: "skew(-30deg) translate(20px, 0px)",
             boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)",

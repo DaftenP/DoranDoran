@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-quiz
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: ns-quiz
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-tz-config
+  namespace: ns-quiz
+data:
+  timezone: "Asia/Seoul"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: ns-quiz
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: "worker"
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "jenkins_will_replace_this_db_password"
+        - name: MYSQL_DATABASE
+          value: "quiz"
+        - name: MYSQL_USER
+          value: "jenkins_will_replace_this_db_username"
+        - name: MYSQL_PASSWORD
+          value: "jenkins_will_replace_this_db_password"
+        - name: TZ
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-tz-config
+              key: timezone
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: ns-quiz
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None

@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ns-bff
+  name: ns-tutor
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bff
-  namespace: ns-bff
+  name: tutor
+  namespace: ns-tutor
   labels:
-    app: bff
+    app: tutor
 spec:
   replicas: 2
   strategy:
@@ -19,48 +19,41 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      app: bff
+      app: tutor
   template:
     metadata:
       labels:
-        app: bff
+        app: tutor
     spec:
       nodeSelector:
         node-role.kubernetes.io/worker: "worker"
       containers:
-      - name: bff
-        image: tkdqja9573/ssafy-tailored-bff
+      - name: tutor
+        image: tkdqja9573/ssafy-tailored-tutor
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "100m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         readinessProbe:
           httpGet:
             path: /healthz
             port: 8080
         resources:
           requests:
-            cpu: "300m"
+            cpu: "200m"
           limits:
-            cpu: "600m"
+            cpu: "400m"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: bff
-  namespace: ns-bff
+  name: tutor
+  namespace: ns-tutor
   labels:
-    app: bff
+    app: tutor
 spec:
   ports:
   - port: 8080
     targetPort: 8080
   selector:
-    app: bff
+    app: tutor
   type: ClusterIP

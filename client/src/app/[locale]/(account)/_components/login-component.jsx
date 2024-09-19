@@ -53,7 +53,7 @@ function LoginFormContent() {
         <Image
           src={Email}
           alt="email"
-          className="absolute w-[6%] top-1/2 transform -translate-y-1/2 left-5"
+          className="absolute w-[6%] top-1/2 transform -translate-y-1/2 left-5 pointer-events-none"
         />
         <input
           type="email"
@@ -66,7 +66,7 @@ function LoginFormContent() {
         <Image
           src={Password}
           alt="password"
-          className="absolute w-[6%] top-1/2 transform -translate-y-1/2 left-5"
+          className="absolute w-[6%] top-1/2 transform -translate-y-1/2 left-5 pointer-events-none"
         />
         <input
           type={showPassword ? "text" : "password"}

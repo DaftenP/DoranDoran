@@ -69,7 +69,7 @@ function TranslatedBottom() {
           </Link>
         </div>
         <p className="w-[60%] text-2xl text-center">{t("dressing-room")}</p>
-        <div className="bg-blue-500 w-[20%]" />
+        <div className="w-[20%]" />
       </div>
 
       {/* 나의 캐릭터 */}

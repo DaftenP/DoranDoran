@@ -1,0 +1,39 @@
+spring:
+  redis:
+    lettuce:
+      pool:
+        max-active: '10'
+        max-idle: '10'
+        min-idle: '2'
+    host: ENC(fOaA1RBnmegxF/RVB9yOoQ==) #127.0.0.1
+    port: ENC(2KdPAYfCyNfFiw+SCOTqUw==) #6379
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: 'true'
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: ENC(KrMZNLrJQJnzuHitcUhuaZWuN9RSf//D)
+    username: ENC(7rINNltTq9DjeaKwGIcR8mruH4QixzoMSTGqqAqt/jg=)
+    port: ENC(qJZs0qlWBYoxk1CWlUrmHg==)
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          timeout: '5000'
+          auth: 'true'
+    password: ENC(oMgaQ8k8MORaSQMwQ7htvi3hUTwhe4rdrX3IqkbW7jI=)
+  application:
+    name: jwt
+  datasource:
+    password: ENC(1ztXQyCv5zjC8JNxUIoAupi9jxmxc5oN) #root
+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ENC(65p/O5PVH9wYpofTyi7E6w==) #root
+    url: ENC(U1hQY3jJtQTFvdz/MC0wN8m5/cKdzK9Y1auUq7nQ7lGgC4HhWsGVGA==) #jdbc:mysql://localhost:3306/user
+  jwt:
+    secret: ENC(sWuyj3aYMV6DByGKKVOFdkiH0CK0aRSdR+9FO5aXHEjAa1eLj8j1yUMW1JdYQWeYp6styqZKyC9kzjg39tCvyuilNCqaZkcibbcZH/BRjuU=)

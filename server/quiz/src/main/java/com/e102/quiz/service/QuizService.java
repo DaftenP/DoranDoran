@@ -1,6 +1,9 @@
 package com.e102.quiz.service;
 
+import com.e102.quiz.common.exception.RestApiException;
+import com.e102.quiz.common.exception.StatusCode;
 import com.e102.quiz.dto.QuizResponseDto;
+import com.e102.quiz.entity.Quiz;
 import com.e102.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -33,5 +36,20 @@ public class QuizService {
                         .build()
                 )
                 .collect(Collectors.toList());
+    }
+
+    public QuizResponseDto getQuiz(Integer quizId) {
+        Quiz quiz = quizRepository.findById(quizId).orElse(null);
+        if (quiz == null) {
+            throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
+        }
+        return QuizResponseDto.builder()
+                .id(quiz.getId())
+                .quizAnswer(quiz.getQuizAnswer())
+                .quizQuestion(quiz.getQuizQuestion())
+                .quizType(quiz.getQuizType())
+                .quizCategory(quiz.getQuizCategory())
+                .quizImages(quiz.getQuizImages())
+                .build();
     }
 }

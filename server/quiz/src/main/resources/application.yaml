@@ -7,6 +7,5 @@ spring:
     password: ENC(fIhh5f7s+JzyXVV2rtVmAD3FdQVboJs1)
     url: ENC(doY8TC499i7z6COMrgMNkVuu3unf20DVdT+6HKSRJvn/K2HXy3TW7Q==)
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: update

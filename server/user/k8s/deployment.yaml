@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-user
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+  namespace: ns-user
+  labels:
+    app: user
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: "worker"
+      containers:
+      - name: user
+        image: tkdqja9573/ssafy-tailored-user
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: jasypt.encryptor.password
+          value: "jenkins_will_set_this"
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        resources:
+          requests:
+            cpu: "200m"
+          limits:
+            cpu: "400m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user
+  namespace: ns-user
+  labels:
+    app: user
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: user
+  type: ClusterIP

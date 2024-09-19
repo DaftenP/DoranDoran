@@ -2,18 +2,16 @@ package com.e102.quiz.controller;
 
 import com.e102.quiz.common.ResponseDto;
 import com.e102.quiz.common.exception.StatusCode;
-import com.e102.quiz.entity.Quiz;
+import com.e102.quiz.dto.QuizResponseDto;
 import com.e102.quiz.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -32,8 +30,11 @@ public class QuizController {
     }
 
     @GetMapping("/quizzes")
-    public ResponseEntity<ResponseDto> getQuiz(@RequestParam(required = false) int quizType, @RequestParam(required = false) int quizCategory, @RequestParam(required = false) int cnt) {
-        List<Quiz> result = quizService.getQuiz(quizType, quizCategory, cnt);
-        return ResponseDto.response(StatusCode.SUCCESS, result);
+    public ResponseEntity<ResponseDto> getQuiz(@RequestParam(required = false) Integer quizType, @RequestParam(required = false) Integer quizCategory, @RequestParam(required = false) Integer cnt) {
+        if (cnt == null)
+            cnt = 1;
+        List<QuizResponseDto> results = quizService.getQuizzes(Optional.ofNullable(quizType), Optional.ofNullable(quizCategory), cnt);
+        return ResponseDto.response(StatusCode.SUCCESS, results);
     }
+
 }

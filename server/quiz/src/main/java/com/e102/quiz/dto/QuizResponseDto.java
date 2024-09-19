@@ -5,12 +5,11 @@ import lombok.*;
 
 import java.util.Set;
 
-@Data
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuizDto {
+public class QuizResponseDto {
     private int id;
 
     private int quizType;

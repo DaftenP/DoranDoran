@@ -9,7 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface QuizRepository extends JpaRepository<Quiz, Integer> {
-    @Query(value = "SELECT q FROM Quiz q WHERE q.quizType = :quizType AND q.quizCategory = :quizCategory ORDER BY RAND()")
+    @Query(value = "SELECT q FROM Quiz q WHERE (:quizType IS NULL OR q.quizType = :quizType) " +
+            "AND (:quizCategory IS NULL OR q.quizCategory = :quizCategory) " +
+            "ORDER BY RAND()")
     List<Quiz> findRandomByQuizTypeAndQuizCategory(@Param("quizType") Integer quizType,
                                                    @Param("quizCategory") Integer quizCategory,
                                                    Pageable pageable);

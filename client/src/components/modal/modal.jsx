@@ -1,7 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { NextIntlClientProvider } from 'next-intl';
+import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 export default function Modal({ message }) {

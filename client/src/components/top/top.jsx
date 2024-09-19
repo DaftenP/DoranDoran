@@ -46,7 +46,7 @@ function TranslatedTop() {
   return (
     <div
       className="fixed top-0 left-0 w-full h-[6vh] flex justify-between pr-2 pl-2"
-      style={{ marginTop: '1vh' }}
+      style={{ marginTop: '1vh', marginBottom: '1vh' }}
     >
       <div className="flex items-center">
         <Image src={Gold} alt="gold_rank" className="w-auto h-5/6" />

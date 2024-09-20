@@ -80,7 +80,7 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	response := model.TutorCombinedResponse{
 		Data: model.TutorCombinedResponseData{
 			Correctness:   sendResBody.Data.Correctness,
-			Pronunciation: pronunciationResBody.Data.Pronunciation,
+			Pronunciation: pronunciationResBody.Data,
 			TutorResponse: sendResBody.Data.TutorResponse,
 			IsOver:        sendResBody.Data.IsOver,
 		},

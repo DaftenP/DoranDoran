@@ -13,12 +13,9 @@ type TutorSendResponseData struct {
 }
 
 type TutorPronunciationResponse struct {
-	Data    TutorPronunciationResponseData `json:"data"`
-	Message string                         `json:"message"`
-}
-
-type TutorPronunciationResponseData struct {
-	Pronunciation float64 `json:"pronunciation"`
+	Data      float64 `json:"data"`
+	Message   string  `json:"message"`
+	Timestamp string  `json:"timestamp"`
 }
 
 type TutorCombinedResponse struct {

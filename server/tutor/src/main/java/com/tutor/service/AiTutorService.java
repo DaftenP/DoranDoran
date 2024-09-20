@@ -58,33 +58,7 @@ public class AiTutorService {
             }
             """;
 
-    public TutorResponse init(Long role, Long situation) {
-        // role, situation 맞는 문자열 가져오기
-        Optional<TutorRole> tutorRole = tutorRoleRepository.findById(role);
-        Optional<TutorSubject> tutorSubject = tutorSubjectRepository.findById(situation);
-        if (tutorRole.isEmpty() || tutorSubject.isEmpty()) {
-            throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
-        }
-
-        // 프롬프트 생성
-        Prompt prompt = new Prompt(generatePrompt(tutorRole.get().getRoleName(), tutorSubject.get().getSubjectDetail()),
-                OpenAiChatOptions.builder()
-                        .withModel(ChatModel.GPT_4_O_MINI)
-                        .withResponseFormat(new ResponseFormat(ResponseFormat.Type.JSON_SCHEMA, jsonSchema))
-                        .build());
-
-        ChatResponse response = this.openAiChatModel.call(prompt);
-
-        AssistantMessage output = response.getResult().getOutput();
-
-        try {
-            return objectMapper.readValue(output.getContent(), TutorResponse.class);
-        } catch (JsonProcessingException e) {
-            throw new RestApiException(StatusCode.JSON_PARSE_ERROR);
-        }
-    }
-
-    private String generatePrompt(String r, String s) {
+    private String generatePrompt(String r, String s, ChatRequestDTO chatRequestDTO) {
         StringBuilder sb = new StringBuilder();
         sb.append("당신은 지금부터 한국어 연습을 위한 대화 상대야.\n");
         sb.append("당신의 역할은 ").append(r).append("입니다.\n");
@@ -96,23 +70,28 @@ public class AiTutorService {
         sb.append("gptResponse : 당신의 대답 (string)\n");
         sb.append("correctness : 적절성 점수 (0~5)\n");
         sb.append("isOver : 대화 마침 여부 (boolean)\n");
-        sb.append("이상입니다. 당신부터 대화를 시작해주세요.\n");
-
+        sb.append("아래는 이전 대화 내용입니다. 이전 대화 내용이 없다면 당신부터 대화를 시작해주세요.\n");
+        sb.append(chatRequestDTO.toString());
         return sb.toString();
     }
 
-    public TutorResponse send(ChatRequestDTO chatRequestDTO) {
-        log.info("send");
+    public TutorResponse send(ChatRequestDTO chatRequestDTO, Long role, Long situation) {
+        // role, situation 맞는 문자열 가져오기
+        Optional<TutorRole> tutorRole = tutorRoleRepository.findById(role);
+        Optional<TutorSubject> tutorSubject = tutorSubjectRepository.findById(situation);
+        if (tutorRole.isEmpty() || tutorSubject.isEmpty()) {
+            throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
+        }
 
         // 프롬프트 생성
-        // 프롬프트 생성 방식 미구현..
-        Prompt prompt = new Prompt("당신의 대답은?",
-                OpenAiChatOptions.builder()
-                        .withModel(ChatModel.GPT_4_O_MINI)
-                        .withResponseFormat(new ResponseFormat(ResponseFormat.Type.JSON_SCHEMA, jsonSchema))
-                        .build());
+        Prompt prompt = new Prompt(generatePrompt(tutorRole.get().getRoleName(), tutorSubject.get().getSubjectDetail(), chatRequestDTO), OpenAiChatOptions
+                .builder()
+                .withModel(ChatModel.GPT_4_O_MINI)
+                .withResponseFormat(new ResponseFormat(ResponseFormat.Type.JSON_SCHEMA, jsonSchema))
+                .build());
 
         ChatResponse response = this.openAiChatModel.call(prompt);
+
         AssistantMessage output = response.getResult().getOutput();
 
         try {
@@ -151,7 +130,7 @@ public class AiTutorService {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.postForEntity(ETRI_API_URL, httpEntity, String.class);
             // 6. 응답 처리
-            if(response.getStatusCode() == HttpStatus.OK){
+            if (response.getStatusCode() == HttpStatus.OK) {
                 String responseBody = response.getBody();
                 log.info("responseBody: {}", responseBody);
 
@@ -161,7 +140,7 @@ public class AiTutorService {
                 Map<String, Object> returnObject = (Map<String, Object>) responseMap.get("return_object");
                 log.info("returnObject: {}", returnObject);
                 return returnObject.get("score").toString();
-            } else{
+            } else {
                 throw new RestApiException(StatusCode.INTERNAL_SERVER_ERROR);
             }
 

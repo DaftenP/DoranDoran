@@ -3,9 +3,9 @@
 import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-export default function DayTask() {
+export default function Conversation({ params }) {
   const [messages, setMessages] = useState(null);
-  const locale = 'en'; // 예시로 en 사용, 동적 처리 가능
+  const locale = params.locale;
 
   useEffect(() => {
     async function loadMessages() {
@@ -25,22 +25,20 @@ export default function DayTask() {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedDayTask />
+      <TranslatedTopicConversation params={params} />
     </NextIntlClientProvider>
   );
 }
 
-function TranslatedDayTask() {
+function TranslatedTopicConversation({ params }) {
   const t = useTranslations('index');
-  const dayArray = [1, 2, 3, 4, 5, 6, 7]
+  const locale = params.locale;
+  const people = params.people;
+  const topic = params.topic;
 
   return (
-    <div className='flex'>
-      {dayArray.map((item, index) => (
-        <div key={index} className="w-[12vw] h-[6vh] border border-[#CFF6F9] text-center text-sm md:text-2xl lg:text-4xl">
-          D-{item}
-        </div>
-      ))}
+    <div>
+
     </div>
   );
 }

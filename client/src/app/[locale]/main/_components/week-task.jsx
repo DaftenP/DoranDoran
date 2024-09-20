@@ -36,7 +36,7 @@ function TranslatedWeekTask() {
 
   return (
     <div className='flex-col flex items-center'>
-      <div className="rounded-tl-full rounded-tr-full w-[90vw] h-[3vh] bg-[#CFF6F9] mt-[4vh] text-center text-md md:text-3xl">
+      <div className="rounded-tl-full rounded-tr-full w-[90vw] h-[3vh] bg-[#CFF6F9] flex justify-center items-center text-md md:text-2xl lg:text-4xl">
         {t("week's-task")}
       </div>
       <div className="w-[90vw] h-[0.5vh] bg-[#A2F1FF]">
@@ -54,7 +54,7 @@ function TranslatedWeekTask() {
         <div className="absolute top-0 left-0 w-[45vw] h-[3vh] bg-[#2FB9FE]">
           
         </div>
-        <div className="absolute inset-0 flex items-center justify-center text-sm md:text-2xl">
+        <div className="absolute inset-0 flex items-center justify-center text-sm md:text-2xl lg:text-4xl">
           5/10
         </div>
       </div>

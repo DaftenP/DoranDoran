@@ -1,4 +1,4 @@
-package com.example.log.dto;
+package com.e102.log.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -7,11 +7,17 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
 @AllArgsConstructor
-public class PlayLogResponseDTO {
+@Builder
+public class CreditLogResponseDTO {
+
+    private int cid;
+
+    private int changes;
+
+    private int logTypes;
+
     private LocalDateTime createdAt;
-    private int gain_xp;
-    private int quizType;
+
 }

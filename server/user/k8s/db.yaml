@@ -93,6 +93,8 @@ spec:
       labels:
         app: redis
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: "worker"
       containers:
       - name: redis
         image: redis:6.2

@@ -10,7 +10,7 @@ import Bird2 from "@/public/shop-bird/bird (2).png";
 
 export default function RankListAll({userRank, userChar, userId, userTier, userXP, borderColor}) {
   return (
-    <div className="relative flex items-center bg-white px-[4%] py-[2%] font-normal font-['Itim'] rounded-lg shadow-md my-[2%]"  style={{ border: `2px solid ${borderColor}` }}>
+    <div className="relative flex items-center bg-white px-[4%] py-[2%] font-normal font-['Itim'] rounded-lg my-[2%]"  style={{ border: `2px solid ${borderColor}` }}>
       <span className="font-bold text-gray-600">{userRank}</span>
       <Image
         src={Bird2}

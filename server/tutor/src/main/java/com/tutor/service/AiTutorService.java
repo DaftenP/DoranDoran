@@ -101,7 +101,7 @@ public class AiTutorService {
         }
     }
 
-    public String pronunciation(MultipartFile file) {
+    public Double pronunciation(MultipartFile file) {
         log.info("pronunciation");
 
         try {
@@ -139,7 +139,7 @@ public class AiTutorService {
                 Map<String, Object> responseMap = objectMapper.readValue(responseBody, Map.class);
                 Map<String, Object> returnObject = (Map<String, Object>) responseMap.get("return_object");
                 log.info("returnObject: {}", returnObject);
-                return returnObject.get("score").toString();
+                return Double.parseDouble((String) returnObject.get("score"));
             } else {
                 throw new RestApiException(StatusCode.INTERNAL_SERVER_ERROR);
             }

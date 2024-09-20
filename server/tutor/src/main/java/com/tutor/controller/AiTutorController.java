@@ -49,7 +49,7 @@ public class AiTutorController {
         log.info("MIME 타입: {}", mimeType);
         log.info("파일명: {}", originalFilename);
 
-        String pronunciationRate = aiTutorService.pronunciation(file);
+        Double pronunciationRate = aiTutorService.pronunciation(file);
         return new ResponseDto(StatusCode.SUCCESS, pronunciationRate);
     }
 

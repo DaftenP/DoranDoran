@@ -44,14 +44,14 @@ function TranslatedTop() {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-[6vh] flex justify-between pr-2 pl-2"
-      style={{ marginTop: '1vh', marginBottom: '1vh' }}
+      className="fixed top-0 left-0 w-full h-[6vh] flex justify-between pr-[5vw] pl-[5vw]"
+      style={{ marginTop: '2vh', marginBottom: '1vh' }}
     >
       <div className="flex items-center">
         <Image src={Gold} alt="gold_rank" className="w-auto h-5/6" />
       </div>
       <div className="flex-col flex justify-center">
-        <div className="text-sm overflow-hidden whitespace-nowrap text-ellipsis max-w-[27vw]">
+        <div className="text-sm overflow-hidden whitespace-nowrap text-ellipsis max-w-[27vw] text-sm md:text-2xl">
           LV. 85 Nickname
         </div>
         <div className="w-[27vw] h-[1vh] rounded-full bg-[#70D7FF]/50">
@@ -61,7 +61,7 @@ function TranslatedTop() {
       <div className='flex items-center'>
         <Image src={Credit} alt="credit" className="w-auto h-3/4 z-10" />
         <div
-          className="w-[20vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white text-center"
+          className="w-[20vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white flex justify-center items-center text-sm md:text-3xl"
           style={{ translate: '-1vw 0'}}
         >
           555555
@@ -72,7 +72,7 @@ function TranslatedTop() {
           <Image src={Megaphone} alt="megaphone" className="w-auto h-full p-0.5" />
         </div>
         <div
-          className="w-[15vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white text-center"
+          className="w-[15vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white flex justify-center items-center text-sm md:text-3xl"
           style={{ translate: '-1vw 0'}}
         >
           9/10

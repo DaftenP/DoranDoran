@@ -55,7 +55,7 @@ function TranslatedBottom() {
   return (
     <div className="fixed bottom-0 left-0 w-full bg-none flex justify-between">
       <div
-        className="relative w-[50vw] rounded-none"
+        className="relative w-[50vw]"
       >
         <div
           className="w-[50vw] h-[10vh] rounded-tr-[10px] bg-[#E4FEFF]"
@@ -91,7 +91,7 @@ function TranslatedBottom() {
           <Image src={Home} alt="Home_link" className="w-auto h-3/5 cursor-pointer" />
         )}
       </div>
-      <div className="w-[50vw] rounded-none">
+      <div className="w-[50vw]">
         <div
           className="w-[50vw] h-[10vh] rounded-tl-[10px] bg-[#E4FEFF]"
           style={{

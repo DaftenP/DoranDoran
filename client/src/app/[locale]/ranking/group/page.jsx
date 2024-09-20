@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import RankListGroup from '../_components/ranklist-group';
 import Bronze from "@/public/rank/bronze.png";
@@ -37,35 +38,27 @@ export default function Rank() {
 
 function Ranklist() {
   const t = useTranslations('index');
-  const [selectedGroup, setSelectedGroup] = useState("All");  // Group / All 토글 상태
+  const router = useRouter();
+  const locale = useLocale();
+
+  const handleAllClick = () => {
+    router.push(`/${locale}/ranking/all`);  // All 클릭 시 /ranking/all으로 이동
+  };
 
   return (
     <div className="w-[100vw] h-[100vh] relative">
       <section>
         <div className="w-[40%] h-[5%] left-[30%] top-[10%] absolute flex items-center bg-[#dddddd] rounded-[20px] border border-[#bdbdbd]">
           <div
-            onClick={() => setSelectedGroup("Group")}
-            className={`w-[50%] h-[100%] absolute flex justify-center items-center ${
-              selectedGroup === "Group" ? "bg-[#f1f3c2] border border-[#d2c100]" : "bg-[#dddddd]"
-            } rounded-[20px]`}
+            className="w-[50%] h-[100%] absolute flex justify-center items-center bg-[#f1f3c2] border border-[#d2c100] rounded-[20px]"
           >
-            <span className={`text-[15px] font-normal font-['Itim'] ${
-              selectedGroup === "Group" ? "text-black" : "text-[#ababab]"
-            }`}>
-              Group
-            </span>
+            <span className="text-[15px] font-normal font-['Itim'] text-black">Group</span>
           </div>
           <div
-            onClick={() => setSelectedGroup("All")}
-            className={`w-[50%] h-[100%] left-[50%] absolute flex justify-center items-center ${
-              selectedGroup === "All" ? "bg-[#f1f3c2] border border-[#d2c100]" : "bg-[#dddddd]"
-            } rounded-[20px]`}
+            onClick={handleAllClick}
+            className="w-[50%] h-[100%] left-[50%] absolute flex justify-center items-center bg-[#dddddd] rounded-[20px]"
           >
-            <span className={`text-[15px] font-normal font-['Itim'] ${
-              selectedGroup === "All" ? "text-black" : "text-[#ababab]"
-            }`}>
-              All
-            </span>
+            <span className="text-[15px] font-normal font-['Itim'] text-[#ababab]">All</span>
           </div>
         </div>
       </section>

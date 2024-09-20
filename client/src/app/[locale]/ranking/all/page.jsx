@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import RankListAll from '../_components/ranklist-all';
 import Bird2 from "@/public/shop-bird/bird (2).png";
@@ -33,66 +34,62 @@ export default function Rank() {
 
 function Ranklist() {
   const t = useTranslations('index');
-  const [selectedGroup, setSelectedGroup] = useState("All");  // Group / All 토글 상태
+  const router = useRouter();
+  const locale = useLocale();
+  // const [selectedGroup, setSelectedGroup] = useState("All");  // Group / All 토글 상태
   const [selectedWeek, setSelectedWeek] = useState("this week"); // last week / this week 토글 상태
 
+  const handleGroupClick = () => {
+    router.push(`/${locale}/ranking/group`);  // Group 클릭 시 /ranking/group으로 이동
+  };
+
+  const handleAllClick = () => {
+    router.push(`/${locale}/ranking/all`);  // All 클릭 시 /ranking/all으로 이동
+  };
+
   return (
-    // <div>
     <div className="w-[100vw] h-[100vh] relative">
       <section>
-      <div className="w-[40%] h-[5%] left-[30%] top-[10%] absolute flex items-center bg-[#dddddd] rounded-[20px] border border-[#bdbdbd]">
-        <div
-          onClick={() => setSelectedGroup("Group")}
-          className={`w-[50%] h-[100%] absolute flex justify-center items-center ${
-            selectedGroup === "Group" ? "bg-[#f1f3c2] border border-[#d2c100]" : "bg-[#dddddd]"
-          } rounded-[20px]`}
-        >
-          <span className={`text-[15px] font-normal font-['Itim'] ${
-            selectedGroup === "Group" ? "text-black" : "text-[#ababab]"
-          }`}>
-            Group
-          </span>
+        <div className="w-[40%] h-[5%] left-[30%] top-[10%] absolute flex items-center bg-[#dddddd] rounded-[20px] border border-[#bdbdbd]">
+          <div
+            onClick={handleGroupClick}
+            className="w-[50%] h-[100%] absolute flex justify-center items-center bg-[#dddddd] rounded-[20px]"
+          >
+            <span className="text-[15px] font-normal font-['Itim'] text-[#ababab]">Group</span>
+          </div>
+          <div
+            className="w-[50%] h-[100%] left-[50%] absolute flex justify-center items-center bg-[#f1f3c2] border border-[#d2c100] rounded-[20px]"
+          >
+            <span className="text-[15px] font-normal font-['Itim'] text-black">All</span>
+          </div>
         </div>
-        <div
-          onClick={() => setSelectedGroup("All")}
-          className={`w-[50%] h-[100%] left-[50%] absolute flex justify-center items-center ${
-            selectedGroup === "All" ? "bg-[#f1f3c2] border border-[#d2c100]" : "bg-[#dddddd]"
-          } rounded-[20px]`}
-        >
-          <span className={`text-[15px] font-normal font-['Itim'] ${
-            selectedGroup === "All" ? "text-black" : "text-[#ababab]"
-          }`}>
-            All
-          </span>
-        </div>
-      </div>
         
-      <div className="w-[34%] h-[3%] left-[33%] top-[16%] absolute flex items-center bg-[#dddddd] rounded-[20px] border border-[#bdbdbd]">
-        <div
-          onClick={() => setSelectedWeek("last week")}
-          className={`w-[50%] h-[100%] absolute flex justify-center items-center ${
-            selectedWeek === "last week" ? "bg-[#00c3ff] border border-[#0077cc]" : "bg-[#dddddd]"
-          } rounded-[20px]`}
-        >
-          <span className={`text-[11px] font-normal font-['Itim'] ${
-            selectedWeek === "last week" ? "text-white" : "text-[#ababab]"
-          }`}>
-            last week
-          </span>
+        <div className="w-[34%] h-[3%] left-[33%] top-[16%] absolute flex items-center bg-[#dddddd] rounded-[20px] border border-[#bdbdbd]">
+          <div
+            onClick={() => setSelectedWeek("last week")}
+            className={`w-[50%] h-[100%] absolute flex justify-center items-center ${
+              selectedWeek === "last week" ? "bg-[#00c3ff] border border-[#0077cc]" : "bg-[#dddddd]"
+            } rounded-[20px]`}
+          >
+            <span className={`text-[11px] font-normal font-['Itim'] ${
+              selectedWeek === "last week" ? "text-white" : "text-[#ababab]"
+            }`}>
+              last week
+            </span>
+          </div>
+          <div
+            onClick={() => setSelectedWeek("this week")}
+            className={`w-[50%] h-[100%] left-[50%] absolute flex justify-center items-center ${
+              selectedWeek === "this week" ? "bg-[#00c3ff] border border-[#0077cc]" : "bg-[#dddddd]"
+            } rounded-[20px]`}
+          >
+            <span className={`text-[11px] font-normal font-['Itim'] ${
+              selectedWeek === "this week" ? "text-white" : "text-[#ababab]"
+            }`}>
+              this week
+            </span>
+          </div>
         </div>
-        <div
-          onClick={() => setSelectedWeek("this week")}
-          className={`w-[50%] h-[100%] left-[50%] absolute flex justify-center items-center ${
-            selectedWeek === "this week" ? "bg-[#00c3ff] border border-[#0077cc]" : "bg-[#dddddd]"
-          } rounded-[20px]`}
-        >
-          <span className={`text-[11px] font-normal font-['Itim'] ${
-            selectedWeek === "this week" ? "text-white" : "text-[#ababab]"
-          }`}>
-            this week
-          </span>
-        </div>
-      </div>
       </section>
 
       <section className="w-[90%] h-[70%] left-[5%] top-[22%] py-[10%] absolute bg-[#E6F3F2] bg-opacity-60 rounded-[30px]" >

@@ -3,9 +3,12 @@ package main
 import (
 	"log"
 	"net/http"
+
+	"com.doran.bff/controller"
 )
 
 func main() {
+	http.HandleFunc("/api/v1/bff/talk/send", controller.SendController)
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})

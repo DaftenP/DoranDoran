@@ -100,15 +100,27 @@ function TranslatedTopicList({ params }) {
       t('talk-about-the-strengths-and-weaknesses-of-their-personality')
     ]
   };
+
+  const [selectedIndex, setSelectedIndex] = useState(null)
+  const handleTopicClick = ((index) => {
+    setSelectedIndex(index)
+  })
   
   return (
     <div>
       {topicArray[String(people)].map((item, index) => (
-        <Link href={`${people}/${index}`} key={index}>
-          <div className='rounded-3xl w-[80vw] min-h-[10vh] bg-white/70 border border-[#ACACAC] mb-[1vh] flex items-center text-xxl md:text-4xl lg:text-6xl p-[3vh]'>
+        <div key={index}>
+          <div onClick={() => handleTopicClick(index)} className={`relative rounded-3xl w-[80vw] min-h-[10vh] ${selectedIndex === index ? 'bg-[#1F7EFA]/40 border border-[#1F7EFA]' : 'bg-white/70 border border-[#ACACAC]'} mb-[1vh] flex items-center text-xxl md:text-4xl lg:text-6xl p-[3vh]`}>
             {item}
+            {selectedIndex === index && (
+              <Link href={`${people}/${index}`}>
+                <button className="absolute right-5 top-1/2 -translate-y-1/2 text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1">
+                  {t('next')}
+                </button>
+              </Link>
+            )}
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );

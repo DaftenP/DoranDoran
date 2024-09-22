@@ -91,15 +91,27 @@ function TranslatedPeopleList() {
     },
   ]
 
+  const [selectedIndex, setSelectedIndex] = useState(null)
+  const handlePeopleClick = ((index) => {
+    setSelectedIndex(index)
+  })
+
   return (
     <div>
       {peopleArray.map((item, index) => (
-        <Link href={`ai-tutor/${index}`} key={index}>
-          <div className='rounded-3xl w-[80vw] h-[10vh] bg-white/70 border border-[#ACACAC] mb-[1vh] flex items-center text-xxl md:text-4xl lg:text-6xl'>
+        <div key={index}>
+          <div onClick={() => handlePeopleClick(index)} className={`relative rounded-3xl w-[80vw] h-[10vh] ${selectedIndex === index ? 'bg-[#1F7EFA]/40 border border-[#1F7EFA]' : 'bg-white/70 border border-[#ACACAC]'} mb-[1vh] flex items-center text-xxl md:text-4xl lg:text-6xl`}>
             <Image src={item.image} alt={item.name} className='w-auto h-3/4 pl-[5vw] pr-[5vw]'/>
             {item.name}
+            {selectedIndex === index && (
+              <Link href={`ai-tutor/${index}`}>
+                <button className="absolute right-5 top-1/2 -translate-y-1/2 text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1">
+                  {t('next')}
+                </button>
+              </Link>
+            )}
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );

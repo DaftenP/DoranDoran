@@ -1,5 +1,5 @@
 import Image from "next/image";
-import BackgroundLaunch from "@/public/background/launch.png";
+import BackgroundLaunch from "@/public/background/launch.webp";
 
 export default function Layout({ children }) {
   return (

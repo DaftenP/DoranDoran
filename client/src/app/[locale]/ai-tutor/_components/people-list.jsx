@@ -4,15 +4,15 @@ import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image'
-import BankEmployee from '@/public/job/bank-employee.png'
-import Doctor from '@/public/job/doctor.png'
-import Friend from '@/public/job/friend.png'
-import HotelStaff from '@/public/job/hotel-staff.png'
-import Interviewer from '@/public/job/interviewer.png'
-import RestaurantServer from '@/public/job/restaurant-server.png'
-import ShopAssistant from '@/public/job/shop-assistant.png'
-import TaxiDriver from '@/public/job/taxi-driver.png'
-import TourGuide from '@/public/job/tour-guide.png'
+import BankEmployee from '@/public/job/bank-employee.webp'
+import Doctor from '@/public/job/doctor.webp'
+import Friend from '@/public/job/friend.webp'
+import HotelStaff from '@/public/job/hotel-staff.webp'
+import Interviewer from '@/public/job/interviewer.webp'
+import RestaurantServer from '@/public/job/restaurant-server.webp'
+import ShopAssistant from '@/public/job/shop-assistant.webp'
+import TaxiDriver from '@/public/job/taxi-driver.webp'
+import TourGuide from '@/public/job/tour-guide.webp'
 
 export default function PeopleList () {
   const [messages, setMessages] = useState(null);

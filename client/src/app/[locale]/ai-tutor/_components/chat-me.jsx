@@ -4,10 +4,10 @@ import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image'
-import Credit from '@/public/icon/credit.png'
-import Exp from '@/public/icon/exp.png'
-import MicrophoneNormal from '@/public/icon/microphone-normal.png'
-import MicrophoneActive from '@/public/icon/microphone-active.png'
+import Credit from '@/public/icon/credit.webp'
+import Exp from '@/public/icon/exp.webp'
+import MicrophoneNormal from '@/public/icon/microphone-normal.webp'
+import MicrophoneActive from '@/public/icon/microphone-active.webp'
 import Microphone from '@/app/[locale]/ai-tutor/_components/microphone';
 
 export default function ChatMe ({ message }) {

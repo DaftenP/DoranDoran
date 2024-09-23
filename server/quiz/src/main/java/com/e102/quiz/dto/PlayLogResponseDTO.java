@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PlayLogResponseDTO {
     private LocalDateTime createdAt;
-    private int gain_xp;
+    private int gainXp;
     private int quizType;
 }

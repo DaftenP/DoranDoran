@@ -24,8 +24,8 @@ public class PlayLogService {
 
         PlayLog playLog = PlayLog.builder()
                 .xp(xp)
-                .userId(playLogRequestDTO.getUser_id())
-                .quizId(playLogRequestDTO.getQuiz_id())
+                .userId(playLogRequestDTO.getUserId())
+                .quizId(playLogRequestDTO.getQuizId())
                 .build();
 
         try {

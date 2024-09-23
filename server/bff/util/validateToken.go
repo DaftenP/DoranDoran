@@ -2,7 +2,6 @@ package util
 
 import (
 	"os"
-	"strings"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -12,8 +11,6 @@ func ValidateToken(token string) bool {
 	if secretKey == "" {
 		return false
 	}
-
-	token = strings.Replace(token, "Bearer ", "", 1)
 
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {

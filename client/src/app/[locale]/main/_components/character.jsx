@@ -39,7 +39,7 @@ function TranslatedCharacter() {
   return (
     <div className='flex items-center justify-center mt-[3vh]'>
       <div className='relative'>
-        <div className='transform translate-x-[18vw] rounded-full w-[35vw] h-[9vh] bg-[#FFFFFF]/80 flex justify-center items-center text-md md:text-3xl'>
+        <div className='transform translate-x-[18vw] rounded-full w-[35vw] h-[9vh] bg-[#FFFFFF]/80 flex justify-center items-center text-md md:text-3xl lg:text-5xl'>
           {t("today's-topic")}
           <br />
           {t("today's-topic")}
@@ -48,7 +48,7 @@ function TranslatedCharacter() {
         <Image src={Bird} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] cursor-pointer z-20" />  
         <Image src={MainButton} alt="main_button" className="absolute top-[35.5vh] w-[60vw] h-[30vh]" />
         <div
-          className="absolute top-[45.5vh] left-1/2 text-center text-white text-5xl md:text-8xl"
+          className="absolute top-[45.5vh] left-1/2 text-center text-white text-5xl md:text-7xl lg:text-8xl"
           style={{ transform: 'translateX(-45%)' }}
         >
           Play

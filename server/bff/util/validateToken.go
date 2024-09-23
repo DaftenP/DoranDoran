@@ -1,7 +1,6 @@
 package util
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -9,7 +8,6 @@ import (
 
 func ValidateToken(token string) bool {
 	secretKey := os.Getenv("JWT_SECRET_KEY")
-	fmt.Println("secretKey: ", secretKey)
 	if secretKey == "" {
 		return false
 	}

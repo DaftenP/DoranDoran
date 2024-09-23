@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
-import Shelf from "@/public/icon2/shelf.png";
-import Back from "@/public/icon/back.png";
+import Shelf from "@/public/icon2/shelf.webp";
+import Back from "@/public/icon/back.webp";
 import MyCharacter from "./_components/my-character";
 import Hat from "./_components/hat";
 import Color from "./_components/color";
@@ -80,7 +80,7 @@ function TranslatedBottom() {
         {["color", "hat", "character"].map((tab) => (
           <div
             key={tab}
-            className={`flex justify-center items-center w-[30%] text-xl rounded-tl-[15px] rounded-tr-[15px] cursor-pointer ${
+            className={`flex justify-center items-center w-[30%] text-xl rounded-tl-[15px] rounded-tr-[15px]  ${
               activeTab === tab
                 ? "bg-[#a76800] border border-[#5c3d21]"
                 : "bg-[#d3b88c]/60 border border-[#5c3d21]/60"

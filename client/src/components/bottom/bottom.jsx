@@ -5,16 +5,16 @@ import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image'
-import AiTutor from '@/public/bottom-bar/ai-tutor.png'
-import Home from '@/public/bottom-bar/home.png'
-import Profile1 from '@/public/bottom-bar/profile1.png'
-import Profile2 from '@/public/bottom-bar/profile2.png'
-import Ranking1 from '@/public/bottom-bar/ranking1.png'
-import Ranking2 from '@/public/bottom-bar/ranking2.png'
-import Store1 from '@/public/bottom-bar/store1.png'
-import Store2 from '@/public/bottom-bar/store2.png'
-import Study1 from '@/public/bottom-bar/study1.png'
-import Study2 from '@/public/bottom-bar/study2.png'
+import AiTutor from '@/public/bottom-bar/ai-tutor.webp'
+import Home from '@/public/bottom-bar/home.webp'
+import Profile1 from '@/public/bottom-bar/profile1.webp'
+import Profile2 from '@/public/bottom-bar/profile2.webp'
+import Ranking1 from '@/public/bottom-bar/ranking1.webp'
+import Ranking2 from '@/public/bottom-bar/ranking2.webp'
+import Store1 from '@/public/bottom-bar/store1.webp'
+import Store2 from '@/public/bottom-bar/store2.webp'
+import Study1 from '@/public/bottom-bar/study1.webp'
+import Study2 from '@/public/bottom-bar/study2.webp'
 
 export default function Bottom() {
   const [messages, setMessages] = useState(null);

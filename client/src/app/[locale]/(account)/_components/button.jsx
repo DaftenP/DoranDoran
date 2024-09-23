@@ -14,7 +14,7 @@ export default function GradientButton({ text, href, onClick }) {
   );
 
   return (
-    <button className="m-4 w-20 h-10 rounded-full bg-white/60 shadow-md">
+    <button className="m-4 w-20 md:w-32 h-10 md:h-16 md:text-3xl rounded-full bg-white/60 shadow-md">
       {href ? (
         <Link href={href}>
           <ButtonContent />

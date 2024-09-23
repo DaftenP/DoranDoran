@@ -3,8 +3,8 @@
 import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
-import Bird from '@/public/shop-bird/bird (1).png'
-import MainButton from '@/public/icon2/main-button.png'
+import Bird from '@/public/shop-bird/bird (1).webp'
+import MainButton from '@/public/icon2/main-button.webp'
 
 export default function Character() {
   const [messages, setMessages] = useState(null);
@@ -45,7 +45,7 @@ function TranslatedCharacter() {
           {t("today's-topic")}
         </div>
         <div className="transform translate-x-[32vw] w-0 h-0 border-l-[3vw] border-r-[3vw] border-t-[3vw] border-l-transparent border-r-transparent border-t-white/80"></div>
-        <Image src={Bird} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] cursor-pointer z-20" />  
+        <Image src={Bird} alt="bird_and_dressing_room" className="relative w-auto h-[29vh]  z-20" />  
         <Image src={MainButton} alt="main_button" className="absolute top-[35.5vh] w-[60vw] h-[30vh]" />
         <div
           className="absolute top-[45.5vh] left-1/2 text-center text-white text-5xl md:text-7xl lg:text-8xl"

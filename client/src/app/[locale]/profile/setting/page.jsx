@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
-import Back from "@/public/icon/back.png";
+import Back from "@/public/icon/back.webp";
 import Information from "@/app/[locale]/profile/_components/information";
 import Sound from "@/app/[locale]/profile/_components/sound";
 
@@ -15,10 +15,10 @@ export default function Setting() {
       <div className="flex items-center w-full h-[7.5%]">
         <div className="w-[20%] flex justify-center">
           <Link href={`/${locale}/profile`}>
-            <Image src={Back} alt="back" className="w-8 cursor-pointer" />
+            <Image src={Back} alt="back" className="w-8 md:w-14" />
           </Link>
         </div>
-        <p className="w-[60%] text-2xl text-center">{t("setting")}</p>
+        <p className="w-[60%] text-2xl md:text-5xl text-center">{t("setting")}</p>
         <div className="w-[20%]" />
       </div>
       <hr className="w-full border-t border-[#ACACAC]" />

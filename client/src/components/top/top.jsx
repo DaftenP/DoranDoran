@@ -4,13 +4,13 @@ import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image'
-import Bronze from '@/public/rank/bronze.png'
-import Diamond from '@/public/rank/diamond.png'
-import Gold from '@/public/rank/gold.png'
-import Platinum from '@/public/rank/platinum.png'
-import Silver from '@/public/rank/silver.png'
-import Credit from '@/public/icon/credit.png'
-import Megaphone from '@/public/icon/megaphone.png'
+import Bronze from '@/public/rank/bronze.webp'
+import Diamond from '@/public/rank/diamond.webp'
+import Gold from '@/public/rank/gold.webp'
+import Platinum from '@/public/rank/platinum.webp'
+import Silver from '@/public/rank/silver.webp'
+import Credit from '@/public/icon/credit.webp'
+import Megaphone from '@/public/icon/megaphone.webp'
 
 export default function Top() {
   const [messages, setMessages] = useState(null);

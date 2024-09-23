@@ -8,6 +8,9 @@ import (
 )
 
 func main() {
+	http.HandleFunc("/api/v1/bff/regist", controller.Regist)
+	http.HandleFunc("/api/v1/bff/login", controller.Login)
+
 	http.HandleFunc("/api/v1/bff/talk/send", controller.SendController)
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

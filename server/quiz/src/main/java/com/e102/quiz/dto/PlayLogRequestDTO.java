@@ -8,6 +8,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class PlayLogRequestDTO {
-    int user_id;
-    int quiz_id;
+    int userId;
+    int quizId;
 }

@@ -39,14 +39,13 @@ public class UserService {
         //System.out.println(sUser);
 
         MyPageResponseDTO myPageResponseDTO = MyPageResponseDTO.builder()
-                .nickname(sUser.getEmail())
+                .nickname(sUser.getNickname())
                 .email(sUser.getEmail())
                 .xp(sUser.getXp())
                 .character(sUser.getCharacter())
                 .avatar(sUser.getAvatar())
                 .voice(sUser.getVoice())
                 .gem(sUser.getGem())
-                .rank(sUser.getRank())
                 .build();
 
         return myPageResponseDTO;
@@ -165,7 +164,7 @@ public class UserService {
         if(sUser != null){
 
             CreditLog creditLog = CreditLog.builder()
-                    .user(sUser)
+                    .cuser(sUser)
                     .logTypes(creditLogRequestDTO.getLogTypes())
                     .changes(creditLogRequestDTO.getChanges())
                     .build();

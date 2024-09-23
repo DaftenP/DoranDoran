@@ -57,13 +57,11 @@ public class MailController {
         if(tempPassword == null){
             return ResponseDto.response(StatusCode.NOT_FOUND);
         }
-
         mailService.resetPW(email,tempPassword);
         //비밀번호 실제로 변경
         mailService.setPWMail(email,tempPassword);
         //이메일로 쏴 줌
         return ResponseDto.response(StatusCode.RESET_SUCCESS,tempPassword);
-
     }
 
     // authenticate

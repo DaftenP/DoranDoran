@@ -50,7 +50,6 @@ public class UserController {
         return ResponseDto.response(StatusCode.SUCCESS,myPageResponseDTO);
     }
 
-
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDto> delete(@RequestParam("userId") int userId){
         //System.out.println("DELETE USER");

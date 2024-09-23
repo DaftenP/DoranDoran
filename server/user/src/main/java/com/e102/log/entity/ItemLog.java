@@ -15,28 +15,26 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@Table(name= "credit_log")
-public class CreditLog {
-
+@Table(name="item_log")
+public class ItemLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="credit_log_id")
-    private int cid;
+    @Column(name="item_log_id")
+    private int iid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
-    private User cuser;
+    private User iuser;
 
-    @Column(name="credit_changes")
+    @Column(name="item_log_type")
+    private int type;
+
+    @Column(name="item_log_changes")
     private int changes;
 
-    @Column(name="credit_log_type")
-    private int logTypes;
-
     @CreatedDate
-    @Column(name = "credit_log_created_at",columnDefinition = "TIMESTAMP", updatable = false)
+    @Column(name="item_log_created_at",columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime createdAt;
 
-    public CreditLog() {
-    }
+
 }

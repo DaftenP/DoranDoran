@@ -1,6 +1,7 @@
 package com.e102.user.entity;
 
 import com.e102.log.entity.CreditLog;
+import com.e102.log.entity.ItemLog;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -53,9 +54,6 @@ public class User {
     @Column(name = "user_gem")
     private int gem = 0;
 
-    @Column(name = "user_rank", nullable = true)
-    private int rank;
-
     @CreatedDate
     @Column(name = "user_created_at",columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime createdAt;
@@ -63,17 +61,17 @@ public class User {
     @Column(name = "user_deleted_at",columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime deletedAt;
 
-    @Column(name = "user_league_num", nullable = true)
-    private int leagueNum;
-
     @Column(name = "user_tries" )
     private int tries = 10;
 
     @Column(name = "user_stage" )
     private int stage = 1;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cuser", cascade = CascadeType.ALL, orphanRemoval = true)
     List<CreditLog> creditLogList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "iuser", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ItemLog> itemLogList = new ArrayList<>();
 
     public User(String nickname,String email,String password){
         this.nickname = nickname;
@@ -96,10 +94,8 @@ public class User {
                 ", avatar=" + avatar +
                 ", voice=" + voice +
                 ", gem=" + gem +
-                ", rank=" + rank +
                 ", createdAt=" + createdAt +
                 ", deletedAt=" + deletedAt +
-                ", leagueNum=" + leagueNum +
                 '}';
     }
 }

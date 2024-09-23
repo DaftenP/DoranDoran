@@ -37,7 +37,7 @@ function TranslatedDayTask() {
   return (
     <div className='flex'>
       {dayArray.map((item, index) => (
-        <div key={index} className="w-[12vw] h-[6vh] border border-[#CFF6F9] text-center text-sm md:text-2xl">
+        <div key={index} className="w-[12vw] h-[6vh] border border-[#CFF6F9] text-center text-sm md:text-2xl lg:text-4xl">
           D-{item}
         </div>
       ))}

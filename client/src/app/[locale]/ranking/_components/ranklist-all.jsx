@@ -1,12 +1,12 @@
 'use-client';
 
 import Image from "next/image";
-import Bronze from "@/public/rank/bronze.png";
-import Silver from "@/public/rank/silver.png";
-import Gold from "@/public/rank/gold.png";
-import Platinum from "@/public/rank/platinum.png";
-import Diamond from "@/public/rank/diamond.png";
-import Bird2 from "@/public/shop-bird/bird (2).png";
+import Bronze from "@/public/rank/bronze.webp";
+import Silver from "@/public/rank/silver.webp";
+import Gold from "@/public/rank/gold.webp";
+import Platinum from "@/public/rank/platinum.webp";
+import Diamond from "@/public/rank/diamond.webp";
+import Bird2 from "@/public/shop-bird/bird (2).webp";
 
 export default function RankListAll({userRank, userChar, userId, userTier, userXP, borderColor}) {
   return (

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import BackgroundDay from "@/public/background/day.png";
+import BackgroundDay from "@/public/background/day.webp";
 
 export default function Layout({ children }) {
   return (

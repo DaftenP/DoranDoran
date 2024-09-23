@@ -1,5 +1,5 @@
 import Image from "next/image";
-import BackgroundNight from "@/public/background/night.png";
+import BackgroundNight from "@/public/background/night.webp";
 
 export default function Layout({ children }) {
   return (

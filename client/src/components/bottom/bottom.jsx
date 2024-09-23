@@ -3,17 +3,18 @@
 import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image'
-import AiTutor from '@/public/bottom-bar/ai-tutor.png'
-import Home from '@/public/bottom-bar/home.png'
-import Profile1 from '@/public/bottom-bar/profile1.png'
-import Profile2 from '@/public/bottom-bar/profile2.png'
-import Ranking1 from '@/public/bottom-bar/ranking1.png'
-import Ranking2 from '@/public/bottom-bar/ranking2.png'
-import Store1 from '@/public/bottom-bar/store1.png'
-import Store2 from '@/public/bottom-bar/store2.png'
-import Study1 from '@/public/bottom-bar/study1.png'
-import Study2 from '@/public/bottom-bar/study2.png'
+import AiTutor from '@/public/bottom-bar/ai-tutor.webp'
+import Home from '@/public/bottom-bar/home.webp'
+import Profile1 from '@/public/bottom-bar/profile1.webp'
+import Profile2 from '@/public/bottom-bar/profile2.webp'
+import Ranking1 from '@/public/bottom-bar/ranking1.webp'
+import Ranking2 from '@/public/bottom-bar/ranking2.webp'
+import Store1 from '@/public/bottom-bar/store1.webp'
+import Store2 from '@/public/bottom-bar/store2.webp'
+import Study1 from '@/public/bottom-bar/study1.webp'
+import Study2 from '@/public/bottom-bar/study2.webp'
 
 export default function Bottom() {
   const [messages, setMessages] = useState(null);
@@ -46,10 +47,12 @@ function TranslatedBottom() {
   const t = useTranslations('index');
   const pathname = usePathname();
   const [currentPage, setCurrentPage] = useState('');
+  const [countryCode, setCountryCode] = useState('en')
 
   useEffect(() => {
     const pathArray = pathname.split('/')
     setCurrentPage(pathArray[2]);
+    setCountryCode(pathArray[1]);
   }, [pathname]);
 
   return (
@@ -68,16 +71,20 @@ function TranslatedBottom() {
             className="flex justify-around items-center w-full h-full"
             style={{transform: "skew(-30deg)"}}
           >
-            {currentPage === 'store' ? (
-              <Image src={Store2} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-6" />
-            ) : (
-              <Image src={Store1} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-6" />
-            )}
-            {currentPage === 'study' ? (
-              <Image src={Study2} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-9" />
-            ) : (
-              <Image src={Study1} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-9" />
-            )}
+            <Link href={`/${countryCode}/store`} className='w-full h-full flex justify-center items-center'>
+              {currentPage === 'store' ? (
+                <Image src={Store2} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-6" />
+              ) : (
+                <Image src={Store1} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-6" />
+              )}
+            </Link>
+            <Link href={`/${countryCode}/study`} className='w-full h-full flex justify-center items-center'>
+              {currentPage === 'study' ? (
+                <Image src={Study2} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-9" />
+              ) : (
+                <Image src={Study1} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-9" />
+              )}
+            </Link>
           </div>
         </div>
       </div>
@@ -85,11 +92,15 @@ function TranslatedBottom() {
         className="absolute w-[12vh] h-[12vh] bg-[#E4FEFF] rounded-full flex items-center justify-center left-1/2 transform -translate-x-1/2 bottom-0 z-10"
         style={{ boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)" }}
       >
-        {currentPage === 'main' ? (
-          <Image src={AiTutor} alt="ai_tutor_link" className="w-auto h-3/5 cursor-pointer" />
-        ) : (
-          <Image src={Home} alt="Home_link" className="w-auto h-3/5 cursor-pointer" />
-        )}
+          {currentPage === 'main' ? (
+            <Link href={`/${countryCode}/ai-tutor/`} className='w-full h-full flex justify-center items-center'>
+              <Image src={AiTutor} alt="ai_tutor_link" className="w-auto h-3/5 cursor-pointer" />
+            </Link>
+          ) : (
+            <Link href={`/${countryCode}/main`} className='w-full h-full flex justify-center items-center'>
+              <Image src={Home} alt="Home_link" className="w-auto h-3/5 cursor-pointer" />
+            </Link>
+          )}
       </div>
       <div className="w-[50vw]">
         <div
@@ -103,16 +114,20 @@ function TranslatedBottom() {
             className="flex justify-around items-center w-full h-full"
             style={{transform: "skew(30deg)"}}
           >
-            {currentPage === 'ranking' ? (
-              <Image src={Ranking2} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-9" />
-            ) : (
-              <Image src={Ranking1} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-9" />
-            )}
-            {currentPage === 'profile' ? (
-              <Image src={Profile2} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-6" />
-            ) : (
-              <Image src={Profile1} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-6" />
-            )}
+            <Link href={`/${countryCode}/ranking`} className='w-full h-full flex justify-center items-center'>
+              {currentPage === 'ranking' ? (
+                <Image src={Ranking2} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-9" />
+              ) : (
+                <Image src={Ranking1} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-9" />
+              )}
+            </Link>
+            <Link href={`/${countryCode}/profile`}className='w-full h-full flex justify-center items-center'>
+              {currentPage === 'profile' ? (
+                <Image src={Profile2} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-6" />
+              ) : (
+                <Image src={Profile1} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-6" />
+              )}
+            </Link>
           </div>
         </div>
       </div>

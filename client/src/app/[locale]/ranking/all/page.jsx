@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import RankListAll from '../_components/ranklist-all';
-import Bird2 from "@/public/shop-bird/bird (2).png";
+import Bird2 from "@/public/shop-bird/bird (2).webp";
 
 
 export default function Rank() {

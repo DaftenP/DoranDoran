@@ -1,5 +1,5 @@
 import Image from "next/image";
-import bird from "@/public/shop-bird/bird (7).png";
+import bird from "@/public/shop-bird/bird (7).webp";
 
 export default function Character() {
   return (

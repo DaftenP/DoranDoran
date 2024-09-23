@@ -4,10 +4,10 @@ import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image'
-import Play1 from '@/public/icon/play1.png'
-import Play2 from '@/public/icon/play2.png'
-import Translation from '@/public/icon/translation.png'
-import Bird2 from '@/public/shop-bird/bird (7).png'
+import Play1 from '@/public/icon/play1.webp'
+import Play2 from '@/public/icon/play2.webp'
+import Translation from '@/public/icon/translation.webp'
+import Bird2 from '@/public/shop-bird/bird (7).webp'
 
 export default function ChatHint ({ message }) {
   const [messages, setMessages] = useState(null);

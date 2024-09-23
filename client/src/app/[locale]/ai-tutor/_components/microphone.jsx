@@ -4,8 +4,8 @@ import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image'
-import MicrophoneNormal from '@/public/icon/microphone-normal.png'
-import MicrophoneActive from '@/public/icon/microphone-active.png'
+import MicrophoneNormal from '@/public/icon/microphone-normal.webp'
+import MicrophoneActive from '@/public/icon/microphone-active.webp'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 

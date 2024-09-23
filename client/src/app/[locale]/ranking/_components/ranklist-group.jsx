@@ -1,10 +1,10 @@
 'use-client';
 
 import Image from "next/image";
-import Bird3 from "@/public/shop-bird/bird (3).png";
-import RankUp from "@/public/icon2/rank-up.png";
-import RankPlat from "@/public/icon2/rank-plat.png";
-import RankDown from "@/public/icon2/rank-down.png";
+import Bird3 from "@/public/shop-bird/bird (3).webp";
+import RankUp from "@/public/icon2/rank-up.webp";
+import RankPlat from "@/public/icon2/rank-plat.webp";
+import RankDown from "@/public/icon2/rank-down.webp";
 
 export default function RankListGroup({userRank, userChar, userId, userXP}) {
 

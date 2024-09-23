@@ -5,11 +5,11 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import RankListGroup from '../_components/ranklist-group';
-import Bronze from "@/public/rank/bronze.png";
-import Silver from "@/public/rank/silver.png";
-import Gold from "@/public/rank/gold.png";
-import Platinum from "@/public/rank/platinum.png";
-import Diamond from "@/public/rank/diamond.png";
+import Bronze from "@/public/rank/bronze.webp";
+import Silver from "@/public/rank/silver.webp";
+import Gold from "@/public/rank/gold.webp";
+import Platinum from "@/public/rank/platinum.webp";
+import Diamond from "@/public/rank/diamond.webp";
 
 
 export default function Rank() {

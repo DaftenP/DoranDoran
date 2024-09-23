@@ -1,5 +1,5 @@
 import Image from "next/image";
-import BackgroundDay from "@/public/background/day.png";
+import BackgroundDay from "@/public/background/day.webp";
 import Bottom from '@/components/bottom/bottom';
 import Top from '@/components/top/top';
 

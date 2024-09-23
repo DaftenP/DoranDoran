@@ -4,11 +4,11 @@ import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image'
-import Play1 from '@/public/icon/play1.png'
-import Play2 from '@/public/icon/play2.png'
-import Translation from '@/public/icon/translation.png'
-import Hint from '@/public/icon/hint.png'
-import Bird1 from '@/public/shop-bird/bird (6).png'
+import Play1 from '@/public/icon/play1.webp'
+import Play2 from '@/public/icon/play2.webp'
+import Translation from '@/public/icon/translation.webp'
+import Hint from '@/public/icon/hint.webp'
+import Bird1 from '@/public/shop-bird/bird (6).webp'
 
 export default function ChatAi ({ message }) {
   const [messages, setMessages] = useState(null);

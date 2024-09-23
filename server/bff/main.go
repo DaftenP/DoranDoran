@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	http.HandleFunc("/api/v1/bff/validate", controller.Validate)
 	http.HandleFunc("/api/v1/bff/regist", controller.Regist)
 	http.HandleFunc("/api/v1/bff/login", controller.Login)
 

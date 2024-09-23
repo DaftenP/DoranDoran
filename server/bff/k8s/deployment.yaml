@@ -33,6 +33,9 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
+        env:
+        - name: JWT_SECRET_KEY
+          value: "jenkins_will_set_this_jwt_secret"
         resources:
           requests:
             memory: "64Mi"

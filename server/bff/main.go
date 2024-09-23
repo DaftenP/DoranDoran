@@ -5,10 +5,15 @@ import (
 	"net/http"
 
 	"com.doran.bff/controller"
+	"com.doran.bff/middleware"
 )
 
 func main() {
-	http.HandleFunc("/api/v1/bff/talk/send", controller.SendController)
+	http.HandleFunc("/api/v1/bff/regist", controller.Regist)
+	http.HandleFunc("/api/v1/bff/login", controller.Login)
+
+	http.Handle("/api/v1/bff/talk/send", middleware.JWTMiddleware(http.HandlerFunc(controller.SendController)))
+
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})

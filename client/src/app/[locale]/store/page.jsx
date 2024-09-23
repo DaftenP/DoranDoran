@@ -4,14 +4,14 @@ import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
-import Signs from "@/public/icon2/signs.png";
+import Signs from "@/public/icon2/signs.webp";
 import Itemlist from "./_components/itemlist";
-import Shop_Character from "@/public/icon2/shop-character.png";
-import Shop_Color from "@/public/icon2/shop-color.png";
-import Shop_Equipment from "@/public/icon2/shop-equipment.png";
-import Shop_Background from "@/public/icon2/shop-background.png";
-import Shop_Item from "@/public/icon2/shop-item.png";
-import Shop_Gambling from "@/public/icon2/shop-gambling.png";
+import Shop_Character from "@/public/icon2/shop-character.webp";
+import Shop_Color from "@/public/icon2/shop-color.webp";
+import Shop_Equipment from "@/public/icon2/shop-equipment.webp";
+import Shop_Background from "@/public/icon2/shop-background.webp";
+import Shop_Item from "@/public/icon2/shop-item.webp";
+import Shop_Gambling from "@/public/icon2/shop-gambling.webp";
 
 
 export default function Store() {

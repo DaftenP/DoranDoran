@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
-import Credit from "@/public/icon/credit.png";
+import Credit from "@/public/icon/credit.webp";
 
 
 export default function Itemlist({ itemName, itemIcon, itemCost }) {

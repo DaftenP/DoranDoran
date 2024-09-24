@@ -15,7 +15,7 @@ import static jakarta.persistence.GenerationType.*;
 public class TutorRole {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "tutor_role_id")
+    @Column(name = "tutor_role_id", nullable = false)
     private Long id;
 
     @Column(name = "tutor_role_name", nullable = false)

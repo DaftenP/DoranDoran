@@ -1,8 +1,11 @@
 package com.rank.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserRankInfoDTO {
     private Long userId;
     private Long rank;

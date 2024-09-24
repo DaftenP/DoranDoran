@@ -1,16 +1,16 @@
 package com.rank.dto;
 
-import com.rank.entity.LeagueMember;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class LeagueInfoDTO {
-    private Long leagueId;
+    private String leagueId;
     private LocalDateTime createdAt;
-    private Long leagueRank;
-    private Long leagueNum;
-    private List<LeagueMemberDTO> leagueMembers;
+    private Integer leagueRank;
+    private Integer leagueNum;
 }

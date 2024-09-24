@@ -1,10 +1,11 @@
 package com.rank.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LeaderBoardMemberDTO extends LeagueMemberDTO{
     private Long userRank;
 }

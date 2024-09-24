@@ -1,8 +1,11 @@
 package com.rank.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class LeagueMemberDTO {
     private Long userId;
     private String userNickName;

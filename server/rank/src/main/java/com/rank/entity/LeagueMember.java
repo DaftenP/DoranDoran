@@ -24,4 +24,8 @@ public class LeagueMember {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "league_id", nullable = false)
     private League league;
+
+    public void updateGainXP(long l) {
+        this.gainXP += l;
+    }
 }

@@ -68,4 +68,26 @@ public class RankService {
 
         return ret;
     }
+
+    public void updateXP(Long userId, Long xp) {
+        // 리그 아이디 prefix
+        String leagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now());
+
+        // 리그 멤버 객체 조회
+        Optional<LeagueMember> lm = leagueMemberRepository.findByUserIdAndLeagueIdPrefix(userId, leagueIdPrefix);
+        if (lm.isEmpty()) {
+            throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
+        }
+
+        // 리그 정보 조회
+        Optional<League> league = Optional.ofNullable(lm.get().getLeague());
+
+        if(league.isEmpty()) {
+            throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
+        }
+
+        // 리그 멤버 XP 업데이트
+        lm.get().updateGainXP(xp);
+        leagueMemberRepository.save(lm.get());
+    }
 }

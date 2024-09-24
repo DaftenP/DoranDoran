@@ -63,8 +63,15 @@ public class RankController {
      * @return null
      */
     @PatchMapping("/xp/{userId}")
-    public ResponseDto updateXP(@PathVariable Long userId) {
+    public ResponseDto updateXP(@PathVariable Long userId, @RequestParam Long xp) {
         log.info("update xp api called");
+
+        if(userId == null) {
+            return new ResponseDto(StatusCode.BAD_REQUEST, null);
+        }
+
+        rankService.updateXP(userId, xp);
+
         return new ResponseDto(StatusCode.SUCCESS, null);
     }
 

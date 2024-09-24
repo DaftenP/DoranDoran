@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations, NextIntlClientProvider } from 'next-intl';
+import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Top from '@/components/top/top';
 import Bottom from '@/components/bottom/bottom';
@@ -8,7 +8,7 @@ import TopicList from '@/app/[locale]/ai-tutor/_components/topic-list';
 
 export default function TopicSelect({ params }) {
   const [messages, setMessages] = useState(null);
-  const locale = params.locale;
+  const locale = useLocale();
 
   useEffect(() => {
     async function loadMessages() {

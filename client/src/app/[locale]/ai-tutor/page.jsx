@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations, NextIntlClientProvider } from 'next-intl';
+import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Top from '@/components/top/top';
@@ -9,7 +9,7 @@ import PeopleList from '@/app/[locale]/ai-tutor/_components/people-list';
 
 export default function PeopleSelect() {
   const [messages, setMessages] = useState(null);
-  const locale = 'en'; // 예시로 en 사용, 동적 처리 가능
+  const locale = useLocale();
 
   useEffect(() => {
     async function loadMessages() {

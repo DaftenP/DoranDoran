@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations, NextIntlClientProvider } from 'next-intl';
+import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image'
@@ -14,7 +14,7 @@ import Megaphone from '@/public/icon/megaphone.webp'
 
 export default function Top() {
   const [messages, setMessages] = useState(null);
-  const locale = 'en'; // 예시로 en 사용, 동적 처리 가능
+  const locale = useLocale();
 
   useEffect(() => {
     async function loadMessages() {
@@ -44,7 +44,7 @@ function TranslatedTop() {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-[6vh] flex justify-between pr-[5vw] pl-[5vw]"
+      className="fixed top-0 left-0 w-full h-[6vh] flex justify-between pr-[5vw] pl-[5vw] z-10"
       style={{ marginTop: '2vh', marginBottom: '1vh' }}
     >
       <div className="flex items-center">

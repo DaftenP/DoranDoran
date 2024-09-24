@@ -1,7 +1,8 @@
 'use client';
 
-import { useTranslations, NextIntlClientProvider } from 'next-intl';
+import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import Image from 'next/image';
 import Back from '@/public/icon/back.webp';
@@ -13,7 +14,7 @@ import ChatHint from '@/app/[locale]/ai-tutor/_components/chat-hint';
 
 export default function Conversation({ params }) {
   const [messages, setMessages] = useState(null);
-  const locale = params.locale;
+  const locale = useLocale();
 
   useEffect(() => {
     async function loadMessages() {
@@ -40,22 +41,52 @@ export default function Conversation({ params }) {
 
 function TranslatedTopicConversation({ params }) {
   const t = useTranslations('index');
+  const dispatch = useDispatch()
+  const { chatMessages, loading, error } = useSelector((state) => state.aiTutor)
   const locale = params.locale;
-  const people = params.people;
-  const topic = params.topic;
+  const role = params.people;
+  const situation = params.topic;
 
-  const [chatMessages, setChatMessages] = useState([
-    { sender: 'ai', message: 'Hello, how can I assist you todayHello, how can I assist you today?Hello, how can I assist you today?H' },
-    { sender: 'me', message: 'I need help with my accountI need help with my accountI need help with my accountI need help with my account.' },
-    { sender: 'ai', message: '맞아?' },
-    { sender: 'hint', message: 'Tip: Keep your account information secure.' },
-    { sender: 'ai', message: 'Hello, how can I assist you todayHello, how can I assist you today?Hello, how can I assist you today?Hello, how can I assist you today?Hello, how can I assist you today?Hello, how can I assist you today??' },
-    { sender: 'me', message: 'I need help with my accountI need help with my accountI need help with my accountI need help with my accountI need help with my accountI need help with my account.' },
-  ]);
+  // const handleToggleHint = (index) => {
+  //   setChatMessages((prevMessages) => {
+  //     const updatedMessages = prevMessages.map((msg, i) =>
+  //       i === index ? { ...msg, isHint: !msg.isHint } : msg
+  //     );
+  //     return updatedMessages;
+  //   });
+  // };
 
-  const addMessage = ((sender, message) => {
-    setChatMessages(prevMessages => [...prevMessages, { sender, message }])
-  })
+  // // 각 응답 플레이 토글
+  // const handleToggleResponsePlay = (index) => {
+  //   setChatMessages((prevMessages) => {
+  //     const updatedMessages = prevMessages.map((msg, i) => {
+  //       return {
+  //         ...msg,
+  //         isResponsePlay: i === index ? !msg.isResponsePlay : false,
+  //         isHintPlay: false
+  //       }
+  //     })
+  //     return updatedMessages;
+  //   })
+  // }
+  
+  // // 각 힌트 플레이 토글
+  // const handleToggleHintPlay = (index) => {
+  //   setChatMessages((prevMessages) => {
+  //     const updateMessages = prevMessages.map((msg, i) => {
+  //       return {
+  //         ...msg,
+  //         isResponsePlay: false,
+  //         isHintPlay: i === index ? !msg.isHintPlay : false,
+  //       }
+  //     })
+  //     return updateMessages
+  //   })
+  // }
+
+  useEffect(() => {
+    console.log("Updated chatMessages:", chatMessages);
+  }, [chatMessages]);
 
   return (
     <div>
@@ -72,15 +103,21 @@ function TranslatedTopicConversation({ params }) {
       <div className='max-h-[87vh] overflow-y-scroll hide-scrollbar'>
         {chatMessages.map((msg, index) => {
           if (msg.sender === 'ai') {
-            return <ChatAi key={index} message={msg.message} />
+            return (
+              <div key={index}>
+                <ChatAi index={index} message={msg} />
+                {msg.isHint === true && <ChatHint index={index} message={msg} />}
+              </div>
+            )
           } else if (msg.sender === 'me') {
-            return <ChatMe key={index} message={msg.message} />
-          } else if (msg.sender === 'hint') {
-            return <ChatHint key={index} message={msg.message} />
+            return (
+              <div key={index}>
+                <ChatMe inedx={index} message={msg} />
+              </div>
+            )
           }
         })}
       </div>
-
     </div>
   );
 }

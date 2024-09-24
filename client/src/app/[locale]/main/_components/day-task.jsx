@@ -1,11 +1,11 @@
 'use client';
 
-import { useTranslations, NextIntlClientProvider } from 'next-intl';
+import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 export default function DayTask() {
   const [messages, setMessages] = useState(null);
-  const locale = 'en'; // 예시로 en 사용, 동적 처리 가능
+  const locale = useLocale()
 
   useEffect(() => {
     async function loadMessages() {

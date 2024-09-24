@@ -28,11 +28,10 @@ public class RankController {
 
         if(userId == null) {
             return new ResponseDto(StatusCode.BAD_REQUEST, null);
+        } else{
+            Map<String, Object> userLeagueInfoResponseDTO = rankService.getUserLeagueInfo(userId);
+            return new ResponseDto(StatusCode.SUCCESS, userLeagueInfoResponseDTO);
         }
-
-        Map<String, Object> userLeagueInfoResponseDTO = rankService.getUserLeagueInfo(userId);
-
-        return new ResponseDto(StatusCode.SUCCESS, userLeagueInfoResponseDTO);
     }
 
     /**
@@ -66,13 +65,12 @@ public class RankController {
     public ResponseDto updateXP(@PathVariable Long userId, @RequestParam Long xp) {
         log.info("update xp api called");
 
-        if(userId == null) {
+        if(userId == null || xp == null) {
             return new ResponseDto(StatusCode.BAD_REQUEST, null);
+        } else{
+            rankService.updateXP(userId, xp);
+            return new ResponseDto(StatusCode.SUCCESS, null);
         }
-
-        rankService.updateXP(userId, xp);
-
-        return new ResponseDto(StatusCode.SUCCESS, null);
     }
 
     /**
@@ -83,6 +81,12 @@ public class RankController {
     @GetMapping("/info/{userId}")
     public ResponseDto getUserRankInfo(@PathVariable Long userId) {
         log.info("user rank info api called");
-        return new ResponseDto(StatusCode.SUCCESS, null);
+
+        if(userId == null) {
+            return new ResponseDto(StatusCode.BAD_REQUEST, null);
+        } else{
+            Map<String, Object> userRankInfo = rankService.getUserRankInfo(userId);
+            return new ResponseDto(StatusCode.SUCCESS, userRankInfo);
+        }
     }
 }

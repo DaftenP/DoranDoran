@@ -2,7 +2,7 @@ spring:
   application:
     name: rank
   datasource:
-    url: ENC(ND7ataPAw3IQRTlkDQ5m/rGseS+B8SXNqxugUiCkwUyfzkUxRxFpWA==)
+    url: ENC(I1fnsvJRhfDzkPNC4jeGzSsQtmf+re2GUpX+IHgwNyIMEGytvi5ARw==)
     username: ENC(QwnUyIfu2THVsYXlzD2sow==)
     password: ENC(SOefXdn69nfyCpO4F6b8PSyBEKZhuFZs)
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -2,13 +2,20 @@ package com.rank.controller;
 
 import com.rank.common.ResponseDto;
 import com.rank.common.exception.StatusCode;
+import com.rank.dto.LeagueInfoDTO;
+import com.rank.service.RankService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/rank")
+@RequiredArgsConstructor
 @Slf4j
 public class RankController {
+    private final RankService rankService;
 
     /**
      * 유저 랭킹 정보 조회
@@ -18,7 +25,13 @@ public class RankController {
     @GetMapping("/league/{userId}")
     public ResponseDto getUserLeagueInfo(@PathVariable Long userId) {
         log.info("league info api called");
-        return new ResponseDto(StatusCode.SUCCESS, null);
+
+        if(userId == null) {
+            return new ResponseDto(StatusCode.BAD_REQUEST, null);
+        } else{
+            Map<String, Object> userLeagueInfoResponseDTO = rankService.getUserLeagueInfo(userId);
+            return new ResponseDto(StatusCode.SUCCESS, userLeagueInfoResponseDTO);
+        }
     }
 
     /**
@@ -49,9 +62,15 @@ public class RankController {
      * @return null
      */
     @PatchMapping("/xp/{userId}")
-    public ResponseDto updateXP(@PathVariable Long userId) {
+    public ResponseDto updateXP(@PathVariable Long userId, @RequestParam Long xp) {
         log.info("update xp api called");
-        return new ResponseDto(StatusCode.SUCCESS, null);
+
+        if(userId == null || xp == null) {
+            return new ResponseDto(StatusCode.BAD_REQUEST, null);
+        } else{
+            rankService.updateXP(userId, xp);
+            return new ResponseDto(StatusCode.SUCCESS, null);
+        }
     }
 
     /**
@@ -62,6 +81,12 @@ public class RankController {
     @GetMapping("/info/{userId}")
     public ResponseDto getUserRankInfo(@PathVariable Long userId) {
         log.info("user rank info api called");
-        return new ResponseDto(StatusCode.SUCCESS, null);
+
+        if(userId == null) {
+            return new ResponseDto(StatusCode.BAD_REQUEST, null);
+        } else{
+            Map<String, Object> userRankInfo = rankService.getUserRankInfo(userId);
+            return new ResponseDto(StatusCode.SUCCESS, userRankInfo);
+        }
     }
 }

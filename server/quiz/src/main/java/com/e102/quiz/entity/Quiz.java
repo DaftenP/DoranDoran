@@ -41,4 +41,7 @@ public class Quiz {
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<QuizImage> quizImages;
 
+    public void updateQuizImages(Set<QuizImage> quizImages) {
+        this.quizImages = quizImages;
+    }
 }

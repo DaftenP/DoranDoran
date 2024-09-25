@@ -2,6 +2,7 @@ package com.e102.quiz.controller;
 
 import com.e102.quiz.common.ResponseDto;
 import com.e102.quiz.common.exception.StatusCode;
+import com.e102.quiz.dto.QuizRequestDto;
 import com.e102.quiz.dto.QuizResponseDto;
 import com.e102.quiz.service.QuizService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,12 @@ public class QuizController {
     public ResponseEntity<ResponseDto> getQuizById(@PathVariable Integer quizId) {
         QuizResponseDto quizResponseDto = quizService.getQuiz(quizId);
         return ResponseDto.response(StatusCode.SUCCESS, quizResponseDto);
+    }
+
+    @PostMapping("/quizzes/regist")
+    public ResponseEntity<ResponseDto> registQuiz(@RequestBody QuizRequestDto quizRequestDto){
+        quizService.registQuiz(quizRequestDto);
+        return ResponseDto.response(StatusCode.SUCCESS, null);
     }
 
 }

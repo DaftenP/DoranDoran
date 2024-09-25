@@ -5,20 +5,20 @@ import lombok.*;
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class QuizResponseDto {
-
-    private int id;
+@NoArgsConstructor
+@ToString
+public class QuizRequestDto {
 
     private int quizType;
 
-    private int quizCategory;
-
     private String quizAnswer;
+
+    private int quizCategory;
 
     private String quizQuestion;
 
-    private List<String> quizImages;
+    private List<QuizImageRequestDto> quizImages;
 }

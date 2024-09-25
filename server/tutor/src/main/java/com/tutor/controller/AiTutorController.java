@@ -18,7 +18,7 @@ public class AiTutorController {
 
     private final AiTutorService aiTutorService;
 
-    @GetMapping("/send")
+    @PostMapping("/send")
     public ResponseDto send(@RequestBody(required = false) ChatRequestDTO chatRequestDTO, @RequestParam Long role, @RequestParam Long situation, @RequestParam String locale) {
         log.info("send");
 
@@ -34,7 +34,7 @@ public class AiTutorController {
         return new ResponseDto(StatusCode.SUCCESS, tutorResponse);
     }
 
-    @GetMapping("/pronunciation")
+    @PostMapping("/pronunciation")
     public ResponseDto pronunciation(@RequestParam("file")MultipartFile file) {
         log.info("pronunciation");
 

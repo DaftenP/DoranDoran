@@ -64,7 +64,57 @@ spec:
   ports:
   - port: 8080
     targetPort: 8080
-    nodePort: 30080
   selector:
     app: bff
-  type: NodePort
+  type: ClusterIP
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect
+  namespace: ns-bff
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: bff-tls
+  namespace: ns-bff
+spec:
+  secretName: bff-tls
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  commonName: bff.ssafy.picel.net
+  dnsNames:
+  - bff.ssafy.picel.net
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bff-ingress
+  namespace: ns-bff
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    acme.cert-manager.io/http01-ingress-class: "traefik"
+    traefik.ingress.kubernetes.io/router.middlewares: ns-bff-redirect@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: bff.ssafy.picel.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bff
+            port:
+              number: 8080
+  tls:
+    - hosts:
+      - bff.ssafy.picel.net
+      secretName: bff-tls

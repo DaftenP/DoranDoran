@@ -19,10 +19,10 @@ public class AiTutorController {
     private final AiTutorService aiTutorService;
 
     @GetMapping("/send")
-    public ResponseDto send(@RequestBody(required = false) ChatRequestDTO chatRequestDTO, @RequestParam Long role, @RequestParam Long situation) {
+    public ResponseDto send(@RequestBody(required = false) ChatRequestDTO chatRequestDTO, @RequestParam Long role, @RequestParam Long situation, @RequestParam String locale) {
         log.info("send");
 
-        if(role == null || situation == null) {
+        if(role == null || situation == null || locale == null) {
             return new ResponseDto(StatusCode.BAD_REQUEST, null);
         }
 
@@ -30,7 +30,7 @@ public class AiTutorController {
             chatRequestDTO = new ChatRequestDTO();
         }
 
-        TutorResponse tutorResponse = aiTutorService.send(chatRequestDTO, role, situation);
+        TutorResponse tutorResponse = aiTutorService.send(chatRequestDTO, role, situation, locale);
         return new ResponseDto(StatusCode.SUCCESS, tutorResponse);
     }
 

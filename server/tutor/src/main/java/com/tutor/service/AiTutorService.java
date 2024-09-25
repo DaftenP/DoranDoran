@@ -50,41 +50,51 @@ public class AiTutorService {
                 "type": "object",
                 "properties": {
                     "tutorResponse": { "type": "string" },
+                    "translatedResponse": { "type": "string" },
+                    "hint": { "type": "string" },
+                    "translatedHint": { "type": "string" },
                     "isOver": { "type": "boolean" },
                     "correctness": { "type": "integer" }
                 },
-                "required": ["tutorResponse", "isOver", "correctness"],
+                "required": ["tutorResponse", "translatedResponse", "hint", "translatedHint", "isOver", "correctness"],
                 "additionalProperties": false
             }
             """;
 
-    private String generatePrompt(String r, String s, ChatRequestDTO chatRequestDTO) {
+    private String generatePrompt(String r, String s, String l, ChatRequestDTO chatRequestDTO) {
         StringBuilder sb = new StringBuilder();
         sb.append("당신은 지금부터 한국어 연습을 위한 대화 상대야.\n");
         sb.append("당신의 역할은 ").append(r).append("입니다.\n");
         sb.append("현재 상황은 ").append(s).append("입니다.\n");
         sb.append("다음 조건에 따라 대화를 진행해주세요.\n");
         sb.append("1. 대화를 자연스럽게 진행해주세요.\n");
-        sb.append("2. 대화의 종료는 알아서 판단하여 해주세요.\n");
-        sb.append("3. 필요한 데이터는 다음과 같습니다.\n");
+        sb.append("2. 이전 대화에 대한 사용자의 대답의 적절성을 평가해주세요. \n");
+        sb.append("3. 만일 사용자가 대화에 관련없이 대답을 한다면 자연스럽게 넘어가주세요. \n");
+        sb.append("4. 사용자의 대답에 비속어 등 부적절한 내용이 포함된다면 적절성 점수를 0으로하고 대화를 종료하세요. \n");
+        sb.append("5. 필요한 데이터는 다음과 같습니다.\n");
         sb.append("gptResponse : 당신의 대답 (string)\n");
+        sb.append("translatedResponse : 당신의 대답의 번역문 (").append(l).append(")\n");
+        sb.append("hint : 당신의 대답에 적절한 사용자의 응답 (string)\n");
+        sb.append("translatedHint : 당신의 대답에 적절한 사용자의 응답의 번역문 (").append(l).append(")\n");
         sb.append("correctness : 적절성 점수 (0~5)\n");
         sb.append("isOver : 대화 마침 여부 (boolean)\n");
         sb.append("아래는 이전 대화 내용입니다. 이전 대화 내용이 없다면 당신부터 대화를 시작해주세요.\n");
+        sb.append("이전 대화 내용의 개수가 5개 이상이라면 대화를 자연스럽게 종료해주세요.");
         sb.append(chatRequestDTO.toString());
         return sb.toString();
     }
 
-    public TutorResponse send(ChatRequestDTO chatRequestDTO, Long role, Long situation) {
+    public TutorResponse send(ChatRequestDTO chatRequestDTO, Long role, Long situation, String locale) {
         // role, situation 맞는 문자열 가져오기
         Optional<TutorRole> tutorRole = tutorRoleRepository.findById(role);
         Optional<TutorSubject> tutorSubject = tutorSubjectRepository.findById(situation);
+        ;
         if (tutorRole.isEmpty() || tutorSubject.isEmpty()) {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
 
         // 프롬프트 생성
-        Prompt prompt = new Prompt(generatePrompt(tutorRole.get().getRoleName(), tutorSubject.get().getSubjectDetail(), chatRequestDTO), OpenAiChatOptions
+        Prompt prompt = new Prompt(generatePrompt(tutorRole.get().getRoleName(), tutorSubject.get().getSubjectDetail(), locale, chatRequestDTO), OpenAiChatOptions
                 .builder()
                 .withModel(ChatModel.GPT_4_O_MINI)
                 .withResponseFormat(new ResponseFormat(ResponseFormat.Type.JSON_SCHEMA, jsonSchema))

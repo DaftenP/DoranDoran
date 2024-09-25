@@ -12,6 +12,8 @@ func main() {
 	http.HandleFunc("/api/v1/bff/regist", controller.Regist)
 	http.HandleFunc("/api/v1/bff/login", controller.Login)
 
+	http.Handle("/api/v1/bff/admin/quiz", middleware.JWTMiddleware(http.HandlerFunc(controller.GenerateQuizController)))
+
 	http.Handle("/api/v1/bff/talk/send", middleware.JWTMiddleware(http.HandlerFunc(controller.SendController)))
 
 	http.Handle("/api/v1/bff/quiz/quizzes", middleware.JWTMiddleware(http.HandlerFunc(controller.GetQuizzes)))

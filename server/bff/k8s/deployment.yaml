@@ -36,6 +36,8 @@ spec:
         env:
         - name: JWT_SECRET_KEY
           value: "jenkins_will_set_this_jwt_secret"
+        - name: BUNNY_SECRET_KEY
+          value: "jenkins_will_set_this_bunny_secret"
         resources:
           requests:
             memory: "64Mi"

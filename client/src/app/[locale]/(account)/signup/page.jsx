@@ -1,11 +1,9 @@
-import { useLocale, useTranslations } from "next-intl";
-import Button from "../_components/button";
+import { useTranslations } from "next-intl";
 import Language from "../_components/language";
 import SignupComponent from "../_components/signup-component";
 
 export default function SignUp() {
   const t = useTranslations("index");
-  const locale = useLocale();
 
   return (
     <div className="relative w-screen h-screen flex flex-col items-center">
@@ -22,11 +20,6 @@ export default function SignUp() {
       </div>
       {/* 회원가입 컴포넌트 */}
       <SignupComponent />
-      {/* 버튼 컴포넌트 */}
-      <div className="mt-4">
-        <Button text={t("cancel")} href={`/${locale}`} />
-        <Button text={t("ok")} />
-      </div>
     </div>
   );
 }

@@ -114,7 +114,7 @@ function TranslatedBottom() {
             className="flex justify-around items-center w-full h-full"
             style={{transform: "skew(30deg)"}}
           >
-            <Link href={`/${countryCode}/ranking`} className='w-full h-full flex justify-center items-center'>
+            <Link href={`/${countryCode}/ranking/all`} className='w-full h-full flex justify-center items-center'>
               {currentPage === 'ranking' ? (
                 <Image src={Ranking2} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-9" />
               ) : (

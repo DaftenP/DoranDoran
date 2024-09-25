@@ -23,6 +23,8 @@ export default function Admin() {
   const [isTTSGenerated, setIsTTSGenerated] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
 
+  const [imageLink, setImageLink] = useState(null);
+
   // Handlers for card hover and click effects
   const handleMouseEnter = (setBoxShadow) => {
     setBoxShadow(hoverBoxShadow);
@@ -40,6 +42,10 @@ export default function Admin() {
   const handleToggle = () => {
     setIsTTSSelected(!isTTSSelected);
     setSelectedContents(isTTSSelected ? "Image" : "TTS");
+  };
+
+  const generateImage = () => {
+    setImageLink("https://picsum.photos/512/512");
   };
 
   return (
@@ -176,7 +182,7 @@ export default function Admin() {
               fontSize: "4vh",
               padding: "3%",
               width: "94%",
-              height: '85vh',
+              height: "85vh",
               borderRadius: "30px",
               background: "#eceef9",
               boxShadow: boxShadow3,
@@ -354,6 +360,7 @@ export default function Admin() {
                     placeholder="프롬프트 입력"
                   />
                   <button
+                    onClick={generateImage}
                     style={{
                       width: "12vw",
                       fontSize: "4vh",
@@ -371,15 +378,16 @@ export default function Admin() {
                     width: "30vw",
                     height: "30vw",
                     background: "#9e8ed3",
-                    boxShadow: innerDefaultBoxShadow,
+                    boxShadow: imageLink ? "none" : innerDefaultBoxShadow,
                     textAlign: "center",
                     alignContent: "center",
                     color: "white",
                     fontSize: "6vh",
                     fontWeight: "bold",
+                    backgroundImage: `url(${imageLink})`,
                   }}>
-                  Image Preview
-                  </div>
+                  {imageLink ? "" : "Image Preview"}
+                </div>
               </div>
             </div>
           </div>

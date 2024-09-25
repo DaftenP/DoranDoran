@@ -39,7 +39,7 @@ const initialState = {
     {
       "sender": "ai",
       "message": "말씀하신 내용을 확인했습니다. 비밀번호 문제인지 아니면 로그인 과정에서 다른 오류가 발생한 것인가요?",
-      "translate": "I’ve noted what you mentioned. Is it a password issue or did you encounter another error during the login process?",
+      "translate": "I've noted what you mentioned. Is it a password issue or did you encounter another error during the login process?",
       "hint": "계정 정보를 안전하게 보호하세요. 다른 사람과 공유하지 않도록 주의해주세요.",
       "translatehint": "Try to be as specific as possible about the problem to get the best help.",
       "isResponsePlay": false,

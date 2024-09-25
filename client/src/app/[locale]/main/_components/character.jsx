@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations, NextIntlClientProvider } from 'next-intl';
+import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
 import Bird from '@/public/shop-bird/bird (1).webp'
@@ -8,7 +8,7 @@ import MainButton from '@/public/icon2/main-button.webp'
 
 export default function Character() {
   const [messages, setMessages] = useState(null);
-  const locale = 'en'; // 예시로 en 사용, 동적 처리 가능
+  const locale = useLocale()
 
   useEffect(() => {
     async function loadMessages() {

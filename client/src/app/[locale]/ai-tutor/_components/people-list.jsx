@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations, NextIntlClientProvider } from 'next-intl';
+import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image'
@@ -16,7 +16,7 @@ import TourGuide from '@/public/job/tour-guide.webp'
 
 export default function PeopleList () {
   const [messages, setMessages] = useState(null);
-  const locale = 'en'; // 예시로 en 사용, 동적 처리 가능
+  const locale = useLocale();
 
   useEffect(() => {
     async function loadMessages() {

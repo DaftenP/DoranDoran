@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useTranslations, NextIntlClientProvider } from 'next-intl';
+import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 export default function TopicList ({ params }) {
   const [messages, setMessages] = useState(null);
-  const locale = params.locale;
+  const locale = useLocale();
 
   useEffect(() => {
     async function loadMessages() {

@@ -1,14 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
-
-// 더미 리듀서
-const dummyReducer = (state = {}, action) => {
-  return state;
-};
+import aiTutorReducer from './ai-tutor';
 
 const makeStore = () => configureStore({
   reducer: {
-    dummy: dummyReducer,  // 더미 리듀서
+    aiTutor: aiTutorReducer,
   },
 });
 

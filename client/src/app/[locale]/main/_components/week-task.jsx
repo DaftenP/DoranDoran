@@ -1,12 +1,12 @@
 'use client';
 
-import { useTranslations, NextIntlClientProvider } from 'next-intl';
+import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import DayTask from '@/app/[locale]/main/_components/day-task'
 
 export default function WeekTask() {
   const [messages, setMessages] = useState(null);
-  const locale = 'en'; // 예시로 en 사용, 동적 처리 가능
+  const locale = useLocale()
 
   useEffect(() => {
     async function loadMessages() {

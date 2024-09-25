@@ -78,6 +78,28 @@ spec:
     scheme: https
     permanent: true
 ---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: cors
+  namespace: ns-bff
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+      - "POST"
+      - "OPTIONS"
+      - "PUT"
+      - "PATCH"
+      - "DELETE"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlAllowHeaders:
+      - "Content-Type"
+      - "Authorization"
+    accessControlAllowCredentials: true
+    accessControlMaxAge: 100
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -100,7 +122,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt"
     acme.cert-manager.io/http01-ingress-class: "traefik"
-    traefik.ingress.kubernetes.io/router.middlewares: ns-bff-redirect@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: "ns-bff-redirect@kubernetescrd,ns-bff-cors@kubernetescrd"
 spec:
   ingressClassName: traefik
   rules:

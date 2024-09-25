@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Admin() {
   // Default boxShadow values
@@ -24,6 +24,24 @@ export default function Admin() {
   const [isSelected, setIsSelected] = useState(false);
 
   const [imageLink, setImageLink] = useState(null);
+  const [imageSeed, setImageSeed] = useState(12345678);
+  const [imagePrompt, setImagePrompt] = useState("");
+  const [isImageLoading, setIsImageLoading] = useState(false);
+
+  useEffect(() => {
+    if (imageLink) {
+      const img = new Image();
+      img.src = imageLink;
+      img.onload = () => {
+        setIsImageLoading(false);
+      };
+      img.onerror = () => {
+        setIsImageLoading(false);
+      };
+    } else {
+      setIsImageLoading(false);
+    }
+  }, [imageLink]);
 
   // Handlers for card hover and click effects
   const handleMouseEnter = (setBoxShadow) => {
@@ -45,7 +63,22 @@ export default function Admin() {
   };
 
   const generateImage = () => {
-    setImageLink("https://picsum.photos/512/512");
+    // replace all spaces with '-' in the prompt
+    const prompt = imagePrompt.replace(/ /g, "-");
+
+    // set loading state
+    setIsImageLoading(true);
+
+    // generate image link: GET request to https://bff.ssafy.picel.net/api/v1/bff/admin/quiz?seed=12122112&prompt=a-snake-eating-cake
+    fetch(`https://bff.ssafy.picel.net/api/v1/bff/admin/quiz?seed=${imageSeed}&prompt=${prompt}`)
+      .then((response) => response.text())
+      .then((data) => {
+        setImageLink(data);
+      });
+  };
+
+  const shuffleSeed = () => {
+    setImageSeed(Math.floor(Math.random() * 100000000));
   };
 
   return (
@@ -347,31 +380,74 @@ export default function Admin() {
                     height: "30vw",
                   }}>
                   <textarea
+                    // placeholder centered
                     style={{
                       fontSize: "4vh",
                       padding: "3%",
                       width: "100%",
-                      height: "25vw", // You can adjust the height as needed
+                      height: "22vw", // You can adjust the height as needed
                       borderRadius: "30px",
                       background: "#eceef9",
                       resize: "none", // Prevents resizing, you can remove this line if resizing should be allowed
                       boxShadow: innerDefaultBoxShadow,
                     }}
-                    placeholder="프롬프트 입력"
+                    placeholder="Prompts (e.g. 'a cat sitting on a table')"
+                    onChange={(e) => setImagePrompt(e.target.value)}
                   />
-                  <button
-                    onClick={generateImage}
+                  <div
                     style={{
-                      width: "12vw",
-                      fontSize: "4vh",
-                      fontWeight: "bold",
-                      padding: "1vh 0",
-                      borderRadius: "30px",
-                      background: "#9e8ed3",
-                      color: "white",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                     }}>
-                    Generate
-                  </button>
+                    <button
+                      onClick={generateImage}
+                      style={{
+                        width: "12vw",
+                        fontSize: "4vh",
+                        fontWeight: "bold",
+                        padding: "1vh 0",
+                        borderRadius: "30px",
+                        background: "#9e8ed3",
+                        color: "white",
+                      }}>
+                      Generate
+                    </button>
+                    <div
+                      style={{
+                        borderRadius: "30px",
+                        background: "#eceef9",
+                        padding: "1vh",
+                        fontSize: "4vh",
+                        fontWeight: "bold",
+                        color: "#9e8ed3",
+                        marginLeft: "3vw",
+                        boxShadow: innerDefaultBoxShadow,
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}>
+                      <div style={{ width: "10vw", marginLeft: "3vw" }}>{imageSeed}</div>
+                      <button
+                        onClick={() => {
+                          shuffleSeed();
+                        }}
+                        style={{
+                          width: "8vh",
+                          height: "8vh",
+                          marginLeft: "1vw",
+                          fontSize: "4vh",
+                          fontWeight: "bold",
+                          borderRadius: "30px",
+                          background: "#9e8ed3",
+                          color: "white",
+                        }}>
+                        🎲
+                      </button>
+                    </div>
+                  </div>
                 </div>
                 <div
                   style={{
@@ -385,8 +461,10 @@ export default function Admin() {
                     fontSize: "6vh",
                     fontWeight: "bold",
                     backgroundImage: `url(${imageLink})`,
+                    backgroundSize: "cover",
+                    borderRadius: "30px",
                   }}>
-                  {imageLink ? "" : "Image Preview"}
+                  {!imageLink ? "Image Preview" : isImageLoading ? "Loading..." : ""}
                 </div>
               </div>
             </div>

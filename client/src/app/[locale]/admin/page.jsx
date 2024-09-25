@@ -4,19 +4,24 @@ import { useState } from "react";
 
 export default function Admin() {
   // Default boxShadow values
-  const defaultBoxShadow = "20px 20px 40px #bebebe, -20px -20px 40px #ffffff";
-  const hoverBoxShadow = "30px 30px 50px #bebebe, -30px -30px 50px #ffffff";
-  const clickBoxShadow = "10px 10px 20px #bebebe, -10px -10px 20px #ffffff";
+  const defaultBoxShadow = "20px 20px 40px #cad9e0, -20px -20px 40px #ffffff";
+  const hoverBoxShadow = "30px 30px 50px #cad9e0, -30px -30px 50px #ffffff";
+  const clickBoxShadow = "10px 10px 20px #cad9e0, -10px -10px 20px #ffffff";
+
+  const innerDefaultBoxShadow = "inset 20px 20px 40px #cad9e0, inset -20px -20px 40px #ffffff";
 
   // State to track the current boxShadow of the card and the button
   const [boxShadow1, setBoxShadow1] = useState(defaultBoxShadow);
   const [boxShadow2, setBoxShadow2] = useState(defaultBoxShadow);
   const [boxShadow3, setBoxShadow3] = useState(defaultBoxShadow);
-  const [boxShadow4, setBoxShadow4] = useState(defaultBoxShadow);
   const [buttonBoxShadow, setButtonBoxShadow] = useState(defaultBoxShadow);
 
   const [isTTSSelected, setIsTTSSelected] = useState(true);
   const [selectedContents, setSelectedContents] = useState("TTS");
+
+  const [audioFile, setAudioFile] = useState(null);
+  const [isTTSGenerated, setIsTTSGenerated] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
   // Handlers for card hover and click effects
   const handleMouseEnter = (setBoxShadow) => {
@@ -44,7 +49,8 @@ export default function Admin() {
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
-        backgroundColor: "#e0e0e0",
+        backgroundColor: "#eceef9",
+        userSelect: "none",
       }}>
       <div
         style={{
@@ -55,7 +61,9 @@ export default function Admin() {
           marginTop: "4vh",
           marginBottom: "4vh",
         }}>
-        <div style={{ fontSize: "8vh", marginBottom: "4vh" }}>Quiz Generate Page</div>
+        <div style={{ fontSize: "8vh", marginBottom: "4vh", fontWeight: "bold" }}>
+          Quiz Generate Page
+        </div>
         <div
           style={{
             width: "100%",
@@ -70,7 +78,7 @@ export default function Admin() {
               padding: "3%",
               width: "64%",
               borderRadius: "30px",
-              background: "#e0e0e0",
+              background: "#eceef9",
               boxShadow: boxShadow1,
               transition: "box-shadow 0.3s",
             }}
@@ -88,7 +96,7 @@ export default function Admin() {
                   padding: "3%",
                   width: "100%",
                   borderRadius: "30px",
-                  background: "#e0e0e0",
+                  background: "#eceef9",
                 }}>
                 <option value="1">유형 1</option>
                 <option value="2">유형 2</option>
@@ -99,9 +107,10 @@ export default function Admin() {
                 style={{
                   fontSize: "4vh",
                   padding: "3%",
+                  marginBottom: "3%",
                   width: "100%",
                   borderRadius: "30px",
-                  background: "#e0e0e0",
+                  background: "#eceef9",
                 }}>
                 <option value="1">주제 1</option>
                 <option value="2">주제 2</option>
@@ -117,8 +126,9 @@ export default function Admin() {
                 width: "100%",
                 height: "30vh", // You can adjust the height as needed
                 borderRadius: "30px",
-                background: "#e0e0e0",
+                background: "#eceef9",
                 resize: "none",
+                boxShadow: innerDefaultBoxShadow,
               }}
               placeholder="문제 입력"
             />
@@ -129,8 +139,9 @@ export default function Admin() {
                 width: "100%",
                 height: "30vh", // You can adjust the height as needed
                 borderRadius: "30px",
-                background: "#e0e0e0",
+                background: "#eceef9",
                 resize: "none", // Prevents resizing, you can remove this line if resizing should be allowed
+                boxShadow: innerDefaultBoxShadow,
               }}
               placeholder="정답 입력"
             />
@@ -141,7 +152,7 @@ export default function Admin() {
               padding: "3%",
               width: "24%",
               borderRadius: "30px",
-              background: "#e0e0e0",
+              background: "#eceef9",
               boxShadow: boxShadow2,
               transition: "all 0.3s",
             }}
@@ -165,9 +176,9 @@ export default function Admin() {
               fontSize: "4vh",
               padding: "3%",
               width: "94%",
-              height: isTTSSelected ? "80vh" : "60vh",
+              height: '85vh',
               borderRadius: "30px",
-              background: "#e0e0e0",
+              background: "#eceef9",
               boxShadow: boxShadow3,
               transition: "all 0.3s",
             }}
@@ -180,10 +191,9 @@ export default function Admin() {
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  backgroundColor: "grey",
+                  backgroundColor: "#9e8ed3",
                   borderRadius: "50px",
                   padding: "1vh",
-                  userSelect: "none",
                   cursor: "pointer",
                   transition: "all 0.3s",
                 }}>
@@ -192,7 +202,7 @@ export default function Admin() {
                     fontSize: "3.3vh",
                     width: "7vw",
                     fontWeight: "bold",
-                    color: isTTSSelected ? "grey" : "#e0e0e0",
+                    color: isTTSSelected ? "#9e8ed3" : "#eceef9",
                     borderRadius: "50px",
                     padding: "1vh 3vh",
                     transition: "all 0.3s",
@@ -216,6 +226,7 @@ export default function Admin() {
                       padding: "1vh 3vh",
                       textAlign: "center",
                       transition: "all 0.3s",
+                      color: "#9e8ed3",
                     }}>
                     {selectedContents}
                   </div>
@@ -225,7 +236,7 @@ export default function Admin() {
                     fontSize: "3.3vh",
                     width: "7vw",
                     fontWeight: "bold",
-                    color: isTTSSelected ? "#e0e0e0" : "grey",
+                    color: isTTSSelected ? "#eceef9" : "#9e8ed3",
                     padding: "1vh 3vh",
                     borderRadius: "50px",
                     transition: "all 0.3s",
@@ -244,7 +255,7 @@ export default function Admin() {
                   padding: "3%",
                   width: "100%",
                   borderRadius: "30px",
-                  background: "#e0e0e0",
+                  background: "#eceef9",
                 }}>
                 <option value="1">음성 1</option>
                 <option value="2">음성 2</option>
@@ -255,29 +266,121 @@ export default function Admin() {
                 style={{
                   fontSize: "4vh",
                   padding: "3%",
+                  marginBottom: "3%",
                   width: "100%",
                   height: "30vh", // You can adjust the height as needed
                   borderRadius: "30px",
                   background: "transparent",
                   resize: "none", // Prevents resizing, you can remove this line if resizing should be allowed
+                  boxShadow: innerDefaultBoxShadow,
                 }}
                 placeholder="텍스트 입력"
               />
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "3%",
+                  marginBottom: "3%",
+                }}>
+                <button
+                  onClick={() => {
+                    setIsTTSGenerated(true);
+                  }}
+                  style={{
+                    width: "12vw",
+                    fontSize: "4vh",
+                    fontWeight: "bold",
+                    padding: "1vh 0",
+                    borderRadius: "30px",
+                    background: "#9e8ed3",
+                    color: "white",
+                  }}>
+                  Generate
+                </button>
+                <div style={{ display: isTTSGenerated ? "flex" : "none", alignItems: "center" }}>
+                  <audio controls style={{ width: "50vw" }}></audio>
+                  <button
+                    onClick={() => {
+                      setIsSelected(true);
+                    }}
+                    style={{
+                      width: "8vh",
+                      height: "8vh",
+                      fontSize: "4vh",
+                      fontWeight: "bold",
+                      borderRadius: "30px",
+                      background: !isSelected ? "#9e8ed3" : "green",
+                      color: "white",
+                    }}>
+                    {isSelected ? "✔" : "➕︎"}
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div className="image-gen" style={{ display: isTTSSelected ? "none" : "block" }}>
-              <textarea
+              <div
                 style={{
-                  fontSize: "4vh",
-                  padding: "3%",
-                  width: "100%",
-                  height: "30vh", // You can adjust the height as needed
-                  borderRadius: "30px",
-                  background: "#e0e0e0",
-                  resize: "none", // Prevents resizing, you can remove this line if resizing should be allowed
-                }}
-                placeholder="프롬프트 입력"
-              />
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "start",
+                  marginBottom: "3%",
+                }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "start",
+                    width: "35vw",
+                    height: "30vw",
+                  }}>
+                  <textarea
+                    style={{
+                      fontSize: "4vh",
+                      padding: "3%",
+                      width: "100%",
+                      height: "25vw", // You can adjust the height as needed
+                      borderRadius: "30px",
+                      background: "#eceef9",
+                      resize: "none", // Prevents resizing, you can remove this line if resizing should be allowed
+                      boxShadow: innerDefaultBoxShadow,
+                    }}
+                    placeholder="프롬프트 입력"
+                  />
+                  <button
+                    style={{
+                      width: "12vw",
+                      fontSize: "4vh",
+                      fontWeight: "bold",
+                      padding: "1vh 0",
+                      borderRadius: "30px",
+                      background: "#9e8ed3",
+                      color: "white",
+                    }}>
+                    Generate
+                  </button>
+                </div>
+                <div
+                  style={{
+                    width: "30vw",
+                    height: "30vw",
+                    background: "#9e8ed3",
+                    boxShadow: innerDefaultBoxShadow,
+                    textAlign: "center",
+                    alignContent: "center",
+                    color: "white",
+                    fontSize: "6vh",
+                    fontWeight: "bold",
+                  }}>
+                  Image Preview
+                  </div>
+              </div>
             </div>
           </div>
         </div>
@@ -300,7 +403,7 @@ export default function Admin() {
                 fontSize: "4vh",
                 color: "white",
                 fontWeight: "bold",
-                background: "#6a89a7",
+                background: "#9e8ed3",
                 borderRadius: "50px",
                 padding: "5px 30px",
                 margin: "10px",

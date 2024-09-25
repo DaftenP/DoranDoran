@@ -1,11 +1,17 @@
 package com.rank.dto;
 
 import lombok.*;
+import org.springframework.data.redis.core.RedisHash;
 
-@EqualsAndHashCode(callSuper = true)
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LeaderBoardMemberDTO extends LeagueMemberDTO{
+@Builder
+public class LeaderBoardMemberDTO {
+    private Long leaderboardType; // 0: 이번 주, 1: 지난 주
+    private Long userId;
+    private String userNickname;
+    private Long gainXp;
     private Long userRank;
+    private Long userRanking;
 }

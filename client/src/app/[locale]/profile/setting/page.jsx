@@ -18,7 +18,9 @@ export default function Setting() {
             <Image src={Back} alt="back" className="w-8 md:w-14" />
           </Link>
         </div>
-        <p className="w-[60%] text-2xl md:text-5xl text-center">{t("setting")}</p>
+        <p className="w-[60%] text-2xl md:text-5xl text-center">
+          {t("setting")}
+        </p>
         <div className="w-[20%]" />
       </div>
       <hr className="w-full border-t border-[#ACACAC]" />
@@ -26,7 +28,7 @@ export default function Setting() {
       <div className="w-full h-full flex justify-center items-center">
         <div className="bg-white w-[90%] h-[80%] rounded-3xl flex justify-center items-center flex-col">
           <Information />
-          <hr className="w-[90%] border-t border-[#ACACAC] my-5" />
+          <hr className="w-[90%] border-t border-[#ACACAC] my-4" />
           <Sound />
         </div>
       </div>

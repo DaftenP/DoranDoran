@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import MyCharacter from "./_components/my-character";
-import Fire from "@/public/icon2/fire.webp";
-import Setting from "@/public/icon/setting.webp";
 import Bottom from "@/components/bottom/bottom";
+import Setting from "@/public/icon/setting.webp";
+import Streak from "@/app/[locale]/profile/_components/streak";
+import UserInfo from "@/app/[locale]/profile/_components/user-info";
+import MyCharacter from "@/app/[locale]/profile/_components/my-character";
 
 export default function Profile() {
   const locale = useLocale();
@@ -26,13 +27,9 @@ export default function Profile() {
         <div className="w-full flex flex-col justify-center items-center">
           <MyCharacter />
           <div className="bg-white w-[90%] h-screen rounded-3xl mb-24 flex flex-col justify-center items-center">
-            <div className="border-2 border-[#B0BEC5] bg-[#FFF5E1] w-[90%] h-[30%] rounded-3xl"></div>
+            <UserInfo />
             <hr className="w-[90%] border-t border-[#ACACAC] my-5" />
-            <div className="flex justify-center items-center mb-2">
-              <p className="text-2xl md:text-5xl">{t("streak")}</p>
-              <Image src={Fire} alt="fire" className="w-[15%]" />
-            </div>
-            <div className="border-2 border-[#B0BEC5] w-[90%] h-[50%] bg-[#FFF5E1] rounded-3xl"></div>
+            <Streak />
           </div>
         </div>
       </div>

@@ -54,7 +54,7 @@ function TranslatedLanguage() {
   return (
     <div className="relative w-full flex justify-center items-center">
       <div
-        className="ml-auto w-[30%] flex justify-center items-center rounded-full bg-white/60 shadow-md "
+        className="ml-auto w-[30%] flex justify-center items-center rounded-full bg-[#EBF5F4]"
         onClick={toggleDropdown}
       >
         <span className="text-sm md:text-2xl">{t(selectedLanguage)}</span>

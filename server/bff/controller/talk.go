@@ -19,6 +19,7 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	// get role aand situation from query
 	role := r.URL.Query().Get("role")
 	situation := r.URL.Query().Get("situation")
+	locale := r.URL.Query().Get("locale")
 
 	// get messages from form field and parse it to json
 	messages := r.FormValue("messages")
@@ -37,15 +38,14 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get voice. content-type: audio/wav, key: voice, value: audio file
-	voice, header, err := r.FormFile("voice")
+	voice, _, err := r.FormFile("voice")
 	if err != nil {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
-		fmt.Println(header.Header.Get("Content-Type"))
 		return
 	}
 	defer voice.Close()
 
-	sendRes, err := service.SendService(messagesJson, userMessageJson, role, situation)
+	sendRes, err := service.SendService(messagesJson, userMessageJson, role, situation, locale)
 	if err != nil || sendRes.StatusCode != http.StatusOK {
 		http.Error(w, "Error calling SendService", http.StatusInternalServerError)
 		return
@@ -79,12 +79,16 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	// make response
 	response := model.TutorCombinedResponse{
 		Data: model.TutorCombinedResponseData{
-			Correctness:   sendResBody.Data.Correctness,
-			Pronunciation: pronunciationResBody.Data,
-			TutorResponse: sendResBody.Data.TutorResponse,
-			IsOver:        sendResBody.Data.IsOver,
+			TutorResponse:      sendResBody.Data.TutorResponse,
+			TranslatedResponse: sendResBody.Data.TranslatedResponse,
+			Hint:               sendResBody.Data.Hint,
+			TranslatedHint:     sendResBody.Data.TranslatedHint,
+			IsOver:             sendResBody.Data.IsOver,
+			Correctness:        sendResBody.Data.Correctness,
+			Pronunciation:      pronunciationResBody.Data,
 		},
-		Message: sendResBody.Message,
+		Message:   sendResBody.Message,
+		Timestamp: sendResBody.Timestamp,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

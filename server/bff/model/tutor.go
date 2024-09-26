@@ -7,9 +7,12 @@ type TutorSendResponse struct {
 }
 
 type TutorSendResponseData struct {
-	TutorResponse string  `json:"tutorResponse"`
-	IsOver        bool    `json:"isOver"`
-	Correctness   float64 `json:"correctness"`
+	TutorResponse      string  `json:"tutorResponse"`
+	TranslatedResponse string  `json:"translatedResponse"`
+	Hint               string  `json:"hint"`
+	TranslatedHint     string  `json:"translatedHint"`
+	IsOver             bool    `json:"isOver"`
+	Correctness        float64 `json:"correctness"`
 }
 
 type TutorPronunciationResponse struct {
@@ -19,13 +22,17 @@ type TutorPronunciationResponse struct {
 }
 
 type TutorCombinedResponse struct {
-	Data    TutorCombinedResponseData `json:"data"`
-	Message string                    `json:"message"`
+	Data      TutorCombinedResponseData `json:"data"`
+	Message   string                    `json:"message"`
+	Timestamp string                    `json:"timestamp"`
 }
 
 type TutorCombinedResponseData struct {
-	Correctness   float64 `json:"correctness"`
-	Pronunciation float64 `json:"pronunciation"`
-	TutorResponse string  `json:"tutorResponse"`
-	IsOver        bool    `json:"isOver"`
+	Pronunciation      float64 `json:"pronunciation"`
+	TutorResponse      string  `json:"tutorResponse"`
+	TranslatedResponse string  `json:"translatedResponse"`
+	Hint               string  `json:"hint"`
+	TranslatedHint     string  `json:"translatedHint"`
+	IsOver             bool    `json:"isOver"`
+	Correctness        float64 `json:"correctness"`
 }

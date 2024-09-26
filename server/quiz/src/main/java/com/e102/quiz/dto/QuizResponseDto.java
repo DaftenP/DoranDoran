@@ -1,24 +1,26 @@
 package com.e102.quiz.dto;
 
-import com.e102.quiz.entity.QuizImage;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@NoArgsConstructor
 public class QuizResponseDto {
+
     private int id;
 
     private int quizType;
 
-    private String quizAnswer;
-
     private int quizCategory;
+
+    private String quizAnswer;
 
     private String quizQuestion;
 
-    private Set<QuizImage> quizImages;
+    private String quizVoiceUrl;
+
+    private List<String> quizImages;
 }

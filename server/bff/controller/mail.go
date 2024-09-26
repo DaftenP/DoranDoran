@@ -40,3 +40,14 @@ func CheckMailController(w http.ResponseWriter, r *http.Request) {
 
 	util.ForwardRequest(w, r, "GET", service.UserUrl+"/api/v1/mail/check?email="+email+"&userNumber="+userNumber)
 }
+
+// PUT /api/v1/bff/mail/reset?email={email}
+func ResetMailController(w http.ResponseWriter, r *http.Request) {
+	email := r.URL.Query().Get("email")
+	if email == "" {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	util.ForwardRequest(w, r, "PUT", service.UserUrl+"/api/v1/mail/reset?email="+email)
+}

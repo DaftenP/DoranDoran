@@ -15,6 +15,7 @@ func main() {
 	http.HandleFunc("/api/v1/bff/mail/regist", controller.RegistMailController)
 	http.HandleFunc("/api/v1/bff/mail/password", controller.PasswordMailController)
 	http.HandleFunc("/api/v1/bff/mail/check", controller.CheckMailController)
+	http.HandleFunc("/api/v1/bff/mail/reset", controller.ResetMailController)
 
 	http.HandleFunc("/api/v1/bff/my-page/user", controller.DeleteUserController)
 

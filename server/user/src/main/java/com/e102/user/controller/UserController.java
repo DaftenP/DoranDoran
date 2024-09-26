@@ -50,27 +50,21 @@ public class UserController {
         return ResponseDto.response(StatusCode.SUCCESS,myPageResponseDTO);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDto> delete(@RequestParam("userId") int userId){
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<ResponseDto> delete(@PathVariable("userId") int userId){
         //System.out.println("DELETE USER");
         StatusCode statusCode = userService.deleteUser(userId);
         //유저 삭제하고
         return ResponseDto.response(statusCode);
     }
 
-    @PostMapping("/init")
-    public void init(){
-        //System.out.println("INIT");
-        userService.init();
-    }
-
-    @PostMapping("/log")
+    @PostMapping("/creditLog")
     public ResponseEntity<ResponseDto> insertLog(@RequestBody CreditLogRequestDTO creditLogRequestDTO){
         StatusCode statusCode = userService.insertLog(creditLogRequestDTO);
         return ResponseDto.response(statusCode);
     }
 
-    @GetMapping("/log/{userId}")
+    @GetMapping("/creditLog/{userId}")
     public ResponseEntity<ResponseDto> getAllLog(@PathVariable("userId") int userId){
         List<CreditLogResponseDTO> lst = userService.getAllLog(userId);
         return ResponseDto.response(StatusCode.SUCCESS,lst);

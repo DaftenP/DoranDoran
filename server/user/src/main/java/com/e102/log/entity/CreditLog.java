@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
+
 @Table(name= "credit_log")
 public class CreditLog {
 

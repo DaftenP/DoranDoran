@@ -2,6 +2,7 @@ package com.e102.user.entity;
 
 import com.e102.log.entity.CreditLog;
 import com.e102.log.entity.ItemLog;
+import com.e102.log.entity.PlayLog;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -72,6 +73,10 @@ public class User {
 
     @OneToMany(mappedBy = "iuser", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ItemLog> itemLogList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "puser", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<PlayLog> playLogList = new ArrayList<>();
+
 
     public User(String nickname,String email,String password){
         this.nickname = nickname;

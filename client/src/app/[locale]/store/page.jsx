@@ -6,12 +6,12 @@ import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import Signs from "@/public/icon2/signs.webp";
 import Itemlist from "./_components/itemlist";
-import Shop_Character from "@/public/icon2/shop-character.webp";
-import Shop_Color from "@/public/icon2/shop-color.webp";
-import Shop_Equipment from "@/public/icon2/shop-equipment.webp";
-import Shop_Background from "@/public/icon2/shop-background.webp";
-import Shop_Item from "@/public/icon2/shop-item.webp";
-import Shop_Gambling from "@/public/icon2/shop-gambling.webp";
+import ShopCharacter from "@/public/icon2/shop-character.webp";
+import ShopColor from "@/public/icon2/shop-color.webp";
+import ShopEquipment from "@/public/icon2/shop-equipment.webp";
+import ShopBackground from "@/public/icon2/shop-background.webp";
+import ShopItem from "@/public/icon2/shop-item.webp";
+import ShopGambling from "@/public/icon2/shop-gambling.webp";
 
 
 export default function Store() {
@@ -41,16 +41,13 @@ export default function Store() {
 
 function Storelist() {
   const items = [
-    { itemName: 'Character', itemIcon: Shop_Character, itemCost: '8000' },
-    { itemName: 'Color', itemIcon: Shop_Color, itemCost: '8000' },
-    { itemName: 'Equipment', itemIcon: Shop_Equipment, itemCost: '8000' },
-    { itemName: 'Background', itemIcon: Shop_Background, itemCost: '8000' },
-    { itemName: 'Item', itemIcon: Shop_Item, itemCost: '8000' },
-    { itemName: 'Gambling', itemIcon: Shop_Gambling, itemCost: '8000' },
+    { itemName: 'Character', itemIcon: ShopCharacter, itemCost: '8000' },
+    { itemName: 'Color', itemIcon: ShopColor, itemCost: '8000' },
+    { itemName: 'Equipment', itemIcon: ShopEquipment, itemCost: '8000' },
+    { itemName: 'Background', itemIcon: ShopBackground, itemCost: '8000' },
+    { itemName: 'Item', itemIcon: ShopItem, itemCost: '8000' },
+    { itemName: 'Gambling', itemIcon: ShopGambling, itemCost: '8000' },
     ];
-
-    const locale = useLocale();
-    // 현재 로케일에 맞는 메시지 파일을 동적으로 로드
 
     return (
       <div className="w-[100vw] h-[100vh] relative">

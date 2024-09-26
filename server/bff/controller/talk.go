@@ -37,14 +37,6 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// get voice. content-type: audio/wav, key: voice, value: audio file
-	voice, _, err := r.FormFile("voice")
-	if err != nil {
-		http.Error(w, "Invalid request", http.StatusBadRequest)
-		return
-	}
-	defer voice.Close()
-
 	sendRes, err := service.SendService(messagesJson, userMessageJson, role, situation, locale)
 	if err != nil || sendRes.StatusCode != http.StatusOK {
 		http.Error(w, "Error calling SendService", http.StatusInternalServerError)
@@ -52,12 +44,28 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	}
 	defer sendRes.Body.Close()
 
-	pronunciationRes, err := service.PronunciationService(voice)
-	if err != nil || pronunciationRes.StatusCode != http.StatusOK {
-		http.Error(w, "Error calling PronunciationService", http.StatusInternalServerError)
-		return
+	// get voice. content-type: audio/wav, key: voice, value: audio file
+	voice, _, err := r.FormFile("voice")
+
+	var pronunciationResBody model.TutorPronunciationResponse
+	if err == nil {
+		pronunciationRes, err := service.PronunciationService(voice)
+		if err != nil || pronunciationRes.StatusCode != http.StatusOK {
+			http.Error(w, "Error calling PronunciationService", http.StatusInternalServerError)
+			return
+		}
+		defer pronunciationRes.Body.Close()
+
+		// get pronunciation from pronunciationRes's body
+		if err := json.NewDecoder(pronunciationRes.Body).Decode(&pronunciationResBody); err != nil {
+			http.Error(w, "Error parsing PronunciationService response", http.StatusInternalServerError)
+			return
+		}
+
+		fmt.Println(pronunciationResBody)
+	} else {
+		pronunciationResBody.Data = 0
 	}
-	defer pronunciationRes.Body.Close()
 
 	var sendResBody model.TutorSendResponse
 	if err := json.NewDecoder(sendRes.Body).Decode(&sendResBody); err != nil {
@@ -66,15 +74,6 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println(sendResBody)
-
-	// get pronunciation from pronunciationRes's body
-	var pronunciationResBody model.TutorPronunciationResponse
-	if err := json.NewDecoder(pronunciationRes.Body).Decode(&pronunciationResBody); err != nil {
-		http.Error(w, "Error parsing PronunciationService response", http.StatusInternalServerError)
-		return
-	}
-
-	fmt.Println(pronunciationResBody)
 
 	// make response
 	response := model.TutorCombinedResponse{

@@ -28,3 +28,15 @@ func PasswordMailController(w http.ResponseWriter, r *http.Request) {
 
 	util.ForwardRequest(w, r, "POST", service.UserUrl+"/api/v1/mail/password?email="+email)
 }
+
+// GET /api/v1/bff/mail/check?email={email}&userNumber={userNumber}
+func CheckMailController(w http.ResponseWriter, r *http.Request) {
+	email := r.URL.Query().Get("email")
+	userNumber := r.URL.Query().Get("userNumber")
+	if email == "" || userNumber == "" {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	util.ForwardRequest(w, r, "GET", service.UserUrl+"/api/v1/mail/check?email="+email+"&userNumber="+userNumber)
+}

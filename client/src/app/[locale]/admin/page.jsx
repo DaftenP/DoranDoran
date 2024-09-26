@@ -28,6 +28,8 @@ export default function Admin() {
   const [imagePrompt, setImagePrompt] = useState("");
   const [isImageLoading, setIsImageLoading] = useState(false);
 
+  const [selectedFileList, setSelectedFileList] = useState([]);
+
   useEffect(() => {
     if (imageLink) {
       const img = new Image();
@@ -42,6 +44,11 @@ export default function Admin() {
       setIsImageLoading(false);
     }
   }, [imageLink]);
+
+  // 페이지 로딩 시 자동으로 시드 생성
+  useEffect(() => {
+    setImageSeed(Math.floor(Math.random() * 100000000));
+  }, []);
 
   // Handlers for card hover and click effects
   const handleMouseEnter = (setBoxShadow) => {
@@ -79,6 +86,12 @@ export default function Admin() {
 
   const shuffleSeed = () => {
     setImageSeed(Math.floor(Math.random() * 100000000));
+  };
+
+  const fetchImageAsBlob = async (url) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return blob;
   };
 
   return (
@@ -200,6 +213,111 @@ export default function Admin() {
             <div style={{ fontSize: "3.3vh", fontWeight: "bold", marginBottom: "3%" }}>
               Selected Contents
             </div>
+            {/* show selected file list contents, if image, show image preview. if audio, show player */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "start",
+                alignItems: "center",
+                marginBottom: "3%",
+                width: "100%",
+                height: "85vh",
+                overflowY: "auto",
+                scrollbarWidth: "none",
+              }}>
+              {selectedFileList.map((file, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: "1vw",
+                    }}>
+                    {/* up and down button for reorder */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}>
+                      <button
+                        onClick={
+                          index === 0
+                            ? () => {}
+                            : () => {
+                                const temp = selectedFileList[index];
+                                selectedFileList[index] = selectedFileList[index - 1];
+                                selectedFileList[index - 1] = temp;
+                                setSelectedFileList([...selectedFileList]);
+                              }
+                        }
+                        style={{
+                          height: "8vh",
+                          fontSize: "4vh",
+                          fontWeight: "bold",
+                          borderRadius: "30px",
+                          color: "#9e8ed3",
+                          marginRight: "1vw",
+                        }}>
+                        ⬆
+                      </button>
+                      <button
+                        onClick={
+                          index === selectedFileList.length - 1
+                            ? () => {}
+                            : () => {
+                                const temp = selectedFileList[index];
+                                selectedFileList[index] = selectedFileList[index + 1];
+                                selectedFileList[index + 1] = temp;
+
+                                setSelectedFileList([...selectedFileList]);
+                              }
+                        }
+                        style={{
+                          height: "8vh",
+                          fontSize: "4vh",
+                          fontWeight: "bold",
+                          borderRadius: "30px",
+                          color: "#9e8ed3",
+                          marginRight: "1vw",
+                        }}>
+                        ⬇
+                      </button>
+                    </div>
+                    {/* show file. if it's audio, show player. if image, preview image. both are blob */}
+                    {file.type === "audio" ? (
+                      <audio controls style={{ width: "60%" }}>
+                        <source src={file.content} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                      </audio>
+                    ) : (
+                      <img src={file.content} style={{ width: "60%" }} />
+                    )}
+                    {/* show removal button */}
+                    <button
+                      onClick={() => {
+                        setSelectedFileList(selectedFileList.filter((_, i) => i !== index));
+                      }}
+                      style={{
+                        width: "8vh",
+                        height: "8vh",
+                        fontSize: "4vh",
+                        fontWeight: "bold",
+                        borderRadius: "30px",
+                        color: "#9e8ed3",
+                        marginLeft: "1vw",
+                      }}>
+                      ❌
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
         <div
@@ -215,7 +333,6 @@ export default function Admin() {
               fontSize: "4vh",
               padding: "3%",
               width: "94%",
-              height: "85vh",
               borderRadius: "30px",
               background: "#eceef9",
               boxShadow: boxShadow3,
@@ -402,7 +519,13 @@ export default function Admin() {
                       alignItems: "center",
                     }}>
                     <button
-                      onClick={generateImage}
+                      onClick={() => {
+                        if (!imagePrompt) {
+                          alert("Please enter a prompt first!");
+                          return;
+                        }
+                        generateImage();
+                      }}
                       style={{
                         width: "12vw",
                         fontSize: "4vh",
@@ -434,6 +557,7 @@ export default function Admin() {
                         onClick={() => {
                           shuffleSeed();
                         }}
+                        className="shuffle-seed"
                         style={{
                           width: "8vh",
                           height: "8vh",
@@ -454,7 +578,7 @@ export default function Admin() {
                     width: "30vw",
                     height: "30vw",
                     background: "#9e8ed3",
-                    boxShadow: imageLink ? "none" : innerDefaultBoxShadow,
+                    boxShadow: imageLink && !isImageLoading ? "none" : innerDefaultBoxShadow,
                     textAlign: "center",
                     alignContent: "center",
                     color: "white",
@@ -467,6 +591,36 @@ export default function Admin() {
                   {!imageLink ? "Image Preview" : isImageLoading ? "Loading..." : ""}
                 </div>
               </div>
+            </div>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <button
+                onClick={() => {
+                  // put image file into selectedFileList as an blob object
+                  fetchImageAsBlob(imageLink).then((blob) => {
+                    setSelectedFileList([
+                      ...selectedFileList,
+                      { type: "image", content: URL.createObjectURL(blob) },
+                    ]);
+                  });
+                }}
+                style={{
+                  width: "12vw",
+                  fontSize: "4vh",
+                  fontWeight: "bold",
+                  padding: "1vh 0",
+                  borderRadius: "30px",
+                  background: "#9e8ed3",
+                  color: "white",
+                  display: imageLink && !isImageLoading ? "block" : "none",
+                }}>
+                Add Image
+              </button>
             </div>
           </div>
         </div>

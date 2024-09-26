@@ -3,12 +3,13 @@ package com.e102.quiz.dto;
 import lombok.*;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class PlayLogRequestDTO {
+public class QuizImageRequestDto {
 
-    private int userId;
+    private String quizImageUrl;
 
-    private int quizId;
+    private String quizImageText;
 }

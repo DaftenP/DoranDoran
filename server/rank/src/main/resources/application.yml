@@ -14,3 +14,11 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
     show-sql: true
+  data:
+    redis:
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 10
+          max-wait: 2
+      url: ENC(PpYupva6u0bHkxayZxwBfsuNxK6/OzveFS0Z+KnXUVA=)

@@ -77,7 +77,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/healthz").permitAll()
                         .requestMatchers("api/v1/user/**").permitAll()
-                        .requestMatchers("/api/v1/email/**").permitAll() // 변경된 부분
+                        .requestMatchers("/api/v1/mail/**").permitAll() // 변경된 부분
                         .anyRequest().authenticated());
         //JWTFilter 등록
         http

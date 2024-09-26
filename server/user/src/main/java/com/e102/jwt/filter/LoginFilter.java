@@ -51,6 +51,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            System.out.println("NOT POST");
+            throw new RuntimeException("Authentication method not supported: " + request.getMethod());
+        }
+
         // Convert JSON body to UserLoginDTO
         ObjectMapper objectMapper = new ObjectMapper();
         UserLoginDTO userLoginDTO = null;

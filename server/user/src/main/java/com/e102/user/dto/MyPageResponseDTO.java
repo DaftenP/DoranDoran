@@ -15,5 +15,4 @@ public class MyPageResponseDTO {
     int avatar;
     int voice;
     int gem;
-    int rank;
 }

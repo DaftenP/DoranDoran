@@ -48,10 +48,12 @@ function TranslatedCharacter({ locale }) {
   return (
     <div className='flex items-center justify-center mt-[3vh]'>
       <div className='relative'>
-        <div className='transform translate-x-[18vw] rounded-full w-[35vw] h-[9vh] bg-[#FFFFFF]/80 flex justify-center items-center text-md md:text-3xl lg:text-5xl'>
+        <div className='transform translate-x-[18vw] rounded-full w-[35vw] h-[9vh] bg-[#FFFFFF]/80 flex-col flex justify-center items-center text-md md:text-3xl lg:text-5xl'>
           {t("today's-topic")}
           <br />
-          {t("today's-topic")}
+          <div>
+            Animal
+          </div>
         </div>
         <div className="transform translate-x-[32vw] w-0 h-0 border-l-[3vw] border-r-[3vw] border-t-[3vw] border-l-transparent border-r-transparent border-t-white/80"></div>
         <Link href={`/${locale}/room`}>

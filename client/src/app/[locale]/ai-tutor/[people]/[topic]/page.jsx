@@ -3,6 +3,7 @@
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchChatMessages, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage } from '@/store/ai-tutor';
 import Link from 'next/link';
 import Image from 'next/image';
 import Back from '@/public/icon/back.webp';
@@ -42,56 +43,34 @@ export default function Conversation({ params }) {
 function TranslatedTopicConversation({ params }) {
   const t = useTranslations('index');
   const dispatch = useDispatch()
-  const { chatMessages, loading, error } = useSelector((state) => state.aiTutor)
+  const { chatMessages, messages, loading, error } = useSelector((state) => state.aiTutor)
   const locale = params.locale;
   const role = params.people;
   const situation = params.topic;
 
-  // const handleToggleHint = (index) => {
-  //   setChatMessages((prevMessages) => {
-  //     const updatedMessages = prevMessages.map((msg, i) =>
-  //       i === index ? { ...msg, isHint: !msg.isHint } : msg
-  //     );
-  //     return updatedMessages;
-  //   });
-  // };
-
-  // // 각 응답 플레이 토글
-  // const handleToggleResponsePlay = (index) => {
-  //   setChatMessages((prevMessages) => {
-  //     const updatedMessages = prevMessages.map((msg, i) => {
-  //       return {
-  //         ...msg,
-  //         isResponsePlay: i === index ? !msg.isResponsePlay : false,
-  //         isHintPlay: false
-  //       }
-  //     })
-  //     return updatedMessages;
-  //   })
-  // }
-  
-  // // 각 힌트 플레이 토글
-  // const handleToggleHintPlay = (index) => {
-  //   setChatMessages((prevMessages) => {
-  //     const updateMessages = prevMessages.map((msg, i) => {
-  //       return {
-  //         ...msg,
-  //         isResponsePlay: false,
-  //         isHintPlay: i === index ? !msg.isHintPlay : false,
-  //       }
-  //     })
-  //     return updateMessages
-  //   })
-  // }
-
   useEffect(() => {
-    console.log("Updated chatMessages:", chatMessages);
-  }, [chatMessages]);
+    const formData = new FormData()
+    formData.append('messages', JSON.stringify([]));
+    formData.append('userMessage', JSON.stringify({}));
+    dispatch(fetchChatMessages({ role, situation, locale, formData }))
+      .unwrap()
+      .then((response) => {
+        console.log('진입 시 dispatch')
+        dispatch(addResponseMessage(response.data))
+        dispatch(addSimpleResponseMessage(response.data))
+        dispatch(addMyMessage({'content': ''}))
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [])
 
   return (
     <div>
       <div className='flex justify-between mt-[1vh]'>
-        <Image src={Back} alt="back" className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2" />
+        <Link href={`/${locale}/main`} >
+          <Image src={Back} alt="back" className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2" />
+        </Link>
         <Image src={Manual} alt='manual_icon' className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer mr-2" />
       </div>
       <div className='flex-col flex justify-center items-center'>
@@ -102,17 +81,17 @@ function TranslatedTopicConversation({ params }) {
       </div>
       <div className='max-h-[87vh] overflow-y-scroll hide-scrollbar'>
         {chatMessages.map((msg, index) => {
-          if (msg.sender === 'ai') {
+          if (msg.role === 'assistant') {
             return (
               <div key={index}>
                 <ChatAi index={index} message={msg} />
                 {msg.isHint === true && <ChatHint index={index} message={msg} />}
               </div>
             )
-          } else if (msg.sender === 'me') {
+          } else if (msg.role === 'user') {
             return (
               <div key={index}>
-                <ChatMe inedx={index} message={msg} />
+                <ChatMe inedx={index} message={msg} params={params} />
               </div>
             )
           }

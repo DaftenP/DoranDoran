@@ -4,7 +4,9 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  reactStrictMode: false,
+};
 
 const withPWAInitConfig = withPWAInit({
   dest: 'public', // PWA 관련 파일들이 생성될 디렉토리를 지정

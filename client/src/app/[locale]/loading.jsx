@@ -12,6 +12,7 @@ import 'react-circular-progressbar/dist/styles.css';
 
 export default function Loading() {
   const [messages, setMessages] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const locale = useLocale();
 
   useEffect(() => {
@@ -76,7 +77,7 @@ function TranslatedLoading() {
       setBird1Position((prev) => (prev >= 130 ? -90 : prev + 1)); // 끝까지 가면 다시 시작
       setBird2Position((prev) => (prev >= 130 ? -90 : prev + 1));
       setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 1));
-    }, 30); // 50ms마다 1씩 업데이트
+    }, 30); // 30ms마다 1씩 업데이트
 
     return () => clearInterval(interval); // 컴포넌트 unmount 시 interval 제거
   }, []);

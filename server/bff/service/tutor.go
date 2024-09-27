@@ -13,17 +13,14 @@ var (
 )
 
 // POST TutorUrl/api/v1/ai-tutor/send
-func SendService(messages, userMessage json.RawMessage, role, situation, locale string) (*http.Response, error) {
+func SendService(msg, userID, role, situation, locale string) (*http.Response, error) {
 	req, err := http.NewRequest(http.MethodPost, TutorUrl+"/api/v1/tutor/send"+"?role="+role+"&situation="+situation+"&locale="+locale, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	// make json with messages and userMessage
-	jsonStr, err := json.Marshal(map[string]json.RawMessage{
-		"messages":    messages,
-		"userMessage": userMessage,
-	})
+	// make json with msg and userID
+	jsonStr, err := json.Marshal(map[string]string{"messages": msg, "userID": userID})
 	if err != nil {
 		return nil, err
 	}

@@ -38,6 +38,12 @@ spec:
           value: "jenkins_will_set_this_jwt_secret"
         - name: BUNNY_SECRET_KEY
           value: "jenkins_will_set_this_bunny_secret"
+        - name: FTP_USERNAME
+          value: "jenkins_will_set_this_ftp_username"
+        - name: FTP_PASSWORD
+          value: "jenkins_will_set_this_ftp_password"
+        - name: FTP_HOST
+          value: "jenkins_will_set_this_ftp_host"
         resources:
           requests:
             memory: "64Mi"

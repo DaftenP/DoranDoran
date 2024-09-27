@@ -12,7 +12,7 @@ func ForwardRequest(w http.ResponseWriter, r *http.Request, method, targetURL st
 		return
 	}
 
-	copyHeaders(r.Header, req.Header)
+	CopyHeader(r.Header, req.Header)
 
 	client := &http.Client{}
 
@@ -23,17 +23,21 @@ func ForwardRequest(w http.ResponseWriter, r *http.Request, method, targetURL st
 	}
 	defer resp.Body.Close()
 
-	copyHeaders(resp.Header, w.Header())
+	CopyHeader(resp.Header, w.Header())
 
 	w.WriteHeader(resp.StatusCode)
 
 	io.Copy(w, resp.Body)
 }
 
-func copyHeaders(src, dst http.Header) {
+func CopyHeader(src, dst http.Header) {
 	for k, vv := range src {
 		for _, v := range vv {
 			dst.Add(k, v)
 		}
 	}
+}
+
+func CopyBody(dst io.Writer, src io.Reader) {
+	io.Copy(dst, src)
 }

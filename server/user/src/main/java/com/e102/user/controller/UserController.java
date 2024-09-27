@@ -4,9 +4,7 @@ import com.e102.common.ResponseDto;
 import com.e102.common.exception.StatusCode;
 import com.e102.log.dto.CreditLogRequestDTO;
 import com.e102.log.dto.CreditLogResponseDTO;
-import com.e102.user.dto.MyPageResponseDTO;
-import com.e102.user.dto.UserLoginDTO;
-import com.e102.user.dto.UserRequestDTO;
+import com.e102.user.dto.*;
 import com.e102.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,10 +42,29 @@ public class UserController {
         StatusCode statusCode = userService.duplicateUser(email);
         return ResponseDto.response(statusCode);
     }
+
     @GetMapping("/my-page/user/{userId}")
     public ResponseEntity<ResponseDto> viewUser(@PathVariable("userId") int userId){
         MyPageResponseDTO myPageResponseDTO = userService.findMyPageById(userId);
         return ResponseDto.response(StatusCode.SUCCESS,myPageResponseDTO);
+    }
+
+    @PatchMapping("/my-page/password")
+    public ResponseEntity<ResponseDto> modUserPassword(@RequestBody PasswordModifyDTO passwordModifyDTO) {
+        StatusCode statusCode = userService.modifyPassWord(passwordModifyDTO);
+        return ResponseDto.response(statusCode);
+    }
+
+    @PatchMapping("/my-page/nickname")
+    public ResponseEntity<ResponseDto> modUserNickname(@RequestBody NicknameModifyDTO nicknameModifyDTO) {
+        StatusCode statusCode = userService.modifyNickname(nicknameModifyDTO);
+        return ResponseDto.response(statusCode);
+    }
+
+    @PatchMapping("/my-page/birthday")
+    public ResponseEntity<ResponseDto> modUserBirthday(@RequestBody BirthdayModifyDTO birthdayModifyDTO) {
+        StatusCode statusCode = userService.modifyBirthDay(birthdayModifyDTO);
+        return ResponseDto.response(statusCode);
     }
 
     @DeleteMapping("/delete/{userId}")
@@ -69,5 +86,6 @@ public class UserController {
         List<CreditLogResponseDTO> lst = userService.getAllLog(userId);
         return ResponseDto.response(StatusCode.SUCCESS,lst);
     }
+
 
 }

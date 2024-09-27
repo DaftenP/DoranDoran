@@ -1,7 +1,7 @@
 package com.e102.jwt.filter;
 
 import com.e102.common.ResponseDto;
-import com.e102.common.exception.*;
+import com.e102.common.exception.StatusCode;
 import com.e102.jwt.dto.JWTUtil;
 import com.e102.jwt.entity.RefreshToken;
 import com.e102.user.dto.UserLoginDTO;
@@ -9,7 +9,6 @@ import com.e102.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +23,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
+
 
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -89,21 +91,25 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             throw e; // rethrow to be handled by unsuccessfulAuthentication
         }
     }
-    
-    private Cookie createCookie(int userId, String refreshToken) {
-        String value = userId +":"+refreshToken;
-        Cookie cookie = new Cookie("refresh", value);
-        cookie.setMaxAge(24*60*60);
-        //24시간 활성화
 
-        //cookie.setSecure(true); 
-        //HTTPS 쓸 경우 활성화
-        cookie.setPath("/");
-        // 쿠키가 적용될 범위 설정
-        cookie.setHttpOnly(true);
-        //JS단에서 접근 못하게 막는다
-        return cookie;
+    private void createCookie(HttpServletResponse response, int userId, String refreshToken) {
+        String value = userId + ":" + refreshToken;
+        String cookieName = "refresh";
+        int maxAge = 24 * 60 * 60; // 24시간
+
+        // 쿠키 값 인코딩 (필요한 경우)
+        String encodedValue = URLEncoder.encode(value, StandardCharsets.UTF_8);
+
+        // 쿠키 문자열 생성
+        String cookieString = String.format(
+                "%s=%s; Max-Age=%d; Path=/; Domain=.ssafy.picel.net; HttpOnly; SameSite=None; Secure",
+                cookieName, encodedValue, maxAge
+        );
+
+        // 응답 헤더에 쿠키 추가
+        response.setHeader("Set-Cookie", cookieString);
     }
+
 
     //현재 RefreshEntity 추가하는 함수
     private void addRefreshEntity(int userId, String refresh, Long expiredMs) {
@@ -147,7 +153,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         //응답 설정
         response.setHeader("access", access);
         //헤더에 엑세스 토큰 넣어줌
-        response.addCookie(createCookie(userId, refresh));
+        createCookie(response, userId, refresh);
         //쿠키에 리프레시 토큰 넣어줌
 
         // 응답에 JSON 형식으로 메시지를 반환하기 위해 ObjectMapper 사용

@@ -4,6 +4,8 @@ import com.e102.common.ResponseDto;
 import com.e102.common.exception.StatusCode;
 import com.e102.log.dto.CreditLogRequestDTO;
 import com.e102.log.dto.CreditLogResponseDTO;
+import com.e102.log.dto.PlayLogRequestDTO;
+import com.e102.log.dto.PlayLogResponseDTO;
 import com.e102.user.dto.*;
 import com.e102.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,16 +78,29 @@ public class UserController {
     }
 
     @PostMapping("/creditLog")
-    public ResponseEntity<ResponseDto> insertLog(@RequestBody CreditLogRequestDTO creditLogRequestDTO){
-        StatusCode statusCode = userService.insertLog(creditLogRequestDTO);
+    public ResponseEntity<ResponseDto> insertCLog(@RequestBody CreditLogRequestDTO creditLogRequestDTO) {
+        StatusCode statusCode = userService.insertCreditLog(creditLogRequestDTO);
         return ResponseDto.response(statusCode);
     }
 
     @GetMapping("/creditLog/{userId}")
-    public ResponseEntity<ResponseDto> getAllLog(@PathVariable("userId") int userId){
-        List<CreditLogResponseDTO> lst = userService.getAllLog(userId);
+    public ResponseEntity<ResponseDto> getAllCLog(@PathVariable("userId") int userId) {
+        List<CreditLogResponseDTO> lst = userService.getAllCreditLog(userId);
         return ResponseDto.response(StatusCode.SUCCESS,lst);
     }
+
+    @PostMapping("/playLog")
+    public ResponseEntity<ResponseDto> insertPLog(@RequestBody PlayLogRequestDTO playLogRequestDTO) {
+        StatusCode statusCode = userService.insertPlayLog(playLogRequestDTO);
+        return ResponseDto.response(statusCode);
+    }
+
+    @GetMapping("/playLog/{userId}")
+    public ResponseEntity<ResponseDto> getAllPLog(@PathVariable("userId") int userId) {
+        List<PlayLogResponseDTO> lst = userService.getAllPlayLog(userId);
+        return ResponseDto.response(StatusCode.SUCCESS, lst);
+    }
+
 
 
 }

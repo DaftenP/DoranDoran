@@ -1,14 +1,16 @@
-package com.e102.quiz.dto;
+package com.e102.log.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
-@Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class PlayLogRequestDTO {
 
     private int userId;
 
     private int quizId;
+
 }

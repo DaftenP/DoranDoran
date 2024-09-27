@@ -4,9 +4,7 @@ import com.e102.common.exception.StatusCode;
 import com.e102.log.dto.CreditLogRequestDTO;
 import com.e102.log.dto.CreditLogResponseDTO;
 import com.e102.log.entity.CreditLog;
-import com.e102.user.dto.MyPageResponseDTO;
-import com.e102.user.dto.UserLoginDTO;
-import com.e102.user.dto.UserRequestDTO;
+import com.e102.user.dto.*;
 import com.e102.user.entity.User;
 import com.e102.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -90,7 +88,7 @@ public class UserService {
 
         String encryptedPassword = bCryptPasswordEncoder.encode(rawPassword);
 
-        sUser.setPassword(encryptedPassword);
+        sUser.modPassword(encryptedPassword);
         //System.out.println("SID : " + sUser.getId());
         //System.out.println("RAW - PASSWORD : " + rawPassword);
 
@@ -159,9 +157,55 @@ public class UserService {
         return lst;
     }
 
+    public StatusCode modifyNickname(NicknameModifyDTO nicknameModifyDTO) {
+        User sUser = userRepository.findById(nicknameModifyDTO.getUserId());
+
+        if (sUser != null) {
+            sUser.modNickname(nicknameModifyDTO.getNickname());
+
+            return StatusCode.SUCCESS;
+        } else {
+            return StatusCode.BAD_REQUEST;
+        }
+
+    }
+
+    public StatusCode modifyPassWord(PasswordModifyDTO passwordModifyDTO) {
+        User sUser = userRepository.findById(passwordModifyDTO.getUserId());
+
+        if (sUser != null) {
+            boolean correct = bCryptPasswordEncoder.matches(passwordModifyDTO.getPrevPassword(), sUser.getPassword());
+            if (correct) {
+                sUser.modPassword(bCryptPasswordEncoder.encode(passwordModifyDTO.getModPassword()));
+                return StatusCode.SUCCESS;
+            } else {
+                return StatusCode.WRONG_PW;
+            }
+        } else {
+            return StatusCode.BAD_REQUEST;
+        }
+
+    }
+
+    public StatusCode modifyBirthDay(BirthdayModifyDTO birthdayModifyDTO) {
+        User sUser = userRepository.findById(birthdayModifyDTO.getUserId());
+
+        if (sUser != null) {
+            sUser.modBirthDay(birthdayModifyDTO.getBirthday());
+            return StatusCode.SUCCESS;
+        } else {
+            return StatusCode.BAD_REQUEST;
+        }
+
+    }
+
+    @Transactional
     public StatusCode insertLog(CreditLogRequestDTO creditLogRequestDTO){
         User sUser = userRepository.findById(creditLogRequestDTO.getUserId());
         if(sUser != null){
+            if (sUser.getGem() + creditLogRequestDTO.getChanges() < 0) {
+                throw new RuntimeException("not enough GEM");
+            }
 
             CreditLog creditLog = CreditLog.builder()
                     .cuser(sUser)
@@ -170,9 +214,9 @@ public class UserService {
                     .build();
 
 
+            userRepository.updateGemById(creditLogRequestDTO.getUserId(), creditLogRequestDTO.getChanges());
             sUser.getCreditLogList().add(creditLog);
             //넣고
-
             userRepository.save(sUser);
             //DB에 반영
 
@@ -203,5 +247,6 @@ public class UserService {
             return StatusCode.NO_EMAIL;
         }
     }
+
 
 }

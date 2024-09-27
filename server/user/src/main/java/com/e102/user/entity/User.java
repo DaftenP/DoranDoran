@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,6 +70,9 @@ public class User {
     @Column(name = "user_stage" )
     private int stage = 1;
 
+    @Column(name = "user_birthday", columnDefinition = "DATE", nullable = false)
+    private LocalDate birthDay = LocalDate.of(2000, 1, 1);
+
     @OneToMany(mappedBy = "cuser", cascade = CascadeType.ALL, orphanRemoval = true)
     List<CreditLog> creditLogList = new ArrayList<>();
 
@@ -77,15 +82,22 @@ public class User {
     @OneToMany(mappedBy = "puser", cascade = CascadeType.ALL, orphanRemoval = true)
     List<PlayLog> playLogList = new ArrayList<>();
 
-
     public User(String nickname,String email,String password){
         this.nickname = nickname;
         this.email = email;
         this.password = password;
     }
 
-    public void setPassword(String password) {
+    public void modPassword(String password) {
         this.password = password;
+    }
+
+    public void modNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void modBirthDay(LocalDate birthDay) {
+        this.birthDay = birthDay;
     }
 
     @Override

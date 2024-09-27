@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+	"mime/multipart"
 	"net/http"
 	"strings"
 
@@ -56,4 +58,51 @@ func GetPlayLog(w http.ResponseWriter, r *http.Request) {
 	}
 
 	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/play-log/"+userId)
+}
+
+// POST /api/v1/bff/quiz/quizzes/regist
+func RegistQuizController(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("RegistQuizController")
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// get request body from form field
+	quizInfo := r.FormValue("quizInfo") // json
+	if quizInfo == "" {
+		http.Error(w, "quizInfo is required", http.StatusBadRequest)
+		return
+	}
+
+	// get voice and images from multipart/form-data
+	voice, header, err := r.FormFile("voice")
+	if err != nil {
+		http.Error(w, "voice is required", http.StatusBadRequest)
+		return
+	}
+
+	imageList := []multipart.File{}
+	imageHeaderList := []*multipart.FileHeader{}
+	for i := 1; i < 5; i++ {
+		image, header, err := r.FormFile("image" + fmt.Sprint(i))
+		if err != nil {
+			break
+		}
+		imageList = append(imageList, image)
+		imageHeaderList = append(imageHeaderList, header)
+	}
+
+	res, err := service.RegistQuizService(quizInfo, voice, header, imageList, imageHeaderList)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// return response from MSA to client
+	w.WriteHeader(res.StatusCode)
+	util.CopyHeader(w.Header(), res.Header)
+	util.CopyBody(w, res.Body)
+
+	defer res.Body.Close()
 }

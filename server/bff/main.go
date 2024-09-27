@@ -23,6 +23,7 @@ func main() {
 
 	http.Handle("/api/v1/bff/talk/send", middleware.JWTMiddleware(http.HandlerFunc(controller.SendController)))
 
+	http.Handle("/api/v1/bff/quiz/quizzes/regist", middleware.JWTMiddleware(http.HandlerFunc(controller.RegistQuizController)))
 	http.Handle("/api/v1/bff/quiz/quizzes", middleware.JWTMiddleware(http.HandlerFunc(controller.GetQuizzes)))
 	http.Handle("/api/v1/bff/quiz/quizzes/", middleware.JWTMiddleware(http.HandlerFunc(controller.GetQuiz)))
 	http.Handle("/api/v1/bff/quiz/play-log/submit", middleware.JWTMiddleware(http.HandlerFunc(controller.SubmitPlayLog)))

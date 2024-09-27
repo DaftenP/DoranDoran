@@ -13,8 +13,8 @@ var (
 )
 
 // POST TutorUrl/api/v1/ai-tutor/send
-func SendService(messages, userMessage json.RawMessage, role, situation string) (*http.Response, error) {
-	req, err := http.NewRequest(http.MethodGet, TutorUrl+"/api/v1/tutor/send"+"?role="+role+"&situation="+situation, nil)
+func SendService(messages, userMessage json.RawMessage, role, situation, locale string) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodPost, TutorUrl+"/api/v1/tutor/send"+"?role="+role+"&situation="+situation+"&locale="+locale, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -1,66 +1,30 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
+
+	"com.doran.bff/service"
+	"com.doran.bff/util"
 )
 
-// PUT /api/v1/bff/my-page/user
-func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPut {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-}
-
-// GET /api/v1/bff/my-page/user/{userId}
-func GetUser(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	// get userId from path
-	userId := r.URL.Path[len("/api/v1/bff/my-page/user/"):]
-	if userId == "" {
-		http.Error(w, "userId is required", http.StatusBadRequest)
-		return
-	}
-
-}
-
 // DELETE /api/v1/bff/my-page/user
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodDelete {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+func DeleteUserController(w http.ResponseWriter, r *http.Request) {
+	// get token from cookie named 'refresh'
+	cookie, err := r.Cookie("refresh")
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		fmt.Println(err)
 		return
 	}
 
-}
+	parts := strings.Split(cookie.Value, ":")
+	userIdFromCookie := parts[0]
 
-// GET /api/v1/bff/my-page/password
-func RequestPasswordChange(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
+	// trim the leading space
+	userIdFromCookie = strings.TrimSpace(userIdFromCookie)
 
-}
-
-// POST /api/v1/bff/my-page/password
-func ChangePassword(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-}
-
-// GET /api/v1/bff/my-page/solve
-func GetSolved(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
+	// forward request to user service
+	util.ForwardRequest(w, r, http.MethodDelete, service.UserUrl+"/api/v1/user/delete/"+userIdFromCookie)
 }

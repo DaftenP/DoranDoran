@@ -1,17 +1,19 @@
 package com.e102.quiz.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class PlayLogResponseDTO {
+
     private LocalDateTime createdAt;
+
     private int gainXp;
+
     private int quizType;
 }

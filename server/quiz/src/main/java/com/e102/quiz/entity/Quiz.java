@@ -34,6 +34,9 @@ public class Quiz {
     @Column(name = "quiz_question")
     private String quizQuestion;
 
+    @Column(name = "quiz_voice_url")
+    private String quizVoiceUrl;
+
     @CreatedDate
     @Column(name = "quiz_created_at", columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime quizCreatedAt;
@@ -41,4 +44,7 @@ public class Quiz {
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<QuizImage> quizImages;
 
+    public void updateQuizImages(Set<QuizImage> quizImages) {
+        this.quizImages = quizImages;
+    }
 }

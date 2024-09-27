@@ -6,13 +6,28 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  
+  // Service Worker에 대한 헤더 설정 추가
+  async headers() {
+    return [
+      {
+        source: '/sw.js',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/javascript',
+          },
+        ],
+      },
+    ];
+  },
 };
 
-const withPWAInitConfig = withPWAInit({
-  dest: 'public', // PWA 관련 파일들이 생성될 디렉토리를 지정
-  disable: process.env.NODE_ENV === 'development', // 개발 환경에서 PWA 비활성화
-  register: true, // 서비스 워커 자동 등록
-  skipWaiting: true, // PWA 업데이트 즉시 적용
+const withPWA = withPWAInit({
+  dest: 'public',
+  // disable: process.env.NODE_ENV === 'development',
+  // register: true,
+  // skipWaiting: true,
 });
 
-export default withNextIntl(withPWAInitConfig(nextConfig));
+export default withNextIntl(withPWA(nextConfig));

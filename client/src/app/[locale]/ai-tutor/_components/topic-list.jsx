@@ -62,7 +62,7 @@ function TranslatedTopicList({ params }) {
       t('ask-for-an-estimated-taxi-fare'),
       t('make-small-talk-about-the-weather'),
       t('ask-about-popular-tourist-attractions-in-seoul'),
-      t('ask-if-youre-getting-close-to-your-destination')
+      t("ask-if-you're-getting-close-to-your-destination")
     ],
     '4': [
       t('receive-a-brief-explanation-about-your-room-during-check-in'),
@@ -114,7 +114,7 @@ function TranslatedTopicList({ params }) {
             {item}
             {selectedIndex === index && (
               <Link href={`${people}/${index}`}>
-                <button className="absolute right-5 top-1/2 -translate-y-1/2 text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1">
+                <button className="absolute right-5 top-1/2 -translate-y-1/2 text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1 cursor-pointer">
                   {t('next')}
                 </button>
               </Link>

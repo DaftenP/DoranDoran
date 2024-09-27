@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strings"
 
 	"com.doran.bff/service"
 	"com.doran.bff/util"
@@ -14,11 +15,9 @@ func GetQuiz(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	quizId := r.URL.Query().Get("quizId")
-	if quizId == "" {
-		http.Error(w, "quizId is required", http.StatusBadRequest)
-		return
-	}
+	// split the URL path '/'
+	quizIdList := strings.Split(r.URL.Path, "/")
+	quizId := quizIdList[len(quizIdList)-1]
 
 	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/quizzes/"+quizId)
 }

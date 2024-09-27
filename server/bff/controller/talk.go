@@ -12,6 +12,7 @@ import (
 // Post /api/v1/bff/talk/response
 func SendController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
+		fmt.Println("Current Method : " + r.Method)
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}

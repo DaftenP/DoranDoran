@@ -30,6 +30,10 @@ export default function Store() {
       }
       loadMessages();
     }, [locale]);
+
+    if (!messages) {
+      return <div>Loading...</div>; // 메시지가 로드될 때까지 로딩 표시
+    }
   
     return (
       <NextIntlClientProvider locale={locale} messages={messages}>
@@ -40,13 +44,15 @@ export default function Store() {
 
 
 function Storelist() {
+  const t = useTranslations('index');
+
   const items = [
-    { itemName: 'Character', itemIcon: ShopCharacter, itemCost: '8000' },
-    { itemName: 'Color', itemIcon: ShopColor, itemCost: '8000' },
-    { itemName: 'Equipment', itemIcon: ShopEquipment, itemCost: '8000' },
-    { itemName: 'Background', itemIcon: ShopBackground, itemCost: '8000' },
-    { itemName: 'Item', itemIcon: ShopItem, itemCost: '8000' },
-    { itemName: 'Gambling', itemIcon: ShopGambling, itemCost: '8000' },
+    { itemName: t('character'), itemIcon: ShopCharacter, itemCost: '8000' },
+    { itemName: t('color'), itemIcon: ShopColor, itemCost: '8000' },
+    { itemName: t('equipment'), itemIcon: ShopEquipment, itemCost: '8000' },
+    { itemName: t('background'), itemIcon: ShopBackground, itemCost: '8000' },
+    { itemName: t('item'), itemIcon: ShopItem, itemCost: '8000' },
+    { itemName: t('gambling'), itemIcon: ShopGambling, itemCost: '8000' },
     ];
 
     return (
@@ -58,7 +64,7 @@ function Storelist() {
             className="w-[30%] h-[10%] left-[35%] absolute"
           />
           <div className="w-[30%] h-[10%] top-[2%] left-[35%] absolute grid place-items-center">
-            <span className="text-base sm:text-2xl base:text-3xl lg:text-4xl xl:text-5xl text-white font-['Itim']">S T O R E</span>
+            <span className="text-base sm:text-2xl base:text-3xl lg:text-4xl xl:text-5xl text-white font-['Itim']">{t('store')}</span>
           </div>
 
           <article className="relative absolute top-[15%] grid grid-cols-2 gap-y-4 place-items-center text-sm sm:text-lg base:text-xl lg:text-2xl xl:text-3xl">

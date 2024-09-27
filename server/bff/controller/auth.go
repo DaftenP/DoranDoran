@@ -7,6 +7,11 @@ import (
 	"com.doran.bff/util"
 )
 
+// POST /api/v1/bff/reissue
+func Reissue(w http.ResponseWriter, r *http.Request) {
+	util.ForwardRequest(w, r, "POST", service.UserUrl+"/api/v1/user/reissue")
+}
+
 // POST /api/v1/bff/regist
 func Regist(w http.ResponseWriter, r *http.Request) {
 	util.ForwardRequest(w, r, "POST", service.UserUrl+"/api/v1/user/regist")

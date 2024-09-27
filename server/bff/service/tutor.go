@@ -20,7 +20,7 @@ func SendService(msg, userID, role, situation, locale string) (*http.Response, e
 	}
 
 	// make json with msg and userID
-	jsonStr, err := json.Marshal(map[string]string{"messages": msg, "userID": userID})
+	jsonStr, err := json.Marshal(map[string]string{"msg": msg, "userId": userID})
 	if err != nil {
 		return nil, err
 	}

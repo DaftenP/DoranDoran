@@ -4,6 +4,9 @@ spring:
   ai:
     openai:
       api-key: ENC(qQgeVSNiTRTy7EXkRoUowz+DU08I7fSzonxGSwDJ0sVgBft8nY1ffRbfDOHlyX6iHsghvcqO/uAa731eEN+ejPK6hKklmoMlL6HGzl7ef/dvSM4/FnLkcWXoDd7mWU8T8t3Nj+F/ebxtBOmx6tbmWAPAMszgzwNi29eZR77VEdx4XcmVoMSHAGREwfS0V8Ql)
+      chat:
+        options:
+          model: gpt-4o-mini-2024-07-18
   datasource:
     url: ENC(ND7ataPAw3IQRTlkDQ5m/rGseS+B8SXNqxugUiCkwUyfzkUxRxFpWA==)
     username: ENC(QwnUyIfu2THVsYXlzD2sow==)
@@ -17,6 +20,13 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
     show-sql: true
+  data:
+    redis:
+      lettuce:
+        pool:
+          max-active: 10
+          min-idle: 2
+          max-idle: 10
 etri:
   api:
     key: ENC(A6Zn4InhzjmnNBLUe+bM0+bYos6GMMM98ixjXoYPZJFwIcoGuKusU9MKhF+NjShp)

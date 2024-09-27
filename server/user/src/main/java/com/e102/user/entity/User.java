@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -57,6 +58,9 @@ public class User {
     @Column(name = "user_gem")
     private int gem = 0;
 
+    @Column(name = "user_quest")
+    private int questStatus = 0;
+
     @CreatedDate
     @Column(name = "user_created_at",columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime createdAt;
@@ -98,6 +102,40 @@ public class User {
 
     public void modBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
+    }
+
+    public boolean isMissionCleared() {
+        LocalDate date = LocalDate.now();   // 현재 날짜 가져오기
+        DayOfWeek dayOfWeek = date.getDayOfWeek();  // 현재 요일 가져오기
+
+        int curBit = 1;
+
+        int scoop = -1;
+        switch (dayOfWeek) {
+            case SUNDAY:
+                scoop = 0;
+                break;
+            case SATURDAY:
+                scoop = 1;
+                break;
+            case FRIDAY:
+                scoop = 2;
+                break;
+            case THURSDAY:
+                scoop = 3;
+                break;
+            case WEDNESDAY:
+                scoop = 4;
+                break;
+            case TUESDAY:
+                scoop = 5;
+                break;
+            case MONDAY:
+                scoop = 6;
+                break;
+        }
+
+        return (questStatus & (curBit << scoop)) != 0;
     }
 
     @Override

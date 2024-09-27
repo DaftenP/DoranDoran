@@ -102,7 +102,7 @@ spec:
       - "DELETE"
     accessControlAllowOriginList:
       - "http://localhost:3000"
-      - "https://bff.ssafy.picel.net"
+      - "https://ssafy.picel.net"
     accessControlAllowHeaders:
       - "Content-Type"
       - "Authorization"

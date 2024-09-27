@@ -2,7 +2,7 @@ package com.tutor.controller;
 
 import com.tutor.common.ResponseDto;
 import com.tutor.common.exception.StatusCode;
-import com.tutor.dto.ChatRequestDTO;
+import com.tutor.dto.MessageRequestDTO;
 import com.tutor.dto.TutorResponse;
 import com.tutor.service.AiTutorService;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +19,18 @@ public class AiTutorController {
     private final AiTutorService aiTutorService;
 
     @PostMapping("/send")
-    public ResponseDto send(@RequestBody(required = false) ChatRequestDTO chatRequestDTO, @RequestParam Long role, @RequestParam Long situation, @RequestParam String locale) {
+    public ResponseDto send(@RequestBody(required = false) MessageRequestDTO messageRequest, @RequestParam Long role, @RequestParam Long situation, @RequestParam String locale) {
         log.info("send");
 
         if(role == null || situation == null || locale == null) {
             return new ResponseDto(StatusCode.BAD_REQUEST, null);
         }
 
-        if(chatRequestDTO == null) {
-            chatRequestDTO = new ChatRequestDTO();
+        if(messageRequest == null) {
+            return new ResponseDto(StatusCode.BAD_REQUEST, null);
         }
 
-        TutorResponse tutorResponse = aiTutorService.send(chatRequestDTO, role, situation, locale);
+        TutorResponse tutorResponse = aiTutorService.send(messageRequest, role, situation, locale);
         return new ResponseDto(StatusCode.SUCCESS, tutorResponse);
     }
 

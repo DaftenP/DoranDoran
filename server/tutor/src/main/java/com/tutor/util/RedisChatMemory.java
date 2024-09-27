@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * RedisChatMemory
@@ -23,6 +24,7 @@ public class RedisChatMemory implements ChatMemory {
     private final ListOperations<String, MessageDTO> listOperations;
     private final ObjectMapper objectMapper;
     private static final String REDIS_KEY = "chat:memory";
+    private static final long TTL_IN_SECONDS = 60 * 60 * 24; // 1주일
 
     public RedisChatMemory(RedisTemplate<String, MessageDTO> redisTemplate) {
         this.listOperations = redisTemplate.opsForList();
@@ -40,6 +42,8 @@ public class RedisChatMemory implements ChatMemory {
             throw new RuntimeException(e);
         }
 
+        // TTL 설정
+        listOperations.getOperations().expire(key, TTL_IN_SECONDS, TimeUnit.SECONDS);
         listOperations.rightPush(key, messageDTO);
     }
 
@@ -75,6 +79,8 @@ public class RedisChatMemory implements ChatMemory {
             messagesDTO.add(messageDTO);
         }
 
+        // TTL 설정
+        listOperations.getOperations().expire(key, TTL_IN_SECONDS, TimeUnit.SECONDS);
         listOperations.rightPushAll(key, messagesDTO);
     }
 

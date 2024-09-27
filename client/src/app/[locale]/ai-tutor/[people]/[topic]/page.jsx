@@ -4,6 +4,7 @@ import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChatMessages, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage } from '@/store/ai-tutor';
+import Modal from '@/components/modal/modal'
 import Link from 'next/link';
 import Image from 'next/image';
 import Back from '@/public/icon/back.webp';
@@ -44,14 +45,16 @@ function TranslatedTopicConversation({ params }) {
   const t = useTranslations('index');
   const dispatch = useDispatch()
   const { chatMessages, messages, loading, error } = useSelector((state) => state.aiTutor)
+  const [isOpenModal, setIsOpenModal] = useState(false)
   const locale = params.locale;
   const role = params.people;
   const situation = params.topic;
 
   useEffect(() => {
     const formData = new FormData()
-    formData.append('messages', JSON.stringify([]));
-    formData.append('userMessage', JSON.stringify({}));
+    // formData.append('messages', JSON.stringify([]));
+    // formData.append('msg', JSON.stringify({}));
+    formData.append('msg', '');
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
@@ -65,18 +68,30 @@ function TranslatedTopicConversation({ params }) {
       })
   }, [])
 
+  const handleOpenModal = () => {
+    console.log('안녕')
+    setIsOpenModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false)
+  }
+  const message = {'message': 'would-you-like-to select-a-new-topic-if-you-do-the-chat-history-will-be-deleted'}
+
   return (
     <div>
       <div className='flex justify-between mt-[1vh]'>
         <Link href={`/${locale}/main`} >
           <Image src={Back} alt="back" className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2" />
         </Link>
-        <Image src={Manual} alt='manual_icon' className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer mr-2" />
+        <div className="cursor-pointer">
+          <Image src={Manual} alt="manual_icon" className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 mr-2 pointer-events-none" />
+        </div>
       </div>
       <div className='flex-col flex justify-center items-center'>
         <div className='flex justify-center items-center text-xxl md:text-4xl lg:text-6xl'>
           {t("ai-tutor")}
-          <Image src={NewTopic} alt='new_topic_icon' className='w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2'/>
+          <Image onClick={handleOpenModal} src={NewTopic} alt='new_topic_icon' className='w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2'/>
         </div>
       </div>
       <div className='max-h-[87vh] overflow-y-scroll hide-scrollbar'>
@@ -97,6 +112,11 @@ function TranslatedTopicConversation({ params }) {
           }
         })}
       </div>
+      {isOpenModal && 
+        <div>
+          <Modal handleCloseModal={handleCloseModal} message={message} />
+        </div>
+      }
     </div>
   );
 }

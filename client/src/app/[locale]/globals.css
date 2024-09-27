@@ -23,23 +23,23 @@ body {
 }
 
 html:lang(en) body {
-  font-family: 'Itim', Arial, Helvetica, sans-serif;
+  font-family: 'Itim', 'Gamja Flower', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
 }
 
 html:lang(ko) body {
-  font-family: 'Gamja Flower', Arial, Helvetica, sans-serif;
+  font-family: 'Gamja Flower', 'Itim', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
 }
 
 html:lang(ru) body {
-  font-family: 'Oswald', Arial, Helvetica, sans-serif;
+  font-family: 'Oswald', 'Gamja Flower', 'Itim', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
 }
 
 html:lang(ja) body {
-  font-family: 'Kosugi Maru', Arial, Helvetica, sans-serif;
+  font-family: 'Kosugi Maru', 'Gamja Flower', 'Itim', 'Oswald', 'ZCOOL KuaiLe' Arial, Helvetica, sans-serif;
 }
 
 html:lang(zh) body {
-  font-family: 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-family: 'ZCOOL KuaiLe','Gamja Flower', 'Itim', 'Oswald', 'Kosugi Maru', Arial, Helvetica, sans-serif;
 }
 
 /* 스크롤바 숨기는 CSS */

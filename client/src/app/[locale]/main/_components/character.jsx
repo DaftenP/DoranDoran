@@ -65,7 +65,7 @@ function TranslatedCharacter({ locale }) {
           className="absolute top-[45.5vh] left-1/2 text-center text-white text-5xl md:text-7xl lg:text-8xl"
           style={{ transform: 'translateX(-45%)' }}
         >
-          Play
+          {t('play')}
         </div>
       </div>
     </div>

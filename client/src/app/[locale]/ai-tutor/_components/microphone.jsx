@@ -169,8 +169,8 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
     const blob = new Blob([pcmData], { type: 'audio/raw' });
     const formData = new FormData();
 
-    formData.append('messages', JSON.stringify(messages));
-    formData.append('userMessage', JSON.stringify({ content: recordMessageRef.current }));
+    // formData.append('messages', JSON.stringify(messages));
+    formData.append('msg', JSON.stringify({ content: recordMessageRef.current }));
     formData.append('file', blob, 'recording.raw');
 
     console.log("FormData 준비 완료", formData);

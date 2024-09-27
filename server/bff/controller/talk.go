@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"com.doran.bff/model"
 	"com.doran.bff/service"
@@ -23,22 +24,19 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	locale := r.URL.Query().Get("locale")
 
 	// get messages from form field and parse it to json
-	messages := r.FormValue("messages")
-	var messagesJson json.RawMessage
-	if err := json.Unmarshal([]byte(messages), &messagesJson); err != nil {
-		http.Error(w, "Invalid request", http.StatusBadRequest)
+	msg := r.FormValue("messages")
+
+	cookie, err := r.Cookie("refresh")
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		fmt.Println(err)
 		return
 	}
 
-	// get userMessage from form field and parse it to json
-	userMessage := r.FormValue("userMessage")
-	var userMessageJson json.RawMessage
-	if err := json.Unmarshal([]byte(userMessage), &userMessageJson); err != nil {
-		http.Error(w, "Invalid request", http.StatusBadRequest)
-		return
-	}
+	parts := strings.Split(cookie.Value, ":")
+	userID := parts[0]
 
-	sendRes, err := service.SendService(messagesJson, userMessageJson, role, situation, locale)
+	sendRes, err := service.SendService(msg, userID, role, situation, locale)
 	if err != nil || sendRes.StatusCode != http.StatusOK {
 		http.Error(w, "Error calling SendService", http.StatusInternalServerError)
 		return

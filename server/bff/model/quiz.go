@@ -10,8 +10,7 @@ type QuizRegistRequestToMSA struct {
 }
 
 type QuizImage struct {
-	QuizImageUrl  string `json:"quizImageUrl"`
-	QuizImageText string `json:"quizImageText"`
+	QuizImageUrl string `json:"quizImageUrl"`
 }
 
 type QuizInfo struct {

@@ -44,10 +44,9 @@ func RegistQuizService(quizInfo string, voice multipart.File, voiceHeader *multi
 	requestBody.QuizType = quizInfoJson.QuizType
 	requestBody.QuizVoiceUrl = voiceFileName
 
-	for i, imageFileName := range imageFileNames {
+	for _, imageFileName := range imageFileNames {
 		requestBody.QuizImages = append(requestBody.QuizImages, model.QuizImage{
-			QuizImageUrl:  imageFileName,
-			QuizImageText: imagesHeaders[i].Filename,
+			QuizImageUrl: "https://ssafy-tailored.b-cdn.net/" + imageFileName,
 		})
 	}
 

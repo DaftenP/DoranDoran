@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: scheduler
+  datasource:
+    url: ENC(I1fnsvJRhfDzkPNC4jeGzSsQtmf+re2GUpX+IHgwNyIMEGytvi5ARw==)
+    username: ENC(QwnUyIfu2THVsYXlzD2sow==)
+    password: ENC(SOefXdn69nfyCpO4F6b8PSyBEKZhuFZs)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
+  data:
+    redis:
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 10
+          max-wait: 2
+      url: ENC(PpYupva6u0bHkxayZxwBfsuNxK6/OzveFS0Z+KnXUVA=)
+
+batch:
+  schedule:
+    fixed-rate: 10800000  # 3시간 간격 배치 작업 (밀리초 단위)

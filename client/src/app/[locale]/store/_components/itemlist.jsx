@@ -22,7 +22,7 @@ export default function Itemlist({ itemName, itemIcon, itemCost }) {
           <Image src={Credit} alt="credit" className="w-auto h-[110%] left-[0%] absolute" />
           <div className="text-white font-['Itim']" >{itemCost}</div>
         </div>
-        <div className="absolute bottom-[0%] text-black font-['Itim']">Purchase</div>
+        <div className="absolute bottom-[0%] text-black font-['Itim']">{t('purchase')}</div>
       </div>
     </div>
   );

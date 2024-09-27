@@ -24,8 +24,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
@@ -92,24 +90,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
     
-    private void createCookie(HttpServletResponse response, int userId, String refreshToken) {
-        String value = userId + ":" + refreshToken;
-        String cookieName = "refresh";
-        int maxAge = 24 * 60 * 60; // 24시간
+    private Cookie createCookie(int userId, String refreshToken) {
+        String value = userId +":"+refreshToken;
+        Cookie cookie = new Cookie("refresh", value);
+        cookie.setMaxAge(24*60*60);
+        //24시간 활성화
 
-        // 쿠키 값 인코딩 (필요한 경우)
-        String encodedValue = URLEncoder.encode(value, StandardCharsets.UTF_8);
-
-        // 쿠키 문자열 생성
-        String cookieString = String.format(
-            "%s=%s; Max-Age=%d; Path=/; Domain=.ssafy.picel.net; HttpOnly; SameSite=None; Secure",
-            cookieName, encodedValue, maxAge
-        );
-
-        // 응답 헤더에 쿠키 추가
-        response.setHeader("Set-Cookie", cookieString);
+        //cookie.setSecure(true); 
+        //HTTPS 쓸 경우 활성화
+        cookie.setPath("/");
+        // 쿠키가 적용될 범위 설정
+        cookie.setHttpOnly(true);
+        //JS단에서 접근 못하게 막는다
+        return cookie;
     }
-
 
     //현재 RefreshEntity 추가하는 함수
     private void addRefreshEntity(int userId, String refresh, Long expiredMs) {
@@ -153,7 +147,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         //응답 설정
         response.setHeader("access", access);
         //헤더에 엑세스 토큰 넣어줌
-        createCookie(response, userId, refresh);
+        response.addCookie(createCookie(userId, refresh));
         //쿠키에 리프레시 토큰 넣어줌
 
         // 응답에 JSON 형식으로 메시지를 반환하기 위해 ObjectMapper 사용

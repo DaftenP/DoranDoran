@@ -81,7 +81,7 @@ function TranslatedChatHint({ index, message }) {
       <div className='rounded-[3vh] min-w-[40vw] max-w-[70vw] bg-[#DFF8E1]/90 border border-[#A8D5B6]/90 text-md md:text-2xl lg:text-5xl p-[2vh]'>
         {isTranslate ? (
           <div>
-            {message.translatehint}
+            {message.translatedHint}
           </div>
         ) : (
           <div>

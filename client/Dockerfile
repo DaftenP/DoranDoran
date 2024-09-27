@@ -3,7 +3,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm install --force
 
 COPY . .
 
@@ -17,7 +17,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm install --only=production
+RUN npm install --only=production --force
 
 COPY --from=builder /app/.next ./.next
 

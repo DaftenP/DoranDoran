@@ -105,7 +105,7 @@ function TranslatedPeopleList() {
             {item.name}
             {selectedIndex === index && (
               <Link href={`ai-tutor/${index}`}>
-                <button className="absolute right-5 top-1/2 -translate-y-1/2 text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1">
+                <button className="absolute right-5 top-1/2 -translate-y-1/2 text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1 cursor-pointer">
                   {t('next')}
                 </button>
               </Link>

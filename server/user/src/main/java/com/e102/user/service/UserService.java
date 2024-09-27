@@ -3,7 +3,10 @@ package com.e102.user.service;
 import com.e102.common.exception.StatusCode;
 import com.e102.log.dto.CreditLogRequestDTO;
 import com.e102.log.dto.CreditLogResponseDTO;
+import com.e102.log.dto.PlayLogRequestDTO;
+import com.e102.log.dto.PlayLogResponseDTO;
 import com.e102.log.entity.CreditLog;
+import com.e102.log.entity.PlayLog;
 import com.e102.user.dto.*;
 import com.e102.user.entity.User;
 import com.e102.user.repository.UserRepository;
@@ -142,7 +145,7 @@ public class UserService {
     }
 
     //해당하는 유저의
-    public List<CreditLogResponseDTO> getAllLog(int userId){
+    public List<CreditLogResponseDTO> getAllCreditLog(int userId) {
         User sUser = userRepository.findById(userId);
         List<CreditLogResponseDTO> lst = new ArrayList<>();
         if(sUser != null){
@@ -157,6 +160,47 @@ public class UserService {
         return lst;
     }
 
+
+    public List<PlayLogResponseDTO> getAllPlayLog(int userId) {
+        User sUser = userRepository.findById(userId);
+        List<PlayLogResponseDTO> lst = new ArrayList<>();
+        if (sUser != null) {
+            for (PlayLog playLog : sUser.getPlayLogList())
+                lst.add(PlayLogResponseDTO.builder()
+                        .quizType(playLog.getQuizId())
+                        .createdAt(playLog.getCreatedAt())
+                        .build());
+        }
+        //User의 List에 추가한다.
+        return lst;
+    }
+
+    @Transactional
+    public StatusCode insertPlayLog(PlayLogRequestDTO playLogRequestDTO) {
+        User sUser = userRepository.findById(playLogRequestDTO.getUserId());
+        if (sUser != null) {
+
+            PlayLog playLog = PlayLog.builder()
+                    .puser(sUser)
+                    .xp(10) //Dummy Data
+                    .quizId(playLogRequestDTO.getQuizId())
+                    .build();
+
+
+            userRepository.updateXpById(playLogRequestDTO.getUserId(), playLogRequestDTO.getQuizId());
+
+            sUser.getPlayLogList().add(playLog);
+            //넣고
+            userRepository.save(sUser);
+            //DB에 반영
+
+            return StatusCode.SUCCESS;
+
+        } else {
+            return StatusCode.BAD_REQUEST;
+        }
+    }
+
     public StatusCode modifyNickname(NicknameModifyDTO nicknameModifyDTO) {
         User sUser = userRepository.findById(nicknameModifyDTO.getUserId());
 
@@ -167,7 +211,6 @@ public class UserService {
         } else {
             return StatusCode.BAD_REQUEST;
         }
-
     }
 
     public StatusCode modifyPassWord(PasswordModifyDTO passwordModifyDTO) {
@@ -196,11 +239,10 @@ public class UserService {
         } else {
             return StatusCode.BAD_REQUEST;
         }
-
     }
 
     @Transactional
-    public StatusCode insertLog(CreditLogRequestDTO creditLogRequestDTO){
+    public StatusCode insertCreditLog(CreditLogRequestDTO creditLogRequestDTO) {
         User sUser = userRepository.findById(creditLogRequestDTO.getUserId());
         if(sUser != null){
             if (sUser.getGem() + creditLogRequestDTO.getChanges() < 0) {

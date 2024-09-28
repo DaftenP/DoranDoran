@@ -163,6 +163,7 @@
     "you-don't-have-enough-credits": "クレジットが足りません",
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "このトピックに関する以前の会話があります。中断したところから再開しますか？",
     "your-purchase-was-successful": "購入が成功しました",
-    "please-enter-your-nickname!": "ニックネームを入力してください!"
+    "please-enter-your-nickname!": "ニックネームを入力してください!",
+    "would-you-like-to-return-to-the-home-screen?": "ホーム画面に戻りますか？"
   }
 }

@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChatMessages, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage } from '@/store/ai-tutor';
 import Modal from '@/components/modal/modal'
@@ -44,8 +45,10 @@ export default function Conversation({ params }) {
 function TranslatedTopicConversation({ params }) {
   const t = useTranslations('index');
   const dispatch = useDispatch()
+  const router = useRouter()
   const { chatMessages, messages, loading, error } = useSelector((state) => state.aiTutor)
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [modalMessage, setModalMessage] = useState(null)
   const locale = params.locale;
   const role = params.people;
   const situation = params.topic;
@@ -67,23 +70,52 @@ function TranslatedTopicConversation({ params }) {
         console.log(error)
       })
   }, [])
+  
+  const handleYesClick = (buttonLink) => {
+    setIsOpenModal(false)
+    router.push(`/${locale}/${buttonLink}`)
+  }
 
-  const handleOpenModal = () => {
-    console.log('안녕')
+  const handleOpenModal = (messageIndex) => {
+    console.log(messageIndex)
+    setModalMessage(modalMessages[messageIndex])
     setIsOpenModal(true)
   }
 
   const handleCloseModal = () => {
     setIsOpenModal(false)
   }
-  const message = {'message': 'would-you-like-to select-a-new-topic-if-you-do-the-chat-history-will-be-deleted'}
+
+  const modalMessages = [
+    // 대화종료 메세지
+    {
+      'message': 'the-conversation-has-ended-Would-you-like-to-start-a-new-topic',
+      'background': 'bird',
+      'buttonLink': 'ai-tutor',
+      'buttonType': 1
+    },
+    // 새로운 주제 선택
+    {
+      'message': 'would-you-like-to select-a-new-topic-if-you-do-the-chat-history-will-be-deleted',
+      'background': 'bird',
+      'buttonLink': 'ai-tutor',
+      'buttonType': 1
+    },
+    // 뒤로가기
+    {
+      'message': 'would-you-like-to-return-to-the-home-screen?',
+      'background': 'bird',
+      'buttonLink': 'main',
+      'buttonType': 1
+    },
+  ]
 
   return (
     <div>
       <div className='flex justify-between mt-[1vh]'>
-        <Link href={`/${locale}/main`} >
-          <Image src={Back} alt="back" className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2" />
-        </Link>
+        <div>
+          <Image onClick={() => handleOpenModal(2)} src={Back} alt="back" className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2" />
+        </div>
         <div className="cursor-pointer">
           <Image src={Manual} alt="manual_icon" className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 mr-2 pointer-events-none" />
         </div>
@@ -91,7 +123,7 @@ function TranslatedTopicConversation({ params }) {
       <div className='flex-col flex justify-center items-center'>
         <div className='flex justify-center items-center text-xxl md:text-4xl lg:text-6xl'>
           {t("ai-tutor")}
-          <Image onClick={handleOpenModal} src={NewTopic} alt='new_topic_icon' className='w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2'/>
+          <Image onClick={() => handleOpenModal(1)} src={NewTopic} alt='new_topic_icon' className='w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2'/>
         </div>
       </div>
       <div className='max-h-[87vh] overflow-y-scroll hide-scrollbar'>
@@ -114,7 +146,7 @@ function TranslatedTopicConversation({ params }) {
       </div>
       {isOpenModal && 
         <div>
-          <Modal handleCloseModal={handleCloseModal} message={message} />
+          <Modal handleYesClick={handleYesClick} handleCloseModal={handleCloseModal} message={modalMessage} />
         </div>
       }
     </div>

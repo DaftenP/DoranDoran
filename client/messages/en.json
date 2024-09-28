@@ -164,6 +164,8 @@
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "You have a previous conversation on this topic. Would you like to pick up where you left off?",
     "your-purchase-was-successful": "Your purchase was successful",
     "please-enter-your-nickname!": "please enter your nickname!",
+    "delete-user": "Delete User",
+    "logout": "Logout",
     "would-you-like-to-return-to-the-home-screen?": "Would you like to return to the home screen?"
   }
 }

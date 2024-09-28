@@ -17,6 +17,7 @@ export default function Login() {
           src={LogoKr}
           alt="Logo"
           className="md:w-[75%] w-[75%] h-auto mb-10"
+          priority
         />
         {/* 로그인 컴포넌트 */}
         <LoginForm />

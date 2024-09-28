@@ -29,10 +29,11 @@ export default function Language() {
 
 function TranslatedLanguage() {
   const t = useTranslations("index");
+  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("english");
+
   // 지원되는 언어 목록
   const languages = [
     { code: "en", name: "english" },
@@ -41,6 +42,12 @@ function TranslatedLanguage() {
     { code: "zh", name: "chinese" },
     { code: "ru", name: "russian" },
   ];
+
+  // 현재 locale에 해당하는 언어를 찾아 초기값 설정
+  const currentLanguage =
+    languages.find((lang) => lang.code === locale)?.name || "english";
+  const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage);
+
   // 언어 선택 드롭다운 토글 함수
   const toggleDropdown = () => setIsOpen(!isOpen);
   // 언어 선택 시 실행되는 함수

@@ -47,12 +47,14 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
           <Image src={ModalBird} alt="background_bird" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-70 w-[40vw] h-auto md:w-[30vw] md:h-auto lg:w-[30vw] lg:h-auto z-0" />
         )}
         {message.background === 'night' &&  (
-        <Image src={ModalNight} alt="background_night" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full z-0" />
+          <Image src={ModalNight} alt="background_night" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full z-0" />
         )}
-        <div className='absolute left-1/2 transform -translate-x-1/2 bottom-[5vw] w-full flex justify-around'>
-          <button onClick={handleCloseModal} className="mt-4 p-2 bg-red-500 text-white rounded z-10 w-[20vw] md:w-[15vw] text-xl md:text-2xl lg:text-4xl">{t('no')}</button>
-          <button onClick={() => handleYesClick(message.buttonLink)} className=" mt-4 p-2 bg-red-500 text-white rounded z-10 w-[20vw] md:w-[15vw] text-xl md:text-2xl lg:text-4xl">{t('yes')}</button>
-        </div>
+        {message.buttonType === 1 && (
+          <div className='absolute left-1/2 transform -translate-x-1/2 bottom-[5vw] w-full flex justify-around'>
+            <button onClick={handleCloseModal} className="mt-4 p-2 bg-red-500 text-white rounded z-10 w-[20vw] md:w-[15vw] text-xl md:text-2xl lg:text-4xl">{t('no')}</button>
+            <button onClick={() => handleYesClick(message.buttonLink)} className=" mt-4 p-2 bg-red-500 text-white rounded z-10 w-[20vw] md:w-[15vw] text-xl md:text-2xl lg:text-4xl">{t('yes')}</button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -92,18 +92,21 @@ function TranslatedTopicConversation({ params }) {
       'message': 'the-conversation-has-ended-Would-you-like-to-start-a-new-topic',
       'background': 'bird',
       'buttonLink': 'ai-tutor',
+      'buttonType': 1
     },
     // 새로운 주제 선택
     {
       'message': 'would-you-like-to select-a-new-topic-if-you-do-the-chat-history-will-be-deleted',
       'background': 'bird',
       'buttonLink': 'ai-tutor',
+      'buttonType': 1
     },
     // 뒤로가기
     {
       'message': 'would-you-like-to-return-to-the-home-screen?',
       'background': 'bird',
       'buttonLink': 'main',
+      'buttonType': 1
     },
   ]
 

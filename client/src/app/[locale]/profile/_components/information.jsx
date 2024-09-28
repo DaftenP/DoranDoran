@@ -85,7 +85,7 @@ function TranslatedInformation() {
               <p className="text-xl md:text-4xl">1997/09/24</p>
             </div>
           </div>
-          <Image src={Pencil} className="w-[10%] md:w-[7.5%]" />
+          <Image src={Pencil} alt="pencil" className="w-[10%] md:w-[7.5%]" />
         </div>
         <hr className="w-[90%] border-t border-[#ACACAC]" />
         {/* 비밀번호 수정 */}

@@ -164,6 +164,8 @@
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "你之前有关于这个话题的对话。你想从上次中断的地方继续吗？",
     "your-purchase-was-successful": "你的购买成功了",
     "please-enter-your-nickname!": "请输入您的昵称！",
-        "would-you-like-to-return-to-the-home-screen?": "您想返回主屏幕吗？"
+    "delete-user": "注销账户",
+    "logout": "登出",
+    "would-you-like-to-return-to-the-home-screen?": "您想返回主屏幕吗？"
   }
 }

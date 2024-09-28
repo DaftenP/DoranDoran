@@ -165,6 +165,7 @@
     "your-purchase-was-successful": "購入が成功しました",
     "please-enter-your-nickname!": "ニックネームを入力してください!",
     "delete-user": "アカウント削除",
-    "logout": "ログアウト"
+    "logout": "ログアウト",
+    "would-you-like-to-return-to-the-home-screen?": "ホーム画面に戻りますか？"
   }
 }

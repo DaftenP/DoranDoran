@@ -156,9 +156,16 @@
     "when-you-do-free-talking,press-the-r-button-below-the-speech-bubble-to-listen-again": "자유 대화를 할 때, 말풍선 아래의 R 버튼을 눌러 다시 들을 수 있습니다.",
     "word": "단어",
     "word-matching": "단어 매칭",
-    "would-you-like-to select-a-new-topic-if-you-do-the-chat-history-will-be-deleted": "새로운 주제를 선택하시겠습니까",
-    "please-enter-your-nickname!": "닉네임을 입력해 주세요!",
     "delete-user": "회원탈퇴",
-    "logout": "로그아웃"
+    "logout": "로그아웃",
+    "would-you-like-to select-a-new-topic-if-you-do-the-chat-history-will-be-deleted": "새로운 주제를 선택하시겠습니까? 채팅 기록이 삭제됩니다.",
+    "would-you-like-to-purchase-random-color?": "무작위 색상을 구매하시겠습니까?",
+    "yes": "네",
+    "you-cannot-proceed-with-free-talking-you-don't-have-enough-speakers": "스피커가 부족하여 자유 대화를 진행할 수 없습니다.",
+    "you-don't-have-enough-credits": "크레딧이 부족합니다.",
+    "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "이 주제에 대해 이전 대화가 있습니다. 이전 위치에서 계속하시겠습니까?",
+    "your-purchase-was-successful": "구매가 성공적으로 완료되었습니다.",
+    "please-enter-your-nickname!": "닉네임을 입력해 주세요!",
+    "would-you-like-to-return-to-the-home-screen?": "홈화면으로 돌아가시겠습니까?"
   }
 }

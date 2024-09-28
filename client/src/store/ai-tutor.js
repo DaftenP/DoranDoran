@@ -20,6 +20,7 @@ export const fetchChatMessages = createAsyncThunk(
         headers: {
           'Content-Type': 'multipart/form-data',  // FormData 사용 시 헤더 설정
         },
+        withCredentials: true,
       });
       console.log(response.data)
 

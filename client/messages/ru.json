@@ -165,6 +165,7 @@
     "your-purchase-was-successful": "Ваша покупка прошла успешно",
     "please-enter-your-nickname!": "Пожалуйста, введите свой ник!",
     "delete-user": "Удалить аккаунт",
-    "logout": "Выйти из системы"
+    "logout": "Выйти из системы",
+    "would-you-like-to-return-to-the-home-screen?": "Вы хотите вернуться на главный экран?"
   }
 }

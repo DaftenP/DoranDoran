@@ -4,6 +4,7 @@ import Image from "next/image";
 import Back from "@/public/icon/back.webp";
 import Information from "@/app/[locale]/profile/_components/information";
 import Sound from "@/app/[locale]/profile/_components/sound";
+import LeaveUser from "@/app/[locale]/profile/_components/leave-user";
 
 export default function Setting() {
   const locale = useLocale();
@@ -30,6 +31,7 @@ export default function Setting() {
           <Information />
           <hr className="w-[90%] border-t border-[#ACACAC] my-4" />
           <Sound />
+          <LeaveUser />
         </div>
       </div>
     </div>

@@ -157,6 +157,8 @@
     "word": "단어",
     "word-matching": "단어 매칭",
     "would-you-like-to select-a-new-topic-if-you-do-the-chat-history-will-be-deleted": "새로운 주제를 선택하시겠습니까",
-    "please-enter-your-nickname!": "닉네임을 입력해 주세요!"
+    "please-enter-your-nickname!": "닉네임을 입력해 주세요!",
+    "delete-user": "회원탈퇴",
+    "logout": "로그아웃"
   }
 }

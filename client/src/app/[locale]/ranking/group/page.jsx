@@ -29,6 +29,10 @@ export default function Rank() {
     loadMessages();
   }, [locale]);
 
+  if (!messages) {
+    return <div>Loading...</div>; // 메시지가 로드될 때까지 로딩 표시
+  }
+
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <Ranklist />

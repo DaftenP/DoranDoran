@@ -1,12 +1,13 @@
 'use-client';
 
 import Image from "next/image";
+import React, { forwardRef } from 'react';
 import Bird3 from "@/public/shop-bird/bird (3).webp";
 import RankUp from "@/public/icon2/rank-up.webp";
 import RankPlat from "@/public/icon2/rank-plat.webp";
 import RankDown from "@/public/icon2/rank-down.webp";
 
-export default function RankListGroup({userRank, userChar, userId, userXP}) {
+export default forwardRef(function RankListGroup({userRank, userChar, userId, userXP}, ref) {
 
   const borderColor = userRank === 1 ? '#FFE500' :
                       userRank === 2 ? '#A5A5A5' :
@@ -24,7 +25,11 @@ export default function RankListGroup({userRank, userChar, userId, userXP}) {
   const rankIconSize = rankdif === RankPlat ? 'h-[60%]' : 'h-[25%]';
 
   return (
-    <div className="h-[8vh] relative flex items-center bg-white px-[4%] py-[2%] font-normal font-['Itim'] rounded-lg my-[2%]" style={{ border: `${borderWidth} solid ${borderColor}` }}>
+    <div 
+      ref={ref} 
+      className="h-[8vh] relative flex items-center bg-white px-[4%] py-[2%] font-normal font-['Itim'] rounded-lg my-[2%]" 
+      style={{ border: `${borderWidth} solid ${borderColor}` }}
+    >
       <span className="font-bold" style={{ color: `${textColor}`, fontSize: '4vh' }}>{userRank}</span>
       <Image
         src={Bird3}
@@ -42,4 +47,4 @@ export default function RankListGroup({userRank, userChar, userId, userXP}) {
       />
     </div>
   );
-}
+});

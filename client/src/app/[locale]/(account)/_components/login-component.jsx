@@ -69,6 +69,7 @@ function LoginFormContent() {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       )
       .then((response) => {

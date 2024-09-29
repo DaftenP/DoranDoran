@@ -37,7 +37,16 @@ export default function ChatMe ({ message, params }) {
 
 function TranslatedChatMe({ message, params }) {
   const [isRecordingComplete, setIsRecordingComplete] = useState(false)
+  const [isTimeout, setIsTimeout] = useState(false)
   const t = useTranslations('index');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsTimeout(true)
+    }, 10000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleRecordingComplete = (() => {
     setIsRecordingComplete(true)
@@ -46,26 +55,36 @@ function TranslatedChatMe({ message, params }) {
   return (
     <div className='flex justify-end items-center m-[2vh]'>
       <div className='rounded-[3vh] min-w-[40vw] max-w-[70vw] bg-[#DFF8E1]/90 border border-[#A8D5B6]/90 text-md md:text-2xl lg:text-5xl p-[2vh]'>
-      {!isRecordingComplete ? (
-        <Microphone onRecordingComplete={handleRecordingComplete} params={params} />
-      ) : (
-        <>
-          {message.content}
-          <div className='border-b border-[#ACACAC] w-auto h-1 mt-[2vh] mb-[2vh]'></div>
-          <div className='flex justify-around'>
-            <div className='flex items-center'>
-              <Image src={Credit} alt="credit_icon" className="cursor-pointer w-7 h-7 md:w-10 md:h-10 lg:w-16 lg:h-16 mr-1" />
-              +400
-            </div>
-            <div className='flex items-center'>
-              <Image src={Exp} alt="exp_icon" className="cursor-pointer w-7 h-7 md:w-10 md:h-10 lg:w-16 lg:h-16 mr-1" />
-              +400
-            </div>
-          </div>
-        </>
-      )}
+        {!isRecordingComplete ? (
+          <Microphone onRecordingComplete={handleRecordingComplete} params={params} />
+        ) : (
+          <>
+            {/* 10초 타임아웃 상태 확인 */}
+            {!message.content && !isTimeout ? (
+              <div className="flex justify-center items-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-900"></div>
+              </div>
+            ) : isTimeout ? (
+              <div>{/* 타임아웃 후 빈 상태 */}</div>
+            ) : (
+              <>
+                {message.content}
+                <div className='border-b border-[#ACACAC] w-auto h-1 mt-[2vh] mb-[2vh]'></div>
+                <div className='flex justify-around'>
+                  <div className='flex items-center'>
+                    <Image src={Credit} alt="credit_icon" className="cursor-pointer w-7 h-7 md:w-10 md:h-10 lg:w-16 lg:h-16 mr-1" />
+                    +400
+                  </div>
+                  <div className='flex items-center'>
+                    <Image src={Exp} alt="exp_icon" className="cursor-pointer w-7 h-7 md:w-10 md:h-10 lg:w-16 lg:h-16 mr-1" />
+                    +400
+                  </div>
+                </div>
+              </>
+            )}
+          </>
+        )}
       </div>
-      <div className='rounded-full w-11 h-11 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-black ml-1'></div>
     </div>
   );
 }

@@ -24,7 +24,7 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	locale := r.URL.Query().Get("locale")
 
 	// get messages from form field and parse it to json
-	msg := r.FormValue("messages")
+	msg := r.FormValue("msg")
 
 	cookie, err := r.Cookie("refresh")
 	if err != nil {
@@ -44,7 +44,7 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	defer sendRes.Body.Close()
 
 	// get voice. content-type: audio/wav, key: voice, value: audio file
-	voice, _, err := r.FormFile("voice")
+	voice, _, err := r.FormFile("file")
 
 	var pronunciationResBody model.TutorPronunciationResponse
 	if err == nil {

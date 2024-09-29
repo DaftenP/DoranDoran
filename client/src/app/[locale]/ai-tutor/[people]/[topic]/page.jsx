@@ -4,7 +4,7 @@ import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchChatMessages, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage } from '@/store/ai-tutor';
+import { fetchChatMessages, typeChange, changeChatMessages, changeMessages, resetState, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage } from '@/store/ai-tutor';
 import Modal from '@/components/modal/modal'
 import Link from 'next/link';
 import Image from 'next/image';
@@ -54,25 +54,56 @@ function TranslatedTopicConversation({ params }) {
   const situation = params.topic;
 
   useEffect(() => {
-    const formData = new FormData()
-    // formData.append('messages', JSON.stringify([]));
-    // formData.append('msg', JSON.stringify({}));
+    dispatch(typeChange([role, situation]))
+    // 로컬 스토리지에서 chatMessages와 messages 불러오기
+    const storedData = localStorage.getItem('aiTutorState');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+
+      // 로컬 스토리지에 chatMessages와 messages가 있는 경우 Redux에 반영
+      if (parsedData.chatMessages.length > 0 || parsedData.messages.length > 0) {
+        console.log('Local storage found, populating Redux state.');
+
+        // Redux 상태 업데이트
+        dispatch(changeChatMessages(parsedData.chatMessages));
+        dispatch(changeMessages(parsedData.messages));
+
+        return; // fetch 작업 실행하지 않음
+      }
+    }
+
+    // 로컬 스토리지에 데이터가 없으면 fetch 작업 실행
+    const formData = new FormData();
     formData.append('msg', '');
+
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
-        console.log('진입 시 dispatch')
-        dispatch(addResponseMessage(response.data))
-        dispatch(addSimpleResponseMessage(response.data))
-        dispatch(addMyMessage({'content': ''}))
+        console.log('Fetching chat messages from server');
+        dispatch(addResponseMessage(response.data));
+        dispatch(addSimpleResponseMessage(response.data));
+        dispatch(addMyMessage({ content: '' }));
       })
       .catch((error) => {
-        console.log(error)
-      })
-  }, [])
+        console.log(error);
+      });
+  }, [dispatch]);
+
+  function clearChatDataFromLocalStorage() {
+    try {
+      localStorage.removeItem('aiTutorState'); // 로컬 스토리지에서 chatMessages와 messages 삭제
+      console.log("Chat data cleared from local storage.");
+    } catch (error) {
+      console.error("Could not clear chat data from local storage", error);
+    }
+  }
   
   const handleYesClick = (buttonLink) => {
     setIsOpenModal(false)
+    if (buttonLink === 'ai-tutor') {
+      dispatch(resetState())
+      clearChatDataFromLocalStorage()
+    }
     router.push(`/${locale}/${buttonLink}`)
   }
 

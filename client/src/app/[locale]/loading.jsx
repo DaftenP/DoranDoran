@@ -43,6 +43,25 @@ function TranslatedLoading() {
   const [progress, setProgress] = useState(0);
   const [bird1Position, setBird1Position] = useState(-30);
   const [bird2Position, setBird2Position] = useState(-30);
+  const [randomText, setRandomText] = useState('')
+
+  const randomTips = [
+    "there-are-formal-and-informal-speech-levels-in-korean-use-them-appropriately-depending-on-the-situation",
+    "'thank-you'-is-often-used-as-an-expression-of-gratitude",
+    "if-you-study-steadily-for-5-minutes-a-day-you-will-get-used-to-korean-more-easily",
+    "repetitive-learning-is-very-helpful-in-remembering-a-language",
+    "when-memorizing-new-words-try-remembering-example-sentences-too",
+    "in-korea-people-say-'잘-먹겠습니다'-before-starting-a-meal",
+    "try-learning-korean-naturally-through-dramas-and-music",
+    "during-holidays-families-perform-'세배'-and-exchange-well-wishing-words",
+    "small-achievements-add-up-to-big-progress",
+    "today's-small-actions-lead-to-tomorrow's-fluency",
+    "it-is-okay-to-go-slowly-consistency-is-what-matters"
+  ]
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * randomTips.length)
+    setRandomText(randomTips[randomIndex])
+  }, [])
 
   const duration = 10000; // 전체 애니메이션 시간 (밀리초)
 
@@ -63,7 +82,7 @@ function TranslatedLoading() {
         setTimeout(() => {
           start = null; // 100%에 도달하면 잠시 멈추고 다시 시작
           frame = requestAnimationFrame(animateProgress);
-        }, 5000);
+        }, 1000);
       }
     };
 
@@ -75,8 +94,7 @@ function TranslatedLoading() {
   useEffect(() => {
     const interval = setInterval(() => {
       setBird1Position((prev) => (prev >= 130 ? -90 : prev + 1)); // 끝까지 가면 다시 시작
-      setBird2Position((prev) => (prev >= 130 ? -90 : prev + 1));
-      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 1));
+      setBird2Position((prev) => (prev >= 130 ? -90 : prev + 0.7));
     }, 30); // 30ms마다 1씩 업데이트
 
     return () => clearInterval(interval); // 컴포넌트 unmount 시 interval 제거
@@ -106,7 +124,7 @@ function TranslatedLoading() {
             - {t('tip')} -
           </div>
           <div className='text-center w-[30vh] text-xxl md:text-4xl lg:text-5xl break-words overflow-wrap'>
-            sample text sample text sample text sample text sample text sample text sample text sample text sample text
+            {t(randomText)}
           </div>
         </CircularProgressbarWithChildren>
       </div>

@@ -43,6 +43,7 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
   const t = useTranslations('index');
   const dispatch = useDispatch()
   const messages = useSelector((state) => state.aiTutor.messages)
+  const chatMessages = useSelector((state) => state.aiTutor.chatMessages)
   const recordMessageRef = useRef('')
   const [progress, setProgress] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
@@ -170,7 +171,7 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
     const formData = new FormData();
 
     // formData.append('messages', JSON.stringify(messages));
-    formData.append('msg', JSON.stringify({ content: recordMessageRef.current }));
+    formData.append('msg', recordMessageRef.current);
     formData.append('file', blob, 'recording.raw');
 
     console.log("FormData 준비 완료", formData);
@@ -178,7 +179,6 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
-        console.log('마이크 첫 페이지');
         dispatch(addMyMessage({ content: recordMessageRef.current }));
         dispatch(addSimpleMyMessage({ content: recordMessageRef.current }));
         dispatch(addResponseMessage(response.data));
@@ -191,8 +191,10 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
         if (!response.data.isOver) {
           dispatch(addMyMessage({ content: '' }));
         }
+        console.log(messages)
       })
       .catch((error) => {
+        console.log('에러')
         console.log(error);
       });
   };
@@ -215,7 +217,7 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
           <Image onClick={handleMicrophoneClick} src={MicrophoneNormal} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
         )}
       </div>
-      <div>녹음된 텍스트: {recordMessage}</div>
+      <div>{recordMessage}</div>
     </div>
   );
 }

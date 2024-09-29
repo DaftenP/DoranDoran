@@ -2,7 +2,10 @@
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { usePathname, useRouter } from 'next/navigation';
+import { resetState } from '@/store/ai-tutor';
+import Modal from '@/components/modal/modal'
 import Link from 'next/link';
 import Image from 'next/image'
 import AiTutor from '@/public/bottom-bar/ai-tutor.webp'
@@ -46,14 +49,62 @@ export default function Bottom() {
 function TranslatedBottom() {
   const t = useTranslations('index');
   const pathname = usePathname();
+  const router = useRouter()
   const [currentPage, setCurrentPage] = useState('');
   const [countryCode, setCountryCode] = useState('en')
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [modalMessage, setModalMessage] = useState(null)
+  const [type, setType] = useState([])
+  const dispatch = useDispatch()
+
+  const handleYesClick = (buttonLink) => {
+    setIsOpenModal(false)
+    if (buttonLink === 'ai-tutor') {
+    }
+    router.push(`/${countryCode}/ai-tutor/${type[0]}/${type[1]}`)
+  }
+
+  const handleOpenModal = (messageIndex) => {
+    console.log(messageIndex)
+    setModalMessage(modalMessages[messageIndex])
+    setIsOpenModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false)
+    dispatch(resetState())
+    router.push(`/${countryCode}/ai-tutor`)
+  }
+
+  const modalMessages = [
+    // 대화종료 메세지
+    {
+      'message': 'you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off',
+      'background': 'bird',
+      'buttonLink': 'ai-tutor',
+      'buttonType': 1
+    },
+  ]
 
   useEffect(() => {
     const pathArray = pathname.split('/')
     setCurrentPage(pathArray[2]);
     setCountryCode(pathArray[1]);
   }, [pathname]);
+
+  const handleAiTutorLink = (() => {
+    const storedData = localStorage.getItem('aiTutorState')
+    if (storedData) {
+      const parsedData = JSON.parse(storedData)
+      if (parsedData.type && parsedData.type.length > 0) {
+        console.log('팔스', parsedData.type)
+        setType([parsedData.type[0], parsedData.type[1]])
+        handleOpenModal(0)
+      }
+    } else {
+      router.push(`/${countryCode}/ai-tutor`)
+    }
+  })
 
   return (
     <div className="fixed bottom-0 left-0 w-full bg-none flex justify-between">
@@ -93,9 +144,9 @@ function TranslatedBottom() {
         style={{ boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)" }}
       >
           {currentPage === 'main' ? (
-            <Link href={`/${countryCode}/ai-tutor/`} className='w-full h-full flex justify-center items-center'>
+            <div onClick={handleAiTutorLink} className='w-full h-full flex justify-center items-center'>
               <Image src={AiTutor} alt="ai_tutor_link" className="w-auto h-3/5 cursor-pointer" />
-            </Link>
+            </div>
           ) : (
             <Link href={`/${countryCode}/main`} className='w-full h-full flex justify-center items-center'>
               <Image src={Home} alt="Home_link" className="w-auto h-3/5 cursor-pointer" />
@@ -131,6 +182,11 @@ function TranslatedBottom() {
           </div>
         </div>
       </div>
+      {isOpenModal && 
+        <div className='relataive z-1000'>
+          <Modal handleYesClick={handleYesClick} handleCloseModal={handleCloseModal} message={modalMessage} />
+        </div>
+      }
     </div>
   );
 }

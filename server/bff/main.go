@@ -30,6 +30,8 @@ func main() {
 	http.Handle("/api/v1/bff/quiz/quizzes/", middleware.JWTMiddleware(http.HandlerFunc(controller.GetQuiz)))
 	http.Handle("/api/v1/bff/quiz/play-log/submit", middleware.JWTMiddleware(http.HandlerFunc(controller.SubmitPlayLog)))
 	http.Handle("/api/v1/bff/quiz/play-log/", middleware.JWTMiddleware(http.HandlerFunc(controller.GetPlayLog)))
+	http.Handle("/api/v1/bff/quiz/stage/all", middleware.JWTMiddleware(http.HandlerFunc(controller.GetAllStage)))
+	http.Handle("/api/v1/bff/quiz/stage/{stageId}", middleware.JWTMiddleware(http.HandlerFunc(controller.GetStage)))
 
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

@@ -110,3 +110,27 @@ func RegistQuizController(w http.ResponseWriter, r *http.Request) {
 
 	defer res.Body.Close()
 }
+
+// GET /api/v1/bff/quiz/stage/all
+func GetAllStage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/stage/all")
+}
+
+// GET /api/v1/bff/quiz/stage/{stageId}
+func GetStage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// split the URL path '/'
+	stageIdList := strings.Split(r.URL.Path, "/")
+	stageId := stageIdList[len(stageIdList)-1]
+
+	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/stage/"+stageId)
+}

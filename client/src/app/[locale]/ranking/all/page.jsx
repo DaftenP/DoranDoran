@@ -47,7 +47,7 @@ function Ranklist() {
   const locale = useLocale();
   const [selectedWeek, setSelectedWeek] = useState("this week");
 
-  const rankList = useSelector((state) => state.rankList.rankList[0]);
+  const rankList = useSelector((state) => state.rankList.rankList);
   const thisweekRankList = rankList.thisWeek.thisWeekLeaderBoard;
   const lastweekRankList = rankList.lastWeek.lastWeekLeaderBoard;
   const thisweekMyRank = rankList.thisWeek.myLeaderBoard;
@@ -172,11 +172,15 @@ function Ranklist() {
             <RankListAll
               key={item.userId}
               userRank={item.userRank}
-              userId={item.userNickname}
+              userName={item.userNickname}
               userXP={item.gainXp}
-              borderColor={"#bbbbbb"}
+              borderColor={
+                (selectedWeek === "this week" && item.userRank === thisweekMyRank.userRank) ||
+                (selectedWeek === "last week" && item.userRank === lastweekMyRank.userRank)
+                  ? "#1cbfff"
+                  : "#bbbbbb"
+              }
               ref={(el) => myRankRef.current[item.userRank - 1] = el}
-              isVisible={true}
             />
           ))}
         </article>
@@ -184,7 +188,7 @@ function Ranklist() {
         <div className="w-[90%] h-[6%] bottom-[13vh] fixed" onClick={scrollToMyRank}>
           <RankListAll 
             userRank={selectedWeek === "this week" ? thisweekMyRank.userRank : lastweekMyRank.userRank} 
-            userId={selectedWeek === "this week" ? thisweekMyRank.userNickname : lastweekMyRank.userNickname} 
+            userName={selectedWeek === "this week" ? thisweekMyRank.userNickname : lastweekMyRank.userNickname} 
             userXP={selectedWeek === "this week" ? thisweekMyRank.gainXp : lastweekMyRank.gainXp} 
             borderColor={"#1cbfff"} />
         </div>

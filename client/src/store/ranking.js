@@ -3,17 +3,24 @@ import axios from 'axios';
 
 
 export const fetchRankList = createAsyncThunk(
-    'rankList/fetchRankList', 
-    async () => {
-      const response = await axios.get('YOUR_API_ENDPOINT'); // 실제 API 엔드포인트로 변경하세요
-      return response.data; // API에서 반환되는 데이터를 리턴
-    }
-  );
+  'rankList/fetchRankList', 
+  async () => {
+    const response = await axios.get('YOUR_API_ENDPOINT'); // 실제 API 엔드포인트로 변경하세요
+    return response.data; // API에서 반환되는 데이터를 리턴
+  }
+);
+
+export const fetchMyGroup = createAsyncThunk(
+  'myGroup/fetchMyGroup',
+  async () => {
+    const response = await axios.get('YOUR_MYGROUP_API_ENDPOINT');
+    return response.data; // API에서 반환된 myGroup 데이터
+  }
+);
 
 // Initial state
 const initialState = {
-    rankList: [
-    {
+    rankList: {
         "thisWeek": {
             "myLeaderBoard": {
                 "leaderboardType": 0,
@@ -327,18 +334,77 @@ const initialState = {
             ]
         }
     },
-    ],
+
+    "myGroup" : {
+		"leagueId" : 1,
+		"createdAt" : "2024-09-02",
+		"leagueRank" : 1000,
+		"leagueNum" : 30,
+        "myRank" : {
+            "userId" : 6,
+            "userName" : "myName",
+            "userXP" : 450,
+            "userRank" : 6
+        },
+		"leagueMembers" : [
+			{
+				"userId" : 1,
+				"userName" : "User1",
+				"userXP" : 900,
+				"userRank" : 1
+			},
+			{
+				"userId" : 2,
+				"userName" : "User2",
+				"userXP" : 800,
+				"userRank" : 2 
+			},
+			{
+				"userId" : 3,
+				"userName" : "User3",
+				"userXP" : 700,
+				"userRank" : 3 
+			},
+			{
+				"userId" : 4,
+				"userName" : "User4",
+				"userXP" : 600,
+				"userRank" : 4 
+			},
+			{
+				"userId" : 5,
+				"userName" : "User5",
+				"userXP" : 500,
+				"userRank" : 5 
+			},
+			{
+				"userId" : 6,
+				"userName" : "User6",
+				"userXP" : 450,
+				"userRank" : 6 
+			},
+			{
+				"userId" : 7,
+				"userName" : "User7",
+				"userXP" : 400,
+				"userRank" : 7 
+			},
+		]
+	},
     loading: false, // 로딩 상태
     error: null, // 에러 상태
 };
 
 
-const rankListSlice = createSlice({
-    name: 'rankList',
+const rankingSlice = createSlice({
+    name: 'ranking',
     initialState,
     reducers: {
       setRankList: (state, action) => {
         state.rankList = action.payload; // rankList를 업데이트
+      },
+      setMyGroup(state, action) {
+        state.myGroup = action.payload;
       },
     },
     extraReducers: (builder) => {
@@ -355,10 +421,23 @@ const rankListSlice = createSlice({
             state.loading = false; // 로딩 종료
             state.error = action.error.message; // 에러 메시지 저장
           });
+
+        builder
+          .addCase(fetchMyGroup.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+          })
+          .addCase(fetchMyGroup.fulfilled, (state, action) => {
+            state.loading = false;
+            state.myGroup = action.payload; // API에서 받은 myGroup으로 업데이트
+          })
+          .addCase(fetchMyGroup.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message; // 에러 처리
+          });
       },
 });
 
 
-
-export const { setRankList } = rankListSlice.actions; // 액션 생성자 export
-export default rankListSlice.reducer; // reducer export
+export const { setRankList, setMyGroup  } = rankingSlice.actions; // 액션 생성자 export
+export default rankingSlice.reducer; // reducer export

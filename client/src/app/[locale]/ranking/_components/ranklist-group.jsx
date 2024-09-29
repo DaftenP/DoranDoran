@@ -7,17 +7,18 @@ import RankUp from "@/public/icon2/rank-up.webp";
 import RankPlat from "@/public/icon2/rank-plat.webp";
 import RankDown from "@/public/icon2/rank-down.webp";
 
-export default forwardRef(function RankListGroup({userRank, userChar, userId, userXP}, ref) {
+export default forwardRef(function RankListGroup({userRank, userChar, userName, myRank, userXP}, ref) {
 
   const borderColor = userRank === 1 ? '#FFE500' :
                       userRank === 2 ? '#A5A5A5' :
-                      userRank === 3 ? '#A97F00' : '#808080';
+                      userRank === 3 ? '#A97F00' :
+                      userRank === myRank ? '#1cbfff' : '#BDBDBD';
 
   const textColor = userRank === 1 ? '#B8860B' :
                     userRank === 2 ? '#4B4B4B' :
-                    userRank === 3 ? '#A0522D' : '#808080';
+                    userRank === 3 ? '#A0522D' :'#808080';
 
-  const borderWidth = userRank <= 3 ? '4px' : '1px';
+  const borderWidth = userRank <= 3 || userRank === myRank ? '3px' : '1px';
 
   const rankdif = userRank <= 3 ? RankUp :
                   userRank >= 18 ? RankDown : RankPlat;
@@ -37,7 +38,7 @@ export default forwardRef(function RankListGroup({userRank, userChar, userId, us
         className="w-auto h-[80%] left-[20%] absolute"
       />
       <div className="absolute left-[45%] flex flex-col text-[2vh]" >
-        <span className="text-black font-medium">{userId}</span>
+        <span className="text-black font-medium">{userName}</span>
         <span className="text-black font-semibold">{userXP}</span>
       </div>
       <Image

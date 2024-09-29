@@ -9,7 +9,7 @@ import Platinum from "@/public/rank/platinum.webp";
 import Diamond from "@/public/rank/diamond.webp";
 import Bird2 from "@/public/shop-bird/bird (2).webp";
 
-export default forwardRef(function RankListAll({userRank, userChar, userId, userTier, userXP, borderColor }, ref) {
+export default forwardRef(function RankListAll({userRank, userChar, userName, userTier, userXP, borderColor }, ref) {
   return (
     <div 
       ref={ref} 
@@ -22,7 +22,7 @@ export default forwardRef(function RankListAll({userRank, userChar, userId, user
         alt="bird2"
         className="w-[auto] h-[80%] left-[12%] absolute"
       />
-      <span className="left-[25%] absolute text-purple-500 font-medium">{userId}</span>
+      <span className="left-[25%] absolute text-purple-500 font-medium">{userName}</span>
       <Image
         src={Diamond}
         alt="diamond"

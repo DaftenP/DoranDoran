@@ -178,6 +178,13 @@
     "small-achievements-add-up-to-big-progress": "小さな達成が集まれば、大きな成長につながります！",
     "today's-small-actions-lead-to-tomorrow's-fluency": "今日の小さな実践が、明日の流暢さにつながります。",
     "it-is-okay-to-go-slowly-consistency-is-what-matters": "ゆっくり進んでも大丈夫です。大切なのは継続です！",
-    "animal": "動物"
+    "animal": "動物",
+    "sending": "送信中...",
+    "email-sending-successful": "メール送信成功",
+    "email-sending-failed": "メール送信失敗",
+    "verification-successful": "認証成功",
+    "verification-failed": "認証失敗",
+    "signup-successful": "サインアップ成功",
+    "signup-failed": "サインアップ失敗"
   }
 }

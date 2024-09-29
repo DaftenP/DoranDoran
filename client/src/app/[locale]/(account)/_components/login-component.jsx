@@ -76,14 +76,14 @@ function LoginFormContent() {
       )
       .then((response) => {
         console.warn("로그인 성공:", response.headers);
-        const token = response.headers.Access;
-        if (token) {
-          console.log("JWT 토큰 발급 성공:", token);
-          localStorage.setItem("USER_TOKEN", token);
-          router.push(`/${locale}/main`);
-        } else {
-          console.log("JWT 토큰 발급 실패");
-        }
+        router.push(`/${locale}/main`);
+        // const token = response.headers.Access;
+        // if (token) {
+        //   console.log("JWT 토큰 발급 성공:", token);
+        //   localStorage.setItem("USER_TOKEN", token);
+        // } else {
+        //   console.log("JWT 토큰 발급 실패");
+        // }
       })
       .catch((error) => {
         console.warn("로그인 실패:", error);

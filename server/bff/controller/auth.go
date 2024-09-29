@@ -28,7 +28,6 @@ func SocialLogin(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
 }
 
 // POST /api/v1/bff/regist/social
@@ -37,5 +36,4 @@ func SocialRegist(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
 }

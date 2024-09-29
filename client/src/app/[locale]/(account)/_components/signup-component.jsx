@@ -81,6 +81,7 @@ function TranslatedSignup() {
       })
       .then((response) => {
         console.warn("이메일 요청 성공:", response);
+        alert('이메일 요청 성공')
         setIsEmailSent(true);
       })
       .catch((error) => {
@@ -104,6 +105,7 @@ function TranslatedSignup() {
       })
       .then((response) => {
         console.log("인증 코드 확인 성공:", response);
+        alert('인증 코드 확인 성공')
         setIsEmailVerified(true);
       })
       .catch((error) => {
@@ -148,6 +150,7 @@ function TranslatedSignup() {
       .then((response) => {
         console.warn("회원가입 성공:", response);
         router.push(`/${locale}`);
+        alert('회원가입 성공')
       })
       .catch((error) => {
         console.warn("회원가입 실패:", error);
@@ -247,7 +250,7 @@ function TranslatedSignup() {
             className={buttonStyle}
             disabled={!formData.email || isEmailSent}
           >
-            {isEmailSent ? t("sent") : t("send")}
+            {t("send")}
           </button>
         </div>
 

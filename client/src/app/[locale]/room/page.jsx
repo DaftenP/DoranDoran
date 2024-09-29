@@ -64,7 +64,7 @@ function TranslatedBottom() {
       {/* 상단바 */}
       <div className="flex justify-center items-center w-full h-[7.5%]">
         <div className="w-[20%] flex justify-center">
-          <Link href={`/${locale}`}>
+          <Link href={`/${locale}/main`}>
             <Image src={Back} alt="back" className="w-8" />
           </Link>
         </div>

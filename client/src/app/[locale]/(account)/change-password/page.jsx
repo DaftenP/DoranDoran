@@ -35,11 +35,7 @@ function TranslatedChagne() {
   const locale = useLocale();
   const t = useTranslations("index");
   const [formData, setFormData] = useState({ email: "" });
-  const [touched, setTouched] = useState({
-    email: false,
-    verificationCode: false,
-  });
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [touched, setTouched] = useState({ email: false });
 
   // 입력값 변경 핸들러
   const signupChange = (e) => {
@@ -66,6 +62,7 @@ function TranslatedChagne() {
       })
       .then((response) => {
         console.warn("이메일 요청 성공:", response);
+        alert("이메일 인증 요청 성공");
       })
       .catch((error) => {
         console.warn("이메일 요청 실패:", error);
@@ -76,16 +73,12 @@ function TranslatedChagne() {
   const inputStyle =
     "w-full h-10 md:h-20 rounded-full bg-white/60 shadow-md text-xl md:text-3xl pl-8 pr-20 transition-colors";
 
-  // 버튼 스타일 정의
-  const buttonStyle =
-    "absolute top-1/2 right-5 md:text-3xl bg-gradient-to-r from-[#DBB4F3] to-[#FFC0B1] text-transparent bg-clip-text";
-
   // 입력 클래스 가져오기
   const getInputClass = (name, value) => {
     if (!touched[name]) return inputStyle;
     switch (name) {
       case "email":
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 정규 표현식
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return `${inputStyle} ${
           emailRegex.test(value)
             ? "border-2 border-green-500"
@@ -118,7 +111,11 @@ function TranslatedChagne() {
             placeholder={t("e-mail")}
             className={getInputClass("email", formData.email)}
           />
-          <button type="button" onClick={emailSubmit} className={buttonStyle}>
+          <button
+            type="button"
+            onClick={emailSubmit}
+            className="absolute top-1/2 right-5 md:text-3xl bg-gradient-to-r from-[#DBB4F3] to-[#FFC0B1] text-transparent bg-clip-text"
+          >
             {t("send")}
           </button>
         </div>
@@ -126,7 +123,7 @@ function TranslatedChagne() {
         {/* 버튼 */}
         <div className="flex justify-center">
           <Button text={t("cancel")} href={`/${locale}`} />
-          <Button text={t("ok")} />
+          <Button text={t("ok")} href={`/${locale}`} />
         </div>
       </div>
 

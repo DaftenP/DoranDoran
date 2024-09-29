@@ -57,28 +57,38 @@ function LoginFormContent() {
   };
 
   // 폼 제출 핸들러
-  const loginSubmit = (e) => {
-    e.preventDefault();
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios.post(`${apiUrl}/login`,
-        {
-          email: formData.email,
-          password: formData.password,
+ const loginSubmit = (e) => {
+  e.preventDefault();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  axios
+    .post(
+      `${apiUrl}/login`,
+      {
+        email: formData.email,
+        password: formData.password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.warn("로그인 성공:", response);
+        withCredentials: true
+      }
+    )
+    .then((response) => {
+      console.warn("로그인 성공:", response.headers);
+      const token = response.headers.Access;
+      if (token) {
+        console.log("JWT 토큰 발급 성공:", token);
+        localStorage.setItem("USER_TOKEN", token);
         router.push(`/${locale}/main`);
-      })
-      .catch((error) => {
-        console.warn("로그인 실패:", error);
-      });
-  };
+      } else {
+        console.log("JWT 토큰 발급 실패");
+      }
+    })
+    .catch((error) => {
+      console.warn("로그인 실패:", error);
+    });
+};
 
   return (
     <form

@@ -22,6 +22,15 @@ func LoginController(w http.ResponseWriter, r *http.Request) {
 	util.ForwardRequest(w, r, "POST", service.UserUrl+"/api/v1/user/login")
 }
 
+// POST /api/v1/bff/logout
+func LogoutController(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:   "refesh",
+		Value:  "",
+		MaxAge: -1,
+	})
+}
+
 // POST /api/v1/bff/login/social
 func SocialLoginController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {

@@ -12,6 +12,7 @@ func main() {
 	http.HandleFunc("/api/v1/bff/reissue", controller.ReissueController)
 	http.HandleFunc("/api/v1/bff/regist", controller.RegistController)
 	http.HandleFunc("/api/v1/bff/login", controller.LoginController)
+	http.HandleFunc("/api/v1/bff/logout", controller.LogoutController)
 
 	http.HandleFunc("/api/v1/bff/mail/regist", controller.RegistMailController)
 	http.HandleFunc("/api/v1/bff/mail/password", controller.PasswordMailController)

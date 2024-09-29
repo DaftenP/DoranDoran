@@ -11,7 +11,7 @@ import (
 )
 
 // GET /api/v1/bff/quiz/quizzes/{quizId}
-func GetQuiz(w http.ResponseWriter, r *http.Request) {
+func GetQuizController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -25,7 +25,7 @@ func GetQuiz(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /api/v1/bff/quiz/quizzes
-func GetQuizzes(w http.ResponseWriter, r *http.Request) {
+func GetQuizzesController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -35,7 +35,7 @@ func GetQuizzes(w http.ResponseWriter, r *http.Request) {
 }
 
 // POST /api/v1/bff/quiz/play-log/submit
-func SubmitPlayLog(w http.ResponseWriter, r *http.Request) {
+func SubmitPlayLogController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -45,7 +45,7 @@ func SubmitPlayLog(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /api/v1/bff/quiz/play-log
-func GetPlayLog(w http.ResponseWriter, r *http.Request) {
+func GetPlayLogController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -112,7 +112,7 @@ func RegistQuizController(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /api/v1/bff/quiz/stage/all
-func GetAllStage(w http.ResponseWriter, r *http.Request) {
+func GetAllStageController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -122,7 +122,7 @@ func GetAllStage(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /api/v1/bff/quiz/stage/{stageId}
-func GetStage(w http.ResponseWriter, r *http.Request) {
+func GetStageController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return

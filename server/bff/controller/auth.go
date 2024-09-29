@@ -8,22 +8,22 @@ import (
 )
 
 // POST /api/v1/bff/reissue
-func Reissue(w http.ResponseWriter, r *http.Request) {
+func ReissueController(w http.ResponseWriter, r *http.Request) {
 	util.ForwardRequest(w, r, "POST", service.UserUrl+"/api/v1/user/reissue")
 }
 
 // POST /api/v1/bff/regist
-func Regist(w http.ResponseWriter, r *http.Request) {
+func RegistController(w http.ResponseWriter, r *http.Request) {
 	util.ForwardRequest(w, r, "POST", service.UserUrl+"/api/v1/user/regist")
 }
 
 // POST /api/v1/bff/login
-func Login(w http.ResponseWriter, r *http.Request) {
+func LoginController(w http.ResponseWriter, r *http.Request) {
 	util.ForwardRequest(w, r, "POST", service.UserUrl+"/api/v1/user/login")
 }
 
 // POST /api/v1/bff/login/social
-func SocialLogin(w http.ResponseWriter, r *http.Request) {
+func SocialLoginController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -31,7 +31,7 @@ func SocialLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 // POST /api/v1/bff/regist/social
-func SocialRegist(w http.ResponseWriter, r *http.Request) {
+func SocialRegistController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return

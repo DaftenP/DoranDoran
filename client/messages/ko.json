@@ -166,6 +166,13 @@
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "이 주제에 대해 이전 대화가 있습니다. 이전 위치에서 계속하시겠습니까?",
     "your-purchase-was-successful": "구매가 성공적으로 완료되었습니다.",
     "please-enter-your-nickname!": "닉네임을 입력해 주세요!",
-    "would-you-like-to-return-to-the-home-screen?": "홈화면으로 돌아가시겠습니까?"
+    "would-you-like-to-return-to-the-home-screen?": "홈화면으로 돌아가시겠습니까?",
+    "sending": "전송 중...",
+    "email-sending-successful": "이메일 전송 성공",
+    "email-sending-failed": "이메일 전송 실패",
+    "verification-successful": "인증 성공",
+    "verification-failed": "인증 실패",
+    "signup-successful": "가입 성공",
+    "signup-failed": "가입 실패"
   }
 }

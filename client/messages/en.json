@@ -166,6 +166,13 @@
     "please-enter-your-nickname!": "please enter your nickname!",
     "delete-user": "Delete User",
     "logout": "Logout",
-    "would-you-like-to-return-to-the-home-screen?": "Would you like to return to the home screen?"
+    "would-you-like-to-return-to-the-home-screen?": "Would you like to return to the home screen?",
+    "sending": "Sending...",
+    "email-sending-successful": "Email Sending Successful",
+    "email-sending-failed": "Email Sending Failed",
+    "verification-successful": "Verification Successful",
+    "verification-failed": "Verification Failed",
+    "signup-successful": "Signup Successful",
+    "signup-failed": "Signup Failed"
   }
 }

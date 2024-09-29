@@ -166,6 +166,13 @@
     "please-enter-your-nickname!": "请输入您的昵称！",
     "delete-user": "注销账户",
     "logout": "登出",
-    "would-you-like-to-return-to-the-home-screen?": "您想返回主屏幕吗？"
+    "would-you-like-to-return-to-the-home-screen?": "您想返回主屏幕吗？",
+    "sending": "发送中...",
+    "email-sending-successful": "邮件发送成功",
+    "email-sending-failed": "邮件发送失败",
+    "verification-successful": "验证成功",
+    "verification-failed": "验证失败",
+    "signup-successful": "注册成功",
+    "signup-failed": "注册失败"
   }
 }

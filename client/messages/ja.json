@@ -166,6 +166,13 @@
     "please-enter-your-nickname!": "ニックネームを入力してください!",
     "delete-user": "アカウント削除",
     "logout": "ログアウト",
-    "would-you-like-to-return-to-the-home-screen?": "ホーム画面に戻りますか？"
+    "would-you-like-to-return-to-the-home-screen?": "ホーム画面に戻りますか？",
+    "sending": "送信中...",
+    "email-sending-successful": "メール送信成功",
+    "email-sending-failed": "メール送信失敗",
+    "verification-successful": "認証成功",
+    "verification-failed": "認証失敗",
+    "signup-successful": "サインアップ成功",
+    "signup-failed": "サインアップ失敗"
   }
 }

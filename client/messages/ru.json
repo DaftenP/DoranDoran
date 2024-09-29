@@ -166,6 +166,13 @@
     "please-enter-your-nickname!": "Пожалуйста, введите свой ник!",
     "delete-user": "Удалить аккаунт",
     "logout": "Выйти из системы",
-    "would-you-like-to-return-to-the-home-screen?": "Вы хотите вернуться на главный экран?"
+    "would-you-like-to-return-to-the-home-screen?": "Вы хотите вернуться на главный экран?",
+    "sending": "Отправка...",
+    "email-sending-successful": "Отправка электронной почты успешна",
+    "email-sending-failed": "Отправка электронной почты не удалась",
+    "verification-successful": "Проверка успешна",
+    "verification-failed": "Проверка не удалась",
+    "signup-successful": "Регистрация успешна",
+    "signup-failed": "Регистрация не удалась"
   }
 }

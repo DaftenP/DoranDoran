@@ -13,7 +13,7 @@ export default forwardRef(function RankListAll({userRank, userChar, userId, user
   return (
     <div 
       ref={ref} 
-      className={`relative flex items-center bg-white px-[4%] py-[2%] font-normal font-['Itim'] rounded-lg my-[2%] animate-scale-in`}  
+      className={`relative flex items-center bg-white px-[4%] py-[2%] font-normal rounded-lg my-[2%] animate-scale-in`}  
       style={{ border: `2px solid ${borderColor}` }}
     >
       <span className="font-bold text-gray-600">{userRank}</span>

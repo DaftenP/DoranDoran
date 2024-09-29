@@ -82,12 +82,12 @@ function Ranklist() {
             onClick={handleGroupClick}
             className="w-[50%] h-[100%] absolute flex justify-center items-center bg-[#dddddd] rounded-[20px]"
           >
-            <span className="text-[15px] font-normal font-['Itim'] text-[#ababab]">Group</span>
+            <span className="text-[15px] font-normal text-[#ababab]">{t('group')}</span>
           </div>
           <div
             className="w-[50%] h-[100%] left-[50%] absolute flex justify-center items-center bg-[#f1f3c2] border border-[#d2c100] rounded-[20px]"
           >
-            <span className="text-[15px] font-normal font-['Itim'] text-black">All</span>
+            <span className="text-[15px] font-normal text-black">{t('all')}</span>
           </div>
         </div>
         
@@ -98,10 +98,10 @@ function Ranklist() {
               selectedWeek === "last week" ? "bg-[#00c3ff] border border-[#0077cc]" : "bg-[#dddddd]"
             } rounded-[20px]`}
           >
-            <span className={`text-[11px] font-normal font-['Itim'] ${
+            <span className={`text-[11px] font-normal ${
               selectedWeek === "last week" ? "text-white" : "text-[#ababab]"
             }`}>
-              last week
+              {t('last-week')}
             </span>
           </div>
           <div
@@ -110,10 +110,10 @@ function Ranklist() {
               selectedWeek === "this week" ? "bg-[#00c3ff] border border-[#0077cc]" : "bg-[#dddddd]"
             } rounded-[20px]`}
           >
-            <span className={`text-[11px] font-normal font-['Itim'] ${
+            <span className={`text-[11px] font-normal ${
               selectedWeek === "this week" ? "text-white" : "text-[#ababab]"
             }`}>
-              this week
+              {t('this-week')}
             </span>
           </div>
         </div>
@@ -133,7 +133,7 @@ function Ranklist() {
             <div>
               {selectedWeek === "this week" ? thisweekRankList[1].gainXp : lastweekRankList[1].gainXp}
             </div>
-            <div className="text-[20px] font-bold font-['Itim']">2</div>
+            <div className="text-[20px] font-bold">2</div>
           </div>
           <div className="w-[25%] h-[100%] grid place-items-center text-center bg-[#f8d87b] rounded-tl-[10px] rounded-tr-[10px] mx-[2%]">
             <Image
@@ -147,7 +147,7 @@ function Ranklist() {
             <div>
               {selectedWeek === "this week" ? thisweekRankList[0].gainXp : lastweekRankList[0].gainXp}
             </div>
-            <div className="text-[30px] font-bold font-['Itim']">1</div>
+            <div className="text-[30px] font-bold">1</div>
           </div>
           <div className="w-[25%] h-[70%] grid place-items-center text-center bg-[#e8a57e] rounded-tl-[10px] rounded-tr-[10px]">
             <Image
@@ -161,7 +161,7 @@ function Ranklist() {
             <div>
               {selectedWeek === "this week" ? thisweekRankList[2].gainXp : lastweekRankList[2].gainXp}
             </div>
-            <div className="text-[20px] font-bold font-['Itim']">3</div>
+            <div className="text-[20px] font-bold">3</div>
           </div>
         </article>
 

@@ -56,13 +56,13 @@ function Ranklist() {
           <div
             className="w-[50%] h-[100%] absolute flex justify-center items-center bg-[#f1f3c2] border border-[#d2c100] rounded-[20px]"
           >
-            <span className="text-[15px] font-normal font-['Itim'] text-black">Group</span>
+            <span className="text-[15px] font-normal text-black">Group</span>
           </div>
           <div
             onClick={handleAllClick}
             className="w-[50%] h-[100%] left-[50%] absolute flex justify-center items-center bg-[#dddddd] rounded-[20px]"
           >
-            <span className="text-[15px] font-normal font-['Itim'] text-[#ababab]">All</span>
+            <span className="text-[15px] font-normal text-[#ababab]">All</span>
           </div>
         </div>
       </section>
@@ -74,7 +74,7 @@ function Ranklist() {
             alt="tier"
             className="w-auto h-[100%]"
           />
-          <div className="flex flex-col items-center font-['Itim'] font-semibold text-[3vh]" >
+          <div className="flex flex-col items-center font-semibold text-[3vh]" >
             <span>Group</span>
             <span>17</span>
           </div>

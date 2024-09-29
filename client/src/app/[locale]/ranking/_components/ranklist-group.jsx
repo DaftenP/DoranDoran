@@ -27,7 +27,7 @@ export default forwardRef(function RankListGroup({userRank, userChar, userId, us
   return (
     <div 
       ref={ref} 
-      className="h-[8vh] relative flex items-center bg-white px-[4%] py-[2%] font-normal font-['Itim'] rounded-lg my-[2%]" 
+      className="h-[8vh] relative flex items-center bg-white px-[4%] py-[2%] font-normal rounded-lg my-[2%]" 
       style={{ border: `${borderWidth} solid ${borderColor}` }}
     >
       <span className="font-bold" style={{ color: `${textColor}`, fontSize: '4vh' }}>{userRank}</span>

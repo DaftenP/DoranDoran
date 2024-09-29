@@ -64,7 +64,7 @@ function Storelist() {
             className="w-[30%] h-[10%] left-[35%] absolute"
           />
           <div className="w-[30%] h-[10%] top-[2%] left-[35%] absolute grid place-items-center">
-            <span className="text-base sm:text-2xl base:text-3xl lg:text-4xl xl:text-5xl text-white font-['Itim']">{t('store')}</span>
+            <span className="text-base sm:text-2xl base:text-3xl lg:text-4xl xl:text-5xl text-white">{t('store')}</span>
           </div>
 
           <article className="relative absolute top-[15%] grid grid-cols-2 gap-y-4 place-items-center text-sm sm:text-lg base:text-xl lg:text-2xl xl:text-3xl">

@@ -44,20 +44,24 @@ func SubmitPlayLog(w http.ResponseWriter, r *http.Request) {
 	util.ForwardRequest(w, r, http.MethodPost, service.QuizUrl+"/api/v1/quiz/play-log/submit")
 }
 
-// GET /api/v1/bff/quiz/play-log/{userId}
+// GET /api/v1/bff/quiz/play-log
 func GetPlayLog(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	userId := r.URL.Query().Get("userId")
-	if userId == "" {
-		http.Error(w, "userId is required", http.StatusBadRequest)
+	cookie, err := r.Cookie("refresh")
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		fmt.Println(err)
 		return
 	}
 
-	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/play-log/"+userId)
+	parts := strings.Split(cookie.Value, ":")
+	userID := parts[0]
+
+	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/play-log/"+userID)
 }
 
 // POST /api/v1/bff/quiz/quizzes/regist

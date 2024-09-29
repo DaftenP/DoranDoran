@@ -25,7 +25,7 @@ func LoginController(w http.ResponseWriter, r *http.Request) {
 // POST /api/v1/bff/logout
 func LogoutController(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
-		Name:   "refesh",
+		Name:   "refresh",
 		Value:  "",
 		MaxAge: -1,
 	})

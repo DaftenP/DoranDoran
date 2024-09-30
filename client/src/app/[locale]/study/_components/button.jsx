@@ -3,11 +3,11 @@
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteQuiz, backQuiz } from '@/store/quiz';
+import { deleteQuiz, backQuiz, deleteStage } from '@/store/quiz';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function Button() {
+export default function Button({ type, index }) {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
 
@@ -29,26 +29,45 @@ export default function Button() {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedButton locale={locale} />
+      <TranslatedButton locale={locale} type={type} index={index}/>
     </NextIntlClientProvider>
   );
 }
 
-function TranslatedButton({ locale }) {
+function TranslatedButton({ locale, type, index }) {
   const t = useTranslations('index');
-  const quizList = useSelector((state) => state.quiz.quizList[0].quizList)
-  const dispatch = useDispatch()
-  const router = useRouter()
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const quizList = useSelector((state) => 
+    type === 'daily' ? state.quiz.dailyQuizList : state.quiz.stageList[index].quizList
+  );
 
-  const handleSubmit = (() => {
-    dispatch(deleteQuiz())
-  })
+  // const handleSubmit = (() => {
+  //   if (type === 'daily') {
+  //     dispatch(deleteQuiz());
+  //   } else {
+  //     dispatch(deleteStage());
+  //   }
+  // });
+
+  const handleSubmit = () => {
+    dispatch(deleteQuiz());
+  }
 
   useEffect(() => {
-    if (quizList.length > 0) {
-      router.push(`/${locale}/study/daily/${quizList[0].number}`)
-    } else {
-      router.push(`/${locale}/main`)
+    if (type === 'daily') {
+      if (quizList.length > 0) {
+        router.push(`/${locale}/study/daily/${quizList[0].quizId}`)
+      } else {
+        router.push(`/${locale}/main`)
+      }
+    }
+    else {
+      if (quizList.length > 0) {
+        router.push(`/${locale}/study/detail/${index+1}/${quizList[0].quizId}`)
+      } else {
+        router.push(`/${locale}/main`)
+      }
     }
   }, [quizList]);
 

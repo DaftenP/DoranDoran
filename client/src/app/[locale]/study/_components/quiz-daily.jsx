@@ -3,9 +3,11 @@
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Quiz from '@/app/[locale]/study/_components/quiz'
+import QuizTitle from '@/app/[locale]/study/_components/quiz-title'
+import QuizContent from '@/app/[locale]/study/_components/quiz-content';
+import Button from '@/app/[locale]/study/_components/button';
 
-export default function DetailQuiz() {
+export default function QuizDaily({type}) {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
 
@@ -27,17 +29,23 @@ export default function DetailQuiz() {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedDetailQuiz />
+      <TranslatedQuizDaily type={type}/>
     </NextIntlClientProvider>
   );
 }
 
-function TranslatedDetailQuiz() {
+function TranslatedQuizDaily({type}) {
   const t = useTranslations('index');
 
   return (
-    <div>
-      <Quiz />
+    <div className='relative h-[80vh]'>
+      <div className='mb-[10vh]'>
+        <QuizTitle type={type} />
+      </div>
+      <QuizContent type={type} />
+      <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
+        <Button type={type} />
+      </div>
     </div>
   );
 }

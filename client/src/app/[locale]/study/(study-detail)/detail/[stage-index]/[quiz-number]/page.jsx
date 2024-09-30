@@ -2,12 +2,13 @@
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Link from 'next/link';
+import QuizDetail from '@/app/[locale]/study/_components/quiz-detail';
 
-export default function QuizTitle({ type, index }) {
+export default function DetailQuiz({ params }) {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
+
+  const index = params['stage-index']-1;
 
   useEffect(() => {
     async function loadMessages() {
@@ -27,29 +28,17 @@ export default function QuizTitle({ type, index }) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedQuizTitle type={type} index={index}/>
+      <TranslatedDetailQuiz index ={index}/>
     </NextIntlClientProvider>
   );
 }
 
-function TranslatedQuizTitle({ type, index }) {
+function TranslatedDetailQuiz({ index }) {
   const t = useTranslations('index');
-  const quizList = useSelector((state) => 
-    type === 'daily' ? state.quiz.dailyQuizList : state.quiz.stageList[index].quizList
-  );
-
-  const quizTitle = quizList.length > 0 ? quizList[0].title : ''
 
   return (
     <div>
-      <div className='flex-col flex justify-center items-center'>
-        <div className='text-xxl md:text-4xl lg:text-6xl'>
-          {quizTitle}
-        </div>
-        {/* <div className='text-4xl md:text-6xl lg:text-8xl text-center'>
-          {quizSubtitle}
-        </div> */}
-      </div>
+      <QuizDetail type={'stage'} index={index}/>
     </div>
   );
 }

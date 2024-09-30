@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 
-export default function QuizContent() {
+export default function QuizContent({ type, index }) {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
 
@@ -27,29 +27,35 @@ export default function QuizContent() {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedQuizContent />
+      <TranslatedQuizContent type={type} index={index}/>
     </NextIntlClientProvider>
   );
 }
 
-function TranslatedQuizContent() {
+function TranslatedQuizContent({ type, index }) {
   const t = useTranslations('index');
-  const quizList = useSelector((state) => state.quiz.quizList[0].quizList)
+  const quizList = useSelector((state) => 
+    type === 'daily' ? state.quiz.dailyQuizList : state.quiz.stageList[index].quizList
+  );
 
-  const quizContent = quizList.length > 0 ? quizList[0].content : ''
+  const images = quizList.length > 0 ? quizList[0].quizQuest.map((quest) => quest.image) : [];
+  const quizContent = quizList.length > 0 ? images : [];
 
   return (
     <div>
-      <div className='flex-col flex justify-center items-center'>
-        <div className='text-xxl md:text-4xl lg:text-6xl'>
-          {quizContent}
-          <br />
-          {quizContent}
-          <br />
-          {quizContent}
-          <br />
-          {quizContent}
-        </div>
+      <div className='flex-col flex justify-center items-center grid grid-cols-2 gap-4'>
+        {/* <div className='text-xxl md:text-4xl lg:text-6xl'> */}
+        
+        {quizContent.length > 0 ? (
+        quizContent.map((item, index) => (
+          <div key={index} className="border p-2">
+            <div>{item}</div>
+          </div>
+        ))
+      ) : (
+        <div>No quiz content available.</div> 
+      )}
+        {/* </div> */}
       </div>
     </div>
   );

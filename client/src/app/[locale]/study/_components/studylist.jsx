@@ -3,18 +3,19 @@
 import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSelector, useDispatch } from 'react-redux';
+import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import Level from "./level";
 import LevelQuiz from "./levelquiz";
 import Path from "@/public/path/path.webp";
 
-const quizData = [
-  { id: 1, name: 'Quiz 1' },
-  { id: 2, name: 'Quiz 2' },
-  { id: 3, name: 'Quiz 3' },
-  { id: 4, name: 'Quiz 3' },
-  { id: 5, name: 'Quiz 3' },
-
-];
+// const quizData = [
+//   { id: 1, name: 'Quiz 1' },
+//   { id: 2, name: 'Quiz 2' },
+//   { id: 3, name: 'Quiz 3' },
+//   { id: 4, name: 'Quiz 3' },
+//   { id: 5, name: 'Quiz 3' },
+// ];
 
 const pathHeight = 13;
 
@@ -31,6 +32,9 @@ const calculateTopPositions = (dataLength) => {
 }
 
 export default function StudyList({ className }) {
+  const locale = useLocale()
+  const stageList = useSelector((state) => state.quiz.stageList)
+
   const transforms = [
     '',
     'scaleY(-1)',           // 상하 반전
@@ -39,17 +43,21 @@ export default function StudyList({ className }) {
   ];
 
   const quizPosition = ['93%','50%','7%','50%'];
-
-  const topPositions = calculateTopPositions(quizData.length);
-
+  const topPositions = calculateTopPositions(stageList.length);
   const colorList = ['#FED9D0', '#E5CBF8', '#FDE1AF', '#E5CBF8'];
+
+  const router = useRouter();
+  const handleStepQuiz = (index) => {
+    router.push(`/${locale}/study/detail/${index+1}/${0}`);
+  };
+
 
   return (
     <div className={`w-[80vw] h-auto left-[10vw] relative ${className}`}>
       <Level level={1} className="absolute left-1/2 top-[11vh] transform -translate-x-1/2 -translate-y-1/2 z-20"/>
       
-      {quizData.map((quiz, index) => (
-        <div key={quiz.id} className=" w-100%">
+      {stageList.map((item, index) => (
+        <div key={item.id} className=" w-100%">
           <Image
             src={Path}
             alt="Path"
@@ -63,15 +71,16 @@ export default function StudyList({ className }) {
             }}
           />
 
-          <LevelQuiz
-            quizName={quiz.name}
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
-            style={{
-              backgroundColor: colorList[index % colorList.length],
-              top: `${index * pathHeight * 0.84 + 22}vh`, // Path와 Quiz의 간격 조정
-              left: quizPosition[index % quizPosition.length], 
-            }}
-          />
+          <div onClick={() => handleStepQuiz(index)}>
+            <LevelQuiz
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
+              style={{
+                backgroundColor: colorList[index % colorList.length],
+                top: `${index * pathHeight * 0.84 + 22}vh`, // Path와 Quiz의 간격 조정
+                left: quizPosition[index % quizPosition.length], 
+              }}
+            />
+          </div>
         </div>
         ))}
     </div>

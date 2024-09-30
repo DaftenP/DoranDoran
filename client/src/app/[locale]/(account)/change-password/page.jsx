@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
+import axios from "axios";
 import Image from "next/image";
 import Doryeoni from "@/public/logo/doryeoni.webp";
 import Raoni from "@/public/logo/raoni.webp";
@@ -33,104 +34,109 @@ export default function ChangeComponent() {
 function TranslatedChagne() {
   const locale = useLocale();
   const t = useTranslations("index");
-  const [formData, setFormData] = useState({
-    email: "",
-    verificationCode: "",
-  });
-  const [errors, setErrors] = useState({
-    email: false,
-    verificationCode: false,
-  });
+  const [formData, setFormData] = useState({ email: "" });
+  const [touched, setTouched] = useState({ email: false });
 
-  const changeInputChange = (e) => {
+  // 입력값 변경 핸들러
+  const signupChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: value.trim() === "" }));
+    setFormData({ ...formData, [name]: value });
   };
 
-  const changeBlur = (e) => {
-    const { name, value } = e.target;
-    setErrors((prev) => ({ ...prev, [name]: value.trim() === "" }));
+  // 입력 필드 포커스 핸들러
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched({ ...touched, [name]: true });
+  };
+
+  // 이메일 인증 요청 POST 함수
+  const emailSubmit = (e) => {
+    e.preventDefault();
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    axios
+      .put(`${apiUrl}/mail/reset`, null, {
+        params: { email: formData.email },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.warn("이메일 요청 성공:", response);
+        alert("이메일 인증 요청 성공");
+      })
+      .catch((error) => {
+        console.warn("이메일 요청 실패:", error);
+      });
+  };
+
+  // 입력 스타일 정의
+  const inputStyle =
+    "w-full h-10 md:h-20 rounded-full bg-white/60 shadow-md text-xl md:text-3xl pl-8 pr-20 transition-colors";
+
+  // 입력 클래스 가져오기
+  const getInputClass = (name, value) => {
+    if (!touched[name]) return inputStyle;
+    switch (name) {
+      case "email":
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return `${inputStyle} ${
+          emailRegex.test(value)
+            ? "border-2 border-green-500"
+            : "border-2 border-red-500"
+        }`;
+      default:
+        return inputStyle;
+    }
   };
 
   return (
-    <div className="relative w-screen h-screen flex flex-col items-center">
+    <div className="w-screen h-screen flex flex-col items-center">
       <div className="mt-14 mb-7 text-center">
         <p className="text-2xl md:text-5xl mb-2">{t("change-password")}</p>
         <p className="md:text-4xl">{t("set-your-new-password")}</p>
       </div>
-      {/* 이메일 */}
-      <div className="w-[75%] flex flex-col items-center">
-        <div className="relative w-full mb-4">
+      <div className="w-[75%]">
+        {/* 이메일 입력 필드 */}
+        <div className="relative">
           <div className="flex">
             <p className="text-red-500 md:text-3xl mr-1">*</p>
-            <p className="md:text-3xl mb-1">{t("e-mail")}</p>
+            <p className="md:text-3xl">{t("e-mail")}</p>
           </div>
           <input
             type="email"
             name="email"
-            placeholder={t("e-mail")}
-            className={`w-full h-10 md:h-20 rounded-full bg-white/60 shadow-md text-xl md:text-3xl pl-8 pr-28 ${
-              errors.email ? "border-2 border-red-500" : ""
-            }`}
             value={formData.email}
-            onChange={changeInputChange}
-            onBlur={changeBlur}
+            onChange={signupChange}
+            onBlur={handleBlur}
+            placeholder={t("e-mail")}
+            className={getInputClass("email", formData.email)}
           />
-          <p
-            className="absolute top-1/2 right-5 bg-gradient-to-r from-[#DBB4F3] to-[#FFC0B1] md:text-3xl"
-            style={{
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
+          <button
+            type="button"
+            onClick={emailSubmit}
+            className="absolute top-1/2 right-5 md:text-3xl bg-gradient-to-r from-[#DBB4F3] to-[#FFC0B1] text-transparent bg-clip-text"
           >
             {t("send")}
-          </p>
+          </button>
         </div>
 
-        {/* 인증 코드 입력 필드 */}
-        <div className="relative w-full">
-          <div className="flex">
-            <p className="text-red-500 md:text-3xl mr-1">*</p>
-            <p className="md:text-3xl mb-1">{t("verification-code")}</p>
-          </div>
-          <input
-            type="text"
-            name="verificationCode"
-            placeholder="123456"
-            className={`w-full h-10 md:h-20 rounded-full bg-white/60 shadow-md text-xl md:text-3xl pl-8 pr-28 ${
-              errors.verificationCode ? "border-2 border-red-500" : ""
-            }`}
-            value={formData.verificationCode}
-            onChange={changeInputChange}
-            onBlur={changeBlur}
-          />
-          <p
-            className="absolute top-1/2 right-5 bg-gradient-to-r from-[#DBB4F3] to-[#FFC0B1] md:text-3xl"
-            style={{
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            {t("confirm")}
-          </p>
-        </div>
         {/* 버튼 */}
-        <div className="mt-2">
+        <div className="flex justify-center">
           <Button text={t("cancel")} href={`/${locale}`} />
-          <Button text={t("ok")} />
+          <Button text={t("ok")} href={`/${locale}`} />
         </div>
-        <Image
-          src={Doryeoni}
-          alt="Doryeoni"
-          className="w-[18%] absolute top-[55%] right-[15%]"
-        />
-        <Image
-          src={Raoni}
-          alt="Raoni"
-          className="w-[28%] absolute top-[60%] left-[15%]"
-        />
       </div>
+
+      <Image
+        src={Doryeoni}
+        alt="Doryeoni"
+        className="w-[18%] absolute top-[55%] right-[15%]"
+      />
+      <Image
+        src={Raoni}
+        alt="Raoni"
+        className="w-[28%] absolute top-[60%] left-[15%]"
+      />
     </div>
   );
 }

@@ -27,32 +27,44 @@ export const fetchChatMessages = createAsyncThunk(
       return response.data; // 서버에서 받은 chatMessages 데이터를 반환
     } catch (error) {
       console.log(error)
-      console.log("Error message:", error.message);
 
-      // 에러가 응답에 관련된 것인지 확인 후 응답 내용 출력
-      if (error.response) {
-        console.log("Error response data:", error.response.data);
-        console.log("Error response status:", error.response.status);
-        console.log("Error response headers:", error.response.headers);
-      } else if (error.request) {
-        // 요청이 보내졌지만 응답이 없을 때
-        console.log("Error request:", error.request);
-      } else {
-        // 그 외의 설정 에러
-        console.log("Error config:", error.config);
-      }
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }
   }
 );
 
-// Initial state
-const initialState = {
-  chatMessages : [
-  ],
+// 로컬 스토리지에 상태 저장하는 함수
+function saveToLocalStorage(state) {
+  try {
+    const { chatMessages, messages, type } = state;
+    const serializedState = JSON.stringify({ chatMessages, messages, type });
+    localStorage.setItem('aiTutorState', serializedState);
+  } catch (error) {
+    console.error('Could not save state', error);
+  }
+}
 
-  messages: [
-  ],
+// 로컬 스토리지에서 상태 불러오는 함수
+function loadFromLocalStorage() {
+  try {
+    const serializedState = localStorage.getItem('aiTutorState');
+    if (serializedState === null) {
+      return undefined; // 저장된 상태가 없으면 undefined 반환
+    }
+    return JSON.parse(serializedState); // chatMessages와 messages 불러오기
+  } catch (error) {
+    console.error('Could not load state', error);
+    return undefined;
+  }
+}
+
+const persistedState = loadFromLocalStorage();
+
+// Initial state
+const initialState = persistedState || {
+  chatMessages: [],
+  messages: [],
+  type: [],
   loading: false,
   error: null,
 };
@@ -62,6 +74,10 @@ const aiTutorSlice = createSlice({
   name: 'aiTutor',
   initialState,
   reducers: {
+    typeChange: (state, action) => {
+      state.type = action.payload
+      saveToLocalStorage(state)
+    },
     toggleHint: (state, action) => {
       const index = action.payload;
       const message = state.chatMessages[index];
@@ -98,6 +114,7 @@ const aiTutorSlice = createSlice({
         ...action.payload,
       }
       state.chatMessages.push(responseMessage)
+      saveToLocalStorage(state)
     },
     addMyMessage: (state, action) => {
       const myMessage = {
@@ -105,6 +122,7 @@ const aiTutorSlice = createSlice({
         ...action.payload,
       }
       state.chatMessages.push(myMessage)
+      saveToLocalStorage(state)
     },
     addSimpleResponseMessage: (state, action) => {
       const responseMessage = {
@@ -112,6 +130,7 @@ const aiTutorSlice = createSlice({
         content: action.payload.tutorResponse,
       }
       state.messages.push(responseMessage)
+      saveToLocalStorage(state)
     },
     addSimpleMyMessage: (state, action) => {
       const myMessage = {
@@ -119,6 +138,7 @@ const aiTutorSlice = createSlice({
         ...action.payload,
       }
       state.messages.push(myMessage)
+      saveToLocalStorage(state)
     },
     deleteMyMessage: (state) => {
       for (let i = state.chatMessages.length - 1; i >= 0; i--) {
@@ -128,7 +148,19 @@ const aiTutorSlice = createSlice({
           break
         }
       }
-    }
+      saveToLocalStorage(state)
+    },
+    resetState: (state) => {
+      state.chatMessages = []
+      state.messages = []
+      state.type = []
+    },
+    changeChatMessages: (state, action) => {
+      state.chatMessages = action.payload;
+    },
+    changeMessages: (state, action) => {
+      state.messages = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -146,6 +178,6 @@ const aiTutorSlice = createSlice({
   },
 });
 
-export const { resetPlayState, toggleHint, toggleResponsePlay, toggleHintPlay, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage, deleteMyMessage } = aiTutorSlice.actions;
+export const { typeChange, changeChatMessages, changeMessages, resetState, resetPlayState, toggleHint, toggleResponsePlay, toggleHintPlay, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage, deleteMyMessage } = aiTutorSlice.actions;
 
 export default aiTutorSlice.reducer;

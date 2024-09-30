@@ -14,6 +14,8 @@ func main() {
 	http.HandleFunc("/api/v1/bff/login", controller.LoginController)
 	http.HandleFunc("/api/v1/bff/logout", controller.LogoutController)
 
+	http.Handle("/api/v1/bff/tts", middleware.JWTMiddleware(http.HandlerFunc(controller.GenerateTTSController)))
+
 	http.HandleFunc("/api/v1/bff/mail/regist", controller.RegistMailController)
 	http.HandleFunc("/api/v1/bff/mail/password", controller.PasswordMailController)
 	http.HandleFunc("/api/v1/bff/mail/check", controller.CheckMailController)

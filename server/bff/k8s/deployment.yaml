@@ -105,7 +105,9 @@ spec:
       - "https://ssafy.picel.net"
     accessControlAllowHeaders:
       - "Content-Type"
-      - "Authorization"
+      - "Access"
+    accessControlExposeHeaders:
+      - "Access"  
     accessControlAllowCredentials: true
     accessControlMaxAge: 100
 ---

@@ -89,4 +89,21 @@ public class RankController {
             return new ResponseDto(StatusCode.SUCCESS, userRankInfo);
         }
     }
+
+    /**
+     * 리그 배치
+     * @param userId
+     * @return
+     */
+    @PostMapping("/placement/{userId}")
+    public ResponseDto placement(@PathVariable Long userId) {
+        log.info("placement api called");
+
+        if(userId == null) {
+            return new ResponseDto(StatusCode.BAD_REQUEST, null);
+        } else{
+            rankService.placement(userId);
+            return new ResponseDto(StatusCode.SUCCESS, null);
+        }
+    }
 }

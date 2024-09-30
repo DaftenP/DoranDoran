@@ -47,25 +47,20 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	voice, _, err := r.FormFile("file")
 
 	var pronunciationResBody model.TutorPronunciationResponse
+	pronunciationResBody.Data = 0
+
 	if err == nil {
 		pronunciationRes, err := service.PronunciationService(voice)
 		if err != nil || pronunciationRes.StatusCode != http.StatusOK {
 			fmt.Println(err)
 			fmt.Println(pronunciationRes.StatusCode)
-			http.Error(w, "Error calling PronunciationService", http.StatusInternalServerError)
-			return
+		} else {
+			err := json.NewDecoder(pronunciationRes.Body).Decode(&pronunciationResBody)
+			if err != nil {
+				fmt.Println(err)
+			}
 		}
 		defer pronunciationRes.Body.Close()
-
-		// get pronunciation from pronunciationRes's body
-		if err := json.NewDecoder(pronunciationRes.Body).Decode(&pronunciationResBody); err != nil {
-			http.Error(w, "Error parsing PronunciationService response", http.StatusInternalServerError)
-			return
-		}
-
-		fmt.Println(pronunciationResBody)
-	} else {
-		pronunciationResBody.Data = 0
 	}
 
 	var sendResBody model.TutorSendResponse

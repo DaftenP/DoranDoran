@@ -51,7 +51,7 @@ func PronunciationService(voice multipart.File) (*http.Response, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodGet, TutorUrl+"/api/v1/tutor/pronunciation", &body)
+	req, err := http.NewRequest(http.MethodPost, TutorUrl+"/api/v1/tutor/pronunciation", &body)
 	if err != nil {
 		return nil, err
 	}

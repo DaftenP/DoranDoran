@@ -10,7 +10,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
     /**
      * @ExceptionHandler(감지 할 예외)
      * INTERNAL_SERVER_ERROR 예외의 상태 코드와 메시지를 ResponseEntity<ResponseDto> 만들어준다.

@@ -76,6 +76,7 @@ public class AiTutorService {
     private final TutorSubjectRepository tutorSubjectRepository;
     private final ChatClient.Builder chatClientBuilder;
     private final RedisChatMemory redisChatMemory;
+    private final RestTemplate restTemplate;
 
     public TutorResponse send(MessageRequestDTO messageRequest, Long role, Long situation, String locale) {
         // role, situation 맞는 문자열 가져오기
@@ -86,7 +87,7 @@ public class AiTutorService {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
 
-        if(messageRequest == null) {
+        if (messageRequest == null) {
             redisChatMemory.clear(messageRequest.getUserId());
         }
 
@@ -108,7 +109,7 @@ public class AiTutorService {
                 .entity(TutorResponse.class);
 
         // 대화가 종료되면 대화 이력 삭제
-        if(tutorResponse.getIsOver()){
+        if (tutorResponse.getIsOver()) {
             redisChatMemory.clear(messageRequest.getUserId());
         }
 
@@ -141,8 +142,14 @@ public class AiTutorService {
             HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<>(requestBody, headers);
 
             // 5. RestTemplate을 이용한 요청
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<String> response = restTemplate.postForEntity(ETRI_API_URL, httpEntity, String.class);
+            ResponseEntity<String> response = null;
+            try {
+                response = restTemplate.postForEntity(ETRI_API_URL, httpEntity, String.class);
+            } catch (Exception e) {
+                log.error("RestTemplate Error: {}", e.getMessage());
+                throw new RestApiException(StatusCode.INTERNAL_SERVER_ERROR);
+            }
+
             // 6. 응답 처리
             if (response.getStatusCode() == HttpStatus.OK) {
                 String responseBody = response.getBody();

@@ -21,7 +21,6 @@ func QuizService(seed string, prompt string) (string, error) {
 
 	expireTimestamp := time.Now().Unix() + 3600
 	tokenContent := securityKey + path + fmt.Sprintf("%d", expireTimestamp)
-	fmt.Println(tokenContent)
 	md5sum := md5.New()
 	md5sum.Write([]byte(tokenContent))
 	tokenDigest := md5sum.Sum(nil)

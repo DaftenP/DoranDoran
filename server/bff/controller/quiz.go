@@ -11,7 +11,7 @@ import (
 )
 
 // GET /api/v1/bff/quiz/quizzes/{quizId}
-func GetQuiz(w http.ResponseWriter, r *http.Request) {
+func GetQuizController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -25,7 +25,7 @@ func GetQuiz(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /api/v1/bff/quiz/quizzes
-func GetQuizzes(w http.ResponseWriter, r *http.Request) {
+func GetQuizzesController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -35,7 +35,7 @@ func GetQuizzes(w http.ResponseWriter, r *http.Request) {
 }
 
 // POST /api/v1/bff/quiz/play-log/submit
-func SubmitPlayLog(w http.ResponseWriter, r *http.Request) {
+func SubmitPlayLogController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -45,7 +45,7 @@ func SubmitPlayLog(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /api/v1/bff/quiz/play-log
-func GetPlayLog(w http.ResponseWriter, r *http.Request) {
+func GetPlayLogController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -54,7 +54,6 @@ func GetPlayLog(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("refresh")
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
-		fmt.Println(err)
 		return
 	}
 
@@ -66,7 +65,6 @@ func GetPlayLog(w http.ResponseWriter, r *http.Request) {
 
 // POST /api/v1/bff/quiz/quizzes/regist
 func RegistQuizController(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("RegistQuizController")
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -109,4 +107,28 @@ func RegistQuizController(w http.ResponseWriter, r *http.Request) {
 	util.CopyBody(w, res.Body)
 
 	defer res.Body.Close()
+}
+
+// GET /api/v1/bff/quiz/stage/all
+func GetAllStageController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/stage/all")
+}
+
+// GET /api/v1/bff/quiz/stage/{stageId}
+func GetStageController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// split the URL path '/'
+	stageIdList := strings.Split(r.URL.Path, "/")
+	stageId := stageIdList[len(stageIdList)-1]
+
+	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/stage/"+stageId)
 }

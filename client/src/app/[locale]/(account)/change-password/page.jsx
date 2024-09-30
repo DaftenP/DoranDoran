@@ -146,13 +146,7 @@ function TranslatedChange() {
 
       {/* 모달 컴포넌트 */}
       {isOpenModal && (
-        <Modal
-          handleYesClick={handleCloseModal}
-          handleCloseModal={handleCloseModal}
-          message={modalMessage.message}
-          background={modalMessage.background}
-          buttonType={modalMessage.buttonType}
-        />
+        <Modal handleYesClick={handleCloseModal} handleCloseModal={handleCloseModal} message={modalMessage} />
       )}
     </>
   );

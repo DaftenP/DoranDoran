@@ -94,7 +94,7 @@ function TranslatedInformation() {
             href={`/${locale}/profile/setting/change-password`}
             className="w-[75%] h-[50%] bg-[#FFE4B5] rounded-full flex justify-center items-center"
           >
-            <p className="text-2xl md:text-4xl">{t("change-password")}</p>
+            <p className="text-xl md:text-4xl">{t("change-password")}</p>
           </Link>
         </div>
       </div>

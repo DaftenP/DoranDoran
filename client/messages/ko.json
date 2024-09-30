@@ -185,6 +185,7 @@
     "verification-successful": "인증 성공",
     "verification-failed": "인증 실패",
     "signup-successful": "가입 성공",
-    "signup-failed": "가입 실패"
+    "signup-failed": "가입 실패",
+    "please-speak": "말을 해주세요!"
   }
 }

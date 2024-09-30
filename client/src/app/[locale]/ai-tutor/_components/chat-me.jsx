@@ -37,20 +37,17 @@ export default function ChatMe ({ message, params }) {
 
 function TranslatedChatMe({ message, params }) {
   const [isRecordingComplete, setIsRecordingComplete] = useState(false)
-  const [isTimeout, setIsTimeout] = useState(false)
   const t = useTranslations('index');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsTimeout(true)
-    }, 10000)
-
-    return () => clearTimeout(timer)
-  }, [])
 
   const handleRecordingComplete = (() => {
     setIsRecordingComplete(true)
   })
+
+  useEffect(() => {
+    if (message.content) {
+      setIsRecordingComplete(true)
+    }
+  }, [])
 
   return (
     <div className='flex justify-end items-center m-[2vh]'>
@@ -59,15 +56,12 @@ function TranslatedChatMe({ message, params }) {
           <Microphone onRecordingComplete={handleRecordingComplete} params={params} />
         ) : (
           <>
-            {/* 10초 타임아웃 상태 확인 */}
-            {!message.content && !isTimeout ? (
+            {!message.content ? (
               <div className="flex justify-center items-center">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-900"></div>
               </div>
-            ) : isTimeout ? (
-              <div>{/* 타임아웃 후 빈 상태 */}</div>
             ) : (
-              <>
+              <div>
                 {message.content}
                 <div className='border-b border-[#ACACAC] w-auto h-1 mt-[2vh] mb-[2vh]'></div>
                 <div className='flex justify-around'>
@@ -80,7 +74,7 @@ function TranslatedChatMe({ message, params }) {
                     +400
                   </div>
                 </div>
-              </>
+              </div>
             )}
           </>
         )}

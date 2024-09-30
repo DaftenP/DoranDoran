@@ -13,6 +13,7 @@ import RestaurantServer from '@/public/job/restaurant-server.webp'
 import ShopAssistant from '@/public/job/shop-assistant.webp'
 import TaxiDriver from '@/public/job/taxi-driver.webp'
 import TourGuide from '@/public/job/tour-guide.webp'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function PeopleList () {
   const [messages, setMessages] = useState(null);
@@ -99,19 +100,43 @@ function TranslatedPeopleList() {
   return (
     <div>
       {peopleArray.map((item, index) => (
-        <div key={index}>
-          <div onClick={() => handlePeopleClick(index)} className={`relative rounded-3xl w-[80vw] h-[10vh] ${selectedIndex === index ? 'bg-[#1F7EFA]/40 border border-[#1F7EFA]' : 'bg-white/70 border border-[#ACACAC]'} mb-[1vh] flex items-center text-xxl md:text-4xl lg:text-6xl`}>
-            <Image src={item.image} alt={item.name} className='w-auto h-3/4 pl-[5vw] pr-[5vw]'/>
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: -20 }} // 처음에는 위에서 시작 (y: -20)
+          animate={{ opacity: 1, y: 0 }}   // 아래로 내려오며 보이기 (y: 0)
+          transition={{ duration: 0.3, delay: index * 0.1 }} // 각 항목에 시간차를 두어 순차적으로 나타남
+        >
+          <div
+            onClick={() => handlePeopleClick(index)}
+            className={`relative rounded-3xl w-[80vw] h-[10vh] ${
+              selectedIndex === index
+                ? 'bg-[#1F7EFA]/40 border border-[#1F7EFA]'
+                : 'bg-white/70 border border-[#ACACAC]'
+            } mb-[1vh] flex items-center text-xxl md:text-4xl lg:text-6xl`}
+          >
+            <Image src={item.image} alt={item.name} className="w-auto h-3/4 pl-[5vw] pr-[5vw]" />
             {item.name}
-            {selectedIndex === index && (
-              <Link href={`ai-tutor/${index}`}>
-                <button className="absolute right-5 top-1/2 -translate-y-1/2 text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1 cursor-pointer">
-                  {t('next')}
-                </button>
-              </Link>
-            )}
+
+            <AnimatePresence>
+              {selectedIndex === index && (
+                <motion.div
+                  key="next-button"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute right-5 -translate-y-1/2"
+                >
+                  <Link href={`ai-tutor/${index}`}>
+                    <button className="text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1 cursor-pointer">
+                      {t('next')}
+                    </button>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

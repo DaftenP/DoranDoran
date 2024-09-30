@@ -4,10 +4,7 @@ import axios from 'axios';
 export const fetchChatMessages = createAsyncThunk(
   'aiTutor/fetchChatMessages',
   async ({ role, situation,locale, formData }, thunkAPI) => {
-    console.log("FormData 준비? 완료", formData);
-    for (const pair of formData.entries()) {
-      console.log(pair);
-    }
+
     try {
       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/talk/send`
 
@@ -85,6 +82,12 @@ const aiTutorSlice = createSlice({
         message.isHint = !message.isHint;
       }
     },
+    toggleTyping: (state, action) => {
+      const payIndex = action.payload
+      if (state.chatMessages && state.chatMessages[payIndex]) {
+        state.chatMessages[payIndex].isTyping = true;
+      }
+    },
     toggleResponsePlay: (state, action) => {
       const payIndex = action.payload
       state.chatMessages.forEach((msg, index) => {
@@ -111,6 +114,7 @@ const aiTutorSlice = createSlice({
         isResponsePlay: false,
         isHintPlay: false,
         isHint: false,
+        isTyping: false,
         ...action.payload,
       }
       state.chatMessages.push(responseMessage)
@@ -119,6 +123,7 @@ const aiTutorSlice = createSlice({
     addMyMessage: (state, action) => {
       const myMessage = {
         role: "user",
+        isTyping: false,
         ...action.payload,
       }
       state.chatMessages.push(myMessage)
@@ -178,6 +183,6 @@ const aiTutorSlice = createSlice({
   },
 });
 
-export const { typeChange, changeChatMessages, changeMessages, resetState, resetPlayState, toggleHint, toggleResponsePlay, toggleHintPlay, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage, deleteMyMessage } = aiTutorSlice.actions;
+export const { toggleTyping, typeChange, changeChatMessages, changeMessages, resetState, resetPlayState, toggleHint, toggleResponsePlay, toggleHintPlay, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage, deleteMyMessage } = aiTutorSlice.actions;
 
 export default aiTutorSlice.reducer;

@@ -174,13 +174,13 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
     formData.append('msg', recordMessageRef.current);
     formData.append('file', blob, 'recording.raw');
 
-    console.log("FormData 준비 완료", formData);
-
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
-        dispatch(addMyMessage({ content: recordMessageRef.current }));
-        dispatch(addSimpleMyMessage({ content: recordMessageRef.current }));
+        const messageContent = recordMessageRef.current || t("please-speak")
+        console.log(chatMessages)
+        dispatch(addMyMessage({ content: messageContent }));
+        dispatch(addSimpleMyMessage({ content: messageContent }));
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));
         dispatch(deleteMyMessage());
@@ -191,7 +191,6 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
         if (!response.data.isOver) {
           dispatch(addMyMessage({ content: '' }));
         }
-        console.log(messages)
       })
       .catch((error) => {
         console.log('에러')

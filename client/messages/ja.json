@@ -185,6 +185,7 @@
     "verification-successful": "認証成功",
     "verification-failed": "認証失敗",
     "signup-successful": "サインアップ成功",
-    "signup-failed": "サインアップ失敗"
+    "signup-failed": "サインアップ失敗",
+    "please-speak": "話してください！"
   }
 }

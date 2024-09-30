@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function TopicList ({ params }) {
   const [messages, setMessages] = useState(null);
@@ -109,18 +110,42 @@ function TranslatedTopicList({ params }) {
   return (
     <div>
       {topicArray[String(people)].map((item, index) => (
-        <div key={index}>
-          <div onClick={() => handleTopicClick(index)} className={`relative rounded-3xl w-[80vw] min-h-[10vh] ${selectedIndex === index ? 'bg-[#1F7EFA]/40 border border-[#1F7EFA]' : 'bg-white/70 border border-[#ACACAC]'} mb-[1vh] flex items-center text-xxl md:text-4xl lg:text-6xl p-[3vh]`}>
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: -20 }} // 위에서 아래로 나타나도록 설정
+          animate={{ opacity: 1, y: 0 }}   // 나타날 때의 상태
+          exit={{ opacity: 0, y: -20 }}     // 사라질 때의 상태
+          transition={{ duration: 0.3, delay: index * 0.1 }} // 각 항목에 딜레이를 줘서 순차적으로 나타남
+        >
+          <div
+            onClick={() => handleTopicClick(index)}
+            className={`relative rounded-3xl w-[80vw] min-h-[10vh] ${
+              selectedIndex === index
+                ? 'bg-[#1F7EFA]/40 border border-[#1F7EFA]'
+                : 'bg-white/70 border border-[#ACACAC]'
+            } mb-[1vh] flex items-center text-xxl md:text-4xl lg:text-6xl p-[3vh]`}
+          >
             {item}
-            {selectedIndex === index && (
-              <Link href={`${people}/${index}`}>
-                <button className="absolute right-5 top-1/2 -translate-y-1/2 text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1 cursor-pointer">
-                  {t('next')}
-                </button>
-              </Link>
-            )}
+            <AnimatePresence>
+              {selectedIndex === index && (
+                <motion.div
+                  key="next-button"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute right-5 -translate-y-1/2"
+                >
+                  <Link href={`${people}/${index}`}>
+                    <button className="text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1 cursor-pointer">
+                      {t('next')}
+                    </button>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

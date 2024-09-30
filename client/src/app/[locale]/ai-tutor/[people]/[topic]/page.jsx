@@ -14,6 +14,7 @@ import Manual from '@/public/icon/manual.webp';
 import ChatAi from '@/app/[locale]/ai-tutor/_components/chat-ai';
 import ChatMe from '@/app/[locale]/ai-tutor/_components/chat-me';
 import ChatHint from '@/app/[locale]/ai-tutor/_components/chat-hint';
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Conversation({ params }) {
   const [messages, setMessages] = useState(null);
@@ -52,6 +53,30 @@ function TranslatedTopicConversation({ params }) {
   const locale = params.locale;
   const role = params.people;
   const situation = params.topic;
+
+  const letters = "Loading 중".split("");
+
+  const containerVariants = {
+    initial: { opacity: 1 },
+    animate: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2, // 각 글자가 차례로 애니메이션
+        repeat: Infinity,      // 무한 반복
+        repeatDelay: 1,        // 애니메이션 완료 후 1초 딜레이
+      }
+    }
+  };
+
+  const letterVariants = {
+    initial: { opacity: 0.4, scale: 0.8 },
+    animate: { opacity: 1, scale: 1.2 },
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut",
+    }
+  };
+
 
   useEffect(() => {
     dispatch(typeChange([role, situation]))
@@ -141,6 +166,12 @@ function TranslatedTopicConversation({ params }) {
     },
   ]
 
+  const chatBubbleVariants = {
+    hidden: { opacity: 0, y: 20 },  // 처음에 아래에서 시작
+    visible: { opacity: 1, y: 0 },  // 화면에 나타나면 위치와 투명도가 변경
+    exit: { opacity: 0, y: -20 }    // 사라질 때 위로 이동
+  };
+
   return (
     <div>
       <div className='flex justify-between mt-[1vh]'>
@@ -158,22 +189,66 @@ function TranslatedTopicConversation({ params }) {
         </div>
       </div>
       <div className='max-h-[87vh] overflow-y-scroll hide-scrollbar'>
-        {chatMessages.map((msg, index) => {
-          if (msg.role === 'assistant') {
-            return (
-              <div key={index}>
-                <ChatAi index={index} message={msg} />
-                {msg.isHint === true && <ChatHint index={index} message={msg} />}
-              </div>
-            )
+        {chatMessages.length > 0 ? (
+          chatMessages.map((msg, index) => {
+            if (msg.role === 'assistant') {
+              return (
+                <motion.div
+                  key={index}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  transition={{ duration: 0.5 }}
+                  variants={chatBubbleVariants}
+                >
+                  <ChatAi index={index} message={msg} />
+                  <AnimatePresence>
+                    {msg.isHint === true && (
+                      <motion.div
+                        key="hint"
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        transition={{ duration: 0.5 }}
+                        variants={chatBubbleVariants}
+                      >
+                        <ChatHint index={index} message={msg} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
           } else if (msg.role === 'user') {
-            return (
-              <div key={index}>
-                <ChatMe inedx={index} message={msg} params={params} />
-              </div>
-            )
-          }
-        })}
+              return (
+                <motion.div
+                  key={index}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  transition={{ duration: 0.5 }}
+                  variants={chatBubbleVariants}
+                >
+                  <ChatMe index={index} message={msg} params={params} />
+                </motion.div>
+              )
+            }
+          })
+        ) : (
+          <div className='flex justify-center items-center h-[80vh] text-2xl md:text-4xl lg:text-6xl'>
+            <motion.div
+              className="flex space-x-2"
+              variants={containerVariants}
+              initial="initial"
+              animate="animate"
+            >
+              {letters.map((letter, index) => (
+                <motion.span key={index} variants={letterVariants}>
+                  {letter}
+                </motion.span>
+              ))}
+            </motion.div>
+          </div>
+        )}
       </div>
       {isOpenModal && 
         <div>

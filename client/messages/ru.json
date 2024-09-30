@@ -185,6 +185,7 @@
     "verification-successful": "Проверка успешна",
     "verification-failed": "Проверка не удалась",
     "signup-successful": "Регистрация успешна",
-    "signup-failed": "Регистрация не удалась"
+    "signup-failed": "Регистрация не удалась",
+    "please-speak": "Пожалуйста, говорите!"
   }
 }

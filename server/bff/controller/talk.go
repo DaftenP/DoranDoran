@@ -50,6 +50,8 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		pronunciationRes, err := service.PronunciationService(voice)
 		if err != nil || pronunciationRes.StatusCode != http.StatusOK {
+			fmt.Println(err)
+			fmt.Println(pronunciationRes.StatusCode)
 			http.Error(w, "Error calling PronunciationService", http.StatusInternalServerError)
 			return
 		}

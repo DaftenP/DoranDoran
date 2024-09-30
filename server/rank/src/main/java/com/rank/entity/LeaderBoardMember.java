@@ -19,7 +19,6 @@ public class LeaderBoardMember {
     private String id;
     private Long leaderboardType; // 0: 이번 주, 1: 지난 주
     private Long userId;
-    private String userNickname;
     private Long gainXp;
     private Long userRank;
     private Long userRanking;

@@ -1,5 +1,6 @@
 package com.rank.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rank.common.exception.RestApiException;
 import com.rank.common.exception.StatusCode;
 import com.rank.dto.LeaderBoardMemberDTO;
@@ -21,29 +22,31 @@ public class LeaderBoardService {
     private final HashOperations<String, String, LeaderBoardMember> hashOperations;
     // 키 값 생성 객체
     private final RedisKeyGenerator redisKeyGenerator;
+    private final ObjectMapper objectMapper;
 
     /**
      * ZSetOperations, HashOperations, RedisKeyGenerator를 주입받는 생성자
      * redisTemplate을 통해 ZSetOperations, HashOperations를 얻어옴 (생성자를 통해 주입 가능)
      */
-    public LeaderBoardService(RedisTemplate<String, Object> redisTemplate, RedisKeyGenerator redisKeyGenerator) {
+    public LeaderBoardService(RedisTemplate<String, Object> redisTemplate, RedisKeyGenerator redisKeyGenerator, ObjectMapper objectMapper) {
         this.zSetOperations = redisTemplate.opsForZSet(); // ZSetOperations는 RedisTemplate을 통해 얻어옴
         this.hashOperations = redisTemplate.opsForHash(); // HashOperations는 RedisTemplate을 통해 얻어옴
         this.redisKeyGenerator = redisKeyGenerator;
+        this.objectMapper = objectMapper;
     }
 
     /**
      * 리더보드 멤버 저장 (테스트용 입니다.)
+     *
      * @param membersDTO
      * @return void
      */
     public void saveLeaderBoardMember(List<LeaderBoardMemberDTO> membersDTO) {
-        for(LeaderBoardMemberDTO memberDTO : membersDTO) {
+        for (LeaderBoardMemberDTO memberDTO : membersDTO) {
             LeaderBoardMember member = LeaderBoardMember.builder()
                     .id(UUID.randomUUID().toString())
                     .leaderboardType(memberDTO.getLeaderboardType())
                     .userId(memberDTO.getUserId())
-                    .userNickname(memberDTO.getUserNickname())
                     .gainXp(memberDTO.getGainXp())
                     .userRank(memberDTO.getUserRank())
                     .userRanking(memberDTO.getUserRanking())
@@ -63,6 +66,7 @@ public class LeaderBoardService {
 
     /**
      * 랭킹 정보 조회
+     *
      * @param leaderboardType
      * @param userId
      * @return Map<String, Object>
@@ -74,7 +78,7 @@ public class LeaderBoardService {
         // 1. 상위 10명의 사용자 조회
         Set<ZSetOperations.TypedTuple<Object>> top10 = zSetOperations.reverseRangeWithScores(key, 0, 9);
 
-        if(top10 == null) {
+        if (top10 == null) {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
 
@@ -85,15 +89,16 @@ public class LeaderBoardService {
             Long id = Long.parseLong(value.toString());
             // Redis Hash에서 사용자 정보 조회
             String memberKey = redisKeyGenerator.getMemberKey(id, leaderboardType);
-            LeaderBoardMember member = hashOperations.get(hashKey, memberKey);
+            Object redisMember = hashOperations.get(hashKey, memberKey);
 
-            if(member == null) {
+            LeaderBoardMember member = objectMapper.convertValue(redisMember, LeaderBoardMember.class);
+
+            if (member == null) {
                 throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
             }
 
             LeaderBoardMemberDTO memberDTO = LeaderBoardMemberDTO.builder()
                     .userId(id)
-                    .userNickname(member.getUserNickname())
                     .leaderboardType(member.getLeaderboardType())
                     .gainXp(member.getGainXp())
                     .userRank(member.getUserRank())
@@ -105,12 +110,12 @@ public class LeaderBoardService {
 
         // 3. 특정 사용자 정보 조회
         LeaderBoardMemberDTO userDTO = null;
-        if(hashOperations.hasKey(hashKey, redisKeyGenerator.getMemberKey(userId, leaderboardType))) {
-            LeaderBoardMember user = hashOperations.get(hashKey, redisKeyGenerator.getMemberKey(userId, leaderboardType));
+        if (hashOperations.hasKey(hashKey, redisKeyGenerator.getMemberKey(userId, leaderboardType))) {
+            Object userRedis = hashOperations.get(hashKey, redisKeyGenerator.getMemberKey(userId, leaderboardType));
+            LeaderBoardMember user = objectMapper.convertValue(userRedis, LeaderBoardMember.class);
             userDTO = LeaderBoardMemberDTO.builder()
                     .leaderboardType(user.getLeaderboardType())
                     .userId(user.getUserId())
-                    .userNickname(user.getUserNickname())
                     .gainXp(user.getGainXp())
                     .userRank(user.getUserRank())
                     .userRanking(user.getUserRanking())
@@ -119,7 +124,7 @@ public class LeaderBoardService {
 
         // 최종 결과를 JSON 구조로 반환
         Map<String, Object> ret = new HashMap<>();
-        if(leaderboardType == 0) {
+        if (leaderboardType == 0) {
             ret.put("thisWeekLeaderBoard", leaderboardMembersDTO);
         } else {
             ret.put("lastWeekLeaderBoard", leaderboardMembersDTO);

@@ -29,6 +29,8 @@ func LogoutController(w http.ResponseWriter, r *http.Request) {
 		Value:  "",
 		MaxAge: -1,
 	})
+
+	w.WriteHeader(http.StatusOK)
 }
 
 // POST /api/v1/bff/login/social

@@ -178,6 +178,13 @@
     "small-achievements-add-up-to-big-progress": "Small achievements add up to big progress!",
     "today's-small-actions-lead-to-tomorrow's-fluency": "Today's small actions lead to tomorrow's fluency.",
     "it-is-okay-to-go-slowly-consistency-is-what-matters": "It's okay to go slowly. Consistency is what matters!",
-    "animal": "Animal"
+    "animal": "Animal",
+    "sending": "Sending...",
+    "email-sending-successful": "Email Sending Successful",
+    "email-sending-failed": "Email Sending Failed",
+    "verification-successful": "Verification Successful",
+    "verification-failed": "Verification Failed",
+    "signup-successful": "Signup Successful",
+    "signup-failed": "Signup Failed"
   }
 }

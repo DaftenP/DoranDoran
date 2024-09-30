@@ -178,6 +178,13 @@
     "small-achievements-add-up-to-big-progress": "Маленькие достижения складываются в большой прогресс!",
     "today's-small-actions-lead-to-tomorrow's-fluency": "Маленькие действия сегодня ведут к свободному владению завтра.",
     "it-is-okay-to-go-slowly-consistency-is-what-matters": "Ничего страшного, если двигаться медленно. Главное — это постоянство!",
-    "animal": "Животное"
+    "animal": "Животное",
+    "sending": "Отправка...",
+    "email-sending-successful": "Отправка электронной почты успешна",
+    "email-sending-failed": "Отправка электронной почты не удалась",
+    "verification-successful": "Проверка успешна",
+    "verification-failed": "Проверка не удалась",
+    "signup-successful": "Регистрация успешна",
+    "signup-failed": "Регистрация не удалась"
   }
 }

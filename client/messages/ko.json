@@ -178,6 +178,13 @@
     "small-achievements-add-up-to-big-progress": "작은 성취가 모이면 큰 발전이 됩니다!",
     "today's-small-actions-lead-to-tomorrow's-fluency": "오늘의 작은 실천이 내일의 유창함으로 이어집니다.",
     "it-is-okay-to-go-slowly-consistency-is-what-matters": "천천히 가도 괜찮아요. 꾸준함이 중요해요!",
-    "animal": "동물"
+    "animal": "동물",
+    "sending": "전송 중...",
+    "email-sending-successful": "이메일 전송 성공",
+    "email-sending-failed": "이메일 전송 실패",
+    "verification-successful": "인증 성공",
+    "verification-failed": "인증 실패",
+    "signup-successful": "가입 성공",
+    "signup-failed": "가입 실패"
   }
 }

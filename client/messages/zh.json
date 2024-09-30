@@ -178,6 +178,13 @@
     "small-achievements-add-up-to-big-progress": "小的成就积累起来就是大的进步！",
     "today's-small-actions-lead-to-tomorrow's-fluency": "今天的小行动会带来明天的流利！",
     "it-is-okay-to-go-slowly-consistency-is-what-matters": "慢慢来也没关系，坚持才是最重要的！",
-    "animal": "动物"
+    "animal": "动物",
+    "sending": "发送中...",
+    "email-sending-successful": "邮件发送成功",
+    "email-sending-failed": "邮件发送失败",
+    "verification-successful": "验证成功",
+    "verification-failed": "验证失败",
+    "signup-successful": "注册成功",
+    "signup-failed": "注册失败"
   }
 }

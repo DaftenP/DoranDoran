@@ -8,7 +8,6 @@ import lombok.*;
 @Builder
 public class LeagueMemberDTO {
     private Long userId;
-    private String userNickName;
     private Long userXP;
     private Long userRanking;
 }

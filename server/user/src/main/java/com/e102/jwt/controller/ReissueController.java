@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
@@ -73,7 +74,7 @@ public class ReissueController {
         for (Cookie cookie : cookies) {
             //리프레시 토큰 있는지 확인
             if (cookie.getName().equals("refresh")) {
-                String[] ret = cookie.getValue().split(":");
+                String[] ret = URLDecoder.decode(cookie.getValue(), StandardCharsets.UTF_8).split(":");
                 userId = Integer.parseInt(ret[0]);
                 refresh = ret[1];
 

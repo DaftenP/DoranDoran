@@ -147,9 +147,7 @@ function TranslatedChange() {
         <Modal
           handleYesClick={handleCloseModal}
           handleCloseModal={handleCloseModal}
-          message={modalMessage.message}
-          background={modalMessage.background}
-          buttonType={modalMessage.buttonType}
+          message={modalMessage}
         />
       )}
     </>

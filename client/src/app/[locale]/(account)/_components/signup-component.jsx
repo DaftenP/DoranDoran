@@ -160,7 +160,7 @@ function TranslatedSignup() {
         })
       .then((response) => {
         console.warn("회원가입 성공:", response);
-        setModalMessage({message: "signup-successful", background: "bird", buttonType: 2});
+        setModalMessage({message: "signup-successful", background: "bird", buttonType: 2 });
         setShouldRedirect(true);
       })
       .catch((error) => {
@@ -328,9 +328,7 @@ function TranslatedSignup() {
         <Modal
           handleYesClick={handleCloseModal}
           handleCloseModal={handleCloseModal}
-          message={modalMessage.message}
-          background={modalMessage.background}
-          buttonType={modalMessage.buttonType}
+          message={modalMessage}
         />
       )}
     </>

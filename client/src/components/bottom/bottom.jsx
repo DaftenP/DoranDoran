@@ -18,6 +18,7 @@ import Store1 from '@/public/bottom-bar/store1.webp'
 import Store2 from '@/public/bottom-bar/store2.webp'
 import Study1 from '@/public/bottom-bar/study1.webp'
 import Study2 from '@/public/bottom-bar/study2.webp'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Bottom() {
   const [messages, setMessages] = useState(null);
@@ -123,18 +124,66 @@ function TranslatedBottom() {
             style={{transform: "skew(-30deg)"}}
           >
             <Link href={`/${countryCode}/store`} className='w-full h-full flex justify-center items-center'>
-              {currentPage === 'store' ? (
-                <Image src={Store2} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-6" />
-              ) : (
-                <Image src={Store1} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-6" />
-              )}
+              <AnimatePresence>
+                {currentPage === 'store' ? (
+                  <div className='ml-6'>
+                    <motion.div
+                      key="store2"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.8 }}
+                      className="w-auto h-2/5 cursor-pointer"
+                    >
+                      <Image src={Store2} alt="store_link" className="w-auto h-full cursor-pointer" />
+                    </motion.div>
+                  </div>
+                ) : (
+                  <div className='ml-6'>
+                    <motion.div
+                      key="store1"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.8 }}
+                      className="w-auto h-2/5 cursor-pointer"
+                    >
+                      <Image src={Store1} alt="store_link" className="w-auto h-full cursor-pointer" />
+                    </motion.div>
+                  </div>
+                )}
+              </AnimatePresence>
             </Link>
             <Link href={`/${countryCode}/study`} className='w-full h-full flex justify-center items-center'>
-              {currentPage === 'study' ? (
-                <Image src={Study2} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-9" />
-              ) : (
-                <Image src={Study1} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-9" />
-              )}
+              <AnimatePresence>
+                {currentPage === 'study' ? (
+                  <div className='mr-9'>
+                    <motion.div
+                      key="study2"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.8 }}
+                      className="w-auto h-2/5 cursor-pointer"  
+                    >
+                      <Image src={Study2} alt="study_link" className="w-auto h-full cursor-pointer" />
+                    </motion.div>
+                  </div>
+                ) : (
+                  <div className='mr-9'>
+                    <motion.div
+                      key="study1"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.8 }}
+                      className="w-auto h-2/5 cursor-pointer"
+                    >
+                      <Image src={Study1} alt="study_link" className="w-auto h-full cursor-pointer" />
+                    </motion.div>
+                  </div>
+                )}
+              </AnimatePresence>
             </Link>
           </div>
         </div>
@@ -145,11 +194,33 @@ function TranslatedBottom() {
       >
           {currentPage === 'main' ? (
             <div onClick={handleAiTutorLink} className='w-full h-full flex justify-center items-center'>
-              <Image src={AiTutor} alt="ai_tutor_link" className="w-auto h-3/5 cursor-pointer" />
+              <AnimatePresence>
+                <motion.div
+                  key="ai_tutor"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.8 }}
+                  className="w-auto h-3/5 cursor-pointer"
+                >
+                  <Image src={AiTutor} alt="ai_tutor_link" className="w-auto h-full cursor-pointer" />
+                </motion.div>
+              </AnimatePresence>
             </div>
           ) : (
             <Link href={`/${countryCode}/main`} className='w-full h-full flex justify-center items-center'>
-              <Image src={Home} alt="Home_link" className="w-auto h-3/5 cursor-pointer" />
+              <AnimatePresence>
+                <motion.div
+                  key="home"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.8 }}
+                  className="w-auto h-3/5 cursor-pointer"
+                >
+                  <Image src={Home} alt="Home_link" className="w-auto h-full cursor-pointer" />
+                </motion.div>
+              </AnimatePresence>
             </Link>
           )}
       </div>
@@ -166,18 +237,66 @@ function TranslatedBottom() {
             style={{transform: "skew(30deg)"}}
           >
             <Link href={`/${countryCode}/ranking/all`} className='w-full h-full flex justify-center items-center'>
+            <AnimatePresence>
               {currentPage === 'ranking' ? (
-                <Image src={Ranking2} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-9" />
+                <div className='ml-9'>
+                  <motion.div
+                    key="ranking2"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.8 }}
+                    className="w-auto h-2/5 cursor-pointer"
+                  >
+                    <Image src={Ranking2} alt="ranking_link" className="w-auto h-full cursor-pointer" />
+                  </motion.div>
+                </div>
               ) : (
-                <Image src={Ranking1} alt="store_link" className="w-auto h-2/5 cursor-pointer ml-9" />
+                <div className='ml-9'>
+                  <motion.div
+                    key="ranking1"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.8 }}
+                    className="w-auto h-2/5 cursor-pointer"
+                  >
+                    <Image src={Ranking1} alt="ranking_link" className="w-auto h-full cursor-pointer" />
+                  </motion.div>
+                </div>
               )}
+              </AnimatePresence>
             </Link>
             <Link href={`/${countryCode}/profile`}className='w-full h-full flex justify-center items-center'>
+            <AnimatePresence>
               {currentPage === 'profile' ? (
-                <Image src={Profile2} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-6" />
+                <div className='mr-6'>
+                  <motion.div
+                    key="profile2"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.8 }}
+                    className="w-auto h-2/5 cursor-pointer"
+                  >
+                    <Image src={Profile2} alt="profile_link" className="w-auto h-full cursor-pointer" />
+                  </motion.div>
+                </div>
               ) : (
-                <Image src={Profile1} alt="study_link" className="w-auto h-2/5 cursor-pointer mr-6" />
+                <div className='mr-6'>
+                  <motion.div
+                    key="profile1"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.8 }}
+                    className="w-auto h-2/5 cursor-pointer"
+                  >
+                    <Image src={Profile1} alt="profile_link" className="w-auto h-full cursor-pointer" />
+                  </motion.div>
+                </div>
               )}
+                </AnimatePresence>
             </Link>
           </div>
         </div>

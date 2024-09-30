@@ -101,6 +101,17 @@ public class UserController {
         return ResponseDto.response(StatusCode.SUCCESS, lst);
     }
 
+    @GetMapping("/mission/{userId}")
+    public ResponseEntity<ResponseDto> missionCheck(@PathVariable("userId")int userId){
+        boolean isCleared = userService.todayMissionCheck(userId);
+        return ResponseDto.response(StatusCode.SUCCESS, isCleared);
+    }
+
+    @PostMapping("/mission/{userId}")
+    public ResponseEntity<ResponseDto> missionAccomplish(@PathVariable("userId")int userId){
+        userService.missionAccomplished(userId);
+        return ResponseDto.response(StatusCode.SUCCESS);
+    }
 
 
 }

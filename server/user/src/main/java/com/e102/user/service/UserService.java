@@ -35,9 +35,7 @@ public class UserService {
 
     public MyPageResponseDTO findMyPageById(int userId){
         User sUser = userRepository.findById(userId);
-        //유저 뽑고
-        //System.out.println("USER");
-        //System.out.println(sUser);
+
 
         MyPageResponseDTO myPageResponseDTO = MyPageResponseDTO.builder()
                 .nickname(sUser.getNickname())
@@ -47,6 +45,9 @@ public class UserService {
                 .avatar(sUser.getAvatar())
                 .voice(sUser.getVoice())
                 .gem(sUser.getGem())
+                .tries(sUser.getTries())
+                .status(sUser.statusToBit())
+                .birthday(sUser.getBirthDay())
                 .build();
 
         return myPageResponseDTO;
@@ -269,6 +270,26 @@ public class UserService {
             return StatusCode.BAD_REQUEST;
         }
 
+    }
+
+    public boolean todayMissionCheck(int userId){
+        User sUser = userRepository.findById(userId);
+        if(sUser != null){
+            return sUser.isMissionCleared();
+        }
+        else{
+            return false;
+        }
+    }
+    public StatusCode missionAccomplished(int userId){
+        User sUser = userRepository.findById(userId);
+        if(sUser != null){
+            sUser.todayMissionCleared();
+            return StatusCode.SUCCESS;
+        }
+        else{
+            return StatusCode.NO_EMAIL;
+        }
     }
 
     public StatusCode loginUser(UserLoginDTO userLoginDTO){

@@ -37,3 +37,9 @@ spring:
     url: ENC(U1hQY3jJtQTFvdz/MC0wN8m5/cKdzK9Y1auUq7nQ7lGgC4HhWsGVGA==) #jdbc:mysql://localhost:3306/user
   jwt:
     secret: ENC(sWuyj3aYMV6DByGKKVOFdkiH0CK0aRSdR+9FO5aXHEjAa1eLj8j1yUMW1JdYQWeYp6styqZKyC9kzjg39tCvyuilNCqaZkcibbcZH/BRjuU=)
+logging:
+  level:
+    root: INFO  # 전체 로그 레벨 INFO
+    com.e102: DEBUG  # com.e102 패키지의 로그 레벨 DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"  # 콘솔에만 로그 출력

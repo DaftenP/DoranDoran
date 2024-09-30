@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -22,6 +23,7 @@ import java.util.Map;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 @EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
@@ -58,8 +60,13 @@ public class User {
     @Column(name = "user_gem")
     private int gem = 0;
 
+    // cron으로 일주일 마다 날릴 예정
     @Column(name = "user_quest")
     private int questStatus = 0;
+
+    // cron으로 밤마다 날릴예정
+    @Column(name = "user_today_quest")
+    private boolean todayStatus;
 
     @CreatedDate
     @Column(name = "user_created_at",columnDefinition = "TIMESTAMP", updatable = false)
@@ -104,12 +111,11 @@ public class User {
         this.birthDay = birthDay;
     }
 
-    public boolean isMissionCleared() {
-        LocalDate date = LocalDate.now();   // 현재 날짜 가져오기
-        DayOfWeek dayOfWeek = date.getDayOfWeek();  // 현재 요일 가져오기
+    public String statusToBit(){
+        return String.format("%07d", Integer.parseInt(Integer.toBinaryString(questStatus)));
+    }
 
-        int curBit = 1;
-
+    public int getScoop(DayOfWeek dayOfWeek){
         int scoop = -1;
         switch (dayOfWeek) {
             case SUNDAY:
@@ -134,8 +140,45 @@ public class User {
                 scoop = 6;
                 break;
         }
+        return scoop;
+    }
 
-        return (questStatus & (curBit << scoop)) != 0;
+    public void todayMissionCleared(){
+        LocalDate date = LocalDate.now();   // 현재 날짜 가져오기
+        DayOfWeek dayOfWeek = date.getDayOfWeek();  // 현재 요일 가져오기
+
+        log.debug("Current date: {}", date);  // 현재 날짜 로그 찍기
+        log.debug("Current day of week: {}", dayOfWeek);  // 현재 요일 로그 찍기
+
+        int curBit = 1;
+        int scoop = getScoop(dayOfWeek);
+
+        questStatus |= (curBit << scoop);
+        // or 한다.
+
+        log.debug("Calculated scoop: {}", scoop);  // scoop 로그 찍기
+        log.debug("Current questStatus: {}", questStatus);  // 현재 questStatus 로그 찍기
+
+    }
+
+    public boolean isMissionCleared() {
+        LocalDate date = LocalDate.now();   // 현재 날짜 가져오기
+        DayOfWeek dayOfWeek = date.getDayOfWeek();  // 현재 요일 가져오기
+
+        log.debug("Current date: {}", date);  // 현재 날짜 로그 찍기
+        log.debug("Current day of week: {}", dayOfWeek);  // 현재 요일 로그 찍기
+
+
+        int curBit = 1;
+        int scoop = getScoop(dayOfWeek);
+
+        log.debug("Calculated scoop: {}", scoop);  // scoop 로그 찍기
+        log.debug("Current questStatus: {}", questStatus);  // 현재 questStatus 로그 찍기
+
+        boolean result = (questStatus & (curBit << scoop)) != 0;
+        log.debug("Mission cleared: {}", result);  // 미션 클리어 여부 로그 찍기
+
+        return result;
     }
 
     @Override

@@ -51,14 +51,8 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 
 	if err == nil {
 		pronunciationRes, err := service.PronunciationService(voice)
-		if err != nil || pronunciationRes.StatusCode != http.StatusOK {
-			fmt.Println(err)
-			fmt.Println(pronunciationRes.StatusCode)
-		} else {
-			err := json.NewDecoder(pronunciationRes.Body).Decode(&pronunciationResBody)
-			if err != nil {
-				fmt.Println(err)
-			}
+		if err == nil && pronunciationRes.StatusCode != http.StatusOK {
+			json.NewDecoder(pronunciationRes.Body).Decode(&pronunciationResBody)
 		}
 		defer pronunciationRes.Body.Close()
 	}
@@ -68,8 +62,6 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error parsing SendService response", http.StatusInternalServerError)
 		return
 	}
-
-	fmt.Println(sendResBody)
 
 	// make response
 	response := model.TutorCombinedResponse{

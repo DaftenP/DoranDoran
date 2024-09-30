@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -15,7 +14,6 @@ func DeleteUserController(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("refresh")
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
-		fmt.Println(err)
 		return
 	}
 

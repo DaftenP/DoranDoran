@@ -54,7 +54,6 @@ func GetPlayLogController(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("refresh")
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
-		fmt.Println(err)
 		return
 	}
 
@@ -66,7 +65,6 @@ func GetPlayLogController(w http.ResponseWriter, r *http.Request) {
 
 // POST /api/v1/bff/quiz/quizzes/regist
 func RegistQuizController(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("RegistQuizController")
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return

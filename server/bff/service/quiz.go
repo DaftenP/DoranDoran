@@ -3,7 +3,6 @@ package service
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -54,8 +53,6 @@ func RegistQuizService(quizInfo string, voice multipart.File, voiceHeader *multi
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(string(reqBody))
 
 	req, err := http.NewRequest(http.MethodPost, QuizUrl+"/api/v1/quiz/quizzes/regist", nil)
 	if err != nil {

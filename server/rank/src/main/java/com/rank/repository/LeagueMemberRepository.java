@@ -20,4 +20,6 @@ public interface LeagueMemberRepository extends JpaRepository<LeagueMember, Stri
 
     // XP 기준으로 내림차순 정렬하여 멤버 리스트 조회
     List<LeagueMember> findByLeagueIdOrderByGainXPDesc(String leagueId);
+
+    int countByLeagueId(String id);
 }

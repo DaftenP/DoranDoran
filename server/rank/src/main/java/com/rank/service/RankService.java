@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,7 @@ public class RankService {
         // 리그 정보 조회
         Optional<League> league = Optional.ofNullable(lm.get().getLeague());
 
-        if(league.isEmpty()) {
+        if (league.isEmpty()) {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
 
@@ -82,7 +83,7 @@ public class RankService {
         // 리그 정보 조회
         Optional<League> league = Optional.ofNullable(lm.get().getLeague());
 
-        if(league.isEmpty()) {
+        if (league.isEmpty()) {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
 
@@ -106,7 +107,7 @@ public class RankService {
         // 리그 정보 조회
         Optional<League> league = Optional.ofNullable(lm.get().getLeague());
 
-        if(league.isEmpty()) {
+        if (league.isEmpty()) {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
 
@@ -115,5 +116,51 @@ public class RankService {
         ret.put("leagueId", league.get().getId());
 
         return ret;
+    }
+
+    public void placement(Long userId) {
+        // 리그 아이디 prefix
+        String leagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now());
+
+        // 현재 브론즈 리그 중 마지막 리그 가져오기
+        List<League> leagues = leagueRepository.findLeaguesByPrefixAndRank(leagueIdPrefix, 100);
+        League league = leagues.stream().max(Comparator.comparing(League::getNum)).orElse(null);
+
+        if (league == null) {
+            league = League.builder()
+                    .id(leagueIdPrefix + "-100-1")
+                    .rank(100)
+                    .num(1)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+
+            leagueRepository.save(league);
+        }
+
+        // 해당 리그에 속한 인원이 10이라면 해당 리그에 userId 생성 및 배치
+        if (leagueMemberRepository.countByLeagueId(league.getId()) < 10) {
+            LeagueMember leagueMember = LeagueMember.builder()
+                    .userId(userId)
+                    .league(league)
+                    .gainXP(0L)
+                    .build();
+            leagueMemberRepository.save(leagueMember);
+        } else {
+            // 리그 생성
+            League newLeague = League.builder()
+                    .id(leagueIdPrefix + "-100-" + (league.getNum() + 1))
+                    .rank(100)
+                    .num(league.getNum() + 1)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+            leagueRepository.save(newLeague);
+
+            LeagueMember leagueMember = LeagueMember.builder()
+                    .userId(userId)
+                    .league(newLeague)
+                    .gainXP(0L)
+                    .build();
+            leagueMemberRepository.save(leagueMember);
+        }
     }
 }

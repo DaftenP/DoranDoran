@@ -28,4 +28,8 @@ public class LeagueMember {
     public void updateGainXP(long l) {
         this.gainXP += l;
     }
+
+    public void updateLeague(League league) {
+        this.league = league;
+    }
 }

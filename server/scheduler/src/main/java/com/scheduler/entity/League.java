@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 public class League {
     @Id
     @Column(name = "league_id", nullable = false)
@@ -31,4 +33,8 @@ public class League {
 
     @Column(name = "league_num", nullable = false)
     private Integer num;
+
+    public void updateRank(int i) {
+        this.rank = i;
+    }
 }

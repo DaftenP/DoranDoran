@@ -21,7 +21,19 @@ func main() {
 	http.HandleFunc("/api/v1/bff/mail/check", controller.CheckMailController)
 	http.HandleFunc("/api/v1/bff/mail/reset", controller.ResetMailController)
 
-	http.Handle("/api/v1/bff/my-page/user", middleware.JWTMiddleware(http.HandlerFunc(controller.DeleteUserController)))
+	http.Handle("/api/v1/bff/my-page/user",
+		middleware.JWTMiddleware(
+			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if r.Method == http.MethodGet {
+					controller.GetUserController(w, r)
+				} else if r.Method == http.MethodDelete {
+					controller.DeleteUserController(w, r)
+				} else {
+					http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+				}
+			}),
+		),
+	)
 
 	http.Handle("/api/v1/bff/admin/quiz", middleware.JWTMiddleware(http.HandlerFunc(controller.GenerateQuizController)))
 

@@ -69,7 +69,7 @@ public class LeaderBoardBatch {
                     .userId(leagueMembers.get(i).getUserId())
                     .gainXp(leagueMembers.get(i).getGainXP())
                     .userRank(Long.valueOf(userRank))
-                    .userRanking(Long.valueOf(i + 1))
+                    .order(Long.valueOf(i + 1))
                     .build();
 
             // 1. Sorted Set에 사용자 랭킹 데이터 저장

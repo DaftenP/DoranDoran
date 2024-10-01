@@ -66,7 +66,7 @@ public class User {
 
     // cron으로 밤마다 날릴예정
     @Column(name = "user_today_quest")
-    private boolean todayStatus;
+    private int todayStatus;
 
     @CreatedDate
     @Column(name = "user_created_at",columnDefinition = "TIMESTAMP", updatable = false)
@@ -97,6 +97,17 @@ public class User {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+    }
+
+    public void resetDailyStatus(){
+        log.debug("reset Daily");
+        this.todayStatus = 0;
+        this.tries = 10;
+    }
+
+    public void resetWeeklyStatus(){
+        log.debug("reset Weekly");  // 현재 날짜 로그 찍기
+        this.questStatus = 0;
     }
 
     public void modPassword(String password) {

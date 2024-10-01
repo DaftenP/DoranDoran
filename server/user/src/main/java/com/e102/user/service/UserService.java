@@ -12,6 +12,7 @@ import com.e102.user.entity.User;
 import com.e102.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +34,32 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * ?")
+    //@Scheduled(cron = "0 * * * * *") // for test 1분 마다 실행
+    public void resetDailyMission(){
+        List<User> allUser = userRepository.findAll();
+        //유저 Daily Mission과 시도 횟수 삭제
+        for(User u : allUser){
+            u.resetDailyStatus();
+        }
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * MON")
+    //@Scheduled(cron = "0 * * * * *") // for test 1분 마다 실행
+    public void resetWeeklyMission(){
+        List<User> allUser = userRepository.findAll();
+
+        //유저 Weekly Mission 초기화
+        for(User u : allUser){
+            u.resetWeeklyStatus();
+        }
+    }
+
+
     public MyPageResponseDTO findMyPageById(int userId){
         User sUser = userRepository.findById(userId);
-
 
         MyPageResponseDTO myPageResponseDTO = MyPageResponseDTO.builder()
                 .nickname(sUser.getNickname())
@@ -54,13 +78,11 @@ public class UserService {
     }
 
     public void init(){
-
         User sUser = userRepository.findById(1);
 
         for(int i=0;i<=10;i++){
             sUser.getItems().put(i,i);
         }
-
         userRepository.save(sUser);
     }
 
@@ -100,9 +122,7 @@ public class UserService {
         //유저 비밀번호 업데이트
 
         return rawPassword;
-
         //return new ResponseDto(StatusCode.RESET_SUCCESS,encryptedPassword);
-
     }
 
 
@@ -132,7 +152,6 @@ public class UserService {
             //해당하는 유저 지운다
             return StatusCode.DROP_SUCCESS;
         }
-
     }
 
     public StatusCode duplicateUser(String email){

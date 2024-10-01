@@ -25,6 +25,7 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @PostMapping("/regist")
     public ResponseEntity<ResponseDto> regist(@RequestBody UserRequestDTO userRequestDTO){
         StatusCode statusCode = userService.registUser(userRequestDTO);

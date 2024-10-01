@@ -21,7 +21,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByEmail(String email);
 
-
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.password = :password WHERE u.id = :id")

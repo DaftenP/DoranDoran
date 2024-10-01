@@ -7,7 +7,7 @@ import QuizTitle from '@/app/[locale]/study/_components/quiz-title'
 import QuizContent from '@/app/[locale]/study/_components/quiz-content';
 import Button from '@/app/[locale]/study/_components/button';
 
-export default function Quiz() {
+export default function Quiz({type, index}) {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
 
@@ -29,22 +29,23 @@ export default function Quiz() {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedQuiz />
+      <TranslatedQuiz type={type} index={index}/>
     </NextIntlClientProvider>
   );
 }
 
-function TranslatedQuiz() {
+function TranslatedQuiz({type, index}) {
   const t = useTranslations('index');
 
   return (
     <div className='relative h-[80vh]'>
       <div className='mb-[10vh]'>
-        <QuizTitle />
+        <QuizTitle type={type} index={index}/>
       </div>
-      <QuizContent />
+      <QuizContent type={type} index={index}/>
       <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
-        <Button />
+        <Button type={type} index={index}/>
+        <span>.</span>
       </div>
     </div>
   );

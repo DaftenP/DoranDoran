@@ -9,7 +9,7 @@ export default function Layout({ children }) {
   const locale = useLocale()
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative h-[100vh] overflow-hidden">
       <Image
         src={BackgroundLaunch}
         alt="background-launch"

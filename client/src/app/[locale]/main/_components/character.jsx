@@ -54,12 +54,14 @@ export default function Character() {
 
 function TranslatedCharacter({ locale }) {
   const t = useTranslations('index');
-  const router = useRouter()
-  const quizList = useSelector((state) => state.quiz.quizList[0].quizList)
+  const router = useRouter();
+  const quizList = useSelector((state) => state.quiz.dailyQuizList);
 
-  const handleFastQuiz = (() => {
-    router.push(`/${locale}/study/daily/${quizList[0].number}`)
-  })
+  const handleFastQuiz = () => {
+    if(quizList.length > 0) {
+      router.push(`/${locale}/study/daily/${quizList[0].quizId}`);
+    }
+  };
 
   return (
     <div className='flex items-center justify-center mt-[3vh]'>

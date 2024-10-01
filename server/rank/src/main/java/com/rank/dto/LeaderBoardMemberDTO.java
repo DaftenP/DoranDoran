@@ -12,5 +12,5 @@ public class LeaderBoardMemberDTO {
     private Long userId;
     private Long gainXp;
     private Long userRank;
-    private Long userRanking;
+    private Long order;
 }

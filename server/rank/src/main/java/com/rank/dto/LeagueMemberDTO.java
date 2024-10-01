@@ -9,5 +9,5 @@ import lombok.*;
 public class LeagueMemberDTO {
     private Long userId;
     private Long userXP;
-    private Long userRanking;
+    private Long order;
 }

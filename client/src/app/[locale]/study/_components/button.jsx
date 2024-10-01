@@ -51,7 +51,9 @@ function TranslatedButton({ locale, type, index }) {
   // });
 
   const handleSubmit = () => {
-    dispatch(deleteQuiz());
+    if (type === 'daily'){
+      dispatch(deleteQuiz());
+    }
   }
 
   useEffect(() => {

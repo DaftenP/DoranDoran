@@ -15,3 +15,13 @@ func GetRankInfoService(userId string) (*http.Response, error) {
 
 	return http.DefaultClient.Do(req)
 }
+
+// GET /api/v1/rank/league/{userId}
+func GetLeagueRankService(userId string) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodGet, RankUrl+"/api/v1/rank/league/"+userId, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return http.DefaultClient.Do(req)
+}

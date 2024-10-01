@@ -17,10 +17,12 @@ type UserInfoToClient struct {
 	Rank      int    `json:"rank"`
 }
 
+////////////////////////////////////////
+
 type UserInfoResponseFromMSA struct {
-	Data      *UserInfoFromMSA `json:"data"`
-	Message   string           `json:"message"`
-	TimeStamp string           `json:"timestamp"`
+	Data      UserInfoFromMSA `json:"data"`
+	Message   string          `json:"message"`
+	TimeStamp string          `json:"timestamp"`
 }
 
 type UserInfoFromMSA struct {
@@ -31,15 +33,4 @@ type UserInfoFromMSA struct {
 	Avatar    string `json:"avatar"`
 	Voice     string `json:"voice"`
 	Gem       int    `json:"gem"`
-}
-
-type RankInfoResponseFromMSA struct {
-	Data    *RankInfoFromMSA `json:"data"`
-	Message string           `json:"message"`
-}
-
-type RankInfoFromMSA struct {
-	UserId   string `json:"userId"`
-	Rank     int    `json:"rank"`
-	LeagueId string `json:"leagueId"`
 }

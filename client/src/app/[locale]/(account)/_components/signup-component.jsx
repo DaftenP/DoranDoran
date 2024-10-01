@@ -16,8 +16,7 @@ export default function SignupComponent() {
       try {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default);
-      } catch (error) {
-      }
+      } catch (error) {}
     }
     loadMessages();
   }, [locale]);
@@ -125,6 +124,7 @@ function TranslatedSignup() {
         },
       })
       .then((response) => {
+        setIsLoading(false);
         setIsEmailVerified(true);
         setModalMessage({message: "verification-successful", background: "bird", buttonType: 2});
       })

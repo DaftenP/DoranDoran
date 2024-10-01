@@ -34,3 +34,9 @@ type UserInfoFromMSA struct {
 	Voice     string `json:"voice"`
 	Gem       int    `json:"gem"`
 }
+
+type UserNamesFromMSA struct {
+	Data      map[string]string `json:"data"`
+	Message   string            `json:"message"`
+	TimeStamp string            `json:"timestamp"`
+}

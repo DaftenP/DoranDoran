@@ -6,15 +6,8 @@ type LeagueInfoResponseToClient struct {
 }
 
 type LeagueInfoResponseToClientData struct {
-	LeagueInfo    LeagueInfoToClient     `json:"leagueInfo"`
+	LeagueInfo    LeagueInfo             `json:"leagueInfo"`
 	LeagueMembers []LeagueMemberToClient `json:"leagueMembers"`
-}
-
-type LeagueInfoToClient struct {
-	LeagueId   string `json:"leagueId"`
-	CreatedAt  string `json:"createdAt"`
-	LeagueRank int    `json:"leagueRank"`
-	LeagueNum  int    `json:"leagueNum"`
 }
 
 type LeagueMemberToClient struct {

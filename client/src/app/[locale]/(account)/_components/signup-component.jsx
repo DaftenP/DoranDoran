@@ -17,7 +17,6 @@ export default function SignupComponent() {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default);
       } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
       }
     }
     loadMessages();
@@ -30,11 +29,21 @@ export default function SignupComponent() {
   );
 }
 
+// 로딩 오버레이 컴포넌트
+function LoadingOverlay() {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
+    </div>
+  );
+}
+
 // 회원가입 폼 컴포넌트
 function TranslatedSignup() {
   const locale = useLocale();
   const t = useTranslations("index");
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
@@ -80,8 +89,7 @@ function TranslatedSignup() {
   // 이메일 전송 핸들러
   const emailSubmit = (e) => {
     e.preventDefault();
-    setModalMessage({ message: "sending", background: "night" });
-    setIsOpenModal(true);
+    setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     axios.post(`${apiUrl}/mail/regist`, null, {
         params: { email: formData.email },
@@ -90,12 +98,12 @@ function TranslatedSignup() {
         },
       })
       .then((response) => {
-        console.log("이메일 요청 성공:", response);
+        setIsLoading(false);
         setIsEmailSent(true);
         setModalMessage({message: "email-sending-successful", background: "bird", buttonType: 2});
       })
       .catch((error) => {
-        console.error("이메일 요청 실패:", error);
+        setIsLoading(false);
         setIsEmailSent(false);
         setModalMessage({message: "email-sending-failed", background: "bird", buttonType: 2});
       })
@@ -103,7 +111,9 @@ function TranslatedSignup() {
   };
 
   // 인증 코드 확인 핸들러
-  const verifyCode = () => {
+  const verifyCode = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     axios.get(`${apiUrl}/mail/check`, {
         params: {
@@ -115,12 +125,11 @@ function TranslatedSignup() {
         },
       })
       .then((response) => {
-        console.log("인증 코드 확인 성공:", response);
         setIsEmailVerified(true);
         setModalMessage({message: "verification-successful", background: "bird", buttonType: 2});
       })
       .catch((error) => {
-        console.warn("인증 코드 확인 실패:", error);
+        setIsLoading(false);
         setIsEmailVerified(false);
         setModalMessage({message: "verification-failed", background: "bird", buttonType: 2});
       })
@@ -159,12 +168,10 @@ function TranslatedSignup() {
           },
         })
       .then((response) => {
-        console.warn("회원가입 성공:", response);
         setModalMessage({message: "signup-successful", background: "bird", buttonType: 2 });
         setShouldRedirect(true);
       })
       .catch((error) => {
-        console.warn("회원가입 실패:", error);
         setModalMessage({message: "signup-failed", background: "bird", buttonType: 2});
       })
       .finally(() => {setIsOpenModal(true)});
@@ -199,6 +206,7 @@ function TranslatedSignup() {
 
   return (
     <>
+      {isLoading && <LoadingOverlay />}
       {/* 회원가입 폼 */}
       <form onSubmit={signupSubmit} className="w-[75%] flex flex-col items-center">
         <div className="w-full flex flex-col gap-2 md:gap-5">
@@ -325,11 +333,7 @@ function TranslatedSignup() {
 
       {/* 모달 컴포넌트 */}
       {isOpenModal && (
-        <Modal
-          handleYesClick={handleCloseModal}
-          handleCloseModal={handleCloseModal}
-          message={modalMessage}
-        />
+        <Modal handleYesClick={handleCloseModal} handleCloseModal={handleCloseModal} message={modalMessage} />
       )}
     </>
   );

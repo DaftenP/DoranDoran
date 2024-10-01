@@ -18,9 +18,7 @@ export default function ChangeComponent() {
       try {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default);
-      } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
-      }
+      } catch (error) {}
     }
     loadMessages();
   }, [locale]);
@@ -32,6 +30,15 @@ export default function ChangeComponent() {
   );
 }
 
+// 로딩 오버레이 컴포넌트
+function LoadingOverlay() {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
+    </div>
+  );
+}
+
 // 비밀번호 변경 폼 컴포넌트
 function TranslatedChange() {
   const locale = useLocale();
@@ -39,7 +46,8 @@ function TranslatedChange() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [formData, setFormData] = useState({ email: "" });
   const [touched, setTouched] = useState({ email: false });
-  const [modalMessage, setModalMessage] = useState("");
+  const [modalMessage, setModalMessage] = useState("");  
+  const [isLoading, setIsLoading] = useState(false);
 
   // 입력 변경 핸들러
   const signupChange = (e) => {
@@ -54,13 +62,12 @@ function TranslatedChange() {
   };
 
   // 모달 닫기 핸들러
-  const handleCloseModal = () => {
-    setIsOpenModal(false);
-  };
+  const handleCloseModal = () => {setIsOpenModal(false)};
 
   // 이메일 전송 핸들러
   const emailSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     axios.put(`${apiUrl}/mail/reset`, null, {
         params: { email: formData.email },
@@ -69,12 +76,12 @@ function TranslatedChange() {
         },
       })
       .then((response) => {
-        console.log("이메일 요청 성공:", response);
-        setModalMessage({message: "email-sending-successful", background: "bird", buttonType: 2});
+        setIsLoading(false);
+        setModalMessage({ message: "email-sending-successful", background: "bird", buttonType: 2 });
       })
       .catch((error) => {
-        console.error("이메일 요청 실패:", error);
-        setModalMessage({message: "email-sending-failed", background: "bird", buttonType: 2});
+        setIsLoading(false);
+        setModalMessage({ message: "email-sending-failed", background: "bird", buttonType: 2 });
       })
       .finally(() => {setIsOpenModal(true)});
   };
@@ -90,22 +97,21 @@ function TranslatedChange() {
       case "email":
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return `${inputStyle} ${
-          emailRegex.test(value) ? "border-2 border-green-500" : "border-2 border-red-500"}`;
-      default: return inputStyle;
-    }
+          emailRegex.test(value) ? "border-2 border-green-500" : "border-2 border-red-500"
+        }`;
+      default: return inputStyle}
   };
 
   return (
     <>
+    {isLoading && <LoadingOverlay />}
       <div className="w-screen h-screen flex flex-col items-center">
-
         {/* 제목 */}
         <div className="mt-14 mb-7 text-center">
           <p className="text-2xl md:text-5xl mb-2">{t("change-password")}</p>
           <p className="md:text-4xl">{t("set-your-new-password")}</p>
         </div>
         <div className="w-[75%]">
-
           {/* 이메일 입력 필드 */}
           <div className="relative">
             <div className="flex">
@@ -138,8 +144,18 @@ function TranslatedChange() {
         </div>
 
         {/* 이미지 */}
-        <Image src={Doryeoni} alt="Doryeoni" className="w-[18%] absolute top-[55%] right-[15%]" priority />
-        <Image src={Raoni} alt="Raoni" className="w-[28%] absolute top-[60%] left-[15%]" priority />
+        <Image
+          src={Doryeoni}
+          alt="Doryeoni"
+          className="w-[18%] absolute top-[55%] right-[15%]"
+          priority
+        />
+        <Image
+          src={Raoni}
+          alt="Raoni"
+          className="w-[28%] absolute top-[60%] left-[15%]"
+          priority
+        />
       </div>
 
       {/* 모달 컴포넌트 */}

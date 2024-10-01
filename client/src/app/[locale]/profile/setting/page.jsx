@@ -4,7 +4,8 @@ import Image from "next/image";
 import Back from "@/public/icon/back.webp";
 import Information from "@/app/[locale]/profile/_components/information";
 import Sound from "@/app/[locale]/profile/_components/sound";
-import LeaveUser from "@/app/[locale]/profile/_components/leave-user";
+import DeleteUser from "@/app/[locale]/profile/_components/delete-user";
+import Logout from "@/app/[locale]/profile/_components/logout";
 
 export default function Setting() {
   const locale = useLocale();
@@ -27,11 +28,14 @@ export default function Setting() {
       <hr className="w-full border-t border-[#ACACAC]" />
       {/* 세팅 컴포넌트 */}
       <div className="w-full h-full flex justify-center items-center">
-        <div className="bg-white w-[90%] h-[80%] rounded-3xl flex justify-center items-center flex-col">
+        <div className="bg-white w-[90%] h-[85%] rounded-3xl flex justify-center items-center flex-col">
           <Information />
           <hr className="w-[90%] border-t border-[#ACACAC] my-4" />
           <Sound />
-          <LeaveUser />
+          <div className="w-[90%] py-3 flex items-center justify-between">
+            <Logout />
+            <DeleteUser />
+          </div>
         </div>
       </div>
     </div>

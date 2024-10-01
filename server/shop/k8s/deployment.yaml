@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-shop
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop
+  namespace: ns-shop
+  labels:
+    app: shop
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: shop
+  template:
+    metadata:
+      labels:
+        app: shop
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: "worker"
+      containers:
+      - name: shop
+        image: tkdqja9573/ssafy-tailored-shop
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: jasypt.encryptor.password
+          value: "jenkins_will_set_this"
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        resources:
+          requests:
+            cpu: "200m"
+          limits:
+            cpu: "400m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop
+  namespace: ns-shop
+  labels:
+    app: shop
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: shop
+  type: ClusterIP

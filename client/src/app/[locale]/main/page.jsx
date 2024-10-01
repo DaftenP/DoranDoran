@@ -34,11 +34,11 @@ export default function Main() {
     <div className='relative z-10'>
       <Top />
       <Image src={Cloud1} alt="cloud"
-        className="absolute w-auto h-[10vh] md:w-10 md:h-10 lg:w-16 lg:h-16 z-0"
+        className="absolute w-auto h-[10vh] md:w-auto md:h-10 lg:w-auto lg:h-16 z-0"
         style={{ transform: `translateX(${cloud1Position}vw) translateY(10vh)` }}
        />
       <Image src={Cloud2} alt="cloud"
-        className="absolute w-auto h-[13vh] md:w-10 md:h-10 lg:w-16 lg:h-16 z-0"
+        className="absolute w-auto h-[13vh] md:w-auto md:h-10 lg:w-auto lg:h-16 z-0"
         style={{ transform: `translateX(${-cloud2Position}vw) translateY(25vh)` }}
       />
       <div className='relative mt-[10vh] mb-[12vh]'>

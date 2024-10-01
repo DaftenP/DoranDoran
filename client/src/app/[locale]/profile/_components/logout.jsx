@@ -1,9 +1,11 @@
 "use client";
 
-import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
-import { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from 'next/navigation';
+import { useDispatch } from "react-redux";
+import { logout } from "@/store/authSlice";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
 
 export default function Logout() {
   const [messages, setMessages] = useState(null);
@@ -14,15 +16,13 @@ export default function Logout() {
       try {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default);
-      } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
-      }
+      } catch (error) {}
     }
     loadMessages();
   }, [locale]);
 
   if (!messages) {
-    return <div>Loading...</div>; // 메시지가 로드될 때까지 로딩 표시
+    return <div>Loading...</div>;
   }
 
   return (
@@ -36,20 +36,19 @@ function TranslatedLogout() {
   const t = useTranslations("index");
   const locale = useLocale();
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  // 로그아웃 logout 함수
+  // 수정된 로그아웃 함수
   const handleLogout = (e) => {
     e.preventDefault();
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     axios.get(`${apiUrl}/logout`)
       .then((response) => {
-        console.log("로그아웃 성공:", response);
-        // localStorage.removeItem('token');
+        localStorage.removeItem("accessToken");
+        dispatch(logout());
         router.push(`/${locale}/`);
       })
-      .catch((error) => {
-        console.error("로그아웃 실패:", error);
-      });
+      .catch((error) => {});
   };
 
   return (

@@ -13,9 +13,7 @@ export default function Language() {
       try {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default);
-      } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
-      }
+      } catch (error) {}
     }
     loadMessages();
   }, [locale]);

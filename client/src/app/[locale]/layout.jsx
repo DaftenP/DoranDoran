@@ -1,6 +1,7 @@
 import "./globals.css";
+import AuthWrapper from "./AuthWrapper";
 import { ReduxProvider } from "./providers";
-import { ServiceWorkerRegistration } from "../../components/ServiceWorkerRegistration";
+import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 
 export const metadata = {
   title: "Doran",
@@ -10,15 +11,16 @@ export const metadata = {
 
 export default function RootLayout({ children, modal, params }) {
   const { locale } = params;
-
   return (
     <html lang={locale}>
       <head />
       <body>
         <ReduxProvider>
-          {children}
+          <AuthWrapper locale={locale}>
+            {children}
+            {modal}
+          </AuthWrapper>
         </ReduxProvider>
-        {modal}
         <div id="modal-root" />
         <ServiceWorkerRegistration />
       </body>

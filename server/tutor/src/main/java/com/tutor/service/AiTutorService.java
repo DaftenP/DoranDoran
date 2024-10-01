@@ -53,22 +53,16 @@ public class AiTutorService {
             """;
 
     // TODO: 프롬프트 수정 필요 (isOver 변경 이슈)
-    private static final String SYSTEM_PROMPT = "다음 조건에 따라 대화를 진행해주세요.\n" +
-            "1. 당신은 지금부터 한국어 회화 학습을 위한 선생님입니다.\n" +
-            "2. 역할에 맞는 쉬운 수준의 한국어 상황극을 해주세요. \n" +
-            "3. 대화 이력을 참고하여 다음으로 입력될 사용자의 대답의 적절성을 평가해주세요.\n" +
-            "4. 만일 사용자가 대화에 관련없이 대답을 한다면 자연스럽게 넘어가주세요.\n" +
-            "5. 대화 이력을 보고 사용자에게 이전과 유사한 질문이나 대화는 하지 마세요. \n" +
-            "6. 사용자의 대답에 비속어 등 부적절한 내용이 포함된다면 적절성 점수를 0으로하고 isOver을 true로 해주세요.\n" +
-            "7. 필요한 데이터는 다음과 같습니다.\n" +
-            "gptResponse : 당신의 대답 (string)\n" +
-            "translatedResponse : gptResponse에 대한 번역 (사용자 국가 언어에 알맞게 번역해주세요.) (string)\n" +
-            "hint : 당신의 대답에 대한 적절한 사용자의 응답 예시 (string)\n" +
-            "translatedHint : hint에 대한 번역 (사용자 국가 언어에 알맞게 번역해주세요.) (string)\n" +
-            "correctness : 대화 이력에 대한 사용자의 대답의 적절성 점수 (0~5)\n" +
-            "isOver : 대화 마침 여부 (boolean)\n" +
-            "8. (가장 중요) 목표를 달성하면 무조건 isOver을 true로 하고 대화를 종료해주세요!!!\n" +
-            "9. 당신이 대답을 할 때 다시 한 번 상황을 생각하고 목표 달성 여부를 확인해주세요. \n";
+    private static final String SYSTEM_PROMPT = "Follow these rules for the conversation:\n" +
+            "1. Perform a Korean role-play according to your role.\n" +
+            "2. Evaluate the user's response for naturalness based on the conversation flow.\n" +
+            "3. Refer to previous conversation memory for a smooth continuation.\n" +
+            "4. If the user's response contains inappropriate content (e.g., profanity), set 'correctness' to 0 and 'isOver' to true.\n" +
+            "5. End the conversation and set 'isOver' to true if there are more than 5 previous conversation memories.\n" +
+            "6. Respond only in Korean.\n" +
+            "gptResponse: Your response (string)\n" +
+            "correctness: Appropriateness score of the user's response (0~5)\n" +
+            "isOver: Whether the conversation is over (boolean)\n";
 
     @Value("${etri.api.key}")
     private String ETRI_API_KEY;
@@ -177,10 +171,10 @@ public class AiTutorService {
 
     private String generatePrompt(String r, String s, String l, String msg) {
         StringBuilder sb = new StringBuilder();
-        sb.append("당신의 역할은 ").append(r).append("입니다.\n");
-        sb.append("대화의 목표는 ").append(s).append("입니다.\n");
-        sb.append("번역 언어는 ").append(l).append("입니다.\n");
-        sb.append("사용자 메세지: ").append(msg).append("\n");
+        sb.append("Your role is ").append(r).append(".\n");
+        sb.append("The goal of the conversation is ").append(s).append(".\n");
+        sb.append("The translation language is ").append(l).append(".\n");
+        sb.append("User message: ").append(msg).append("\n");
         return sb.toString();
     }
 }

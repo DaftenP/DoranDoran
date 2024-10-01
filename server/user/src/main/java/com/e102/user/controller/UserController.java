@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,6 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
 
     @PostMapping("/regist")
     public ResponseEntity<ResponseDto> regist(@RequestBody UserRequestDTO userRequestDTO){
@@ -112,6 +112,12 @@ public class UserController {
     public ResponseEntity<ResponseDto> missionAccomplish(@PathVariable("userId")int userId){
         userService.missionAccomplished(userId);
         return ResponseDto.response(StatusCode.SUCCESS);
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<ResponseDto> findUserNickname(@RequestBody List<Integer> userIds){
+        HashMap<Integer,String> hmap = userService.rankUserResponse(userIds);
+        return ResponseDto.response(StatusCode.SUCCESS,hmap);
     }
 
 

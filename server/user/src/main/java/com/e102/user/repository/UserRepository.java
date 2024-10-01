@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
@@ -21,11 +23,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByEmail(String email);
 
+    @Query("SELECT u FROM User u WHERE u.id IN :ids")
+    List<User> findByIdIn(@Param("ids") List<Integer> ids);
+
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.password = :password WHERE u.id = :id")
     void resetPasswordById(@Param("id") Integer id, @Param("password") String password);
-
 
     @Modifying
     @Transactional

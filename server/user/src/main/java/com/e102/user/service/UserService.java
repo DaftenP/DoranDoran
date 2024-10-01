@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -57,6 +58,17 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public HashMap<Integer,String> rankUserResponse(List<Integer> reqLst){
+        HashMap<Integer,String> hmap = new HashMap<>();
+        List<User> users = userRepository.findByIdIn(reqLst);
+        // User 정보를 RankUserResponseDTO로 변환하여 lst에 추가
+        for (User user : users) {
+            hmap.put(user.getId(),user.getNickname());
+        }
+        return hmap;
+    }
+
 
     public MyPageResponseDTO findMyPageById(int userId){
         User sUser = userRepository.findById(userId);
@@ -73,17 +85,7 @@ public class UserService {
                 .status(sUser.statusToBit())
                 .birthday(sUser.getBirthDay())
                 .build();
-
         return myPageResponseDTO;
-    }
-
-    public void init(){
-        User sUser = userRepository.findById(1);
-
-        for(int i=0;i<=10;i++){
-            sUser.getItems().put(i,i);
-        }
-        userRepository.save(sUser);
     }
 
     public String resetPassword(String email){
@@ -95,7 +97,6 @@ public class UserService {
             return null;
             //return new ResponseDto(StatusCode.NOT_FOUND);
         }
-
         // 비밀번호 길이 설정
         int passwordLength = 12; // 원하는 비밀번호 길이
 
@@ -115,16 +116,9 @@ public class UserService {
         String encryptedPassword = bCryptPasswordEncoder.encode(rawPassword);
 
         sUser.modPassword(encryptedPassword);
-        //System.out.println("SID : " + sUser.getId());
-        //System.out.println("RAW - PASSWORD : " + rawPassword);
-
-        //userRepository.resetPasswordById(sUser.getId(),"1234");
-        //유저 비밀번호 업데이트
 
         return rawPassword;
-        //return new ResponseDto(StatusCode.RESET_SUCCESS,encryptedPassword);
     }
-
 
     public StatusCode registUser(UserRequestDTO userRequestDTO){
         User sUser = userRepository.findByEmail(userRequestDTO.getEmail());
@@ -141,6 +135,7 @@ public class UserService {
             return StatusCode.DUPLICATE_EMAIL;
         }
     }
+
     public StatusCode deleteUser(int userId){
         User sUser = userRepository.findById(userId);
 
@@ -164,7 +159,6 @@ public class UserService {
         }
     }
 
-    //해당하는 유저의
     public List<CreditLogResponseDTO> getAllCreditLog(int userId) {
         User sUser = userRepository.findById(userId);
         List<CreditLogResponseDTO> lst = new ArrayList<>();
@@ -191,7 +185,6 @@ public class UserService {
                         .createdAt(playLog.getCreatedAt())
                         .build());
         }
-        //User의 List에 추가한다.
         return lst;
     }
 
@@ -205,7 +198,6 @@ public class UserService {
                     .xp(10) //Dummy Data
                     .quizId(playLogRequestDTO.getQuizId())
                     .build();
-
 
             userRepository.updateXpById(playLogRequestDTO.getUserId(), playLogRequestDTO.getQuizId());
 
@@ -223,7 +215,6 @@ public class UserService {
 
     public StatusCode modifyNickname(NicknameModifyDTO nicknameModifyDTO) {
         User sUser = userRepository.findById(nicknameModifyDTO.getUserId());
-
         if (sUser != null) {
             sUser.modNickname(nicknameModifyDTO.getNickname());
 
@@ -235,7 +226,6 @@ public class UserService {
 
     public StatusCode modifyPassWord(PasswordModifyDTO passwordModifyDTO) {
         User sUser = userRepository.findById(passwordModifyDTO.getUserId());
-
         if (sUser != null) {
             boolean correct = bCryptPasswordEncoder.matches(passwordModifyDTO.getPrevPassword(), sUser.getPassword());
             if (correct) {
@@ -247,12 +237,10 @@ public class UserService {
         } else {
             return StatusCode.BAD_REQUEST;
         }
-
     }
 
     public StatusCode modifyBirthDay(BirthdayModifyDTO birthdayModifyDTO) {
         User sUser = userRepository.findById(birthdayModifyDTO.getUserId());
-
         if (sUser != null) {
             sUser.modBirthDay(birthdayModifyDTO.getBirthday());
             return StatusCode.SUCCESS;
@@ -268,27 +256,22 @@ public class UserService {
             if (sUser.getGem() + creditLogRequestDTO.getChanges() < 0) {
                 throw new RuntimeException("not enough GEM");
             }
-
             CreditLog creditLog = CreditLog.builder()
                     .cuser(sUser)
                     .logTypes(creditLogRequestDTO.getLogTypes())
                     .changes(creditLogRequestDTO.getChanges())
                     .build();
 
-
             userRepository.updateGemById(creditLogRequestDTO.getUserId(), creditLogRequestDTO.getChanges());
             sUser.getCreditLogList().add(creditLog);
             //넣고
             userRepository.save(sUser);
             //DB에 반영
-
             return StatusCode.SUCCESS;
-
         }
         else{
             return StatusCode.BAD_REQUEST;
         }
-
     }
 
     public boolean todayMissionCheck(int userId){
@@ -300,6 +283,7 @@ public class UserService {
             return false;
         }
     }
+
     public StatusCode missionAccomplished(int userId){
         User sUser = userRepository.findById(userId);
         if(sUser != null){
@@ -317,7 +301,6 @@ public class UserService {
             String encPassword = sUser.getPassword();
             //비밀번호 가져와서 매칭되는지 확인한다.
             boolean match = bCryptPasswordEncoder.matches(userLoginDTO.getPassword(),encPassword);
-
             if(match){
                 return StatusCode.SUCCESS;
             }
@@ -329,6 +312,5 @@ public class UserService {
             return StatusCode.NO_EMAIL;
         }
     }
-
 
 }

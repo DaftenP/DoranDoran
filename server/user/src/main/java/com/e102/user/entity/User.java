@@ -26,6 +26,7 @@ import java.util.Map;
 @Slf4j
 @EntityListeners(AuditingEntityListener.class)
 public class User {
+
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,12 +62,12 @@ public class User {
     private int gem = 0;
 
     // cron으로 일주일 마다 날릴 예정
-    @Column(name = "user_quest")
-    private int questStatus = 0;
+    @Column(name = "user_weekly_quest")
+    private int weeklyStatus = 0;
 
     // cron으로 밤마다 날릴예정
-    @Column(name = "user_today_quest")
-    private int todayStatus;
+    @Column(name = "user_daily_quest")
+    private int dailyStatus = 0;
 
     @CreatedDate
     @Column(name = "user_created_at",columnDefinition = "TIMESTAMP", updatable = false)
@@ -101,13 +102,13 @@ public class User {
 
     public void resetDailyStatus(){
         log.debug("reset Daily");
-        this.todayStatus = 0;
+        this.dailyStatus = 0;
         this.tries = 10;
     }
 
     public void resetWeeklyStatus(){
         log.debug("reset Weekly");  // 현재 날짜 로그 찍기
-        this.questStatus = 0;
+        this.weeklyStatus = 0;
     }
 
     public void modPassword(String password) {
@@ -123,7 +124,7 @@ public class User {
     }
 
     public String statusToBit(){
-        return String.format("%07d", Integer.parseInt(Integer.toBinaryString(questStatus)));
+        return String.format("%07d", Integer.parseInt(Integer.toBinaryString(weeklyStatus)));
     }
 
     public int getScoop(DayOfWeek dayOfWeek){
@@ -164,11 +165,11 @@ public class User {
         int curBit = 1;
         int scoop = getScoop(dayOfWeek);
 
-        questStatus |= (curBit << scoop);
+        weeklyStatus |= (curBit << scoop);
         // or 한다.
 
         log.debug("Calculated scoop: {}", scoop);  // scoop 로그 찍기
-        log.debug("Current questStatus: {}", questStatus);  // 현재 questStatus 로그 찍기
+        log.debug("Current questStatus: {}", weeklyStatus);  // 현재 questStatus 로그 찍기
 
     }
 
@@ -184,9 +185,9 @@ public class User {
         int scoop = getScoop(dayOfWeek);
 
         log.debug("Calculated scoop: {}", scoop);  // scoop 로그 찍기
-        log.debug("Current questStatus: {}", questStatus);  // 현재 questStatus 로그 찍기
+        log.debug("Current questStatus: {}", weeklyStatus);  // 현재 questStatus 로그 찍기
 
-        boolean result = (questStatus & (curBit << scoop)) != 0;
+        boolean result = (weeklyStatus & (curBit << scoop)) != 0;
         log.debug("Mission cleared: {}", result);  // 미션 클리어 여부 로그 찍기
 
         return result;

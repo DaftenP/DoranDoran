@@ -9,21 +9,41 @@ import (
 
 // POST /api/v1/bff/reissue
 func ReissueController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	util.ForwardRequest(w, r, "POST", service.UserUrl+"/api/v1/user/reissue")
 }
 
 // POST /api/v1/bff/regist
 func RegistController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	util.ForwardRequest(w, r, "POST", service.UserUrl+"/api/v1/user/regist")
 }
 
 // POST /api/v1/bff/login
 func LoginController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	util.ForwardRequest(w, r, "POST", service.UserUrl+"/api/v1/user/login")
 }
 
-// POST /api/v1/bff/logout
+// GET /api/v1/bff/logout
 func LogoutController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	http.SetCookie(w, &http.Cookie{
 		Name:   "refresh",
 		Value:  "",

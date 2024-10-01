@@ -25,3 +25,13 @@ func GetLeagueRankService(userId string) (*http.Response, error) {
 
 	return http.DefaultClient.Do(req)
 }
+
+// GET /api/v1/rank/leaderboard (type int, userId string)
+func GetLeaderboardService(typ int, userId string) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodGet, RankUrl+"/api/v1/rank/leaderboard?type="+string(typ)+"&userId="+userId, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return http.DefaultClient.Do(req)
+}

@@ -17,6 +17,31 @@ type LeagueMemberToClient struct {
 	Order    int    `json:"order"`
 }
 
+type LeaderBoardResponseToClient struct {
+	Data      LeaderBoardResponseToClientData `json:"data"`
+	Message   string                          `json:"message"`
+	TimeStamp string                          `json:"timestamp"`
+}
+
+type LeaderBoardResponseToClientData struct {
+	ThisWeek WeekData `json:"thisWeek"`
+	LastWeek WeekData `json:"lastWeek"`
+}
+
+type WeekData struct {
+	MyLeaderBoard       LeaderBoardDataToClient   `json:"myLeaderBoard"`
+	ThisWeekLeaderBoard []LeaderBoardDataToClient `json:"thisWeekLeaderBoard"`
+}
+
+type LeaderBoardDataToClient struct {
+	LeaderBoardType int    `json:"leaderBoardType"`
+	UserId          int    `json:"userId"`
+	UserNickname    string `json:"userNickname"`
+	GainXp          int    `json:"gainXp"`
+	UserRank        int    `json:"userRank"`
+	Order           int    `json:"order"`
+}
+
 ////////////////////////////////////////
 
 type LeagueInfoResponseFromMSA struct {
@@ -51,4 +76,23 @@ type RankInfoFromMSA struct {
 	UserId   string `json:"userId"`
 	Rank     int    `json:"rank"`
 	LeagueId string `json:"leagueId"`
+}
+
+type LeaderBoardResponseFromMSA struct {
+	Data      LeaderBoardResponseFromMSAData `json:"data"`
+	Message   string                         `json:"message"`
+	TimeStamp string                         `json:"timestamp"`
+}
+
+type LeaderBoardResponseFromMSAData struct {
+	MyLeaderBoard LeaderBoardDataFromMSA   `json:"myLeaderBoard"`
+	LeaderBoard   []LeaderBoardDataFromMSA `json:"leaderBoard"`
+}
+
+type LeaderBoardDataFromMSA struct {
+	LeaderBoardType int `json:"leaderBoardType"`
+	UserId          int `json:"userId"`
+	GainXp          int `json:"gainXp"`
+	UserRank        int `json:"userRank"`
+	Order           int `json:"order"`
 }

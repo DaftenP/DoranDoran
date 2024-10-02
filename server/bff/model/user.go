@@ -14,6 +14,10 @@ type UserInfoToClient struct {
 	Avatar    string `json:"avatar"`
 	Voice     string `json:"voice"`
 	Gem       int    `json:"gem"`
+	Tries     int    `json:"tries"`
+	Status    string `json:"status"`
+	Birthday  string `json:"birthday"`
+	Psize     int    `json:"psize"`
 	Rank      int    `json:"rank"`
 }
 
@@ -39,6 +43,10 @@ type UserInfoFromMSA struct {
 	Avatar    string `json:"avatar"`
 	Voice     string `json:"voice"`
 	Gem       int    `json:"gem"`
+	Tries     int    `json:"tries"`
+	Status    string `json:"status"`
+	Birthday  string `json:"birthday"`
+	Psize     int    `json:"psize"`
 }
 
 type UserNamesFromMSA struct {

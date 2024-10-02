@@ -3,6 +3,7 @@ package com.e102.user.entity;
 import com.e102.log.entity.CreditLog;
 import com.e102.log.entity.ItemLog;
 import com.e102.log.entity.PlayLog;
+import com.e102.user.dto.ItemKey;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,10 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Getter
@@ -35,10 +33,11 @@ public class User {
     @Column(name = "user_email")
     private String email;
 
+    // 아이템 유형과 아이템 번호를 복합 키로 사용 (아이템 카운트 제외)
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "user_item", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "item_count",columnDefinition = "Integer")
-    private Map<Integer,Integer> items = new HashMap<>();
+    private Set<ItemKey> items = new HashSet<>();
+
 
     @Column(name = "user_pw")
     private String password;
@@ -176,6 +175,8 @@ public class User {
         log.debug("Current questStatus: {}", weeklyStatus);  // 현재 questStatus 로그 찍기
 
     }
+
+
 
     //오늘 미션 해결했는지 확인한다.
     public boolean isMissionCleared() {

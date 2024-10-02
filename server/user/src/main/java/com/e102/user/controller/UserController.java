@@ -120,7 +120,15 @@ public class UserController {
         StatusCode statusCode = userService.modifyGX(gemXpModifyDTO);
         return ResponseDto.response(statusCode);
     }
-
-
+    @PostMapping("item/buy")
+    public ResponseEntity<ResponseDto> buyItem(@RequestBody ItemRequestDTO itemRequestDTO){
+        StatusCode statusCode = userService.buyItem(itemRequestDTO);
+        return ResponseDto.response(statusCode);
+    }
+    @GetMapping("item/{userId}")
+    public ResponseEntity<ResponseDto> getItem(@PathVariable int userId){
+        List<ItemResponseDTO> lst = userService.getItems(userId);
+        return ResponseDto.response(StatusCode.SUCCESS, lst);
+    }
 
 }

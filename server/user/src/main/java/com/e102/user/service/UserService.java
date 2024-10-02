@@ -17,10 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Transactional
 @Service
@@ -346,6 +343,47 @@ public class UserService {
         else{
             return StatusCode.NO_EMAIL;
         }
+    }
+
+    public StatusCode buyItem(ItemRequestDTO itemRequestDTO){
+        User sUser = userRepository.findById(itemRequestDTO.getUserId());
+        if(sUser != null){
+            Set<ItemKey> items = sUser.getItems();
+            ItemKey inputKey =  ItemKey.builder()
+                    .itemId(itemRequestDTO.getItemId())
+                    .itemType(itemRequestDTO.getItemType())
+                    .build();
+            if(items.contains(inputKey)){
+                return StatusCode.ALREADY_GET;
+            }
+            else{
+                items.add(inputKey);
+                //해당하는 아이템에 넣는다.
+                return StatusCode.SUCCESS;
+            }
+        }
+        else{
+            return StatusCode.NO_EMAIL;
+        }
+    }
+
+    public List<ItemResponseDTO> getItems(int userId){
+        User sUser = userRepository.findById(userId);
+
+        List<ItemResponseDTO> lst = new ArrayList<>();
+
+        if(sUser != null){
+            Set<ItemKey> items = sUser.getItems();
+            for( ItemKey ik : items ){
+                lst.add(
+                        ItemResponseDTO.builder()
+                                .itemId(ik.getItemId())
+                                .itemType(ik.getItemType())
+                                .build()
+                );
+            }
+        }
+        return lst;
     }
 
 

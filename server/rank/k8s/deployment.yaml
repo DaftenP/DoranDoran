@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-rank
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rank
+  namespace: ns-rank
+  labels:
+    app: rank
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: rank
+  template:
+    metadata:
+      labels:
+        app: rank
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: "worker"
+      containers:
+      - name: rank
+        image: tkdqja9573/ssafy-tailored-rank
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: jasypt.encryptor.password
+          value: "jenkins_will_set_this"
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        resources:
+          requests:
+            cpu: "200m"
+          limits:
+            cpu: "400m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rank
+  namespace: ns-rank
+  labels:
+    app: rank
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: rank
+  type: ClusterIP

@@ -34,7 +34,7 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parts := strings.Split(cookie.Value, ":")
+	parts := strings.Split(cookie.Value, "%3A")
 	userID := parts[0]
 
 	var sendResBody model.TutorSendResponse
@@ -96,8 +96,8 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// make response
-	response := model.TutorCombinedResponse{
-		Data: model.TutorCombinedResponseData{
+	response := model.TalkResponseToClient{
+		Data: model.TalkResponseToClientData{
 			TutorResponse:      sendResBody.Data.TutorResponse,
 			TranslatedResponse: sendResBody.Data.TranslatedResponse,
 			Hint:               sendResBody.Data.Hint,

@@ -61,7 +61,7 @@ public class RankService {
             leagueMembersDTO.add(LeagueMemberDTO.builder()
                     .userId(members.get(i).getUserId())
                     .userXP(members.get(i).getGainXP())
-                    .userRanking((long) i + 1)
+                    .order((long) i + 1)
                     .build());
         }
 

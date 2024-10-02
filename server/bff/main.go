@@ -21,7 +21,19 @@ func main() {
 	http.HandleFunc("/api/v1/bff/mail/check", controller.CheckMailController)
 	http.HandleFunc("/api/v1/bff/mail/reset", controller.ResetMailController)
 
-	http.Handle("/api/v1/bff/my-page/user", middleware.JWTMiddleware(http.HandlerFunc(controller.DeleteUserController)))
+	http.Handle("/api/v1/bff/my-page/user",
+		middleware.JWTMiddleware(
+			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if r.Method == http.MethodGet {
+					controller.GetUserController(w, r)
+				} else if r.Method == http.MethodDelete {
+					controller.DeleteUserController(w, r)
+				} else {
+					http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+				}
+			}),
+		),
+	)
 
 	http.Handle("/api/v1/bff/admin/quiz", middleware.JWTMiddleware(http.HandlerFunc(controller.GenerateQuizController)))
 
@@ -34,6 +46,9 @@ func main() {
 	http.Handle("/api/v1/bff/quiz/play-log/", middleware.JWTMiddleware(http.HandlerFunc(controller.GetPlayLogController)))
 	http.Handle("/api/v1/bff/quiz/stage/all", middleware.JWTMiddleware(http.HandlerFunc(controller.GetAllStageController)))
 	http.Handle("/api/v1/bff/quiz/stage/{stageId}", middleware.JWTMiddleware(http.HandlerFunc(controller.GetStageController)))
+
+	http.Handle("/api/v1/bff/rank/league", middleware.JWTMiddleware(http.HandlerFunc(controller.GetLeagueRank)))
+	http.Handle("/api/v1/bff/rank/leaderboard", middleware.JWTMiddleware(http.HandlerFunc(controller.GetLeaderBoard)))
 
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

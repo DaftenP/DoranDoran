@@ -2,9 +2,9 @@ spring:
   application:
     name: scheduler
   datasource:
-    url: ENC(I1fnsvJRhfDzkPNC4jeGzSsQtmf+re2GUpX+IHgwNyIMEGytvi5ARw==)
-    username: ENC(QwnUyIfu2THVsYXlzD2sow==)
-    password: ENC(SOefXdn69nfyCpO4F6b8PSyBEKZhuFZs)
+    url: ENC(p9G6ViCeh3lGmBC/Iqnt/tRcCcFdIbt0sEd7DuT9R+QqQFavmHL7og==)
+    username: ENC(lTsZM/LvcXPtqziincpVYw==)
+    password: ENC(FvTnuNGAfDthSifRz8rjrw04jn9DVyRR)
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:

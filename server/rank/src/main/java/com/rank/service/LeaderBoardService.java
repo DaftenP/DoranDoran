@@ -49,7 +49,7 @@ public class LeaderBoardService {
                     .userId(memberDTO.getUserId())
                     .gainXp(memberDTO.getGainXp())
                     .userRank(memberDTO.getUserRank())
-                    .userRanking(memberDTO.getUserRanking())
+                    .order(memberDTO.getOrder())
                     .build();
 
             // 1. Sorted Set에 사용자 랭킹 데이터 저장
@@ -102,7 +102,7 @@ public class LeaderBoardService {
                     .leaderboardType(member.getLeaderboardType())
                     .gainXp(member.getGainXp())
                     .userRank(member.getUserRank())
-                    .userRanking(member.getUserRanking())
+                    .order(member.getOrder())
                     .build();
 
             leaderboardMembersDTO.add(memberDTO);
@@ -118,7 +118,7 @@ public class LeaderBoardService {
                     .userId(user.getUserId())
                     .gainXp(user.getGainXp())
                     .userRank(user.getUserRank())
-                    .userRanking(user.getUserRanking())
+                    .order(user.getOrder())
                     .build();
         }
 

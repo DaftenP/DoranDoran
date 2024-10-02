@@ -1,7 +1,7 @@
 import "./globals.css";
 import AuthWrapper from "./AuthWrapper";
 import { ReduxProvider } from "./providers";
-import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
+// import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 
 export const metadata = {
   title: "Doran",
@@ -22,7 +22,7 @@ export default function RootLayout({ children, modal, params }) {
           </AuthWrapper>
         </ReduxProvider>
         <div id="modal-root" />
-        <ServiceWorkerRegistration />
+        {/* <ServiceWorkerRegistration /> */}
       </body>
     </html>
   );

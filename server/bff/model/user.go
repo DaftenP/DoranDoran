@@ -17,6 +17,12 @@ type UserInfoToClient struct {
 	Rank      int    `json:"rank"`
 }
 
+type PatchResponseToClient struct {
+	Data      string `json:"data"`
+	Message   string `json:"message"`
+	TimeStamp string `json:"timestamp"`
+}
+
 ////////////////////////////////////////
 
 type UserInfoResponseFromMSA struct {

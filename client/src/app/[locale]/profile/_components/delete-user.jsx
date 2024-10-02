@@ -38,13 +38,13 @@ function TranslatedDeleteUser() {
   const handleDeleteUser = (e) => {
     e.preventDefault();
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const accessToken = localStorage.getItem("accessToken");
-    axios
-      .delete(`${apiUrl}/my-page/user`, {
+    // const accessToken = localStorage.getItem("accessToken");
+    axios.delete(`${apiUrl}/my-page/user`, {
         headers: {
           "Content-Type": "application/json",
-          Access: `${accessToken}`,
+          // Access: `${accessToken}`,
         },
+        withCredentials: true,
       })
       .then(() => {
         localStorage.removeItem("accessToken");

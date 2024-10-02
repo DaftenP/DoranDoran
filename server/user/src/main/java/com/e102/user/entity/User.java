@@ -50,13 +50,13 @@ public class User {
     private String nickname;
 
     @Column(name = "user_character", nullable = true)
-    private int character;
+    private int color;
 
-    @Column(name = "user_avatar", nullable = true)
-    private int avatar;
+    @Column(name = "user_equipment", nullable = true)
+    private int equipment;
 
-    @Column(name = "user_voice", nullable = true)
-    private int voice;
+    @Column(name = "user_background", nullable = true)
+    private int background;
 
     @Column(name = "user_gem")
     private int gem = 0;
@@ -75,9 +75,6 @@ public class User {
 
     @Column(name = "user_deleted_at",columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime deletedAt;
-
-    @Column(name = "user_tries" )
-    private int tries = 10;
 
     @Column(name = "user_stage" )
     private int stage = 1;
@@ -103,7 +100,6 @@ public class User {
     public void resetDailyStatus(){
         log.debug("reset Daily");
         this.dailyStatus = 0;
-        this.tries = 10;
     }
 
     public void resetWeeklyStatus(){
@@ -155,6 +151,14 @@ public class User {
         return scoop;
     }
 
+    public void addGem(int addGem){
+        this.gem += addGem;
+    }
+    public void addXp(int addXp){
+        this.xp += addXp;
+    }
+
+    //오늘 미션 클리어로 만듬
     public void todayMissionCleared(){
         LocalDate date = LocalDate.now();   // 현재 날짜 가져오기
         DayOfWeek dayOfWeek = date.getDayOfWeek();  // 현재 요일 가져오기
@@ -173,6 +177,7 @@ public class User {
 
     }
 
+    //오늘 미션 해결했는지 확인한다.
     public boolean isMissionCleared() {
         LocalDate date = LocalDate.now();   // 현재 날짜 가져오기
         DayOfWeek dayOfWeek = date.getDayOfWeek();  // 현재 요일 가져오기
@@ -193,19 +198,33 @@ public class User {
         return result;
     }
 
+    public void increaseDaily(){
+        this.dailyStatus = Math.min(++dailyStatus,10);
+        //업데이트 한다.
+    }
+
     @Override
     public String toString() {
-        return "UserEntity{" +
+        return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
+                ", items=" + items +
                 ", password='" + password + '\'' +
+                ", xp=" + xp +
                 ", nickname='" + nickname + '\'' +
-                ", character=" + character +
-                ", avatar=" + avatar +
-                ", voice=" + voice +
+                ", color=" + color +
+                ", equipment=" + equipment +
+                ", background=" + background +
                 ", gem=" + gem +
+                ", weeklyStatus=" + weeklyStatus +
+                ", dailyStatus=" + dailyStatus +
                 ", createdAt=" + createdAt +
                 ", deletedAt=" + deletedAt +
+                ", stage=" + stage +
+                ", birthDay=" + birthDay +
+                ", creditLogList=" + creditLogList +
+                ", itemLogList=" + itemLogList +
+                ", playLogList=" + playLogList +
                 '}';
     }
 }

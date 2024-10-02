@@ -13,11 +13,12 @@ public class MyPageResponseDTO {
     String nickname;
     String email;
     int xp;
-    int character;
-    int avatar;
-    int voice;
+    int color;
+    int equipment;
+    int background;
     int gem;
-    int tries;
+    int dailyStatus;
     String status;
     LocalDate birthday;
+    int pSize;
 }

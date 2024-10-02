@@ -102,16 +102,11 @@ public class UserController {
         return ResponseDto.response(StatusCode.SUCCESS, lst);
     }
 
-    @GetMapping("/mission/{userId}")
-    public ResponseEntity<ResponseDto> missionCheck(@PathVariable("userId")int userId){
-        boolean isCleared = userService.todayMissionCheck(userId);
-        return ResponseDto.response(StatusCode.SUCCESS, isCleared);
-    }
-
-    @PostMapping("/mission/{userId}")
-    public ResponseEntity<ResponseDto> missionAccomplish(@PathVariable("userId")int userId){
-        userService.missionAccomplished(userId);
-        return ResponseDto.response(StatusCode.SUCCESS);
+    @PostMapping("/daily")
+    public ResponseEntity<ResponseDto> insertMission(@RequestBody PlayLogRequestDTO playLogRequestDTO){
+        StatusCode statusCode = userService.solveDaily(playLogRequestDTO);
+        return ResponseDto.response(statusCode);
+        //statusCode 리턴
     }
 
     @GetMapping("/find")
@@ -119,6 +114,13 @@ public class UserController {
         HashMap<Integer,String> hmap = userService.rankUserResponse(userIds);
         return ResponseDto.response(StatusCode.SUCCESS,hmap);
     }
+
+    @PutMapping("/xp/update")
+    public ResponseEntity<ResponseDto> modifyUserGemXp(@RequestBody GemXpModifyDTO gemXpModifyDTO){
+        StatusCode statusCode = userService.modifyGX(gemXpModifyDTO);
+        return ResponseDto.response(statusCode);
+    }
+
 
 
 }

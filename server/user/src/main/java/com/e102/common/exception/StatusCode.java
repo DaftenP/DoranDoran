@@ -26,7 +26,9 @@ public enum StatusCode {
     EXPIRED(HttpStatus.NOT_FOUND,"인증이 만료되었습니다."),
     CODE_CORRECT(HttpStatus.OK,"인증이 완료되었습니다."),
     CODE_INCORRECT(HttpStatus.UNAUTHORIZED,"인증번호가 잘못되었습니다."),
-    LOG_REGISTER(HttpStatus.OK,"문제가 등록되었습니다.");
+    LOG_REGISTER(HttpStatus.OK,"문제가 등록되었습니다."),
+    MISSION_DONE(HttpStatus.METHOD_NOT_ALLOWED,"오늘의 미션을 진행 완료하셨습니다."),
+    DAILY_CLEARED(HttpStatus.OK,"오늘의 미션을 클리어 하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

@@ -77,13 +77,14 @@ public class UserService {
                 .nickname(sUser.getNickname())
                 .email(sUser.getEmail())
                 .xp(sUser.getXp())
-                .character(sUser.getCharacter())
-                .avatar(sUser.getAvatar())
-                .voice(sUser.getVoice())
+                .color(sUser.getColor())
+                .equipment(sUser.getEquipment())
+                .background(sUser.getBackground())
                 .gem(sUser.getGem())
-                .tries(sUser.getTries())
+                .dailyStatus(sUser.getDailyStatus())
                 .status(sUser.statusToBit())
                 .birthday(sUser.getBirthDay())
+                .pSize(sUser.getPlayLogList().size())
                 .build();
         return myPageResponseDTO;
     }
@@ -175,6 +176,7 @@ public class UserService {
     }
 
 
+
     public List<PlayLogResponseDTO> getAllPlayLog(int userId) {
         User sUser = userRepository.findById(userId);
         List<PlayLogResponseDTO> lst = new ArrayList<>();
@@ -249,6 +251,8 @@ public class UserService {
         }
     }
 
+
+
     @Transactional
     public StatusCode insertCreditLog(CreditLogRequestDTO creditLogRequestDTO) {
         User sUser = userRepository.findById(creditLogRequestDTO.getUserId());
@@ -274,26 +278,44 @@ public class UserService {
         }
     }
 
-    public boolean todayMissionCheck(int userId){
-        User sUser = userRepository.findById(userId);
+    public StatusCode solveDaily(PlayLogRequestDTO playLogRequestDTO){
+        User sUser = userRepository.findById(playLogRequestDTO.getUserId());
         if(sUser != null){
-            return sUser.isMissionCleared();
-        }
-        else{
-            return false;
-        }
-    }
+            if(sUser.isMissionCleared()){
+                //Mission
+                return StatusCode.MISSION_DONE;
+            }
+            else{
+                sUser.increaseDaily();
+                //하나 증가하고
 
-    public StatusCode missionAccomplished(int userId){
-        User sUser = userRepository.findById(userId);
-        if(sUser != null){
-            sUser.todayMissionCleared();
-            return StatusCode.SUCCESS;
+                PlayLog playLog = PlayLog.builder()
+                        .puser(sUser)
+                        .xp(10) //Dummy Data
+                        .quizId(playLogRequestDTO.getQuizId())
+                        .build();
+
+                userRepository.updateXpById(playLogRequestDTO.getUserId(), playLogRequestDTO.getQuizId());
+
+                sUser.getPlayLogList().add(playLog);
+                //넣고
+                userRepository.save(sUser);
+                //DB에 반영
+
+                if(sUser.getDailyStatus() == 10){
+                    sUser.todayMissionCleared();
+                    //오늘 미션 클리어 처리
+                    //50씩 준다 xp, gem
+                    return StatusCode.DAILY_CLEARED;
+                }
+                return StatusCode.SUCCESS;
+            }
         }
         else{
             return StatusCode.NO_EMAIL;
         }
     }
+
 
     public StatusCode loginUser(UserLoginDTO userLoginDTO){
         User sUser = userRepository.findByEmail(userLoginDTO.getEmail());
@@ -312,5 +334,20 @@ public class UserService {
             return StatusCode.NO_EMAIL;
         }
     }
+
+    public StatusCode modifyGX(GemXpModifyDTO gemXpModifyDTO){
+        User sUser = userRepository.findById(gemXpModifyDTO.getUserId());
+
+        if(sUser != null){
+            sUser.addGem(gemXpModifyDTO.getGem());
+            sUser.addXp(gemXpModifyDTO.getXp());
+            return StatusCode.SUCCESS;
+        }
+        else{
+            return StatusCode.NO_EMAIL;
+        }
+    }
+
+
 
 }

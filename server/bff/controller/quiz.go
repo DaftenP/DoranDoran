@@ -57,7 +57,7 @@ func GetPlayLogController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parts := strings.Split(cookie.Value, ":")
+	parts := strings.Split(cookie.Value, "%3A")
 	userID := parts[0]
 
 	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/play-log/"+userID)

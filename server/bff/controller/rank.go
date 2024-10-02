@@ -26,7 +26,7 @@ func GetLeagueRank(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parts := strings.Split(cookie.Value, ":")
+	parts := strings.Split(cookie.Value, "%3A")
 	userId := parts[0]
 
 	var leagueInfoResponseFromMSA model.LeagueInfoResponseFromMSA
@@ -104,7 +104,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parts := strings.Split(cookie.Value, ":")
+	parts := strings.Split(cookie.Value, "%3A")
 	userId := parts[0]
 
 	// Variables to store responses

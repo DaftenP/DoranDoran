@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -9,7 +10,6 @@ import (
 
 	"com.doran.bff/model"
 	"com.doran.bff/service"
-	"com.doran.bff/util"
 )
 
 // DELETE /api/v1/bff/my-page/user
@@ -26,14 +26,43 @@ func DeleteUserController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parts := strings.Split(cookie.Value, ":")
+	parts := strings.Split(cookie.Value, "%3A")
 	userIdFromCookie := parts[0]
+
+	fmt.Println("parts: ", parts)
+	fmt.Println("userIdFromCookie: ", userIdFromCookie)
 
 	// trim the leading space
 	userIdFromCookie = strings.TrimSpace(userIdFromCookie)
 
 	// forward request to user service
-	util.ForwardRequest(w, r, http.MethodDelete, service.UserUrl+"/api/v1/user/delete/"+userIdFromCookie)
+	resp, err := service.DeleteUserService(userIdFromCookie)
+	if err != nil {
+		http.Error(w, "Error calling DeleteUserService", http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Response to client
+	var deleteResponse model.DeleteResponseFromMSA
+	if err := json.NewDecoder(resp.Body).Decode(&deleteResponse); err != nil {
+		http.Error(w, "Error parsing response", http.StatusInternalServerError)
+		fmt.Println(err)
+		// print all response body
+		body, _ := io.ReadAll(resp.Body)
+		fmt.Println(string(body))
+		fmt.Println(resp.Status)
+		fmt.Println("userIdFromCookie: ", userIdFromCookie)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(deleteResponse); err != nil {
+		http.Error(w, "Error encoding response", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 // GET /api/v1/bff/my-page/user
@@ -50,7 +79,7 @@ func GetUserController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parts := strings.Split(cookie.Value, ":")
+	parts := strings.Split(cookie.Value, "%3A")
 	userIdFromCookie := parts[0]
 
 	// trim the leading space
@@ -160,7 +189,7 @@ func UpdateBirthdayController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parts := strings.Split(cookie.Value, ":")
+	parts := strings.Split(cookie.Value, "%3A")
 	userIdFromCookie := parts[0]
 
 	// trim the leading space
@@ -223,7 +252,7 @@ func UpdateNicknameController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parts := strings.Split(cookie.Value, ":")
+	parts := strings.Split(cookie.Value, "%3A")
 	userIdFromCookie := parts[0]
 
 	// trim the leading space
@@ -286,7 +315,7 @@ func UpdatePasswordController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parts := strings.Split(cookie.Value, ":")
+	parts := strings.Split(cookie.Value, "%3A")
 	userIdFromCookie := parts[0]
 
 	// trim the leading space

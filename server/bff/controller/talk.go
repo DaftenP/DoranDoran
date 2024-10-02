@@ -34,7 +34,7 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parts := strings.Split(cookie.Value, ":")
+	parts := strings.Split(cookie.Value, "%3A")
 	userID := parts[0]
 
 	var sendResBody model.TutorSendResponse

@@ -87,3 +87,13 @@ func UpdatePasswordService(userId, prevPassword, modPassword string) (*http.Resp
 
 	return http.DefaultClient.Do(req)
 }
+
+// Delete /api/v1/user/delete/{userId}
+func DeleteUserService(userId string) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodDelete, UserUrl+"/api/v1/user/delete/"+userId, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return http.DefaultClient.Do(req)
+}

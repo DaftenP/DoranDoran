@@ -54,3 +54,8 @@ type UserNamesFromMSA struct {
 	Message   string            `json:"message"`
 	TimeStamp string            `json:"timestamp"`
 }
+
+type DeleteResponseFromMSA struct {
+	Data string `json:"data"`
+	Msg  string `json:"msg"`
+}

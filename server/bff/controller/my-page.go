@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
 	"strings"
 	"sync"
@@ -161,7 +162,27 @@ func UpdateBirthdayController(w http.ResponseWriter, r *http.Request) {
 	// trim the leading space
 	userIdFromCookie = strings.TrimSpace(userIdFromCookie)
 
-	resp, err := service.UpdateBirthdayService(userIdFromCookie, r.FormValue("birthday"))
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error reading request body", http.StatusInternalServerError)
+		return
+	}
+	defer r.Body.Close()
+
+	var data map[string]interface{}
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		http.Error(w, "Error parsing request body", http.StatusInternalServerError)
+		return
+	}
+
+	birthday, ok := data["birthday"]
+	if !ok {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	resp, err := service.UpdateBirthdayService(userIdFromCookie, birthday.(string))
 	if err != nil {
 		http.Error(w, "Error calling UpdateBirthdayService", http.StatusInternalServerError)
 		return
@@ -204,7 +225,27 @@ func UpdateNicknameController(w http.ResponseWriter, r *http.Request) {
 	// trim the leading space
 	userIdFromCookie = strings.TrimSpace(userIdFromCookie)
 
-	resp, err := service.UpdateNicknameService(userIdFromCookie, r.FormValue("nickname"))
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error reading request body", http.StatusInternalServerError)
+		return
+	}
+	defer r.Body.Close()
+
+	var data map[string]interface{}
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		http.Error(w, "Error parsing request body", http.StatusInternalServerError)
+		return
+	}
+
+	nickname, ok := data["nickname"]
+	if !ok {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	resp, err := service.UpdateNicknameService(userIdFromCookie, nickname.(string))
 	if err != nil {
 		http.Error(w, "Error calling UpdateNicknameService", http.StatusInternalServerError)
 		return
@@ -220,6 +261,75 @@ func UpdateNicknameController(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(updateNicknameResponse); err != nil {
+		http.Error(w, "Error encoding response", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+// PATCH /api/v1/bff/my-page/password
+func UpdatePasswordController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPatch {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// get token from cookie named 'refresh'
+	cookie, err := r.Cookie("refresh")
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
+
+	parts := strings.Split(cookie.Value, ":")
+	userIdFromCookie := parts[0]
+
+	// trim the leading space
+	userIdFromCookie = strings.TrimSpace(userIdFromCookie)
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error reading request body", http.StatusInternalServerError)
+		return
+	}
+	defer r.Body.Close()
+
+	var data map[string]interface{}
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		http.Error(w, "Error parsing request body", http.StatusInternalServerError)
+		return
+	}
+
+	prevPassword, ok := data["prevPassword"]
+	if !ok {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	modPassword, ok := data["modPassword"]
+	if !ok {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	resp, err := service.UpdatePasswordService(userIdFromCookie, prevPassword.(string), modPassword.(string))
+	if err != nil {
+		http.Error(w, "Error calling UpdatePasswordService", http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Response to client
+	var updatePasswordResponse model.PatchResponseToClient
+	if err := json.NewDecoder(resp.Body).Decode(&updatePasswordResponse); err != nil {
+		http.Error(w, "Error parsing response", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(updatePasswordResponse); err != nil {
 		http.Error(w, "Error encoding response", http.StatusInternalServerError)
 		return
 	}

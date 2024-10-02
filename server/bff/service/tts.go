@@ -8,7 +8,7 @@ import (
 	"cloud.google.com/go/texttospeech/apiv1/texttospeechpb"
 )
 
-func TTSService(text string) ([]byte, error) {
+func TTSService(text, voice string) ([]byte, error) {
 	ctx := context.Background()
 
 	client, err := texttospeech.NewClient(ctx)
@@ -24,7 +24,7 @@ func TTSService(text string) ([]byte, error) {
 		},
 		Voice: &texttospeechpb.VoiceSelectionParams{
 			LanguageCode: "ko-KR",
-			Name:         "ko-KR-Standard-C",
+			Name:         "ko-KR-Standard-" + voice,
 		},
 		AudioConfig: &texttospeechpb.AudioConfig{
 			AudioEncoding: texttospeechpb.AudioEncoding_LINEAR16,

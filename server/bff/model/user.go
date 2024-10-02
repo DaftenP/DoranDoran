@@ -14,7 +14,7 @@ type UserInfoToClient struct {
 	Avatar      string `json:"avatar"`
 	Voice       string `json:"voice"`
 	Gem         int    `json:"gem"`
-	DailyStatus string `json:"dailyStatus"`
+	DailyStatus int    `json:"dailyStatus"`
 	Status      string `json:"status"`
 	Birthday    string `json:"birthday"`
 	Psize       int    `json:"psize"`
@@ -43,7 +43,7 @@ type UserInfoFromMSA struct {
 	Avatar      string `json:"avatar"`
 	Voice       string `json:"voice"`
 	Gem         int    `json:"gem"`
-	DailyStatus string `json:"dailyStatus"`
+	DailyStatus int    `json:"dailyStatus"`
 	Status      string `json:"status"`
 	Birthday    string `json:"birthday"`
 	Psize       int    `json:"psize"`

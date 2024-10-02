@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"com.doran.bff/service"
@@ -14,10 +13,13 @@ func GenerateTTSController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	text := r.FormValue("text")
+	voice := r.FormValue("voice")
+	if text == "" || voice == "" {
+		http.Error(w, "Missing text or voice", http.StatusBadRequest)
+		return
+	}
 
-	fmt.Println(text)
-
-	ttsRes, err := service.TTSService(text)
+	ttsRes, err := service.TTSService(text, voice)
 	if err != nil {
 		http.Error(w, "Error calling TTSService", http.StatusInternalServerError)
 		return

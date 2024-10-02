@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -29,9 +28,6 @@ func DeleteUserController(w http.ResponseWriter, r *http.Request) {
 	parts := strings.Split(cookie.Value, "%3A")
 	userIdFromCookie := parts[0]
 
-	fmt.Println("parts: ", parts)
-	fmt.Println("userIdFromCookie: ", userIdFromCookie)
-
 	// trim the leading space
 	userIdFromCookie = strings.TrimSpace(userIdFromCookie)
 
@@ -47,12 +43,6 @@ func DeleteUserController(w http.ResponseWriter, r *http.Request) {
 	var deleteResponse model.DeleteResponseFromMSA
 	if err := json.NewDecoder(resp.Body).Decode(&deleteResponse); err != nil {
 		http.Error(w, "Error parsing response", http.StatusInternalServerError)
-		fmt.Println(err)
-		// print all response body
-		body, _ := io.ReadAll(resp.Body)
-		fmt.Println(string(body))
-		fmt.Println(resp.Status)
-		fmt.Println("userIdFromCookie: ", userIdFromCookie)
 		return
 	}
 

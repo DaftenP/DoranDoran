@@ -386,6 +386,28 @@ public class UserService {
         return lst;
     }
 
+    public StatusCode dressCloth(ClothRequestDTO clothRequestDTO) {
+        User sUser = userRepository.findById(clothRequestDTO.getUserId());
+
+        int itemType = clothRequestDTO.getItemType();
+        int itemId = clothRequestDTO.getItemId();
+        if (itemType == 1) {
+            sUser.changeColor(itemId);
+        } else if (itemType == 2) {
+            sUser.changeEquipment(itemId);
+        } else if (itemType == 3) {
+            sUser.changeBackground(itemId);
+        } else {
+            return StatusCode.NOT_FOUND;
+        }
+        return StatusCode.SUCCESS;
+    }
+
+    public StatusCode increase(int userId) {
+        User sUser = userRepository.findById(userId);
+        sUser.increaseStage();
+        return StatusCode.SUCCESS;
+    }
 
 
 }

@@ -15,7 +15,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -48,7 +51,7 @@ public class User {
     @Column(name = "user_nickname")
     private String nickname;
 
-    @Column(name = "user_character", nullable = true)
+    @Column(name = "user_color", nullable = true)
     private int color;
 
     @Column(name = "user_equipment", nullable = true)
@@ -94,6 +97,22 @@ public class User {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+    }
+
+    public void increaseStage() {
+        this.stage++;
+    }
+
+    public void changeColor(int color) {
+        this.color = color;
+    }
+
+    public void changeBackground(int background) {
+        this.background = background;
+    }
+
+    public void changeEquipment(int equipment) {
+        this.equipment = equipment;
     }
 
     public void resetDailyStatus(){
@@ -175,8 +194,6 @@ public class User {
         log.debug("Current questStatus: {}", weeklyStatus);  // 현재 questStatus 로그 찍기
 
     }
-
-
 
     //오늘 미션 해결했는지 확인한다.
     public boolean isMissionCleared() {

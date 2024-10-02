@@ -131,4 +131,18 @@ public class UserController {
         return ResponseDto.response(StatusCode.SUCCESS, lst);
     }
 
+    @PatchMapping("cloth")
+    public ResponseEntity<ResponseDto> modifyCloth(@PathVariable ClothRequestDTO clothRequestDTO) {
+        StatusCode statusCode = userService.dressCloth(clothRequestDTO);
+        return ResponseDto.response(statusCode);
+    }
+
+    @PatchMapping("stage/inc/{userId}")
+    public ResponseEntity<ResponseDto> increaseStage(@PathVariable int userId) {
+        StatusCode statusCode = userService.increase(userId);
+        return ResponseDto.response(statusCode);
+    }
+
+
+
 }

@@ -183,3 +183,46 @@ func UpdateBirthdayController(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 }
+
+// PATCH /api/v1/bff/my-page/nickname
+func UpdateNicknameController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPatch {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// get token from cookie named 'refresh'
+	cookie, err := r.Cookie("refresh")
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
+
+	parts := strings.Split(cookie.Value, ":")
+	userIdFromCookie := parts[0]
+
+	// trim the leading space
+	userIdFromCookie = strings.TrimSpace(userIdFromCookie)
+
+	resp, err := service.UpdateNicknameService(userIdFromCookie, r.FormValue("nickname"))
+	if err != nil {
+		http.Error(w, "Error calling UpdateNicknameService", http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Response to client
+	var updateNicknameResponse model.PatchResponseToClient
+	if err := json.NewDecoder(resp.Body).Decode(&updateNicknameResponse); err != nil {
+		http.Error(w, "Error parsing response", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(updateNicknameResponse); err != nil {
+		http.Error(w, "Error encoding response", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}

@@ -59,3 +59,17 @@ func UpdateBirthdayService(userId string, birthday string) (*http.Response, erro
 
 	return http.DefaultClient.Do(req)
 }
+
+// PATCH /api/v1/user/my-page/nickname
+func UpdateNicknameService(userId string, nickname string) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodPatch, UserUrl+"/api/v1/user/my-page/nickname", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	body := fmt.Sprintf(`{"userId":%s,"nickname":"%s"}`, userId, nickname)
+	req.Body = io.NopCloser(strings.NewReader(body))
+
+	return http.DefaultClient.Do(req)
+}

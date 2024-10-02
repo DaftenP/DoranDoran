@@ -12,7 +12,7 @@ export default function AuthWrapper({ children, locale }) {
 
   useEffect(() => {
     // 보호된 경로 목록을 정의합니다.
-    const protectedPaths = ["/ai-tutor", "/profile", "/ranking", "/room", "/store", "/study"];
+    const protectedPaths = ["/main", "/ai-tutor", "/profile", "/ranking", "/room", "/store", "/study"];
 
     // 현재 경로가 보호된 경로인지 확인합니다.
     const isProtectedPath = protectedPaths.some((path) => 

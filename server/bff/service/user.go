@@ -98,9 +98,9 @@ func DeleteUserService(userId string) (*http.Response, error) {
 	return http.DefaultClient.Do(req)
 }
 
-// PATCH /api/v1/user/item/buy
+// POST /api/v1/user/item/buy
 func BuyItemService(userId, itemType, itemId string) (*http.Response, error) {
-	req, err := http.NewRequest(http.MethodPatch, UserUrl+"/api/v1/user/item/buy", nil)
+	req, err := http.NewRequest(http.MethodPost, UserUrl+"/api/v1/user/item/buy", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -108,6 +108,16 @@ func BuyItemService(userId, itemType, itemId string) (*http.Response, error) {
 	req.Header.Set("Content-Type", "application/json")
 	body := fmt.Sprintf(`{"userId":%s,"itemType":"%s","itemId":"%s"}`, userId, itemType, itemId)
 	req.Body = io.NopCloser(strings.NewReader(body))
+
+	return http.DefaultClient.Do(req)
+}
+
+// GET /api/v1/user/item/{userId}
+func GetItemService(userId string) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodGet, UserUrl+"/api/v1/user/item/"+userId, nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return http.DefaultClient.Do(req)
 }

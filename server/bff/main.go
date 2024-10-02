@@ -51,6 +51,7 @@ func main() {
 	http.Handle("/api/v1/bff/rank/leaderboard", middleware.JWTMiddleware(http.HandlerFunc(controller.GetLeaderBoard)))
 
 	http.Handle("/api/v1/bff/store/item/buy", middleware.JWTMiddleware(http.HandlerFunc(controller.BuyItem)))
+	http.Handle("/api/v1/bff/inventory/item", middleware.JWTMiddleware(http.HandlerFunc(controller.GetItems)))
 
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

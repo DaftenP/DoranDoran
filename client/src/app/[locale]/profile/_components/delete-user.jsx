@@ -38,11 +38,10 @@ function TranslatedDeleteUser() {
   const handleDeleteUser = (e) => {
     e.preventDefault();
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    // const accessToken = localStorage.getItem("accessToken");
-    axios.delete(`${apiUrl}/my-page/user`, {
+    axios
+      .delete(`${apiUrl}/my-page/user`, {
         headers: {
           "Content-Type": "application/json",
-          // Access: `${accessToken}`,
         },
         withCredentials: true,
       })
@@ -50,9 +49,7 @@ function TranslatedDeleteUser() {
         localStorage.removeItem("accessToken");
         router.push(`/${locale}/`);
       })
-      .catch((error) => {
-        console.error("회원탈퇴 실패:", error);
-      });
+      .catch((error) => {});
   };
 
   return (

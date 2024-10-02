@@ -5,7 +5,6 @@ import Back from "@/public/icon/back.webp";
 import Information from "@/app/[locale]/profile/_components/information";
 import Sound from "@/app/[locale]/profile/_components/sound";
 import DeleteUser from "@/app/[locale]/profile/_components/delete-user";
-import Logout from "@/app/[locale]/profile/_components/logout";
 
 export default function Setting() {
   const locale = useLocale();
@@ -32,8 +31,7 @@ export default function Setting() {
           <Information />
           <hr className="w-[90%] border-t border-[#ACACAC] my-4" />
           <Sound />
-          <div className="w-[90%] py-3 flex items-center justify-between">
-            <Logout />
+          <div className="w-[90%] py-3 flex items-center justify-end">
             <DeleteUser />
           </div>
         </div>

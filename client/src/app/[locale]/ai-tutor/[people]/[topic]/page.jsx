@@ -54,7 +54,7 @@ function TranslatedTopicConversation({ params }) {
   const role = params.people;
   const situation = params.topic;
 
-  const letters = "Loading 중".split("");
+  const letters = "L o a d i n g 중".split("");
 
   const containerVariants = {
     initial: { opacity: 1 },
@@ -62,15 +62,14 @@ function TranslatedTopicConversation({ params }) {
       opacity: 1,
       transition: {
         staggerChildren: 0.2, // 각 글자가 차례로 애니메이션
-        repeat: Infinity,      // 무한 반복
-        repeatDelay: 1,        // 애니메이션 완료 후 1초 딜레이
+        repeatDelay: 1,
       }
     }
   };
 
   const letterVariants = {
     initial: { opacity: 0.4, scale: 0.8 },
-    animate: { opacity: 1, scale: 1.2 },
+    animate: { opacity: 1, scale: 1.5 },
     transition: {
       duration: 0.5,
       ease: "easeInOut",
@@ -87,7 +86,6 @@ function TranslatedTopicConversation({ params }) {
 
       // 로컬 스토리지에 chatMessages와 messages가 있는 경우 Redux에 반영
       if (parsedData.chatMessages.length > 0 || parsedData.messages.length > 0) {
-        console.log('Local storage found, populating Redux state.');
 
         // Redux 상태 업데이트
         dispatch(changeChatMessages(parsedData.chatMessages));
@@ -104,7 +102,6 @@ function TranslatedTopicConversation({ params }) {
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
-        console.log('Fetching chat messages from server');
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));
         dispatch(addMyMessage({ content: '' }));
@@ -117,7 +114,6 @@ function TranslatedTopicConversation({ params }) {
   function clearChatDataFromLocalStorage() {
     try {
       localStorage.removeItem('aiTutorState'); // 로컬 스토리지에서 chatMessages와 messages 삭제
-      console.log("Chat data cleared from local storage.");
     } catch (error) {
       console.error("Could not clear chat data from local storage", error);
     }
@@ -133,7 +129,6 @@ function TranslatedTopicConversation({ params }) {
   }
 
   const handleOpenModal = (messageIndex) => {
-    console.log(messageIndex)
     setModalMessage(modalMessages[messageIndex])
     setIsOpenModal(true)
   }

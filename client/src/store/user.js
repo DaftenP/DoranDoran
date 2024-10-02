@@ -18,7 +18,6 @@ export const fetchUserData = createAsyncThunk(
 
       return response.data; // 서버에서 받은 chatMessages 데이터를 반환
     } catch (error) {
-      console.log('에러')
       console.log(error)
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }

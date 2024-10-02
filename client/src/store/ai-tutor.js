@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import apiClient from '@/utils/apiClient';
 import axios from 'axios';
 
 export const fetchChatMessages = createAsyncThunk(
@@ -6,22 +7,22 @@ export const fetchChatMessages = createAsyncThunk(
   async ({ role, situation,locale, formData }, thunkAPI) => {
 
     try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/talk/send`
+      const apiUrl = '/talk/send'
 
-      const response = await axios.post(apiUrl, formData, {
+      const response = await apiClient.post(apiUrl, formData, {
         params: {
           role,
           situation,
-          locale,   // 쿼리 스트링으로 보낼 데이터
+          locale,
         },
         headers: {
-          'Content-Type': 'multipart/form-data',  // FormData 사용 시 헤더 설정
+          'Content-Type': 'multipart/form-data',
         },
         withCredentials: true,
       });
-      console.log(response.data)
 
-      return response.data; // 서버에서 받은 chatMessages 데이터를 반환
+      // 서버에서 받은 chatMessages 데이터를 반환
+      return response.data;
     } catch (error) {
       console.log(error)
 

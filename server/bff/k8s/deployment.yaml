@@ -44,13 +44,6 @@ spec:
           value: "jenkins_will_set_this_ftp_password"
         - name: FTP_HOST
           value: "jenkins_will_set_this_ftp_host"
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "100m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         readinessProbe:
           httpGet:
             path: /healthz

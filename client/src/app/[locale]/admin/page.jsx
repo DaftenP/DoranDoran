@@ -10,6 +10,11 @@ export default function Admin() {
 
   const innerDefaultBoxShadow = "inset 20px 20px 40px #cad9e0, inset -20px -20px 40px #ffffff";
 
+  const [quizType, setQuizType] = useState(1);
+  const [quizCategory, setQuizCategory] = useState(1);
+  const [quizQuestion, setQuizQuestion] = useState("");
+  const [quizAnswer, setQuizAnswer] = useState("");
+
   // State to track the current boxShadow of the card and the button
   const [boxShadow1, setBoxShadow1] = useState(defaultBoxShadow);
   const [boxShadow2, setBoxShadow2] = useState(defaultBoxShadow);
@@ -21,7 +26,14 @@ export default function Admin() {
 
   const [audioFile, setAudioFile] = useState(null);
   const [isTTSGenerated, setIsTTSGenerated] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
+  const [playingIndex, setPlayingIndex] = useState(-1);
+  const [playingAudio, setPlayingAudio] = useState(null);
+  const [selectedAudio, setSelectedAudio] = useState(null);
+  const [selectedAudioText, setSelectedAudioText] = useState("");
+  
+  const [ttsText, setTTSText] = useState("");
+  const [ttsVoice, setTTSVoice] = useState("A");
+  const [isTTSLoading, setIsTTSLoading] = useState(false);
 
   const [imageLink, setImageLink] = useState(null);
   const [imageSeed, setImageSeed] = useState(12345678);
@@ -84,6 +96,85 @@ export default function Admin() {
       });
   };
 
+  const generateTTS = () => {
+    // set loading state
+    setIsTTSLoading(true);
+
+    // generate TTS: POST request to https://bff.ssafy.picel.net/api/v1/bff/tts. put text and voice in form data
+    const formData = new FormData();
+    formData.append("text", ttsText);
+    formData.append("voice", ttsVoice);
+
+    fetch("https://bff.ssafy.picel.net/api/v1/bff/tts", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.blob())
+      .then((blob) => {
+        let url = URL.createObjectURL(blob);
+        setAudioFile(url);
+      });
+    
+    setIsTTSLoading(false);
+  }
+
+  const registQuiz = () => {
+    // POST request to https://bff.ssafy.picel.net/api/v1/bff/quiz/quizzes/regist
+    // multipart/form-data that contains json text, voice, image1, image2, image3, image4
+    // json text: {'quizQuestion': '문제', 'quizAnswer': '정답', 'quizType': 1234, 'quizCategory': 1234}
+
+    const formData = new FormData();
+    formData.append("quizInfo", JSON.stringify({
+      quizQuestion,
+      quizAnswer,
+      quizType,
+      quizCategory,
+    }));
+
+    const promises = selectedFileList.map((file, index) => {
+      return fetchImageAsBlob(file.content).then((blob) => {
+        const newFileName = `image${index + 1}.jpg`; // 원하는 파일명 설정
+        const fileWithFileName = new File([blob], newFileName, { type: blob.type });
+        formData.append(`image${index + 1}`, fileWithFileName);
+      });
+    });
+    
+    promises.push(
+      fetchImageAsBlob(selectedAudio).then((blob) => {
+        const audioFileName = "voice.mp3"; // 원하는 파일명 설정
+        const audioFileWithFileName = new File([blob], audioFileName, { type: blob.type });
+        formData.append("voice", audioFileWithFileName);
+      })
+    );
+    
+    Promise.all(promises).then(() => {
+      fetch("https://bff.ssafy.picel.net/api/v1/bff/quiz/quizzes/regist", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            alert("Quiz is successfully registered!");
+            // reset all states
+            setQuizQuestion("");
+            setQuizAnswer("");
+            setSelectedFileList([]);
+            setSelectedAudio(null);
+            setSelectedAudioText("");
+            setAudioFile(null);
+            setIsTTSGenerated(false);
+            setPlayingIndex(-1);
+            setPlayingAudio(null);
+            setTTSText("");
+            setTTSVoice("A");
+            setImageLink(null);
+            setImagePrompt("");
+          }
+        }
+      );
+    });
+  };
+
   const shuffleSeed = () => {
     setImageSeed(Math.floor(Math.random() * 100000000));
   };
@@ -141,6 +232,7 @@ export default function Admin() {
             </div>
             <div style={{ display: "flex", flexDirection: "row", marginBottom: "3%" }}>
               <select
+                onChange={(e) => setQuizType(Number(e.target.value))}
                 style={{
                   fontSize: "4vh",
                   marginRight: "3%",
@@ -150,12 +242,10 @@ export default function Admin() {
                   borderRadius: "30px",
                   background: "#eceef9",
                 }}>
-                <option value="1">유형 1</option>
-                <option value="2">유형 2</option>
-                <option value="3">유형 3</option>
-                <option value="4">유형 4</option>
+                <option value="5002">5002</option>
               </select>
               <select
+                onChange={(e) => setQuizCategory(Number(e.target.value))}
                 style={{
                   fontSize: "4vh",
                   padding: "3%",
@@ -164,10 +254,7 @@ export default function Admin() {
                   borderRadius: "30px",
                   background: "#eceef9",
                 }}>
-                <option value="1">주제 1</option>
-                <option value="2">주제 2</option>
-                <option value="3">주제 3</option>
-                <option value="4">주제 4</option>
+                <option value="7001">7001</option>
               </select>
             </div>
 
@@ -183,6 +270,7 @@ export default function Admin() {
                 boxShadow: innerDefaultBoxShadow,
               }}
               placeholder="문제 입력"
+              onChange={(e) => setQuizQuestion(e.target.value)}
             />
             <textarea
               style={{
@@ -196,7 +284,50 @@ export default function Admin() {
                 boxShadow: innerDefaultBoxShadow,
               }}
               placeholder="정답 입력"
+              onChange={(e) => setQuizAnswer(e.target.value)}
             />
+            {
+              selectedAudio && (  
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    <audio controls
+                      style={{
+                        width: "40vw",
+                      }}
+                    >
+                      <source src={selectedAudio} type="audio/wav" />
+                      Your browser does not support the audio tag.
+                    </audio>
+                    <div style={{ fontSize: "4vh", padding: "1vh 0" }}>
+                      TTS text: {selectedAudioText}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setSelectedAudio(null);
+                      setSelectedAudioText("");
+                    }}
+                    style={{
+                      fontSize: "4vh",
+                      fontWeight: "bold",
+                      padding: "1vh 0",
+                      borderRadius: "30px",
+                      color: "white",
+                      marginLeft: "3vw",
+                    }}
+                  >
+                    ❌
+                  </button>
+                </div>
+              )
+            }
           </div>
           <div
             style={{
@@ -291,10 +422,73 @@ export default function Admin() {
                     </div>
                     {/* show file. if it's audio, show player. if image, preview image. both are blob */}
                     {file.type === "audio" ? (
-                      <audio controls style={{ width: "60%" }}>
-                        <source src={file.content} type="audio/mpeg" />
-                        Your browser does not support the audio element.
-                      </audio>
+                      // <audio controls style={{ width: "5vw" }}>
+                      //   <source src={file.content} type="audio/mpeg" />
+                      //   Your browser does not support the audio element.
+                      // </audio>
+                      // just play and stop button for audio file
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}>
+                        <audio controls
+                          style={{
+                            width: "50vw",
+                            display: "none",
+                          }}>
+                          <source src={file.content} type="audio/wav" />
+                          Your browser does not support the audio tag.
+                        </audio>
+                        <button
+                          onClick={() => {
+                            const audio = new Audio(file.content);
+                            if (playingAudio) {
+                              playingAudio.pause();
+                            }
+                            if (playingIndex === index) {
+                              setPlayingIndex(-1);
+                              setPlayingAudio(null);
+                              audio.pause();
+                              return;
+                            }
+                            setPlayingAudio(audio);
+                            setPlayingIndex(index);
+                            audio.play();
+                            audio.onended = () => {
+                              setPlayingIndex(-1);
+                              setPlayingAudio(null);
+                            }
+                            // if (playingIndex === index) {
+                            //   if (audio.paused) {
+                            //     audio.play();
+                            //   } else {
+                            //     audio.pause();
+                            //   }
+                            // } else if (playingIndex === -1) {
+                            //   setPlayingIndex(index);
+                            //   audio.play();
+                            //   // wait until the audio play and set playing index to -1
+                            //   audio.onended = () => {
+                            //     setPlayingIndex(-1);
+                            //   };
+                            // } else {
+                            //   alert("Please stop the currently playing audio first!");
+                            // }
+                          }}
+                          style={{
+                            width: "8vh",
+                            height: "8vh",
+                            fontSize: "4vh",
+                            fontWeight: "bold",
+                            borderRadius: "30px",
+                            color: (playingIndex === index) ? "red" : "green",
+                          }}>
+                          {(playingIndex === index) ? "■" : "▶"}
+                        </button>
+                      </div>
                     ) : (
                       <img src={file.content} style={{ width: "60%" }} />
                     )}
@@ -404,6 +598,7 @@ export default function Admin() {
             </div>
             <div className="tts-gen" style={{ display: isTTSSelected ? "block" : "none" }}>
               <select
+                onChange={(e) => setTTSVoice(e.target.value)}
                 style={{
                   fontSize: "4vh",
                   marginRight: "3%",
@@ -413,10 +608,10 @@ export default function Admin() {
                   borderRadius: "30px",
                   background: "#eceef9",
                 }}>
-                <option value="1">음성 1</option>
-                <option value="2">음성 2</option>
-                <option value="3">음성 3</option>
-                <option value="4">음성 4</option>
+                <option value="A">Voice A</option>
+                <option value="B">Voice B</option>
+                <option value="C">Voice C</option>
+                <option value="D">Voice D</option>
               </select>
               <textarea
                 style={{
@@ -431,8 +626,8 @@ export default function Admin() {
                   boxShadow: innerDefaultBoxShadow,
                 }}
                 placeholder="텍스트 입력"
+                onChange={(e) => setTTSText(e.target.value)}
               />
-
               <div
                 style={{
                   display: "flex",
@@ -444,6 +639,11 @@ export default function Admin() {
                 }}>
                 <button
                   onClick={() => {
+                    if (!ttsText) {
+                      alert("Please enter a text first!");
+                      return;
+                    }
+                    generateTTS();
                     setIsTTSGenerated(true);
                   }}
                   style={{
@@ -457,25 +657,66 @@ export default function Admin() {
                   }}>
                   Generate
                 </button>
+                <div
+                  style={{
+                    display: isTTSLoading ? "block" : "none",
+                    fontSize: "4vh",
+                    fontWeight: "bold",
+                    color: "#9e8ed3",
+                  }}>
+                  Loading...
+                </div>
                 <div style={{ display: isTTSGenerated ? "flex" : "none", alignItems: "center" }}>
-                  <audio controls style={{ width: "50vw" }}></audio>
-                  <button
-                    onClick={() => {
-                      setIsSelected(true);
-                    }}
-                    style={{
-                      width: "8vh",
-                      height: "8vh",
-                      fontSize: "4vh",
-                      fontWeight: "bold",
-                      borderRadius: "30px",
-                      background: !isSelected ? "#9e8ed3" : "green",
-                      color: "white",
-                    }}>
-                    {isSelected ? "✔" : "➕︎"}
-                  </button>
+                {audioFile && (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                    <audio controls
+                      style={{
+                        width: "50vw",
+                      }}>
+                      <source src={audioFile} type="audio/wav" />
+                      Your browser does not support the audio tag.
+                    </audio>
+                  </div>
+                )}
                 </div>
               </div>
+                {
+                  audioFile && (
+                  <div style={
+                    {
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}>
+                      <button
+                        onClick={() => {
+                          setSelectedAudio(audioFile);
+                          setSelectedAudioText(ttsText);
+                        }}
+                        style={{
+                          width: "12vw",
+                          fontSize: "4vh",
+                          fontWeight: "bold",
+                          padding: "1vh 0",
+                          borderRadius: "30px",
+                          background: "#9e8ed3",
+                          color: "white",
+                        }}>
+                        Add Audio
+                      </button>
+                    </div>
+                  )
+                }
             </div>
 
             <div className="image-gen" style={{ display: isTTSSelected ? "none" : "block" }}>
@@ -617,7 +858,7 @@ export default function Admin() {
                   borderRadius: "30px",
                   background: "#9e8ed3",
                   color: "white",
-                  display: imageLink && !isImageLoading ? "block" : "none",
+                  display: imageLink && !isImageLoading && !isTTSSelected ? "block" : "none",
                 }}>
                 Add Image
               </button>
@@ -637,7 +878,12 @@ export default function Admin() {
             }}
             onMouseEnter={() => handleMouseEnter(setButtonBoxShadow)}
             onMouseLeave={() => handleMouseLeave(setButtonBoxShadow)}
-            onClick={() => handleClick(setButtonBoxShadow)}>
+            // onClick={() => handleClick(setButtonBoxShadow)}>
+            onClick={() => {
+              registQuiz();
+              handleClick(setButtonBoxShadow);
+            } }
+          >
             <div
               style={{
                 fontSize: "4vh",

@@ -26,6 +26,7 @@ func RegistQuizService(quizInfo string, voice multipart.File, voiceHeader *multi
 	if err != nil {
 		return nil, err
 	}
+	voiceFileName = "https://ssafy-tailored.b-cdn.net/" + voiceFileName
 
 	var imageFileNames []string
 	for i, image := range images {

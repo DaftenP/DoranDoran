@@ -34,6 +34,7 @@ export default function STTComponent() {
       };
 
       recognitionRef.current.onresult = (event) => {
+        console.log("Speech recognition result event fired")
         let finalTranscript = '';
 
         for (let i = 0; i < event.results.length; i++) {

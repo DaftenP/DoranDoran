@@ -48,11 +48,11 @@ export default function Microphone({ onRecordingComplete, params }) {
   const toggleListening = () => {
     if (!isListening) {
       setProgress(0);
-      startRecording();
+      // startRecording();
       startListening();
     } else {
       stopListening();
-      stopRecording();
+      // stopRecording();
     }
   };
 

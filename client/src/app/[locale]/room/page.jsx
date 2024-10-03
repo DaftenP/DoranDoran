@@ -65,10 +65,12 @@ function TranslatedBottom() {
       <div className="flex justify-center items-center w-full h-[7.5%]">
         <div className="w-[20%] flex justify-center">
           <Link href={`/${locale}/main`}>
-            <Image src={Back} alt="back" className="w-8" />
+            <Image src={Back} alt="back" className="w-8 md:w-14" />
           </Link>
         </div>
-        <p className="w-[60%] text-2xl text-center">{t("dressing-room")}</p>
+        <p className="w-[60%] text-2xl md:text-5xl text-center">
+          {t("dressing-room")}
+        </p>
         <div className="w-[20%]" />
       </div>
 
@@ -76,30 +78,30 @@ function TranslatedBottom() {
       <MyCharacter />
 
       {/* 메뉴 탭 */}
-      <div className="relative w-screen h-[7.5%] flex justify-center z-10">
-        {["color", "hat", "character"].map((tab) => (
-          <div
-            key={tab}
-            className={`flex justify-center items-center w-[30%] text-xl rounded-tl-[15px] rounded-tr-[15px]  ${
-              activeTab === tab
-                ? "bg-[#a76800] border border-[#5c3d21]"
-                : "bg-[#d3b88c]/60 border border-[#5c3d21]/60"
-            }`}
-            onClick={() => setActiveTab(tab)}
-          >
-            <p>{t(tab)}</p>
+      <div className="relative">
+        <div className="w-full h-full absolute flex flex-col justify-center items-center z-10">
+          <div className="flex w-[90%] h-[14.5%]">
+            {["color", "hat", "character"].map((tab) => (
+              <div
+                key={tab}
+                className={`w-full flex justify-center items-center text-xl rounded-tl-[15px] rounded-tr-[15px]  ${
+                  activeTab === tab
+                    ? "bg-[#a76800] border border-[#5c3d21]"
+                    : "bg-[#d3b88c]/60 border border-[#5c3d21]/60"
+                }`}
+                onClick={() => setActiveTab(tab)}
+              >
+                <p className="md:text-5xl">{t(tab)}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      {/* 옷장 아이템 */}
-      {renderTabContent()}
+          {/* 옷장 아이템 */}
+          {renderTabContent()}
+        </div>
 
-      {/* 옷장 이미지 */}
-      <Image
-        src={Shelf}
-        alt="shelf"
-        className="fixed bottom-0 w-full h-[63%]"
-      />
+        {/* 옷장 이미지 */}
+        <Image src={Shelf} alt="shelf" className="w-full h-[63%]" />
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export function ServiceWorkerRegistration() {
     if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
       // 윈도우가 로드된 후 서비스 워커 등록 시도
       window.addEventListener("load", function () {
-        navigator.serviceWorker.register("/sw.js").then(
+        navigator.serviceWorker.register("./sw.js").then(
           function (registration) {
             // 서비스 워커가 성공적으로 등록된 경우, scope 정보 출력
             console.log(

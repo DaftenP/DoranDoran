@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import Bottom from "@/components/bottom/bottom";
 import Setting from "@/public/icon/setting.webp";
-import Streak from "@/app/[locale]/profile/_components/streak";
 import UserInfo from "@/app/[locale]/profile/_components/user-info";
 import MyCharacter from "@/app/[locale]/profile/_components/my-character";
 
@@ -24,13 +23,9 @@ export default function Profile() {
           </Link>
         </div>
         <hr className="w-full border-t border-[#ACACAC]" />
-        <div className="w-full flex flex-col justify-center items-center">
+        <div className="w-full h-full flex flex-col items-center">
           <MyCharacter />
-          <div className="bg-white w-[90%] h-screen rounded-3xl mb-24 flex flex-col justify-center items-center">
-            <UserInfo />
-            <hr className="w-[90%] border-t border-[#ACACAC] my-5" />
-            <Streak />
-          </div>
+          <UserInfo />
         </div>
       </div>
       <Bottom />

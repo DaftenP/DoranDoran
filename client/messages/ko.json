@@ -186,6 +186,8 @@
     "verification-failed": "인증 실패",
     "signup-successful": "가입 성공",
     "signup-failed": "가입 실패",
-    "please-speak": "말을 해주세요!"
+    "please-speak": "말을 해주세요!",
+    "correct-answer": "정답 수",
+    "gem": "보석"
   }
 }

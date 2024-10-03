@@ -186,6 +186,8 @@
     "verification-failed": "Verification Failed",
     "signup-successful": "Signup Successful",
     "signup-failed": "Signup Failed",
-    "please-speak": "Please speak"
+    "please-speak": "Please speak",
+    "correct-answer": "Correct Answer",
+    "gem": "Gem"
   }
 }

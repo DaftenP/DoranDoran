@@ -54,7 +54,7 @@ function TranslatedLogout() {
   return (
     <>
       <button className="bg-blue-500 rounded-xl py-1 px-3" onClick={handleLogout}>
-        <p className="text-white text-xl md:text-3xl">{t("logout")}</p>
+        <p className="text-white text-xl md:text-4xl">{t("logout")}</p>
       </button>
     </>
   );

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { fetchUserData } from "@/store/user";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,18 +15,19 @@ import Language from "@/app/[locale]/(account)/_components/language";
 export default function Information() {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function loadMessages() {
       try {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default);
-      } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
-      }
+      } catch (error) {}
     }
     loadMessages();
-  }, [locale]);
+
+    dispatch(fetchUserData());
+  }, [locale, dispatch]);
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
@@ -36,6 +39,7 @@ export default function Information() {
 function TranslatedInformation() {
   const t = useTranslations("index");
   const locale = useLocale();
+  const user = useSelector((state) => state.user);
 
   return (
     <>
@@ -53,7 +57,7 @@ function TranslatedInformation() {
             />
             <div className="ml-2 md:ml-5 flex flex-col">
               <p className="text-sm md:text-2xl">{t("nickname")}</p>
-              <p className="text-xl md:text-4xl">ssafy123</p>
+              <p className="text-xl md:text-4xl">{user.profile.nickname}</p>
             </div>
           </div>
           <Image src={Pencil} alt="Pencil" className="w-[10%] md:w-[7.5%]" />
@@ -68,7 +72,7 @@ function TranslatedInformation() {
           />
           <div className="ml-2 flex flex-col md:ml-5">
             <p className="text-sm md:text-2xl">{t("e-mail")}</p>
-            <p className="text-xl md:text-4xl">ssafy@ssafy.com</p>
+            <p className="text-xl md:text-4xl">{user.profile.email}</p>
           </div>
         </div>
         <hr className="w-[90%] border-t border-[#ACACAC]" />
@@ -82,7 +86,7 @@ function TranslatedInformation() {
             />
             <div className="ml-2 flex flex-col md:ml-4">
               <p className="text-sm md:text-2xl">{t("birth")}</p>
-              <p className="text-xl md:text-4xl">1997/09/24</p>
+              <p className="text-xl md:text-4xl">{user.profile.birthday}</p>
             </div>
           </div>
           <Image src={Pencil} alt="pencil" className="w-[10%] md:w-[7.5%]" />

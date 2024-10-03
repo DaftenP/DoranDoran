@@ -186,6 +186,8 @@
     "verification-failed": "認証失敗",
     "signup-successful": "サインアップ成功",
     "signup-failed": "サインアップ失敗",
-    "please-speak": "話してください！"
+    "please-speak": "話してください！",
+    "correct-answer": "正解の総数",
+    "gem": "ジェム"
   }
 }

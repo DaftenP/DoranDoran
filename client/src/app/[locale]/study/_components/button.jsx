@@ -3,6 +3,7 @@
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchStageDetail } from '@/store/quiz';
 import { deleteQuiz, backQuiz, deleteStage } from '@/store/quiz';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -42,7 +43,13 @@ function TranslatedButton({ locale, type, index }) {
   //   type === 'daily' ? state.quiz.dailyQuizList : state.quiz.stageList[index].quizList
   // );
 
-  const quizList = useSelector((state) => state.quiz.stageDetail.data);
+  // const quizList = useSelector((state) => state.quiz.stageDetail.data);
+  const quizList = useSelector((state) => state.quiz.stageDetail);
+
+  // useEffect(() => {
+  //   console.log("Stage ID:", index); // index 값 확인
+  //   dispatch(fetchStageDetail(index)); 
+  // }, [dispatch]);
 
   // const handleSubmit = (() => {
   //   if (type === 'daily') {
@@ -57,11 +64,13 @@ function TranslatedButton({ locale, type, index }) {
   //     dispatch(deleteQuiz());
   //   }
   // }
-  const handleSubmit = () => {
-    setTimeout(() => {
-      dispatch(backQuiz());
-    }, 2000);
-  }
+
+  // const handleSubmit = () => {
+  //   setTimeout(() => {
+  //     // dispatch(backQuiz());
+  //     dispatch(deleteQuiz());
+  //   }, 2000);
+  // }
 
   // useEffect(() => {
   //   if (type === 'daily') {
@@ -83,7 +92,8 @@ function TranslatedButton({ locale, type, index }) {
   return (
     <div>
       <div className='flex-col flex justify-center items-center'>
-        <button onClick={handleSubmit} className='w-[50vw] h-[10vh] bg-blue-300 text-4xl md:text-6xl lg:text-8xl'>Submit</button>
+        {/* <button onClick={handleSubmit} className='w-[50vw] h-[10vh] bg-blue-300 text-4xl md:text-6xl lg:text-8xl'>Submit</button> */}
+        <button className='w-[50vw] h-[10vh] bg-blue-500 text-4xl md:text-6xl lg:text-8xl rounded-full'>Submit</button>
       </div>
     </div>
   );

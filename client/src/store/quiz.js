@@ -25,6 +25,8 @@ export const fetchStageDetail = createAsyncThunk(
     try {
       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/quiz/stage/${stageId}`
       const response = await axios.get(apiUrl); 
+      console.log('stageID:', response.data);
+      console.log(apiUrl);
       return response.data; // API에서 반환되는 데이터를 리턴
 
     } catch (error) {
@@ -53,8 +55,64 @@ const initialState = {
   loading: false,     // 요청이 진행 중인지 나타내는 상태
   error: null,        // 에러 발생 시 에러 메시지 저장
 
-  stageDetail: {      // /quiz/stage/{stageId} 데이터를 저장할 객체
-    data: [
+  // stageDetail: {      // /quiz/stage/{stageId} 데이터를 저장할 객체
+  //   data: [
+  //     {
+  //       "quizid": 3,
+  //       "quizType": 5001,
+  //       "quizCategory": 7001,
+  //       "quizAnswer": "3",
+  //       "quizQuestion": "아래에서 고양이 사진을 골라주세요.",
+  //       "quizImages": [
+  //           "https: //ssafy.com",
+  //           "https: //ssafy.com",
+  //           "https: //ssafy.com",
+  //           "https: //ssafy.com"
+  //       ]
+  //     },
+  //     {
+  //       "quizid": 4,
+  //       "quizType": 5002,
+  //       "quizCategory": 7001,
+  //       "quizAnswer": "고양이",
+  //       "quizQuestion": "따라 말해보아요.",
+  //       "quizImages": [
+  //           "https: //ssafy.com"
+  //       ]
+  //     },
+  //     {
+  //       "quizid": 2,
+  //       "quizType": 5001,
+  //       "quizCategory": 7001,
+  //       "quizAnswer": "3",
+  //       "quizQuestion": "아래에서 고양이 사진을 골라주세요.",
+  //       "quizImages": [
+  //           "https: //ssafy.com",
+  //           "https: //ssafy.com",
+  //           "https: //ssafy.com",
+  //           "https: //ssafy.com"
+  //       ]
+  //     },
+  //     {
+  //       "quizid": 1,
+  //       "quizType": 5001,
+  //       "quizCategory": 7001,
+  //       "quizAnswer": "3",
+  //       "quizQuestion": "아래에서 고양이 사진을 골라주세요.",
+  //       "quizImages": [
+  //           "https: //ssafy.com",
+  //           "https: //ssafy.com",
+  //           "https: //ssafy.com",
+  //           "https: //ssafy.com"
+  //       ]
+  //     }
+  //   ],         // 개별 스테이지 데이터를 저장할 배열
+  //   // message: '',
+  //   // timestamp: '',
+  //   // loading: false,
+  //   // error: null
+  // }
+  stageDetail: [    // /quiz/stage/{stageId} 데이터를 저장할 객체
       {
         "quizid": 3,
         "quizType": 5001,
@@ -103,13 +161,10 @@ const initialState = {
             "https: //ssafy.com",
             "https: //ssafy.com"
         ]
-      }
-    ],         // 개별 스테이지 데이터를 저장할 배열
-    message: '',
-    timestamp: '',
-    loading: false,
-    error: null
-  }
+      }   
+  ] ,
+  stageDetail_loading: false,
+  stageDetail_error: null,
 };
 
 // Redux slice
@@ -117,9 +172,11 @@ const stageSlice = createSlice({
   name: 'quiz',
   initialState,
   reducers: {
-    backQuiz: (state) => {
-      const firstItem = state.stageDetail.data.shift();  // 첫 번째 요소 제거
-      state.stageDetail.data.push(firstItem);            // 제거된 요소를 끝에 추가
+    deleteQuiz: (state) => {
+      // const firstItem = state.stageDetail.data.shift();  // 첫 번째 요소 제거
+      // state.stageDetail.data.push(firstItem);            // 제거된 요소를 끝에 추가
+      const firstItem = state.stageDetail.shift();  // 첫 번째 요소 제거
+      // state.stageDetail.push(firstItem);            // 제거된 요소를 끝에 추가
     },
   },
   extraReducers: (builder) => {
@@ -141,21 +198,26 @@ const stageSlice = createSlice({
 
     builder
       .addCase(fetchStageDetail.pending, (state) => {
-        state.stageDetail.loading = true;
-        state.stageDetail.error = null;
+        // state.stageDetail.loading = true;
+        // state.stageDetail.error = null;
+        state.stageDetail_loading = true;
+        state.stageDetail_error = null;
       })
       .addCase(fetchStageDetail.fulfilled, (state, action) => {
-        state.stageDetail.loading = false;
-        state.stageDetail.data = action.payload.data;
-        state.stageDetail.message = action.payload.message;
-        state.stageDetail.timestamp = action.payload.timestamp;
+        // state.stageDetail.loading = false;
+        // state.stageDetail.data = action.payload.data;
+        // state.stageDetail.message = action.payload.message;
+        // state.stageDetail.timestamp = action.payload.timestamp;
+        state.stageDetail_loading = false;
+        state.stageDetail = action.payload.data;
+
       })
       .addCase(fetchStageDetail.rejected, (state, action) => {
-        state.stageDetail.loading = false;
-        state.stageDetail.error = action.payload || 'Something went wrong';
+        state.stageDetail_loading = false;
+        state.stageDetail_error = action.payload || 'Something went wrong';
       });
   }
 });
 
-export const { backQuiz } = stageSlice.actions;
+export const { deleteQuiz, backQuiz } = stageSlice.actions;
 export default stageSlice.reducer;

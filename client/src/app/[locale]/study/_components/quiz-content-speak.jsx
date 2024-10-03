@@ -6,7 +6,8 @@ import Link from 'next/link';
 
 export default function QuizContentSpeak({ type, index }) {
 
-  const quizList = useSelector((state) => state.quiz.stageDetail.data);
+  // const quizList = useSelector((state) => state.quiz.stageDetail.data);
+  const quizList = useSelector((state) => state.quiz.stageDetail);
   const image = quizList[0].quizImages[0];
 
   return (

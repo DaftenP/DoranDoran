@@ -63,22 +63,22 @@ function TranslatedButton({ locale, type, index }) {
     }, 2000);
   }
 
-  useEffect(() => {
-    if (type === 'daily') {
-      if (quizList.length > 0) {
-        router.push(`/${locale}/study/daily/${quizList[0].quizid}`)
-      } else {
-        router.push(`/${locale}/main`)
-      }
-    }
-    else {
-      if (quizList.length > 0) {
-        router.push(`/${locale}/study/detail/${index+1}/${quizList[0].quizid}`)
-      } else {
-        router.push(`/${locale}/main`)
-      }
-    }
-  }, [quizList]);
+  // useEffect(() => {
+  //   if (type === 'daily') {
+  //     if (quizList.length > 0) {
+  //       router.push(`/${locale}/study/daily/${quizList[0].quizid}`)
+  //     } else {
+  //       router.push(`/${locale}/main`)
+  //     }
+  //   }
+  //   else {
+  //     if (quizList.length > 0) {
+  //       router.push(`/${locale}/study/detail/${index+1}/${quizList[0].quizid}`)
+  //     } else {
+  //       router.push(`/${locale}/main`)
+  //     }
+  //   }
+  // }, [quizList]);
 
   return (
     <div>

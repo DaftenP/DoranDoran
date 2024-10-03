@@ -49,12 +49,12 @@ export default function QuizContent({ type, index }) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedQuizContent type={type} index={index} clickedIndex={clickedIndex} onImageClick={handleImageClick}/>
+      <TranslatedQuizContent type={type} index={index} clickedIndex={clickedIndex} onImageClick={handleImageClick} setClickedIndex={setClickedIndex}/>
     </NextIntlClientProvider>
   );
 }
 
-function TranslatedQuizContent({ type, index, clickedIndex, onImageClick }) {
+function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, setClickedIndex }) {
   const t = useTranslations('index');
   // const quizList = useSelector((state) => 
   //   type === 'daily' ? state.quiz.dailyQuizList : state.quiz.stageList[index].quizList
@@ -71,48 +71,53 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick }) {
 
   const [feedbackMessage, setFeedbackMessage] = useState(null); // 피드백 메시지 상태
   const [feedbackType, setFeedbackType] = useState(null); // 정답/오답 타입
-  const [isSubmitted, setIsSubmitted] = useState(false); //
+  const [recordedSTT, setRecordedSTT] = useState('');
+
+  const handleSubmitSTT = (data) => {
+    setRecordedSTT(data);  // 부모 컴포넌트로부터 받은 데이터를 상태에 저장
+    console.log(data)
+  };
 
   const handleAnswerCheck = () => {
-    if (clickedIndex !== null || isSubmitted) {
-      if (quizType === 5001) {
-        if (String(clickedIndex + 1) === quizAnswer) {
-          setFeedbackMessage('정답입니다!');
-          setFeedbackType('correct');
-        } else {
-          setFeedbackMessage('오답입니다.');
-          setFeedbackType('wrong');
-        }
-      } else if (quizType === 5002 && transcript) {
-        if (transcript.trim() === quizAnswer) { // transcript와 quizAnswer 비교
-          setFeedbackMessage('정답입니다!');
-          setFeedbackType('correct');
-        } else {
-          setFeedbackMessage('오답입니다.');
-          setFeedbackType('wrong');
-        }
+    if (quizType === 5001 || clickedIndex !== null) {
+      if (String(clickedIndex + 1) === quizAnswer) {
+        setFeedbackMessage('정답입니다!');
+        setFeedbackType('correct');
+      } else {
+        setFeedbackMessage('오답입니다.');
+        setFeedbackType('wrong');
       }
-      setIsSubmitted(true);
-      // 일정 시간 후 피드백 메시지 숨김
-      setTimeout(() => {
-        setFeedbackMessage(null);
-        setFeedbackType(null);
-      }, 2000); // 2초 후 메시지 사라짐
+    } else if (recordedSTT && (quizType === 5002 || quizType === 5003)) {
+      if (recordedSTT.trim() === quizAnswer) { // transcript와 quizAnswer 비교
+        setFeedbackMessage('정답입니다!');
+        setFeedbackType('correct');
+      } else {
+        setFeedbackMessage('오답입니다.');
+        setFeedbackType('wrong');
+      }
     }
+    // 상태 초기화
+    setTimeout(() => {
+      setFeedbackMessage(null);
+      setFeedbackType(null);
+      setClickedIndex(null); // 선택한 이미지 초기화
+      setRecordedSTT(''); // STT 초기화
+    }, 2000); // 2초 후 메시지 사라짐
   };
+  
 
   return (
     <div>
       <div className='flex-col flex justify-center items-center'>
         {quizType === 5001 ? (<QuizContentImage onButtonClick={onImageClick} />) :
-        quizType === 5002 ? (<QuizContentSpeak />) : ''
+        (quizType === 5002 || quizType === 5003) ? (<QuizContentSpeak />) : ''
         }
-        {!isSubmitted && (
-          <InputForm quizType={quizType} onSubmit={handleAnswerCheck} />
+        {!recordedSTT && (
+          <InputForm quizType={quizType} onSubmit={handleSubmitSTT} />
         )}
         <div onClick={handleAnswerCheck} className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
           {((quizType === 5001 && clickedIndex !== null) ||
-          (quizType === 5002 && isSubmitted)) && <Button type={type} index={index} onClick={handleAnswerCheck}/>}
+          (quizType === 5002 && recordedSTT)) && <Button type={type} index={index} onClick={handleAnswerCheck}/>}
         </div>
 
         {feedbackMessage && (

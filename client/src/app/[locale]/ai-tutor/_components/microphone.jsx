@@ -1,295 +1,169 @@
 'use client';
 
-import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
-import { useEffect, useState, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { fetchChatMessages, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage, deleteMyMessage } from '@/store/ai-tutor';
-// import { useSpeechRecognition } from 'react-speech-kit'
-import Link from 'next/link';
-import Image from 'next/image'
-import MicrophoneNormal from '@/public/icon/microphone-normal.webp'
-import MicrophoneActive from '@/public/icon/microphone-active.webp'
+import Image from 'next/image';
+import MicrophoneNormal from '@/public/icon/microphone-normal.webp';
+import MicrophoneActive from '@/public/icon/microphone-active.webp';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-export default function Microphone ({ onRecordingComplete, params }) {
-  const [messages, setMessages] = useState(null);
-  const locale = useLocale();
+export default function Microphone({ onRecordingComplete }) {
+  const recordMessageRef = useRef(''); // 음성 인식 메시지 저장
+  const [progress, setProgress] = useState(0);
+  const [transcript, setTranscript] = useState(''); // 최종 인식된 텍스트 저장
+  const [isListening, setIsListening] = useState(false); // 음성 인식 중인지 여부
+  const isListeningRef = useRef(isListening); // 최신 isListening 값을 추적
+  const recognitionRef = useRef(null); // SpeechRecognition 객체 참조
+  const mediaRecorderRef = useRef(null); // MediaRecorder 참조
+  const dispatch = useDispatch();
+  const audioChunks = useRef([]);
+  const audioContext = useRef(null);
 
   useEffect(() => {
-    async function loadMessages() {
-      try {
-        const loadedMessages = await import(`messages/${locale}.json`);
-        setMessages(loadedMessages.default); // 메시지 로드
-      } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
-      }
-    }
-    loadMessages();
-  }, [locale]);
-
-  if (!messages) {
-    return <div>Loading...</div>; // 메시지가 로드될 때까지 로딩 표시
-  }
-
-  return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedMicrophone onRecordingComplete={onRecordingComplete} params={params} />
-    </NextIntlClientProvider>
-  );
-}
-
-function TranslatedMicrophone({ onRecordingComplete, params }) {
-  const t = useTranslations('index');
-  const dispatch = useDispatch()
-  // const messages = useSelector((state) => state.aiTutor.messages)
-  // const chatMessages = useSelector((state) => state.aiTutor.chatMessages)
-  const recordMessageRef = useRef('')
-  const [progress, setProgress] = useState(0)
-  const [isRunning, setIsRunning] = useState(false)
-  const [mediaRecorder, setMediaRecorder] = useState(null)
-  const [recordMessage, setRecordMessage] = useState('')
-  const [recognition, setRecognition] = useState(null);
-  const audioChunks = useRef([])
-  const audioContext = useRef(null)
-  const locale = params.locale;
-  const role = params.people;
-  const situation = params.topic;
+    isListeningRef.current = isListening; // isListening 값 변경 시 최신 값으로 갱신
+  }, [isListening]);
 
   useEffect(() => {
-    recordMessageRef.current = recordMessage;
-  }, [recordMessage])
-  
-  // useEffect(() => {
-  //   if (isRunning) {
-  //     const interval = setInterval(() => {
-  //       setProgress(prev => (prev < 100 ? prev + (100 / 30) : (setIsRunning(false), clearInterval(interval), 100))); // 30초 동안 100%로 증가
-  //     }, 1000);
-  
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [isRunning, progress]);
-
-  // const { listen, listening, stop } = useSpeechRecognition({
-  //   onResult: (result) => {
-  //     // 기존 recordMessage에 새로운 결과를 추가
-  //     setRecordMessage((prevMessage) => prevMessage + ' ' + result);
-  //   },
-  // });
-
-  // const handleMicrophoneClick = async () => {
-  //   if (!isRunning) {
-  //     // 녹음 시작
-  //     setProgress(0);
-  //     setIsRunning(true);
-
-  //     try {
-  //       // 사용자에게 마이크 권한 요청
-  //       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-  //       // 16kHz로 설정
-  //       audioContext.current = new AudioContext({ sampleRate: 16000 });
-  //       const input = audioContext.current.createMediaStreamSource(stream);
-
-  //       // WebM으로 녹음, 이후 PCM으로 변환
-  //       const recorder = new MediaRecorder(stream, {
-  //         mimeType: 'audio/webm',
-  //       });
-
-  //       // 녹음된 데이터를 배열에 저장
-  //       recorder.ondataavailable = (e) => {
-  //         audioChunks.current.push(e.data);
-  //       };
-
-  //       recorder.onstop = () => {
-  //         stop()
-  //         // 녹음이 끝난 후 PCM으로 변환
-  //         if (!isRunning) {
-  //           const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
-  //           convertToPCM(audioBlob); // PCM 변환 후 폼 전송
-  //         }
-  //       };
-
-  //       recorder.start();
-  //       setMediaRecorder(recorder);
-
-  //       // 30초 후 자동으로 녹음 중지
-  //       setTimeout(() => {
-  //         if (recorder.state === 'recording') {
-  //           recorder.stop();
-  //           onRecordingComplete()
-  //           setIsRunning(false);
-  //         }
-  //       }, 30000);
-
-  //       listen({ interimResults: false })
-  //     } catch (error) {
-  //       console.error('녹음 시작 오류:', error);
-  //     }
-  //   } else {
-  //     // 녹음 중지
-  //     if (mediaRecorder && mediaRecorder.state === 'recording') {
-  //       mediaRecorder.stop();
-  //       onRecordingComplete()
-  //       setIsRunning(false);
-
-  //       stop()
-  //     }
-  //   }
-  // };
-
-  useEffect(() => {
-    if (isRunning) {
+    if (isListening) {
       const interval = setInterval(() => {
-        setProgress((prev) => (prev < 100 ? prev + (100 / 30) : (setIsRunning(false), clearInterval(interval), 100))); // 30초 동안 100%로 증가
+        setProgress(prev => (prev < 100 ? prev + (100 / 30) : (setIsListening(false), clearInterval(interval), 100))); // 30초 동안 100%로 증가
       }, 1000);
-
+  
       return () => clearInterval(interval);
     }
-  }, [isRunning, progress]);
+  }, [isListening, progress]);
 
-  // Web Speech API 초기화
-  useEffect(() => {
-    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-      console.error('SpeechRecognition is not supported on this device.');
-      alert('SpeechRecognition is not supported on this device.');
-      return; 
+  const toggleListening = () => {
+    if (!isListening) {
+      setProgress(0);
+      startRecording();
+      startListening();
+    } else {
+      stopListening();
+      stopRecording()
     }
-    
-    // MediaRecorder 지원 여부 확인
-    if (!('MediaRecorder' in window)) {
-        console.error('MediaRecorder is not supported on this device.');
-        alert('MediaRecorder is not supported on this device.');
-        return;
-    }
-    
+  };
+
+  // 음성 인식 시작 함수
+  const startListening = () => {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const speechRecognition = new SpeechRecognition();
-  
-      speechRecognition.continuous = true; // 연속 모드 설정
-      speechRecognition.interimResults = true; // 중간 결과 활성화
-      speechRecognition.lang = 'ko-kr'; // 언어 설정
-  
-      // 음성 인식 결과를 받는 이벤트 처리
-      speechRecognition.onresult = (event) => {
-        let interimTranscript = ''; // 중간 결과를 저장할 변수
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript;
+      createNewRecognitionInstance(); // 새로운 recognition 인스턴스 생성
+
+      recognitionRef.current.onstart = () => {
+        console.log("Speech recognition started");
+        setIsListening(true); // 음성 인식이 시작되면 상태를 true로 설정
+      };
+
+      recognitionRef.current.onresult = (event) => {
+        let finalTranscript = '';
+
+        for (let i = 0; i < event.results.length; i++) {
           if (event.results[i].isFinal) {
-            setRecordMessage((prev) => prev + ' ' + transcript); // 최종 결과만 기록
-          } else {
-            interimTranscript += transcript; // 중간 결과 기록
+            finalTranscript += event.results[i][0].transcript; // 최종 결과 저장
           }
         }
-        console.log('중간 결과:', interimTranscript);
+
+        setTranscript((prevTranscript) => prevTranscript + ' ' + finalTranscript); // 최종 결과 누적
+        recordMessageRef.current += finalTranscript; // recordMessageRef도 업데이트
       };
-  
-      // 인식이 끝났을 때 자동으로 재시작
-      speechRecognition.onend = () => {
-        if (isRunning) {
-          setTimeout(() => {
-            speechRecognition.start(); // 인식이 끝나면 자동으로 다시 시작
-          }, 500); // 잠시 대기 후 재시작
+
+      recognitionRef.current.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        stopListening(); // 에러 발생 시 인식 중단
+      };
+
+      recognitionRef.current.onend = () => {
+        console.log("Speech recognition ended");
+        console.log("Current isListeningRef:", isListeningRef.current); // Ref 값을 확인
+      
+        // isListening이 true일 때만 재시작
+        if (isListeningRef.current) {
+          console.log("Restarting speech recognition...");
+          startListening(); // 종료 시 다시 음성 인식 시작
+        } else {
+          // 수동으로 중지된 경우
+          console.log("Speech recognition manually stopped.");
+          stopRecording(); // 녹음 중지 및 데이터 전송
         }
       };
-  
-      // 인식 중 오류 발생 시
-      speechRecognition.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-      };
-  
-      setRecognition(speechRecognition); // 초기화된 인식 객체 저장
-    }
-  }, [locale]);
-  
-  const handleMicrophoneClick = async () => {
-    if (!isRunning) {
-      // 녹음 시작
-      setProgress(0);
-      setIsRunning(true);
-      startRecording();
-      recognition.start(); // Web Speech API 음성 인식 시작
+
+      recognitionRef.current.start();
     } else {
-      // 녹음 중지
-      onRecordingComplete();
-      stopRecording();
-      recognition.stop(); // Web Speech API 음성 인식 중지
-  
-      // 녹음이 중지되었을 때도 서버로 음성 데이터를 전송
-      if (audioChunks.current.length > 0) {
-        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
-        convertToPCM(audioBlob); // PCM 변환 후 서버로 전송
-      }
-  
-      setIsRunning(false);
+      alert('Speech recognition is not supported in this browser.');
     }
   };
-  
-  const startRecording = async () => {
-      // MediaRecorder 지원 여부 확인
-    if (!('MediaRecorder' in window)) {
-      console.error('MediaRecorder is not supported on this device.');
-      alert('MediaRecorder is not supported on this device.');
-      return;  // MediaRecorder가 지원되지 않으면 함수 종료
-    }
 
+  const createNewRecognitionInstance = () => {
+    const recognition = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
+    recognition.lang = 'ko-KR'; // 사용할 언어 설정
+    recognition.interimResults = false; // 중간 결과 수신 여부
+    recognition.maxAlternatives = 1; // 결과 대안 개수
+    recognition.continuous = false; // 연속 인식 비활성화
+
+    recognitionRef.current = recognition; // 새로운 recognition 인스턴스를 참조
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop(); // 음성 인식을 중단
+      isListeningRef.current = false; // 수동으로 중지 시 상태를 false로 설정
+      setIsListening(false); // 음성 인식 중단 시 상태 변경
+      console.log("Speech recognition stopped");
+    }
+  };
+
+  // 녹음 시작
+  const startRecording = async () => {
     try {
-      // 마이크 권한 요청
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  
-      // 16kHz로 설정
       audioContext.current = new AudioContext({ sampleRate: 16000 });
       const input = audioContext.current.createMediaStreamSource(stream);
-  
-      // WebM으로 녹음
-      const recorder = new MediaRecorder(stream, {
-        mimeType: 'audio/webm',
-      });
-  
-      recorder.ondataavailable = (e) => {
-        audioChunks.current.push(e.data); // 녹음된 데이터를 저장
+
+      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      mediaRecorder.ondataavailable = (e) => {
+        audioChunks.current.push(e.data); // 녹음 데이터 저장
       };
-  
-      recorder.onstop = () => {
-        if (!isRunning) {
+
+      mediaRecorder.onstop = () => {
+        if (!isListeningRef.current) {
           const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
-          convertToPCM(audioBlob); // PCM 변환 후 서버로 전송
+          convertToPCM(audioBlob); // PCM 변환 및 전송
         }
       };
-  
-      recorder.start();
-      setMediaRecorder(recorder);
-  
-      // 30초 후 자동으로 녹음 중지
+
+      mediaRecorder.start();
+      mediaRecorderRef.current = mediaRecorder;
+
       setTimeout(() => {
-        if (recorder.state === 'recording') {
-          recorder.stop();
+        if (mediaRecorder.state === 'recording') {
+          mediaRecorder.stop();
           onRecordingComplete();
-          setIsRunning(false);
+          setIsListening(false);
         }
-      }, 30000);
+      }, 30000); // 30초 후 자동 중지
     } catch (error) {
-      console.error('녹음 시작 오류:', error);
+      console.error("녹음 시작 오류:", error);
     }
   };
-  
+
+  // 녹음 중지
   const stopRecording = () => {
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-      mediaRecorder.stop(); // 녹음 중지
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+      mediaRecorderRef.current.stop();
     }
-    setIsRunning(false); // 녹음 상태 변경
+    setIsListening(false);
+    onRecordingComplete()
   };
-  
+
+  // PCM 변환 후 데이터 전송
   const convertToPCM = async (audioBlob) => {
-    // Blob을 ArrayBuffer로 변환
     const arrayBuffer = await audioBlob.arrayBuffer();
     const audioBuffer = await audioContext.current.decodeAudioData(arrayBuffer);
 
-    // PCM으로 변환
     const rawPCM = convertToRawPCM(audioBuffer);
-    
-    sendForm(rawPCM)
+    sendForm(rawPCM);
   };
 
   const convertToRawPCM = (audioBuffer) => {
@@ -301,12 +175,11 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
     for (let i = 0; i < audioBuffer.length; i++) {
       for (let channel = 0; channel < numberOfChannels; channel++) {
         const sample = audioBuffer.getChannelData(channel)[i];
-        const intSample = Math.max(-1, Math.min(1, sample)); // -1과 1 사이로 클리핑
+        const intSample = Math.max(-1, Math.min(1, sample));
         result.setInt16(offset, intSample * 0x7fff, true); // 16-bit PCM
         offset += 2;
       }
     }
-
     return result;
   };
 
@@ -314,31 +187,31 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
     const blob = new Blob([pcmData], { type: 'audio/raw' });
     const formData = new FormData();
 
-    // formData.append('messages', JSON.stringify(messages));
     formData.append('msg', recordMessageRef.current);
     formData.append('file', blob, 'recording.raw');
 
-    dispatch(fetchChatMessages({ role, situation, locale, formData }))
+    for (let pair of formData.entries()) {
+      console.log(pair);
+    }
+
+    dispatch(fetchChatMessages({ formData }))
       .unwrap()
       .then((response) => {
-        const messageContent = recordMessageRef.current || t("please-speak")
+        const messageContent = recordMessageRef.current || 'Please speak';
         dispatch(addMyMessage({ content: messageContent }));
         dispatch(addSimpleMyMessage({ content: messageContent }));
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));
         dispatch(deleteMyMessage());
-
-        return response;
-      })
-      .then((response) => {
-        if (!response.data.isOver) {
-          dispatch(addMyMessage({ content: '' }));
-        }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
+
+  useEffect(() => {
+    createNewRecognitionInstance(); // 컴포넌트 마운트 시 SpeechRecognition 인스턴스 생성
+  }, []);
 
   return (
     <div className='flex-col flex items-center justify-center min-w-[60vw]'>
@@ -352,13 +225,13 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
           })}
           className="absolute inset-0"
         />
-        {isRunning ? (
-          <Image onClick={handleMicrophoneClick} src={MicrophoneActive} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
+        {isListening ? (
+          <Image onClick={toggleListening} src={MicrophoneActive} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
         ) : (
-          <Image onClick={handleMicrophoneClick} src={MicrophoneNormal} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
+          <Image onClick={toggleListening} src={MicrophoneNormal} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
         )}
       </div>
-      <div>{recordMessage}</div>
+      <div>{transcript}</div>
     </div>
   );
 }

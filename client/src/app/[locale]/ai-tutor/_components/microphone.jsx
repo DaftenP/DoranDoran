@@ -11,8 +11,8 @@ import 'react-circular-progressbar/dist/styles.css';
 
 export default function Microphone({ onRecordingComplete }) {
   const recordMessageRef = useRef(''); // 음성 인식 메시지 저장
+  const transcriptRef = useRef(''); // 누적된 텍스트 저장
   const [progress, setProgress] = useState(0);
-  const [transcript, setTranscript] = useState(''); // 최종 인식된 텍스트 저장
   const [isListening, setIsListening] = useState(false); // 음성 인식 중인지 여부
   const isListeningRef = useRef(isListening); // 최신 isListening 값을 추적
   const recognitionRef = useRef(null); // SpeechRecognition 객체 참조
@@ -42,7 +42,7 @@ export default function Microphone({ onRecordingComplete }) {
       startListening();
     } else {
       stopListening();
-      stopRecording()
+      stopRecording();
     }
   };
 
@@ -65,7 +65,8 @@ export default function Microphone({ onRecordingComplete }) {
           }
         }
 
-        setTranscript((prevTranscript) => prevTranscript + ' ' + finalTranscript); // 최종 결과 누적
+        // transcriptRef에 누적
+        transcriptRef.current += ' ' + finalTranscript;
         recordMessageRef.current += finalTranscript; // recordMessageRef도 업데이트
       };
 
@@ -82,10 +83,6 @@ export default function Microphone({ onRecordingComplete }) {
         if (isListeningRef.current) {
           console.log("Restarting speech recognition...");
           startListening(); // 종료 시 다시 음성 인식 시작
-        } else {
-          // 수동으로 중지된 경우
-          console.log("Speech recognition manually stopped.");
-          stopRecording(); // 녹음 중지 및 데이터 전송
         }
       };
 
@@ -154,7 +151,7 @@ export default function Microphone({ onRecordingComplete }) {
       mediaRecorderRef.current.stop();
     }
     setIsListening(false);
-    onRecordingComplete()
+    onRecordingComplete();
   };
 
   // PCM 변환 후 데이터 전송
@@ -231,7 +228,7 @@ export default function Microphone({ onRecordingComplete }) {
           <Image onClick={toggleListening} src={MicrophoneNormal} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
         )}
       </div>
-      <div>{transcript}</div>
+      <div>{transcriptRef.current}</div>
     </div>
   );
 }

@@ -148,3 +148,13 @@ func EquipItemService(userId, itemType, itemId string) (*http.Response, error) {
 
 	return http.DefaultClient.Do(req)
 }
+
+// GET /api/v1/user/playLog/1
+func GetPlayLogService(userId string) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodGet, UserUrl+"/api/v1/user/playLog/"+userId, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return http.DefaultClient.Do(req)
+}

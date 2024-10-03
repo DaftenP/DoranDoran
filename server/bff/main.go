@@ -34,6 +34,7 @@ func main() {
 			}),
 		),
 	)
+	http.Handle("/api/v1/bff/my-page/solve", middleware.JWTMiddleware(http.HandlerFunc(controller.GetSolveController)))
 
 	http.Handle("/api/v1/bff/admin/quiz", middleware.JWTMiddleware(http.HandlerFunc(controller.GenerateQuizController)))
 

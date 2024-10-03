@@ -31,10 +31,6 @@ spec:
         env:
         - name: jasypt.encryptor.password
           value: "jenkins_will_set_this"
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 8080
         resources:
           requests:
             cpu: "200m"

@@ -19,4 +19,7 @@ public class TutorSubject {
 
     @Column(name = "tutor_subject_detail", nullable = false)
     private String subjectDetail;
+
+    @Column(name = "tutor_subject_prompt", nullable = false, length = 1000)
+    private String subjectPrompt;
 }

@@ -9,6 +9,10 @@ export default function STTComponent() {
   const recognitionRef = useRef(null); // SpeechRecognition 객체 참조
 
   useEffect(() => {
+    console.log('음성인식중', transcript)
+  }, [transcript])
+
+  useEffect(() => {
     isListeningRef.current = isListening; // isListening 값이 변경될 때마다 최신 값 저장
   }, [isListening]); // isListening 값이 변경될 때마다 실행
 

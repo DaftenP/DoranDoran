@@ -220,10 +220,6 @@ export default function Microphone({ onRecordingComplete, params }) {
       });
   };
 
-  useEffect(() => {
-    createNewRecognitionInstance(); // 컴포넌트 마운트 시 SpeechRecognition 인스턴스 생성
-  }, []);
-
   return (
     <div className='flex-col flex items-center justify-center min-w-[60vw]'>
       <div className="relative flex items-center justify-center w-[16vh] h-[16vh]">
@@ -236,11 +232,13 @@ export default function Microphone({ onRecordingComplete, params }) {
           })}
           className="absolute inset-0"
         />
-        {isListening ? (
-          <Image onClick={toggleListening} src={MicrophoneActive} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
-        ) : (
-          <Image onClick={toggleListening} src={MicrophoneNormal} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
-        )}
+        <button onClick={toggleListening}>
+          {isListening ? (
+            <Image src={MicrophoneActive} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
+          ) : (
+            <Image src={MicrophoneNormal} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
+          )}
+        </button>
       </div>
       <div>{transcript}</div>
     </div>

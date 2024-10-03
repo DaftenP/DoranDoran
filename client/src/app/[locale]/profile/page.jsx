@@ -19,7 +19,7 @@ export default function Profile() {
             {t("my-page")}
           </p>
           <Link href={`/${locale}/profile/setting`} className="w-[10%]">
-            <Image src={Setting} alt="setting" className="w-[75%] " />
+            <Image src={Setting} alt="setting" className="w-[75%] md:w-[55%]" />
           </Link>
         </div>
         <hr className="w-full border-t border-[#ACACAC]" />

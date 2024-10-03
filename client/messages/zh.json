@@ -186,6 +186,8 @@
     "verification-failed": "验证失败",
     "signup-successful": "注册成功",
     "signup-failed": "注册失败",
-    "please-speak": "请说话！"
+    "please-speak": "请说话！",
+    "correct-answer": "总正确答案数",
+    "gem": "宝石"
   }
 }

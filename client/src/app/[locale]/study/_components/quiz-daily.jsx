@@ -44,7 +44,7 @@ function TranslatedQuizDaily({type}) {
       </div>
       <QuizContent type={type} />
       <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
-        <Button type={type} />
+        {/* <Button type={type} /> */}
       </div>
     </div>
   );

@@ -34,11 +34,14 @@ export default function QuizTitle({ type, index }) {
 
 function TranslatedQuizTitle({ type, index }) {
   const t = useTranslations('index');
-  const quizList = useSelector((state) => 
-    type === 'daily' ? state.quiz.dailyQuizList : state.quiz.stageList[index].quizList
-  );
+  // const quizList = useSelector((state) => 
+  //   type === 'daily' ? state.quiz.dailyQuizList : state.quiz.stageList[index].quizList
+  // );
 
-  const quizTitle = quizList.length > 0 ? quizList[0].title : ''
+  const quizList = useSelector((state) => state.quiz.stageDetail.data);
+  const quizTitle = quizList[0].quizQuestion;
+
+  // const quizTitle = quizList.length > 0 ? quizList[0].title : ''
 
   return (
     <div>

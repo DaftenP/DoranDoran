@@ -2,14 +2,21 @@
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchStageDetail } from '@/store/quiz';
 import Link from 'next/link';
 import QuizTitle from '@/app/[locale]/study/_components/quiz-title'
 import QuizContent from '@/app/[locale]/study/_components/quiz-content';
 import Button from '@/app/[locale]/study/_components/button';
 
 export default function Quiz({type, index}) {
+  const dispatch = useDispatch();
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
+
+  useEffect(() => {
+    dispatch(fetchStageDetail()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
+  }, [dispatch]);
 
   useEffect(() => {
     async function loadMessages() {
@@ -44,8 +51,7 @@ function TranslatedQuiz({type, index}) {
       </div>
       <QuizContent type={type} index={index}/>
       <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
-        <Button type={type} index={index}/>
-        <span>.</span>
+        {/* <Button type={type} index={index}/> */}
       </div>
     </div>
   );

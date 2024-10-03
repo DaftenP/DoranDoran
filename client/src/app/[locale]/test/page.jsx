@@ -22,7 +22,7 @@ export default function STTComponent() {
       recognition.lang = 'ko-KR'; // 사용할 언어 설정
       recognition.interimResults = false; // 중간 결과 수신 여부
       recognition.maxAlternatives = 1; // 결과 대안 개수
-      recognition.continuous = true; // 연속적으로 인식하게 설정 (자동 종료 방지)
+      recognition.continuous = true; // 연속적으로 인식하게 설정
 
       recognition.onstart = () => {
         console.log("Speech recognition started");
@@ -47,8 +47,9 @@ export default function STTComponent() {
       };
 
       recognition.onend = () => {
+        console.log("Speech recognition ended");
         if (isListening) {
-          recognition.start(); // 사용자가 수동으로 중단하기 전까지 계속 인식
+          startListening(); // 즉시 다시 시작하여 끊김 방지
         }
       };
 

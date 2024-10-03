@@ -106,4 +106,16 @@ public class RankController {
             return new ResponseDto(StatusCode.SUCCESS, null);
         }
     }
+
+    @GetMapping("/league/settlement/{userId}")
+    public ResponseDto settlement(@PathVariable Long userId) {
+        log.info("settlement api called");
+
+        if(userId == null) {
+            return new ResponseDto(StatusCode.BAD_REQUEST, null);
+        } else{
+            Map<String, Object> result = rankService.settlement(userId);
+            return new ResponseDto(StatusCode.SUCCESS, result);
+        }
+    }
 }

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -162,5 +161,48 @@ public class RankService {
                     .build();
             leagueMemberRepository.save(leagueMember);
         }
+    }
+
+    /**
+     * 리그 결산
+     * @param userId
+     * @return Map<String, Object>
+     */
+    public Map<String, Object> settlement(Long userId) {
+        Map<String, Object> ret = new HashMap<>();
+
+        // 지난주 리그 prefix
+        String lastWeekLeagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now().minusWeeks(1));
+        // 이번주 리그 prefix
+        String thisWeekLeagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now());
+
+        // 지난주 리그 멤버 객체 조회
+        Optional<LeagueMember> lastWeekLeagueMember = leagueMemberRepository.findByUserIdAndLeagueIdPrefix(userId, lastWeekLeagueIdPrefix);
+        if(lastWeekLeagueMember.isEmpty()) {
+            ret.put("result", 0);
+            ret.put("prevRank", null);
+        } else{
+            ret.put("prevRank", lastWeekLeagueMember.get().getLeague().getRank());
+        }
+
+        // 이번주 리그 멤버 객체 조회
+        Optional<LeagueMember> thisWeekLeagueMember = leagueMemberRepository.findByUserIdAndLeagueIdPrefix(userId, thisWeekLeagueIdPrefix);
+        if(thisWeekLeagueMember.isEmpty()) {
+            throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
+        } else{
+            ret.put("currentRank", thisWeekLeagueMember.get().getLeague().getRank());
+        }
+
+        if(ret.get("prevRank") == null) {
+            ret.put("result", 0);   // 이번주 최초 배치
+        } else if((int)ret.get("prevRank") > (int)ret.get("currentRank")) {
+            ret.put("result", 1);   // 승급
+        } else if((int)ret.get("prevRank") < (int)ret.get("currentRank")) {
+            ret.put("result", -1);  // 강등
+        } else{
+            ret.put("result", 2);   // 잔류
+        }
+
+        return ret;
     }
 }

@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	http.HandleFunc("/api/v1/bff/main/league-settlement", controller.LeagueSettlement)
+
 	http.HandleFunc("/api/v1/bff/reissue", controller.ReissueController)
 	http.HandleFunc("/api/v1/bff/regist", controller.RegistController)
 	http.HandleFunc("/api/v1/bff/login", controller.LoginController)

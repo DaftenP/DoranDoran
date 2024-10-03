@@ -23,14 +23,14 @@ public class CustomPromptChatMemoryAdvisor extends AbstractChatMemoryAdvisor<Cha
 
     private static final String DEFAULT_SYSTEM_TEXT_ADVISE = """
 
-            자연스러운 대화를 위해 아래의 대화 이력을 참고해주세요.
+			Use the conversation memory from the MEMORY section to provide accurate answers.
 
-            ---------------------
-            대화이력:
-            {memory}
-            ---------------------
+			---------------------
+			MEMORY:
+			{memory}
+			---------------------
 
-            """;
+			""";
 
     private final String systemTextAdvise;
 

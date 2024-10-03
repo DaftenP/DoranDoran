@@ -6,7 +6,9 @@ spring:
       api-key: ENC(qQgeVSNiTRTy7EXkRoUowz+DU08I7fSzonxGSwDJ0sVgBft8nY1ffRbfDOHlyX6iHsghvcqO/uAa731eEN+ejPK6hKklmoMlL6HGzl7ef/dvSM4/FnLkcWXoDd7mWU8T8t3Nj+F/ebxtBOmx6tbmWAPAMszgzwNi29eZR77VEdx4XcmVoMSHAGREwfS0V8Ql)
       chat:
         options:
-          model: gpt-4o-mini-2024-07-18
+          model: gpt-4o-2024-08-06
+          temperature: 1.0
+
   datasource:
     url: ENC(ND7ataPAw3IQRTlkDQ5m/rGseS+B8SXNqxugUiCkwUyfzkUxRxFpWA==)
     username: ENC(QwnUyIfu2THVsYXlzD2sow==)

@@ -9,14 +9,17 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TutorSubject {
-    @Id
-    @Column(name = "tutor_subject_id", nullable = false)
-    private Long id;
+    @EmbeddedId
+    private TutorSubjectId id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @MapsId("roleId")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tutor_role_id", nullable = false)
     private TutorRole tutorRole;
 
     @Column(name = "tutor_subject_detail", nullable = false)
     private String subjectDetail;
+
+    @Column(name = "tutor_subject_prompt", nullable = false, length = 1000)
+    private String subjectPrompt;
 }

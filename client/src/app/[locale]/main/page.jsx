@@ -14,8 +14,8 @@ import Character from '@/app/[locale]/main/_components/character'
 
 export default function Main() {
   const dispatch = useDispatch()
-  const [cloud1Position, setCloud1Position] = useState(-30);
-  const [cloud2Position, setCloud2Position] = useState(-30);
+  const [cloud1Position, setCloud1Position] = useState(-10);
+  const [cloud2Position, setCloud2Position] = useState(-10);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,14 +33,16 @@ export default function Main() {
   return (
     <div className='relative z-10'>
       <Top />
-      <Image src={Cloud1} alt="cloud"
-        className="absolute w-auto h-[10vh] md:w-auto md:h-10 lg:w-auto lg:h-16 z-0"
-        style={{ transform: `translateX(${cloud1Position}vw) translateY(10vh)` }}
-       />
-      <Image src={Cloud2} alt="cloud"
-        className="absolute w-auto h-[13vh] md:w-auto md:h-10 lg:w-auto lg:h-16 z-0"
-        style={{ transform: `translateX(${-cloud2Position}vw) translateY(25vh)` }}
-      />
+      <div className='absolute top-0 left-0 w-[98vw] h-[50vh] overflow-hidden'>
+        <Image src={Cloud1} alt="cloud"
+          className="absolute w-auto h-[10vh] md:w-auto md:h-10 lg:w-auto lg:h-16 z-0"
+          style={{ transform: `translateX(${cloud1Position}vw) translateY(10vh)` }}
+        />
+        <Image src={Cloud2} alt="cloud"
+          className="absolute w-auto h-[13vh] md:w-auto md:h-10 lg:w-auto lg:h-16 z-0"
+          style={{ transform: `translateX(${-cloud2Position}vw) translateY(25vh)` }}
+        />
+      </div>
       <div className='relative mt-[10vh] mb-[12vh]'>
         <WeekTask />
         <Character />

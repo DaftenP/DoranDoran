@@ -14,6 +14,7 @@ export default function Microphone({ onRecordingComplete, params }) {
   const [transcript, setTranscript] = useState(''); // 최종 인식된 텍스트 저장
   const [progress, setProgress] = useState(0);
   const [isListening, setIsListening] = useState(false); // 음성 인식 중인지 여부
+  const [isRecording, setIsRecording] = useState(false); // 녹음 중인지 여부
   const isListeningRef = useRef(isListening); // 최신 isListening 값을 추적
   const recognitionRef = useRef(null); // SpeechRecognition 객체 참조
   const mediaRecorderRef = useRef(null); // MediaRecorder 참조
@@ -24,35 +25,35 @@ export default function Microphone({ onRecordingComplete, params }) {
   const role = params.people;
   const situation = params.topic;
 
-
   useEffect(() => {
-    console.log('isListening updated:', isListening)
+    console.log('isListening updated:', isListening);
     isListeningRef.current = isListening; // isListening 값 변경 시 최신 값으로 갱신
   }, [isListening]);
-  
-  useEffect(() => {
-    console.log('음성인식중', transcript)
-    recordMessageRef.current = transcript
-  }, [transcript])
 
   useEffect(() => {
-    if (isListening) {
+    console.log('음성인식중', transcript);
+    recordMessageRef.current = transcript;
+  }, [transcript]);
+
+  useEffect(() => {
+    if (isListening && !isRecording) {
       const interval = setInterval(() => {
-        setProgress(prev => (prev < 100 ? prev + (100 / 30) : (setIsListening(false), clearInterval(interval), 100))); // 30초 동안 100%로 증가
+        setProgress((prev) => (prev < 100 ? prev + (100 / 30) : (setIsListening(false), clearInterval(interval), 100))); // 30초 동안 100%로 증가
       }, 1000);
-  
+
       return () => clearInterval(interval);
     }
-  }, [isListening, progress]);
+  }, [isListening, isRecording, progress]);
 
+  // 음성 인식 및 녹음 중복 방지
   const toggleListening = () => {
-    if (!isListening) {
+    if (!isListening && !isRecording) {
       setProgress(0);
-      // startRecording();
-      startListening();
+      startListening(); // 음성 인식 시작
+      startRecording(); // 녹음 시작
     } else {
-      stopListening();
-      // stopRecording();
+      stopListening(); // 음성 인식 중단
+      stopRecording(); // 녹음 중단
     }
   };
 
@@ -67,15 +68,12 @@ export default function Microphone({ onRecordingComplete, params }) {
       };
 
       recognitionRef.current.onresult = (event) => {
-        console.log("Speech recognition result event fired")
         let finalTranscript = '';
-
         for (let i = 0; i < event.results.length; i++) {
           if (event.results[i].isFinal) {
             finalTranscript += event.results[i][0].transcript; // 최종 결과 저장
           }
         }
-        console.log("Final Transcript:", finalTranscript);
         setTranscript((prevTranscript) => prevTranscript + ' ' + finalTranscript); // 최종 결과 누적
       };
 
@@ -86,11 +84,7 @@ export default function Microphone({ onRecordingComplete, params }) {
 
       recognitionRef.current.onend = () => {
         console.log("Speech recognition ended");
-        console.log("Current isListeningRef:", isListeningRef.current); // Ref 값을 확인
-      
-        // isListening이 true일 때만 재시작
         if (isListeningRef.current) {
-          console.log("Restarting speech recognition...");
           startListening(); // 종료 시 다시 음성 인식 시작
         }
       };
@@ -126,29 +120,21 @@ export default function Microphone({ onRecordingComplete, params }) {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioContext.current = new AudioContext({ sampleRate: 16000 });
       const input = audioContext.current.createMediaStreamSource(stream);
-
       const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+
       mediaRecorder.ondataavailable = (e) => {
         audioChunks.current.push(e.data); // 녹음 데이터 저장
       };
 
       mediaRecorder.onstop = () => {
-        if (!isListeningRef.current) {
-          const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
-          convertToPCM(audioBlob); // PCM 변환 및 전송
-        }
+        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+        convertToPCM(audioBlob); // PCM 변환 및 전송
+        setIsRecording(false); // 녹음 종료
       };
 
       mediaRecorder.start();
       mediaRecorderRef.current = mediaRecorder;
-
-      setTimeout(() => {
-        if (mediaRecorder.state === 'recording') {
-          mediaRecorder.stop();
-          onRecordingComplete();
-          setIsListening(false);
-        }
-      }, 30000); // 30초 후 자동 중지
+      setIsRecording(true); // 녹음 시작
     } catch (error) {
       console.error("녹음 시작 오류:", error);
     }
@@ -159,8 +145,7 @@ export default function Microphone({ onRecordingComplete, params }) {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.stop();
     }
-    setIsListening(false);
-    onRecordingComplete();
+    setIsRecording(false);
   };
 
   // PCM 변환 후 데이터 전송
@@ -196,10 +181,6 @@ export default function Microphone({ onRecordingComplete, params }) {
     formData.append('msg', recordMessageRef.current);
     formData.append('file', blob, 'recording.raw');
 
-    for (let pair of formData.entries()) {
-      console.log(pair);
-    }
-
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
@@ -209,13 +190,6 @@ export default function Microphone({ onRecordingComplete, params }) {
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));
         dispatch(deleteMyMessage());
-
-        return response
-      })
-      .then((response) => {
-        if (!response.data.isOver) {
-          dispatch(addMyMessage({ content: '' }));
-        }
       })
       .catch((error) => {
         console.error(error);
@@ -235,7 +209,7 @@ export default function Microphone({ onRecordingComplete, params }) {
           className="absolute inset-0"
         />
         <button onClick={toggleListening}>
-          {isListening ? (
+          {isListening || isRecording ? (
             <Image src={MicrophoneActive} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
           ) : (
             <Image src={MicrophoneNormal} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />

@@ -180,6 +180,7 @@ public class UserService {
         if (sUser != null) {
             for (PlayLog playLog : sUser.getPlayLogList())
                 lst.add(PlayLogResponseDTO.builder()
+                        .gainXp(playLog.getXp())
                         .quizType(playLog.getQuizId())
                         .createdAt(playLog.getCreatedAt())
                         .build());
@@ -198,7 +199,7 @@ public class UserService {
                     .quizId(playLogRequestDTO.getQuizId())
                     .build();
 
-            userRepository.updateXpById(playLogRequestDTO.getUserId(), playLogRequestDTO.getQuizId());
+            userRepository.updateXpById(playLogRequestDTO.getUserId(), 10);
 
             sUser.getPlayLogList().add(playLog);
             //넣고

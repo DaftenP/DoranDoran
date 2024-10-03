@@ -120,29 +120,26 @@ public class UserController {
         StatusCode statusCode = userService.modifyGX(gemXpModifyDTO);
         return ResponseDto.response(statusCode);
     }
-    @PostMapping("item/buy")
+    @PostMapping("/item/buy")
     public ResponseEntity<ResponseDto> buyItem(@RequestBody ItemRequestDTO itemRequestDTO){
         StatusCode statusCode = userService.buyItem(itemRequestDTO);
         return ResponseDto.response(statusCode);
     }
-    @GetMapping("item/{userId}")
+    @GetMapping("/item/{userId}")
     public ResponseEntity<ResponseDto> getItem(@PathVariable int userId){
         List<ItemResponseDTO> lst = userService.getItems(userId);
         return ResponseDto.response(StatusCode.SUCCESS, lst);
     }
 
-    @PatchMapping("cloth")
-    public ResponseEntity<ResponseDto> modifyCloth(@PathVariable ClothRequestDTO clothRequestDTO) {
+    @PatchMapping("/cloth")
+    public ResponseEntity<ResponseDto> modifyCloth(@RequestBody ClothRequestDTO clothRequestDTO) {
         StatusCode statusCode = userService.dressCloth(clothRequestDTO);
         return ResponseDto.response(statusCode);
     }
 
-    @PatchMapping("stage/inc/{userId}")
+    @PatchMapping("/stage/inc/{userId}")
     public ResponseEntity<ResponseDto> increaseStage(@PathVariable int userId) {
         StatusCode statusCode = userService.increase(userId);
         return ResponseDto.response(statusCode);
     }
-
-
-
 }

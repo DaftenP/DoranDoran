@@ -42,6 +42,8 @@ export default function Admin() {
 
   const [selectedFileList, setSelectedFileList] = useState([]);
 
+  const [isSending, setIsSending] = useState(false);
+
   useEffect(() => {
     if (imageLink) {
       const img = new Image();
@@ -100,6 +102,8 @@ export default function Admin() {
     // set loading state
     setIsTTSLoading(true);
 
+    setIsSending(true);
+
     // generate TTS: POST request to https://bff.ssafy.picel.net/api/v1/bff/tts. put text and voice in form data
     const formData = new FormData();
     formData.append("text", ttsText);
@@ -113,6 +117,7 @@ export default function Admin() {
       .then((blob) => {
         let url = URL.createObjectURL(blob);
         setAudioFile(url);
+        setIsSending(false);
       });
     
     setIsTTSLoading(false);
@@ -122,6 +127,9 @@ export default function Admin() {
     // POST request to https://bff.ssafy.picel.net/api/v1/bff/quiz/quizzes/regist
     // multipart/form-data that contains json text, voice, image1, image2, image3, image4
     // json text: {'quizQuestion': '문제', 'quizAnswer': '정답', 'quizType': 1234, 'quizCategory': 1234}
+
+    // set loading state
+    setIsSending(true);
 
     const formData = new FormData();
     formData.append("quizInfo", JSON.stringify({
@@ -154,7 +162,6 @@ export default function Admin() {
       })
         .then((response) => {
           if (response.status === 200) {
-            alert("Quiz is successfully registered!");
             // reset all states
             setQuizQuestion("");
             setQuizAnswer("");
@@ -169,6 +176,8 @@ export default function Admin() {
             setTTSVoice("A");
             setImageLink(null);
             setImagePrompt("");
+
+            setIsSending(false);
           }
         }
       );
@@ -195,6 +204,46 @@ export default function Admin() {
         backgroundColor: "#eceef9",
         userSelect: "none",
       }}>
+      {isSending ?
+        <div
+          style={{
+            position: "fixed",
+            top: "0",
+            left: "0",
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: "999",
+          }}>
+          <div
+            style={{
+              width: "80vw",
+              height: "80vh",
+              backgroundColor: "white",
+              borderRadius: "30px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <div style={{ fontSize: "4vh", fontWeight: "bold", marginBottom: "5vh" }}>
+              work in progress...
+            </div>
+            <div
+              style={{
+                width: "20vw",
+                height: "20vw",
+                borderRadius: "50%",
+                border: "10px solid #9e8ed3",
+                borderTop: "10px solid white",
+                animation: "spin 1s linear infinite",
+              }}></div>
+          </div>
+        </div> : null
+      }
       <div
         style={{
           fontFamily: "Arial",
@@ -242,7 +291,9 @@ export default function Admin() {
                   borderRadius: "30px",
                   background: "#eceef9",
                 }}>
-                <option value="5002">5002</option>
+                <option value="5001">그림 맞추기</option>
+                <option value="5002">단어 말하기</option>
+                <option value="5003">문장 말하기</option>
               </select>
               <select
                 onChange={(e) => setQuizCategory(Number(e.target.value))}
@@ -254,7 +305,7 @@ export default function Admin() {
                   borderRadius: "30px",
                   background: "#eceef9",
                 }}>
-                <option value="7001">7001</option>
+                <option value="7001">disabled</option>
               </select>
             </div>
 

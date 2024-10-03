@@ -150,6 +150,12 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
 
   // Web Speech API 초기화
   useEffect(() => {
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      console.error('SpeechRecognition is not supported on this device.');
+      alert('SpeechRecognition is not supported on this device.');
+      return; // SpeechRecognition이 지원되지 않으면 함수 종료
+    }
+    
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       const speechRecognition = new SpeechRecognition();
@@ -214,6 +220,13 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
   };
   
   const startRecording = async () => {
+      // MediaRecorder 지원 여부 확인
+    if (!('MediaRecorder' in window)) {
+      console.error('MediaRecorder is not supported on this device.');
+      alert('MediaRecorder is not supported on this device.');
+      return;  // MediaRecorder가 지원되지 않으면 함수 종료
+    }
+
     try {
       // 마이크 권한 요청
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });

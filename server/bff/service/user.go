@@ -106,16 +106,14 @@ func DeleteUserService(userId string) (*http.Response, error) {
 }
 
 // POST /api/v1/user/item/buy
-func BuyItemService(userId, itemType, itemId string) (*http.Response, error) {
+func BuyItemService(userId, itemType, itemId int) (*http.Response, error) {
 	req, err := http.NewRequest(http.MethodPost, UserUrl+"/api/v1/user/item/buy", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	userIdInt, _ := strconv.Atoi(userId)
-
 	req.Header.Set("Content-Type", "application/json")
-	body := fmt.Sprintf(`{"userId":%d,"itemType":"%s","itemId":"%s"}`, userIdInt, itemType, itemId)
+	body := fmt.Sprintf(`{"userId":%d,"itemType":"%d","itemId":"%d"}`, userId, itemType, itemId)
 	req.Body = io.NopCloser(strings.NewReader(body))
 
 	return http.DefaultClient.Do(req)

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"com.doran.bff/service"
@@ -34,6 +35,13 @@ func BuyItem(w http.ResponseWriter, r *http.Request) {
 	parts := strings.Split(cookie.Value, "%3A")
 	userId := parts[0]
 
+	var userIdInt int
+	userIdInt, err = strconv.Atoi(userId)
+	if err != nil {
+		http.Error(w, "Invalid user ID", http.StatusBadRequest)
+		return
+	}
+
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, "Bad request", http.StatusBadRequest)
@@ -60,7 +68,7 @@ func BuyItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	req, err := service.BuyItemService(userId, itemType.(string), itemId.(string))
+	req, err := service.BuyItemService(userIdInt, int(itemType.(float64)), int(itemId.(float64)))
 	if err != nil {
 		http.Error(w, "Error sending request", http.StatusInternalServerError)
 		return

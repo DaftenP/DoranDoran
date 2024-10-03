@@ -153,7 +153,14 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
     if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
       console.error('SpeechRecognition is not supported on this device.');
       alert('SpeechRecognition is not supported on this device.');
-      return; // SpeechRecognition이 지원되지 않으면 함수 종료
+      return; 
+    }
+    
+    // MediaRecorder 지원 여부 확인
+    if (!('MediaRecorder' in window)) {
+        console.error('MediaRecorder is not supported on this device.');
+        alert('MediaRecorder is not supported on this device.');
+        return;
     }
     
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {

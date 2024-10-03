@@ -83,9 +83,9 @@ function TranslatedChatAi({ index, message }) {
     dispatch(toggleHint(index))
   }
 
-  useEffect(() => {
-    handlePlay(index)
-  }, [])
+  // useEffect(() => {
+  //   handlePlay(index)
+  // }, [])
 
   const TypewriterText = ({ text, index }) => {
     const letters = text.split("");

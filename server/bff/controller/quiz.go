@@ -24,14 +24,25 @@ func GetQuizController(w http.ResponseWriter, r *http.Request) {
 	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/quizzes/"+quizId)
 }
 
-// GET /api/v1/bff/quiz/quizzes
+// GET /api/v1/bff/quiz/quizzes?quiz_type=10&quiz_category=10&cnt=10
 func GetQuizzesController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/quizzes")
+	var quizType, quizCategory, cnt string
+	if r.URL.Query().Get("quiz_type") != "" {
+		quizType = r.URL.Query().Get("quiz_type")
+	}
+	if r.URL.Query().Get("quiz_category") != "" {
+		quizCategory = r.URL.Query().Get("quiz_category")
+	}
+	if r.URL.Query().Get("cnt") != "" {
+		cnt = r.URL.Query().Get("cnt")
+	}
+
+	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/quiz/quizzes?quiz_type="+quizType+"&quiz_category="+quizCategory+"&cnt="+cnt)
 }
 
 // POST /api/v1/bff/quiz/play-log/submit

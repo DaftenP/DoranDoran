@@ -10,9 +10,9 @@ type UserInfoToClient struct {
 	Nickname    string `json:"nickname"`
 	Email       string `json:"email"`
 	Xp          int    `json:"xp"`
-	Character   string `json:"character"`
-	Avatar      string `json:"avatar"`
-	Voice       string `json:"voice"`
+	Color       int    `json:"color"`
+	Equipment   int    `json:"equipment"`
+	Background  int    `json:"background"`
 	Gem         int    `json:"gem"`
 	DailyStatus int    `json:"dailyStatus"`
 	Status      string `json:"status"`
@@ -39,9 +39,9 @@ type UserInfoFromMSA struct {
 	Nickname    string `json:"nickname"`
 	Email       string `json:"email"`
 	Xp          int    `json:"xp"`
-	Character   string `json:"character"`
-	Avatar      string `json:"avatar"`
-	Voice       string `json:"voice"`
+	Color       int    `json:"color"`
+	Equipment   int    `json:"equipment"`
+	Background  int    `json:"background"`
 	Gem         int    `json:"gem"`
 	DailyStatus int    `json:"dailyStatus"`
 	Status      string `json:"status"`

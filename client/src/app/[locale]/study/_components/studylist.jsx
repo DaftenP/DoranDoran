@@ -4,18 +4,11 @@ import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchStageAll } from '@/store/quiz';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import Level from "./level";
 import LevelQuiz from "./levelquiz";
 import Path from "@/public/path/path.webp";
-
-// const quizData = [
-//   { id: 1, name: 'Quiz 1' },
-//   { id: 2, name: 'Quiz 2' },
-//   { id: 3, name: 'Quiz 3' },
-//   { id: 4, name: 'Quiz 3' },
-//   { id: 5, name: 'Quiz 3' },
-// ];
 
 const pathHeight = 13;
 
@@ -32,8 +25,15 @@ const calculateTopPositions = (dataLength) => {
 }
 
 export default function StudyList({ className }) {
-  const locale = useLocale()
-  const stageList = useSelector((state) => state.quiz.stageList)
+  // const dispatch = useDispatch();
+  const locale = useLocale();
+  const stageList = useSelector((state) => state.quiz.stage);
+  
+  // useEffect(() => {
+  //   dispatch(fetchStageAll()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
+  // }, [dispatch]);
+
+  // console.log(stageList)
 
   const transforms = [
     '',

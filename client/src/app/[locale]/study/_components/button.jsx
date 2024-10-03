@@ -38,9 +38,11 @@ function TranslatedButton({ locale, type, index }) {
   const t = useTranslations('index');
   const dispatch = useDispatch();
   const router = useRouter();
-  const quizList = useSelector((state) => 
-    type === 'daily' ? state.quiz.dailyQuizList : state.quiz.stageList[index].quizList
-  );
+  // const quizList = useSelector((state) => 
+  //   type === 'daily' ? state.quiz.dailyQuizList : state.quiz.stageList[index].quizList
+  // );
+
+  const quizList = useSelector((state) => state.quiz.stageDetail.data);
 
   // const handleSubmit = (() => {
   //   if (type === 'daily') {
@@ -50,23 +52,28 @@ function TranslatedButton({ locale, type, index }) {
   //   }
   // });
 
+  // const handleSubmit = () => {
+  //   if (type === 'daily'){
+  //     dispatch(deleteQuiz());
+  //   }
+  // }
   const handleSubmit = () => {
-    if (type === 'daily'){
-      dispatch(deleteQuiz());
-    }
+    setTimeout(() => {
+      dispatch(backQuiz());
+    }, 2000);
   }
 
   useEffect(() => {
     if (type === 'daily') {
       if (quizList.length > 0) {
-        router.push(`/${locale}/study/daily/${quizList[0].quizId}`)
+        router.push(`/${locale}/study/daily/${quizList[0].quizid}`)
       } else {
         router.push(`/${locale}/main`)
       }
     }
     else {
       if (quizList.length > 0) {
-        router.push(`/${locale}/study/detail/${index+1}/${quizList[0].quizId}`)
+        router.push(`/${locale}/study/detail/${index+1}/${quizList[0].quizid}`)
       } else {
         router.push(`/${locale}/main`)
       }

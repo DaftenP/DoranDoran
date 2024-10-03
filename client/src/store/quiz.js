@@ -2,336 +2,160 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 
-export const fetchStageList = createAsyncThunk(
-  'stageList/fetchStageList', 
-  async () => {
-    const response = await axios.get('YOUR_API_ENDPOINT'); // 실제 API 엔드포인트로 변경하세요
-    return response.data; // API에서 반환되는 데이터를 리턴
+export const fetchStageAll = createAsyncThunk(
+  'stageAll/fetchStageAll', 
+  async (_, thunkAPI) => {
+
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/quiz/stage/all`
+      const response = await axios.get(apiUrl); 
+      return response.data; // API에서 반환되는 데이터를 리턴
+
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
+    }
   }
 );
 
-export const fetchDailyQuizList = createAsyncThunk(
-  'dailyQuizList/fetchDailyQuizList',
-  async () => {
-    const response = await axios.get('YOUR_MYGROUP_API_ENDPOINT');
-    return response.data; // API에서 반환된 myGroup 데이터
+export const fetchStageDetail = createAsyncThunk(
+  'stageDetail/fetchStageDetail', 
+  async (stageId, thunkAPI) => {
+    
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/quiz/stage/${stageId}`
+      const response = await axios.get(apiUrl); 
+      return response.data; // API에서 반환되는 데이터를 리턴
+
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
+    }
   }
 );
-
 
 // Initial state
 const initialState = {
-  stageList:[
+  stage: [
     {
-      'stageId': 1,
-      'order': 1,
-      'quizList':[
-        {
-          'quizId': 1,
-          'order': 1,
-          "title": "단어 맞추기",
-          'quizQuest': [
-            {
-              'image': 'Image5-1',
-              'voice': 'Voice1-1',
-            },
-            {
-              'image': 'Image1-2',
-              'voice': 'Voice1-2',
-            },
-            {
-              'image': 'Image1-3',
-              'voice': 'Voice1-3',
-            },
-            {
-              'image': 'Image1-4',
-              'voice': 'Voice1-4',
-            }
-          ],
-        },
-        {
-          'quizId': 2,
-          'order': 2,
-          "title": "문장 맞추기",
-          'quizQuest': [
-            {
-              'image': 'Image2-1',
-              'voice': 'Voice2-1',
-            },
-            {
-              'image': 'Image2-2',
-              'voice': 'Voice2-2',
-            },
-            {
-              'image': 'Image2-3',
-              'voice': 'Voice2-3',
-            },
-            {
-              'image': 'Image2-4',
-              'voice': 'Voice2-4',
-            }
-          ]
-        }
-      ],
+      "id": 2,
+      "order": 1,
+      "stageName": "test2"
     },
     {
-      'stageId': 2,
-      'order': 2,
-      'quizList':[
-        {
-          'quizId': 1,
-          'order': 1,
-          "title": "단어 맞추기",
-          'quizQuest': [
-            {
-              'image': 'Image6-1',
-              'voice': 'Voice1-1',
-            },
-            {
-              'image': 'Image1-2',
-              'voice': 'Voice1-2',
-            },
-            {
-              'image': 'Image1-3',
-              'voice': 'Voice1-3',
-            },
-            {
-              'image': 'Image1-4',
-              'voice': 'Voice1-4',
-            }
-          ],
-        },
-        {
-          'quizId': 2,
-          'order': 2,
-          "title": "문장 맞추기",
-          'quizQuest': [
-            {
-              'image': 'Image2-1',
-              'voice': 'Voice2-1',
-            },
-            {
-              'image': 'Image2-2',
-              'voice': 'Voice2-2',
-            },
-            {
-              'image': 'Image2-3',
-              'voice': 'Voice2-3',
-            },
-            {
-              'image': 'Image2-4',
-              'voice': 'Voice2-4',
-            }
-          ]
-        }
-      ]
-    },
-    {
-      'stageId': 3,
-      'order': 3,
-      'quizList':[
-        {
-          'quizId': 1,
-          'order': 1,
-          "title": "단어 맞추기",
-          'quizQuest': [
-            {
-              'image': 'Image7-1',
-              'voice': 'Voice1-1',
-            },
-            {
-              'image': 'Image1-2',
-              'voice': 'Voice1-2',
-            },
-            {
-              'image': 'Image1-3',
-              'voice': 'Voice1-3',
-            },
-            {
-              'image': 'Image1-4',
-              'voice': 'Voice1-4',
-            }
-          ],
-        },
-        {
-          'quizId': 2,
-          'order': 2,
-          "title": "문장 맞추기",
-          'quizQuest': [
-            {
-              'image': 'Image2-1',
-              'voice': 'Voice2-1',
-            },
-            {
-              'image': 'Image2-2',
-              'voice': 'Voice2-2',
-            },
-            {
-              'image': 'Image2-3',
-              'voice': 'Voice2-3',
-            },
-            {
-              'image': 'Image2-4',
-              'voice': 'Voice2-4',
-            }
-          ]
-        }
-      ]
-    },
-    {
-      'stageId': 4,
-      'order': 4,
-      'quizList':[
-        {
-          'quizId': 1,
-          'order': 1,
-          "title": "단어 맞추기",
-          'quizQuest': [
-            {
-              'image': 'Image8-1',
-              'voice': 'Voice1-1',
-            },
-            {
-              'image': 'Image1-2',
-              'voice': 'Voice1-2',
-            },
-            {
-              'image': 'Image1-3',
-              'voice': 'Voice1-3',
-            },
-            {
-              'image': 'Image1-4',
-              'voice': 'Voice1-4',
-            }
-          ],
-        },
-        {
-          'quizId': 2,
-          'order': 2,
-          "title": "문장 맞추기",
-          'quizQuest': [
-            {
-              'image': 'Image2-1',
-              'voice': 'Voice2-1',
-            },
-            {
-              'image': 'Image2-2',
-              'voice': 'Voice2-2',
-            },
-            {
-              'image': 'Image2-3',
-              'voice': 'Voice2-3',
-            },
-            {
-              'image': 'Image2-4',
-              'voice': 'Voice2-4',
-            }
-          ]
-        }
-      ]
-    },
-  ],
-  'dailyQuizList':[
-        {
-          'quizId': 1,
-          'order': 1,
-          'title': "단어 맞추기",
-          'quizQuest': [
-            {
-              'image': 'Image1-1',
-              'voice': 'Voice1-1',
-            },
-            {
-              'image': 'Image1-2',
-              'voice': 'Voice1-2',
-            },
-            {
-              'image': 'Image1-3',
-              'voice': 'Voice1-3',
-            },
-            {
-              'image': 'Image1-4',
-              'voice': 'Voice1-4',
-            }
-          ],
-        },
-        {
-          'quizId': 2,
-          'order': 2,
-          'title': "문장 맞추기",
-          'quizQuest': [
-            {
-              'image': 'Image2-1',
-              'voice': 'Voice2-1',
-            },
-            {
-              'image': 'Image2-2',
-              'voice': 'Voice2-2',
-            },
-            {
-              'image': 'Image2-3',
-              'voice': 'Voice2-3',
-            },
-            {
-              'image': 'Image2-4',
-              'voice': 'Voice2-4',
-            }
-          ]
-        }
-      ],
-  loading: false, // 로딩 상태
-  error: null, // 에러 상태
+      "id": 1,
+      "order": 2,
+      "stageName": "test1"
+    }
+  ],           // 스테이지 데이터를 저장할 배열
+  message: '',        // 서버로부터의 메시지
+  timestamp: '',      // 요청 완료 시간
+  loading: false,     // 요청이 진행 중인지 나타내는 상태
+  error: null,        // 에러 발생 시 에러 메시지 저장
+
+  stageDetail: {      // /quiz/stage/{stageId} 데이터를 저장할 객체
+    data: [
+      {
+        "quizid": 3,
+        "quizType": 5001,
+        "quizCategory": 7001,
+        "quizAnswer": "3",
+        "quizQuestion": "아래에서 고양이 사진을 골라주세요.",
+        "quizImages": [
+            "https: //ssafy.com",
+            "https: //ssafy.com",
+            "https: //ssafy.com",
+            "https: //ssafy.com"
+        ]
+      },
+      {
+        "quizid": 4,
+        "quizType": 5002,
+        "quizCategory": 7001,
+        "quizAnswer": "고양이",
+        "quizQuestion": "따라 말해보아요.",
+        "quizImages": [
+            "https: //ssafy.com"
+        ]
+      },
+      {
+        "quizid": 2,
+        "quizType": 5001,
+        "quizCategory": 7001,
+        "quizAnswer": "3",
+        "quizQuestion": "아래에서 고양이 사진을 골라주세요.",
+        "quizImages": [
+            "https: //ssafy.com",
+            "https: //ssafy.com",
+            "https: //ssafy.com",
+            "https: //ssafy.com"
+        ]
+      },
+      {
+        "quizid": 1,
+        "quizType": 5001,
+        "quizCategory": 7001,
+        "quizAnswer": "3",
+        "quizQuestion": "아래에서 고양이 사진을 골라주세요.",
+        "quizImages": [
+            "https: //ssafy.com",
+            "https: //ssafy.com",
+            "https: //ssafy.com",
+            "https: //ssafy.com"
+        ]
+      }
+    ],         // 개별 스테이지 데이터를 저장할 배열
+    message: '',
+    timestamp: '',
+    loading: false,
+    error: null
+  }
 };
 
 // Redux slice
-const quizSlice = createSlice({
+const stageSlice = createSlice({
   name: 'quiz',
   initialState,
   reducers: {
-    setStageList: (state) => {
-      state.stageList = action.payload;
-    },
-    deleteStage: (state) => {
-      state.stageList.quizList.shift()
-    },
-    deleteQuiz: (state) => {
-      state.dailyQuizList.shift()
-    },
     backQuiz: (state) => {
-      const firstQuiz = state.dailyQuizList.shift()
-      state.dailyQuizList.push(firstQuiz)
+      const firstItem = state.stageDetail.data.shift();  // 첫 번째 요소 제거
+      state.stageDetail.data.push(firstItem);            // 제거된 요소를 끝에 추가
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchStageList.pending, (state) => {
-        state.loading = true; // 로딩 시작
-        state.error = null; // 에러 초기화
-      })
-      .addCase(fetchStageList.fulfilled, (state, action) => {
-        state.loading = false; // 로딩 종료
-        state.stageList = action.payload; // API에서 받은 데이터로 rankList 업데이트
-      })
-      .addCase(fetchStageList.rejected, (state, action) => {
-        state.loading = false; // 로딩 종료
-        state.error = action.error.message; // 에러 메시지 저장
-      });
-      
-    builder
-      .addCase(fetchDailyQuizList.pending, (state) => {
+      .addCase(fetchStageAll.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchDailyQuizList.fulfilled, (state, action) => {
+      .addCase(fetchStageAll.fulfilled, (state, action) => {
         state.loading = false;
-        state.dailyQuizList = action.payload; // API에서 받은 myGroup으로 업데이트
+        state.stage = action.payload.data;
+        state.message = action.payload.message;
+        state.timestamp = action.payload.timestamp;
       })
-      .addCase(fetchDailyQuizList.rejected, (state, action) => {
+      .addCase(fetchStageAll.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message; // 에러 처리
+        state.error = action.payload || 'Something went wrong';
+      });
+
+    builder
+      .addCase(fetchStageDetail.pending, (state) => {
+        state.stageDetail.loading = true;
+        state.stageDetail.error = null;
+      })
+      .addCase(fetchStageDetail.fulfilled, (state, action) => {
+        state.stageDetail.loading = false;
+        state.stageDetail.data = action.payload.data;
+        state.stageDetail.message = action.payload.message;
+        state.stageDetail.timestamp = action.payload.timestamp;
+      })
+      .addCase(fetchStageDetail.rejected, (state, action) => {
+        state.stageDetail.loading = false;
+        state.stageDetail.error = action.payload || 'Something went wrong';
       });
   }
 });
 
-export const { setStageList, deleteStage, deleteQuiz, backQuiz } = quizSlice.actions;
-export default quizSlice.reducer;
+export const { backQuiz } = stageSlice.actions;
+export default stageSlice.reducer;

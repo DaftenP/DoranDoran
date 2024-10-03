@@ -25,7 +25,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./authSlice";
 import aiTutorReducer from "./ai-tutor";
-import quizReducer from "./quiz";
+import stageReducer from "./quiz";
 import rankListReducer from "./ranking";
 
 // Redux Persist 설정
@@ -39,7 +39,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authReducer,
   aiTutor: aiTutorReducer,
-  quiz: quizReducer,
+  quiz: stageReducer,
   rankList: rankListReducer,
 });
 

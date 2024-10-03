@@ -31,9 +31,10 @@ public class QuizService {
                         quizCategory.orElse(null),
                         pageable).stream()
                 .map(quizEntity -> QuizResponseDto.builder()
-                        .id(quizEntity.getId())
+                        .quizId(quizEntity.getId())
                         .quizAnswer(quizEntity.getQuizAnswer())
                         .quizQuestion(quizEntity.getQuizQuestion())
+                        .quizVoiceUrl(quizEntity.getQuizVoiceUrl())
                         .quizType(quizEntity.getQuizType())
                         .quizCategory(quizEntity.getQuizCategory())
                         .quizImages(quizEntity.getQuizImages().stream()
@@ -50,11 +51,12 @@ public class QuizService {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
         return QuizResponseDto.builder()
-                .id(quiz.getId())
+                .quizId(quiz.getId())
                 .quizAnswer(quiz.getQuizAnswer())
                 .quizQuestion(quiz.getQuizQuestion())
                 .quizType(quiz.getQuizType())
                 .quizCategory(quiz.getQuizCategory())
+                .quizVoiceUrl(quiz.getQuizVoiceUrl())
                 .quizImages(quiz.getQuizImages().stream()
                         .map(QuizImage::getUrl)
                         .collect(Collectors.toList()))

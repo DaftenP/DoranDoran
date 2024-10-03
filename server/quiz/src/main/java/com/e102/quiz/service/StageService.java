@@ -30,7 +30,7 @@ public class StageService {
                                 .quizQuestion(stageItem.getQuiz().getQuizQuestion())
                                 .quizAnswer(stageItem.getQuiz().getQuizAnswer())
                                 .quizCategory(stageItem.getQuiz().getQuizCategory())
-                                .id(stageItem.getQuiz().getId())
+                                .quizId(stageItem.getQuiz().getId())
                                 .quizImages(stageItem.getQuiz().getQuizImages().stream()
                                         .map(QuizImage::getUrl)
                                         .collect(Collectors.toList()))

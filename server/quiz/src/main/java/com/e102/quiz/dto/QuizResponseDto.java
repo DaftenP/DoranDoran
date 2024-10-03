@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class QuizResponseDto {
 
-    private int id;
+    private int quizId;
 
     private int quizType;
 
@@ -19,6 +19,8 @@ public class QuizResponseDto {
     private String quizAnswer;
 
     private String quizQuestion;
+
+    private String quizVoiceUrl;
 
     private List<String> quizImages;
 }

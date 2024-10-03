@@ -2,10 +2,12 @@
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import DayTask from '@/app/[locale]/main/_components/day-task'
 
 export default function WeekTask() {
   const [messages, setMessages] = useState(null);
+  const dispatch = useDispatch()
   const locale = useLocale()
 
   useEffect(() => {
@@ -18,6 +20,7 @@ export default function WeekTask() {
       }
     }
     loadMessages();
+
   }, [locale]);
 
   if (!messages) {
@@ -33,6 +36,9 @@ export default function WeekTask() {
 
 function TranslatedWeekTask() {
   const t = useTranslations('index');
+  const user = useSelector((state) => state.user)
+
+  const dynamicWidth = `${9 * user.mission.dailyStatus}vw`
 
   return (
     <div className='flex-col flex items-center'>
@@ -43,7 +49,7 @@ function TranslatedWeekTask() {
 
       </div>
       <div className="w-[90vw] h-[8vh] bg-[#CFF6F9] flex justify-center items-center">
-        <div className="rounded-2xl w-[84vw] h-[6vh] bg-[#FFFFFF]/75">
+        <div className="rounded-2xl w-[84vw] h-[6vh] bg-[#FFFFFF]/75 overflow-hidden">
           <DayTask />
         </div>
       </div>
@@ -51,11 +57,9 @@ function TranslatedWeekTask() {
 
       </div>
       <div className="relative rounded-bl-full rounded-br-full w-[90vw] h-[3vh] bg-[#CFF6F9] overflow-hidden text-center shadow-xl">
-        <div className="absolute top-0 left-0 w-[45vw] h-[3vh] bg-[#2FB9FE]">
-          
-        </div>
+        <div style={{ width: dynamicWidth }} className={`absolute top-0 left-0 h-[3vh] bg-[#2FB9FE]`}></div>
         <div className="absolute inset-0 flex items-center justify-center text-sm md:text-2xl lg:text-4xl">
-          5/10
+          {user.mission.dailyStatus}/10
         </div>
       </div>
     </div>

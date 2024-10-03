@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '@/utils/apiClient';
-import axios from 'axios';
 
 export const fetchChatMessages = createAsyncThunk(
   'aiTutor/fetchChatMessages',

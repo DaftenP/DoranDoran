@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
 import { useState, useRef } from 'react';
 
 export default function STTComponent() {
-  const [transcript, setTranscript] = useState(''); // 음성 인식된 텍스트를 저장
+  const [transcript, setTranscript] = useState(''); // 최종 인식된 텍스트 저장
   const [isListening, setIsListening] = useState(false); // 음성 인식 중인지 여부
   const recognitionRef = useRef(null); // SpeechRecognition 객체 참조
 
@@ -19,10 +19,10 @@ export default function STTComponent() {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const recognition = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
       recognitionRef.current = recognition;
-      recognition.lang = 'ko-KR'; // 사용할 언어 설정 (한국어는 'ko-KR')
-      recognition.interimResults = true; // 중간 결과 수신 여부 (true로 설정)
+      recognition.lang = 'ko-KR'; // 사용할 언어 설정
+      recognition.interimResults = false; // 중간 결과 수신 여부
       recognition.maxAlternatives = 1; // 결과 대안 개수
-      recognition.continuous = true; // 연속적으로 인식하게 설정
+      recognition.continuous = true; // 연속적으로 인식하게 설정 (자동 종료 방지)
 
       recognition.onstart = () => {
         console.log("Speech recognition started");
@@ -31,19 +31,14 @@ export default function STTComponent() {
 
       recognition.onresult = (event) => {
         let finalTranscript = '';
-        let interimTranscript = '';
 
-        // 중간 및 최종 결과 처리
         for (let i = 0; i < event.results.length; i++) {
-          const result = event.results[i];
-          if (result.isFinal) {
-            finalTranscript += result[0].transcript; // 최종 결과
-          } else {
-            interimTranscript += result[0].transcript; // 중간 결과
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript; // 최종 결과 저장
           }
         }
 
-        setTranscript(finalTranscript || interimTranscript); // 중간 결과 및 최종 결과 업데이트
+        setTranscript(finalTranscript); // 최종 결과 텍스트로 업데이트
       };
 
       recognition.onerror = (event) => {
@@ -52,9 +47,8 @@ export default function STTComponent() {
       };
 
       recognition.onend = () => {
-        console.log("Speech recognition ended");
         if (isListening) {
-          recognition.start(); // 음성 인식이 종료되었을 때 다시 시작
+          recognition.start(); // 사용자가 수동으로 중단하기 전까지 계속 인식
         }
       };
 
@@ -69,6 +63,7 @@ export default function STTComponent() {
       recognitionRef.current.stop(); // 음성 인식을 중단
       setIsListening(false);
       console.log("Speech recognition stopped");
+      setTranscript(''); // 텍스트 초기화
     }
   };
 

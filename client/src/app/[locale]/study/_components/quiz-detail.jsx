@@ -55,6 +55,7 @@ function TranslatedQuiz({locale, type, index}) {
   const stageOrder = useSelector((state) => state.quiz.stage[index].order);
   console.log(stageOrder)
   const quizList = useSelector((state) => state.quiz.stageDetail);
+  const quizType = quizList[0]?.quizType;
   const totalQuizzes = quizList.length;
   const quizVoiceUrl = quizList[0]?.quizVoiceUrl;
   const router = useRouter();
@@ -89,13 +90,15 @@ function TranslatedQuiz({locale, type, index}) {
         </div>
         <QuizTitle type={type} index={index}/>
       </div>
-      <button onClick={playVoice} className='absolute z-10 top-[82%] left-[50%] transform -translate-x-1/2 flex-col flex justify-center items-center w-[30vw] h-[10vh]'>
-        <Image
-          src={Play}
-          alt="play"
-          className="w-[30%] h-auto" // CSS에서 비율을 맞추기 위해 w와 h를 설정
-        />
-      </button>
+      {quizType === 5001 && (
+        <button onClick={playVoice} className='absolute z-10 top-[82%] left-[50%] transform -translate-x-1/2 flex-col flex justify-center items-center w-[30vw] h-[10vh]'>
+          <Image
+            src={Play}
+            alt="play"
+            className="w-[30%] h-auto" // CSS에서 비율을 맞추기 위해 w와 h를 설정
+          />
+        </button>
+      )}
       <div className='absolute top-[35%] w-[80%] h-[75%] left-1/2 transform -translate-x-1/2'>
         <QuizContent type={type} index={index}/>
       </div>

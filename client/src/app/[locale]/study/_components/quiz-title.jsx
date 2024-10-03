@@ -47,7 +47,9 @@ function TranslatedQuizTitle({ type, index }) {
   // }, [dispatch]);
   
 
-  const quizList = useSelector((state) => state.quiz.stageDetail);
+  const quizList = useSelector((state) => 
+    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail
+  );
   const quizTitle = quizList[0]?.quizQuestion;
   // console.log(quizList,2)
 

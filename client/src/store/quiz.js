@@ -2,6 +2,22 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 
+export const fetchDailyAll = createAsyncThunk(
+  'dailyAll/fetchDailyAll', 
+  async (_, thunkAPI) => {
+
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/quiz/quizzes?cnt=${10}`
+      const response = await axios.get(apiUrl); 
+      return response.data; // API에서 반환되는 데이터를 리턴
+
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
+    }
+  }
+);
+
 export const fetchStageAll = createAsyncThunk(
   'stageAll/fetchStageAll', 
   async (_, thunkAPI) => {
@@ -25,8 +41,8 @@ export const fetchStageDetail = createAsyncThunk(
     try {
       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/quiz/stage/${stageId}`
       const response = await axios.get(apiUrl); 
-      console.log('stageID:', response.data);
-      console.log(apiUrl);
+      // console.log('stageID:', response.data);
+      // console.log(apiUrl);
       return response.data; // API에서 반환되는 데이터를 리턴
 
     } catch (error) {
@@ -38,6 +54,40 @@ export const fetchStageDetail = createAsyncThunk(
 
 // Initial state
 const initialState = {
+  dailyQuiz: {
+    "data": [
+        {
+            "quizId": 1,
+            "quizType": 1,
+            "quizCategory": 1,
+            "quizAnswer": "42",
+            "quizQuestion": "What is the answer to life, the universe, and everything?",
+            "quizVoiceUrl": "sadas",
+            "quizImages": [
+                "https: //ssafy.com",
+                "https: //ssafy.com",
+                "https: //ssafy.com",
+                "https: //ssafy.com"
+            ]
+        },
+        {
+            "quizId": 2,
+            "quizType": 1,
+            "quizCategory": 1,
+            "quizAnswer": "2",
+            "quizQuestion": "What is 1 + 1?",
+            "quizVoiceUrl": null,
+            "quizImages": [
+                "https: //ssafy.com",
+                "https: //ssafy.com",
+                "https: //ssafy.com",
+                "https: //ssafy.com"
+            ]
+        }
+    ],
+    "message": "정상적으로 요청이 완료되었습니다.",
+    "timestamp": "2024-10-03T15:36:34.1669863"
+  },
   stage: [
     {
       "id": 2,
@@ -172,6 +222,9 @@ const stageSlice = createSlice({
   name: 'quiz',
   initialState,
   reducers: {
+    deleteDailyQuiz: (state) => {
+      const firstItem = state.dailyQuiz.data.shift();
+    },
     deleteQuiz: (state) => {
       // const firstItem = state.stageDetail.data.shift();  // 첫 번째 요소 제거
       // state.stageDetail.data.push(firstItem);            // 제거된 요소를 끝에 추가
@@ -179,7 +232,24 @@ const stageSlice = createSlice({
       // state.stageDetail.push(firstItem);            // 제거된 요소를 끝에 추가
     },
   },
+  
   extraReducers: (builder) => {
+    builder
+      .addCase(fetchDailyAll.pending, (state) => {
+        state.dailyQuiz.loading = true;
+        state.dailyQuiz.error = null;
+      })
+      .addCase(fetchDailyAll.fulfilled, (state, action) => {
+        state.dailyQuiz.loading = false;
+        state.dailyQuiz.data = action.payload.data;
+        state.dailyQuiz.message = action.payload.message;
+        state.dailyQuiz.timestamp = action.payload.timestamp;
+      })
+      .addCase(fetchDailyAll.rejected, (state, action) => {
+        state.dailyQuiz.loading = false;
+        state.dailyQuiz.error = action.payload || 'Something went wrong';
+      });
+
     builder
       .addCase(fetchStageAll.pending, (state) => {
         state.loading = true;
@@ -219,5 +289,5 @@ const stageSlice = createSlice({
   }
 });
 
-export const { deleteQuiz, backQuiz } = stageSlice.actions;
+export const { deleteDailyQuiz, deleteQuiz, backQuiz } = stageSlice.actions;
 export default stageSlice.reducer;

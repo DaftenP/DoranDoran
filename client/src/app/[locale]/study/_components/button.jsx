@@ -44,7 +44,9 @@ function TranslatedButton({ locale, type, index }) {
   // );
 
   // const quizList = useSelector((state) => state.quiz.stageDetail.data);
-  const quizList = useSelector((state) => state.quiz.stageDetail);
+  const quizList = useSelector((state) => 
+    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail
+  );
 
   // useEffect(() => {
   //   console.log("Stage ID:", index); // index 값 확인

@@ -66,7 +66,6 @@ function TranslatedBottom() {
   }
 
   const handleOpenModal = (messageIndex) => {
-    console.log(messageIndex)
     setModalMessage(modalMessages[messageIndex])
     setIsOpenModal(true)
   }
@@ -98,7 +97,6 @@ function TranslatedBottom() {
     if (storedData) {
       const parsedData = JSON.parse(storedData)
       if (parsedData.type && parsedData.type.length > 0) {
-        console.log('팔스', parsedData.type)
         setType([parsedData.type[0], parsedData.type[1]])
         handleOpenModal(0)
       }

@@ -27,6 +27,7 @@ import authReducer from "./authSlice";
 import aiTutorReducer from "./ai-tutor";
 import quizReducer from "./quiz";
 import rankListReducer from "./ranking";
+import userReducer from "./user";
 
 // Redux Persist 설정
 const persistConfig = {
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   aiTutor: aiTutorReducer,
   quiz: quizReducer,
   rankList: rankListReducer,
+  user: userReducer,
 });
 
 // 유지된 리듀서 생성

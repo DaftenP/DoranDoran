@@ -3,6 +3,8 @@
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { fetchUserData } from '@/store/user'
+import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image'
 import Bronze from '@/public/rank/bronze.webp'
 import Diamond from '@/public/rank/diamond.webp'
@@ -15,6 +17,7 @@ import Megaphone from '@/public/icon/megaphone.webp'
 export default function Top() {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     async function loadMessages() {
@@ -26,11 +29,9 @@ export default function Top() {
       }
     }
     loadMessages();
-  }, [locale]);
 
-  if (!messages) {
-    return <div>Loading...</div>; // 메시지가 로드될 때까지 로딩 표시
-  }
+    dispatch(fetchUserData())
+  }, [locale, dispatch]);
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
@@ -40,7 +41,8 @@ export default function Top() {
 }
 
 function TranslatedTop() {
-  const t = useTranslations('index');
+  const t = useTranslations('index')
+  const user = useSelector((state) => state.user)
 
   return (
     <div
@@ -52,10 +54,10 @@ function TranslatedTop() {
       </div>
       <div className="flex-col flex justify-center">
         <div className="text-sm overflow-hidden whitespace-nowrap text-ellipsis max-w-[27vw] text-sm md:text-2xl lg:text-4xl">
-          LV. 85 Nickname
+          Lv. {Math.floor(user.status.xp / 100)} {user.profile.nickname}
         </div>
         <div className="w-[27vw] h-[1vh] rounded-full bg-[#70D7FF]/50">
-          <div className="h-full rounded-full bg-[#1CBFFF]" style={{ width: '50%' }} />
+          <div className="h-full rounded-full bg-[#1CBFFF]" style={{ width: `${(user.status.xp % 100)}%` }} />
         </div>
       </div>
       <div className='flex items-center'>
@@ -64,7 +66,7 @@ function TranslatedTop() {
           className="w-[20vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white flex justify-center items-center text-sm md:text-3xl lg:text-5xl"
           style={{ translate: '-1vw 0'}}
         >
-          555555
+          {user.status.gem}
         </div>
       </div>
       <div className='flex items-center'>
@@ -75,7 +77,7 @@ function TranslatedTop() {
           className="w-[15vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white flex justify-center items-center text-sm md:text-3xl lg:text-5xl"
           style={{ translate: '-1vw 0'}}
         >
-          9/10
+          10/10
         </div>
       </div>
     </div>

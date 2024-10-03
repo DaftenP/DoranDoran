@@ -178,7 +178,6 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
       .unwrap()
       .then((response) => {
         const messageContent = recordMessageRef.current || t("please-speak")
-        console.log(chatMessages)
         dispatch(addMyMessage({ content: messageContent }));
         dispatch(addSimpleMyMessage({ content: messageContent }));
         dispatch(addResponseMessage(response.data));
@@ -193,7 +192,6 @@ function TranslatedMicrophone({ onRecordingComplete, params }) {
         }
       })
       .catch((error) => {
-        console.log('에러')
         console.log(error);
       });
   };

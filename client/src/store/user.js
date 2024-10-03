@@ -1,24 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import apiClient from '@/utils/apiClient';
 
 export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
   async (_, thunkAPI) => {
 
     try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/my-page/user`
+      const apiUrl = '/my-page/user'
 
-      const response = await axios.get(apiUrl, {
+      const response = await apiClient.get(apiUrl, {
         headers: {
-          'Content-Type': 'application/json',  // FormData 사용 시 헤더 설정
+          'Content-Type': 'application/json',
         },
         withCredentials: true,
       });
-      console.log(response.data)
-
-      return response.data; // 서버에서 받은 chatMessages 데이터를 반환
+      return response.data;
     } catch (error) {
-      console.log('에러')
       console.log(error)
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }
@@ -30,25 +27,30 @@ const initialState = {
   profile: {
     nickname: '',
     email: '',
-    birth: '',
-    character: '',
-    avatar: '',
-    voice: '',
+    birthday: '',
+    color: '',
+    equipment: '',
+    background: '',
+    // 전체 문제
+    psize: 0,
   },
   status: {
-    xp: '',
-    credit: '',
-    rank: '',
+    xp: 0,
+    gem: 0,
+    rank: 0,
   },
   mission: {
-    weekTask: '',
-    dailyTask: '',
-  } 
+    // 주간 테스크 상태
+    status: '',
+    // 일일 테스크 상태
+    dailyStatus: 0,
+  }
 }
 
 // Redux slice
 const userSlice = createSlice({
   name: 'user',
+  isChange: false,
   initialState,
   reducers: {
 
@@ -62,21 +64,22 @@ const userSlice = createSlice({
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.loading = false;
         state.profile = {
-          nickname: action.payload.nickname,
-          email: action.payload.email,
-          birth: action.payload.birth,
-          character: action.payload.character,
-          avatar: action.payload.avatar,
-          voice: action.payload.voice,
+          nickname: action.payload.data.nickname,
+          email: action.payload.data.email,
+          birthday: action.payload.data.birthday,
+          color: action.payload.data.color,
+          equipment: action.payload.data.equipment,
+          background: action.payload.data.background,
+          psize: action.payload.data.psize,
         };
         state.status = {
-          xp: action.payload.xp,
-          credit: action.payload.credit,
-          rank: action.payload.rank,
+          xp: action.payload.data.xp,
+          gem: action.payload.data.gem,
+          rank: action.payload.data.rank,
         };
         state.mission = {
-          weekTask: action.payload.weekTask,
-          dailyTask: action.payload.dailyTask,
+          status: action.payload.data.status,
+          dailyStatus: action.payload.data.dailyStatus,
         };
       })
       .addCase(fetchUserData.rejected, (state, action) => {

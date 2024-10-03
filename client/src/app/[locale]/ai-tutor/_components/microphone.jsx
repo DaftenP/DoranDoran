@@ -26,11 +26,12 @@ export default function Microphone({ onRecordingComplete, params }) {
 
 
   useEffect(() => {
+    console.log('isListening updated:', isListening)
     isListeningRef.current = isListening; // isListening 값 변경 시 최신 값으로 갱신
   }, [isListening]);
   
   useEffect(() => {
-    console.log(transcript)
+    console.log('음성인식중', transcript)
     recordMessageRef.current = transcript
   }, [transcript])
 
@@ -66,6 +67,7 @@ export default function Microphone({ onRecordingComplete, params }) {
       };
 
       recognitionRef.current.onresult = (event) => {
+        console.log("Speech recognition result event fired")
         let finalTranscript = '';
 
         for (let i = 0; i < event.results.length; i++) {
@@ -73,7 +75,7 @@ export default function Microphone({ onRecordingComplete, params }) {
             finalTranscript += event.results[i][0].transcript; // 최종 결과 저장
           }
         }
-
+        console.log("Final Transcript:", finalTranscript);
         setTranscript((prevTranscript) => prevTranscript + ' ' + finalTranscript); // 최종 결과 누적
       };
 

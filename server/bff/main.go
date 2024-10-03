@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	http.HandleFunc("/api/v1/bff/main/league-settlement", controller.LeagueSettlement)
+
 	http.HandleFunc("/api/v1/bff/reissue", controller.ReissueController)
 	http.HandleFunc("/api/v1/bff/regist", controller.RegistController)
 	http.HandleFunc("/api/v1/bff/login", controller.LoginController)
@@ -34,6 +36,7 @@ func main() {
 			}),
 		),
 	)
+	http.Handle("/api/v1/bff/my-page/solve", middleware.JWTMiddleware(http.HandlerFunc(controller.GetSolveController)))
 
 	http.Handle("/api/v1/bff/admin/quiz", middleware.JWTMiddleware(http.HandlerFunc(controller.GenerateQuizController)))
 
@@ -49,6 +52,10 @@ func main() {
 
 	http.Handle("/api/v1/bff/rank/league", middleware.JWTMiddleware(http.HandlerFunc(controller.GetLeagueRank)))
 	http.Handle("/api/v1/bff/rank/leaderboard", middleware.JWTMiddleware(http.HandlerFunc(controller.GetLeaderBoard)))
+
+	http.Handle("/api/v1/bff/store/item/buy", middleware.JWTMiddleware(http.HandlerFunc(controller.BuyItem)))
+	http.Handle("/api/v1/bff/inventory/item", middleware.JWTMiddleware(http.HandlerFunc(controller.GetItems)))
+	http.Handle("/api/v1/bff/inventory/equip", middleware.JWTMiddleware(http.HandlerFunc(controller.EquipItem)))
 
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

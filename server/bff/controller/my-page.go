@@ -359,3 +359,40 @@ func UpdatePasswordController(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 }
+
+// GET /api/v1/bff/my-page/solve
+func GetSolveController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// get token from cookie named 'refresh'
+	cookie, err := r.Cookie("refresh")
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
+
+	parts := strings.Split(cookie.Value, "%3A")
+	userIdFromCookie := parts[0]
+
+	// trim the leading space
+	userIdFromCookie = strings.TrimSpace(userIdFromCookie)
+
+	resp, err := service.GetPlayLogService(userIdFromCookie)
+	if err != nil {
+		http.Error(w, "Error calling GetSolveService", http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Response to client
+	_, err = io.Copy(w, resp.Body)
+	if err != nil {
+		http.Error(w, "Error copying response body", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}

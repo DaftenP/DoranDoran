@@ -28,6 +28,7 @@ import aiTutorReducer from "./ai-tutor";
 import stageReducer from "./quiz";
 import rankListReducer from "./ranking";
 import userReducer from "./user";
+import shopReducer from "./shop";
 
 // Redux Persist 설정
 const persistConfig = {
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   quiz: stageReducer,
   rankList: rankListReducer,
   user: userReducer,
+  shop: shopReducer
 });
 
 // 유지된 리듀서 생성

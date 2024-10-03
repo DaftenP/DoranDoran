@@ -3,7 +3,7 @@ import apiClient from '@/utils/apiClient';
 
 export const fetchChatMessages = createAsyncThunk(
   'aiTutor/fetchChatMessages',
-  async ({ role, situation,locale, formData }, thunkAPI) => {
+  async ({ role, situation, locale, formData }, thunkAPI) => {
 
     try {
       const apiUrl = '/talk/send'

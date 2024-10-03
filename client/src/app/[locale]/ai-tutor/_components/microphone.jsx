@@ -9,9 +9,9 @@ import MicrophoneActive from '@/public/icon/microphone-active.webp';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-export default function Microphone({ onRecordingComplete }) {
+export default function Microphone({ onRecordingComplete, params }) {
   const recordMessageRef = useRef(''); // 음성 인식 메시지 저장
-  const transcriptRef = useRef(''); // 누적된 텍스트 저장
+  const [transcript, setTranscript] = useState(''); // 최종 인식된 텍스트 저장
   const [progress, setProgress] = useState(0);
   const [isListening, setIsListening] = useState(false); // 음성 인식 중인지 여부
   const isListeningRef = useRef(isListening); // 최신 isListening 값을 추적
@@ -20,10 +20,19 @@ export default function Microphone({ onRecordingComplete }) {
   const dispatch = useDispatch();
   const audioChunks = useRef([]);
   const audioContext = useRef(null);
+  const locale = params.locale;
+  const role = params.people;
+  const situation = params.topic;
+
 
   useEffect(() => {
     isListeningRef.current = isListening; // isListening 값 변경 시 최신 값으로 갱신
   }, [isListening]);
+  
+  useEffect(() => {
+    console.log(transcript)
+    recordMessageRef.current = transcript
+  }, [transcript])
 
   useEffect(() => {
     if (isListening) {
@@ -65,9 +74,7 @@ export default function Microphone({ onRecordingComplete }) {
           }
         }
 
-        // transcriptRef에 누적
-        transcriptRef.current += ' ' + finalTranscript;
-        recordMessageRef.current += finalTranscript; // recordMessageRef도 업데이트
+        setTranscript((prevTranscript) => prevTranscript + ' ' + finalTranscript); // 최종 결과 누적
       };
 
       recognitionRef.current.onerror = (event) => {
@@ -191,7 +198,7 @@ export default function Microphone({ onRecordingComplete }) {
       console.log(pair);
     }
 
-    dispatch(fetchChatMessages({ formData }))
+    dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
         const messageContent = recordMessageRef.current || 'Please speak';
@@ -200,6 +207,13 @@ export default function Microphone({ onRecordingComplete }) {
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));
         dispatch(deleteMyMessage());
+
+        return response
+      })
+      .then((response) => {
+        if (!response.data.isOver) {
+          dispatch(addMyMessage({ content: '' }));
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -228,7 +242,7 @@ export default function Microphone({ onRecordingComplete }) {
           <Image onClick={toggleListening} src={MicrophoneNormal} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
         )}
       </div>
-      <div>{transcriptRef.current}</div>
+      <div>{transcript}</div>
     </div>
   );
 }

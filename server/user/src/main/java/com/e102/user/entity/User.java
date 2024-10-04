@@ -52,13 +52,13 @@ public class User {
     private String nickname;
 
     @Column(name = "user_color", nullable = true)
-    private int color;
+    private int color = 1;
 
     @Column(name = "user_equipment", nullable = true)
-    private int equipment;
+    private int equipment = 1;
 
     @Column(name = "user_background", nullable = true)
-    private int background;
+    private int background = 1;
 
     @Column(name = "user_gem")
     private int gem = 0;

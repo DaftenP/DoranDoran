@@ -5,20 +5,15 @@ import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchStageDetail } from '@/store/quiz';
-import Link from 'next/link';
 import QuizTitle from '@/app/[locale]/study/_components/quiz-title'
 import QuizContent from '@/app/[locale]/study/_components/quiz-content';
-import Button from '@/app/[locale]/study/_components/button';
 import Play from "@/public/icon/play1.webp";
 import { useRouter } from 'next/navigation';
-// import { useRouter } from 'next/router';
 
 export default function Quiz({type, index}) {
-  // const router = useRouter();
   const dispatch = useDispatch();
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
-  // const { stageId } = router.query; // Get the stageId from the query parameters
 
   useEffect(() => {
     // if (index) {
@@ -51,10 +46,9 @@ export default function Quiz({type, index}) {
 
 function TranslatedQuiz({locale, type, index}) {
   const t = useTranslations('index');
-  // const quizList = useSelector((state) => state.quiz.stageDetail.data);
-  const stageOrder = useSelector((state) => state.quiz.stage[index].order);
+  const stageOrder = useSelector((state) => state.quiz.stage.data[index].order);
   console.log(stageOrder)
-  const quizList = useSelector((state) => state.quiz.stageDetail);
+  const quizList = useSelector((state) => state.quiz.stageDetail.data);
   const quizType = quizList[0]?.quizType;
   const totalQuizzes = quizList.length;
   const quizVoiceUrl = quizList[0]?.quizVoiceUrl;
@@ -101,9 +95,6 @@ function TranslatedQuiz({locale, type, index}) {
       )}
       <div className='absolute top-[35%] w-[80%] h-[75%] left-1/2 transform -translate-x-1/2'>
         <QuizContent type={type} index={index}/>
-      </div>
-      <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
-        {/* <Button type={type} index={index}/> */}
       </div>
     </div>
   );

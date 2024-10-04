@@ -3,9 +3,7 @@
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchStageDetail } from '@/store/quiz';
-import { deleteDailyQuiz, deleteQuiz, backQuiz, deleteStage } from '@/store/quiz';
-import Link from 'next/link';
+import { deleteDailyQuiz, deleteQuiz } from '@/store/quiz';
 import QuizContentImage from "./quiz-content-image";
 import QuizContentSpeak from "./quiz-content-speak";
 import Button from './button';
@@ -34,18 +32,10 @@ export default function QuizContent({ type, index }) {
     return <div>Loading...</div>; // 메시지가 로드될 때까지 로딩 표시
   }
 
-  // const handleImageClick = (index) => {
-    
-  //   setClickedIndex(index);
-  //   console.log(index)
-  // };
-
   const handleImageClick = (index) => {
     if (clickedIndex === index) {
-      // console.log('이미지를 다시 클릭하여 선택 해제:', index);
       setClickedIndex(null); // 동일한 이미지 클릭 시 선택 해제
     } else {
-      // console.log('다른 이미지 클릭:', index);
       setClickedIndex(index); // 다른 이미지 클릭 시 해당 index 설정
     }
   };
@@ -72,25 +62,11 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
   const t = useTranslations('index');
   const dispatch = useDispatch();
   const quizList = useSelector((state) => 
-    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail
+    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail.data
   );
-
-  // const quizList = useSelector((state) => state.quiz.stageDetail.data);
-  // const quizStage = useSelector((state) => state.quiz.stageDetail);
-  // const quizDaily = useSelector((state) => state.quiz.dailyQuiz.data);
-  // const quizList = (type === 'daily') ? quizDaily : quizStage;
   const images = quizList[0]?.quizImages;
   const quizType = quizList[0]?.quizType;
   const quizAnswer = quizList[0]?.quizAnswer;
-
-  // useEffect(() => {
-  //   console.log("Stage ID:", index); // index 값 확인
-  //   dispatch(fetchStageDetail(index)); 
-  // }, [dispatch]);
-  // console.log(quizList[0].id);
-
-  // const images = quizList.length > 0 ? quizList[0].quizQuest.map((quest) => quest.image) : [];
-  // const quizContent = quizList.length > 0 ? images : [];
 
   const [feedbackMessage, setFeedbackMessage] = useState(null); // 피드백 메시지 상태
   const [feedbackType, setFeedbackType] = useState(null); // 정답/오답 타입
@@ -137,11 +113,9 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
       } else {
         dispatch(deleteQuiz());
       }
-      // dispatch(backQuiz());
     }, 2000);
   }
   
-
   return (
     <div className='flex-col flex justify-center items-center'>
       <div className='h-[50%]'>
@@ -149,11 +123,9 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
         (quizType === 5002 || quizType === 5003) ? (<QuizContentSpeak type={type}/>) : ''
         }
       </div>
-      {/* <div className='absolute transform -translate-x-1/2 -translate-y-1/2 bottom-[20%] left-1/2 z-10'> */}
       {!recordedSTT && (
         <InputForm quizType={quizType} onSubmit={handleSubmitSTT} />
       )}
-      {/* </div> */}
       <div onClick={handleAnswerCheck} className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
         {((quizType === 5001 && clickedIndex !== null) ||
         ((quizType === 5002 || quizType === 5003) && recordedSTT)) && <Button type={type} index={index} onClick={handleAnswerCheck}/>}

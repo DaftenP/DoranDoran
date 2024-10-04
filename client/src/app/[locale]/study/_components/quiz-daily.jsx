@@ -4,8 +4,6 @@ import Image from "next/image";
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchDailyAll } from '@/store/quiz';
-import Link from 'next/link';
 import QuizTitle from '@/app/[locale]/study/_components/quiz-title'
 import QuizContent from '@/app/[locale]/study/_components/quiz-content';
 import Button from '@/app/[locale]/study/_components/button';
@@ -13,13 +11,8 @@ import Play from "@/public/icon/play1.webp";
 import { useRouter } from 'next/navigation';
 
 export default function QuizDaily({type}) {
-  const dispatch = useDispatch();
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
-
-  // useEffect(() => {
-  //   dispatch(fetchDailyAll()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
-  // }, [dispatch]);
 
   useEffect(() => {
     async function loadMessages() {
@@ -46,13 +39,11 @@ export default function QuizDaily({type}) {
 
 function TranslatedQuizDaily({locale, type, index}) {
   const t = useTranslations('index');
-  // const quizList = useSelector((state) => state.quiz.stageDetail.data);
   const quizList = useSelector((state) => state.quiz.dailyQuiz.data);
   const quizType = quizList[0]?.quizType;
   const totalQuizzes = quizList.length;
   const quizVoiceUrl = quizList[0]?.quizVoiceUrl;
   const router = useRouter();
-  // console.log(quizList)
 
   // 음성 재생 함수
   const playVoice = () => {
@@ -93,9 +84,6 @@ function TranslatedQuizDaily({locale, type, index}) {
         </button>
       <div className='absolute top-[35%] w-[80%] h-[75%] left-1/2 transform -translate-x-1/2'>
         <QuizContent type={type} index={index}/>
-      </div>
-      <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
-        {/* <Button type={type} index={index}/> */}
       </div>
     </div>
   );

@@ -16,18 +16,28 @@ public class KafkaConsumer {
     private final ObjectMapper objectMapper;
     /**
      * Kafka 메시지로 XP 업데이트
-     * @param String
+     * @param updateXPMessage
      */
     @KafkaListener(topics = "topic-rank-updateXP", groupId = "group-rank-updateXP")
-    public void consume(String kafkaMessage){
-        log.info("Consumed message: {}", kafkaMessage);
+    public void consumeUpdateXP(String updateXPMessage) {
+        log.info("Consumed message: {}", updateXPMessage);
 
         try {
-            XpUpdateMessage message = objectMapper.readValue(kafkaMessage, XpUpdateMessage.class);
+            XpUpdateMessage message = objectMapper.readValue(updateXPMessage, XpUpdateMessage.class);
             rankService.updateXP(message.getUserId(), message.getXp());
         } catch (Exception e) {
-            log.error("Error occurred while consuming message: {}", kafkaMessage);
+            log.error("Error occurred while consuming message: {}", updateXPMessage);
         }
+    }
 
+    @KafkaListener(topics="topic-rank-placement", groupId="group-rank-placement")
+    public void consumePlacement(String userId){
+        log.info("Consumed message: {}", userId);
+
+        try {
+            rankService.placement(Long.parseLong(userId));
+        } catch (Exception e) {
+            log.error("Error occurred while consuming message: {}", userId);
+        }
     }
 }

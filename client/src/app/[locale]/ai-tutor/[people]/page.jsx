@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import Top from '@/components/top/top';
 import Bottom from '@/components/bottom/bottom';
 import TopicList from '@/app/[locale]/ai-tutor/_components/topic-list';
@@ -35,6 +36,7 @@ export default function TopicSelect({ params }) {
 
 function TranslatedTopicSelect({ params }) {
   const t = useTranslations('index');
+  const locale = useLocale()
 
   return (
     <div>
@@ -50,8 +52,15 @@ function TranslatedTopicSelect({ params }) {
           <div className='text-xl md:text-4xl lg:text-6xl'>
             {t("what-topic-would-you-like-to-talk-about")}
           </div>
+          <div>
+          <Link href={`/${locale}/ai-tutor`}>
+            <button className="text-white bg-[#4A90E2] rounded-xl text-md md:text-2xl lg:text-3xl px-6 py-1 cursor-pointer shadow-md hover:bg-[#357ABD] transition-colors duration-300 ease-in-out">
+              {t('before')}
+            </button>
+          </Link>
+          </div>
         </div>
-        <div className="rounded-3xl min-w-[30vw] max-w-[90vw] min-h-[40vh] max-h-[61vh] bg-[#FFF5E1]/70 p-[2.5vh] mt-[1vh] overflow-y-scroll hide-scrollbar">
+        <div className="rounded-3xl min-w-[30vw] max-w-[90vw] min-h-[40vh] max-h-[58vh] bg-[#FFF5E1]/70 p-[2.5vh] mt-[1vh] overflow-y-scroll hide-scrollbar">
           <TopicList params={params}/>
         </div>
       </div>

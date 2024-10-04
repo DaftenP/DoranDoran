@@ -14,6 +14,26 @@ export const fetchUserData = createAsyncThunk(
         },
         withCredentials: true,
       });
+      return response.data;
+    } catch (error) {
+      console.log(error)
+      return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
+    }
+  }
+);
+
+export const expGemUpdate = createAsyncThunk(
+  'user/expGemUpdate',
+  async ({ gem, xp }, thunkAPI) => {
+    try {
+      const apiUrl = '/rank/xp_gem'
+
+      const response = await apiClient.patch(apiUrl, { gem, xp }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
 
       return response.data;
     } catch (error) {
@@ -89,6 +109,19 @@ const userSlice = createSlice({
         };
       })
       .addCase(fetchUserData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Something went wrong';
+      })
+      .addCase(expGemUpdate.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(expGemUpdate.fulfilled, (state, action) => {
+        state.loading = false;
+        state.status.gem += action.payload.gem
+        state.status.xp += action.payload.xp
+      })
+      .addCase(expGemUpdate.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Something went wrong';
       });

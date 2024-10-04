@@ -32,7 +32,6 @@ export default function Microphone({ onRecordingComplete, params }) {
   }, [isListening]);
   
   useEffect(() => {
-    console.log('음성인식중', transcript)
     recordMessageRef.current = transcript
   }, [transcript])
 
@@ -197,15 +196,11 @@ export default function Microphone({ onRecordingComplete, params }) {
     formData.append('msg', recordMessageRef.current);
     formData.append('file', blob, 'recording.raw');
 
-    for (let pair of formData.entries()) {
-      console.log(pair);
-    }
-
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
         const messageContent = recordMessageRef.current || 'Please speak';
-        dispatch(addMyMessage({ content: messageContent }));
+        dispatch(addMyMessage({ content: messageContent, score: response.data.pronunciation }));
         dispatch(addSimpleMyMessage({ content: messageContent }));
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));
@@ -215,7 +210,7 @@ export default function Microphone({ onRecordingComplete, params }) {
       })
       .then((response) => {
         if (!response.data.isOver) {
-          dispatch(addMyMessage({ content: '' }));
+          dispatch(addMyMessage({ content: '', score: 0 }));
         }
       })
       .catch((error) => {

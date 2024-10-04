@@ -55,6 +55,16 @@ function loadFromLocalStorage() {
   }
 }
 
+// 로컬 스토리지에서 aiTutorState 삭제하는 함수
+function clearLocalStorage() {
+  try {
+    localStorage.removeItem('aiTutorState');
+    console.log('aiTutorState has been removed from local storage');
+  } catch (error) {
+    console.error('Could not clear local storage', error);
+  }
+}
+
 const persistedState = loadFromLocalStorage();
 
 // Initial state
@@ -102,6 +112,12 @@ const aiTutorSlice = createSlice({
         msg.isResponsePlay = false
       });
     },
+    toggleScorePlus: (state, action) => {
+      const payIndex = action.payload;
+      if (state.chatMessages[payIndex]) {
+        state.chatMessages[payIndex].scorePlus = true;
+      }
+    },
     resetPlayState: (state) => {
       state.chatMessages.forEach((msg) => {
         msg.isResponsePlay = false
@@ -124,6 +140,7 @@ const aiTutorSlice = createSlice({
       const myMessage = {
         role: "user",
         isTyping: false,
+        scorePlus: false,
         ...action.payload,
       }
       state.chatMessages.push(myMessage)
@@ -159,6 +176,7 @@ const aiTutorSlice = createSlice({
       state.chatMessages = []
       state.messages = []
       state.type = []
+      clearLocalStorage()
     },
     changeChatMessages: (state, action) => {
       state.chatMessages = action.payload;
@@ -183,6 +201,6 @@ const aiTutorSlice = createSlice({
   },
 });
 
-export const { toggleTyping, typeChange, changeChatMessages, changeMessages, resetState, resetPlayState, toggleHint, toggleResponsePlay, toggleHintPlay, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage, deleteMyMessage } = aiTutorSlice.actions;
+export const { toggleScorePlus, toggleTyping, typeChange, changeChatMessages, changeMessages, resetState, resetPlayState, toggleHint, toggleResponsePlay, toggleHintPlay, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage, deleteMyMessage } = aiTutorSlice.actions;
 
 export default aiTutorSlice.reducer;

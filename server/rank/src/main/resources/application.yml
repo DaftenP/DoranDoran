@@ -22,3 +22,8 @@ spring:
           max-idle: 10
           max-wait: 2
       url: ENC(PpYupva6u0bHkxayZxwBfsuNxK6/OzveFS0Z+KnXUVA=)
+  kafka:
+    bootstrap-servers: ENC(S+WXEdAtGWQ4vD8hXThmpYQ0z2WG5oI1ilJQj6h89ieysrkZVHhzi5xcKO0W8eY9)
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

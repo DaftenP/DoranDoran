@@ -11,4 +11,5 @@ public class ItemRequestDTO {
     int userId;
     int itemType;
     int itemId;
+    int price;
 }

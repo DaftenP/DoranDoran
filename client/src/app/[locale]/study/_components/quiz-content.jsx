@@ -156,7 +156,7 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
       {/* </div> */}
       <div onClick={handleAnswerCheck} className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
         {((quizType === 5001 && clickedIndex !== null) ||
-        (quizType === 5002 && recordedSTT)) && <Button type={type} index={index} onClick={handleAnswerCheck}/>}
+        ((quizType === 5002 || quizType === 5003) && recordedSTT)) && <Button type={type} index={index} onClick={handleAnswerCheck}/>}
       </div>
 
       {feedbackMessage && (

@@ -59,6 +59,10 @@ public class UserService {
         return userRepository.findIdByEmail(email);
     }
 
+    public boolean isUserExists(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
     @Transactional
     public HashMap<Integer,String> rankUserResponse(List<Integer> reqLst){
         HashMap<Integer,String> hmap = new HashMap<>();

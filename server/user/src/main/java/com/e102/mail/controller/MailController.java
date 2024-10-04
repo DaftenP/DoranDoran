@@ -22,15 +22,18 @@ public class MailController {
     @PostMapping("/regist")
     public ResponseEntity<ResponseDto> registerSend(@RequestParam("email") String email) {
         StatusCode statusCode;
-        try {
-            mailService.sendRMail(email);
 
-            statusCode = StatusCode.MAIL_SENT;
+        if (userService.isUserExists(email)) {
+            statusCode = StatusCode.DUPLICATE_EMAIL;
+        } else {
+            try {
+                mailService.sendRMail(email);
+                statusCode = StatusCode.MAIL_SENT;
 
-        } catch (Exception e) {
-            statusCode = StatusCode.BAD_REQUEST;
+            } catch (Exception e) {
+                statusCode = StatusCode.BAD_REQUEST;
+            }
         }
-
         return ResponseDto.response(statusCode);
     }
 

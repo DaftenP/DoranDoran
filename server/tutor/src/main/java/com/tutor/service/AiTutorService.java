@@ -81,7 +81,7 @@ public class AiTutorService {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
 
-        if (messageRequest == null) {
+        if (messageRequest == null || messageRequest.getMsg().isEmpty()) {
             redisChatMemory.clear(messageRequest.getUserId());
         }
 

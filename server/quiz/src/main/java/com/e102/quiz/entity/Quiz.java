@@ -42,6 +42,7 @@ public class Quiz {
     private LocalDateTime quizCreatedAt;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
     private Set<QuizImage> quizImages;
 
     public void updateQuizImages(Set<QuizImage> quizImages) {

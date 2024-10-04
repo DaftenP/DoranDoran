@@ -22,4 +22,6 @@ public interface LeagueMemberRepository extends JpaRepository<LeagueMember, Stri
     List<LeagueMember> findByLeagueIdOrderByGainXPDesc(String leagueId);
 
     int countByLeagueId(String id);
+
+    Optional<Object> findByUserId(Long userId);
 }

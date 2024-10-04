@@ -12,6 +12,20 @@ var (
 	UserUrl = "http://user.ns-user.svc.cluster.local:8080"
 )
 
+// POST /api/v1/user/regist (email, password, nickname)
+func RegistService(email, password, nickname string) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodPost, UserUrl+"/api/v1/user/regist", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	body := fmt.Sprintf(`{"email":"%s","password":"%s","nickname":"%s"}`, email, password, nickname)
+	req.Body = io.NopCloser(strings.NewReader(body))
+
+	return http.DefaultClient.Do(req)
+}
+
 // GET userUrl/api/v1/user/duplication?email="example@naver.com"
 func DuplicationService(email string) (*http.Response, error) {
 	req, err := http.NewRequest(http.MethodGet, UserUrl+"/api/v1/user/duplication?email="+email, nil)

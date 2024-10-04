@@ -1,5 +1,17 @@
 package model
 
+type UserRegistRequestFromClient struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Nickname string `json:"nickname"`
+}
+
+type UserRegistResponseFromMSA struct {
+	Data      int    `json:"data"`
+	Message   string `json:"message"`
+	TimeStamp string `json:"timestamp"`
+}
+
 type UserInfoResponseToClient struct {
 	Data      *UserInfoToClient `json:"data"`
 	Message   string            `json:"message"`

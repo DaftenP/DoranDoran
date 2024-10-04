@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 
+	"com.doran.bff/model"
 	"com.doran.bff/service"
 	"com.doran.bff/util"
 )
@@ -33,43 +34,22 @@ func RegistController(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	var data map[string]interface{}
-	err = json.Unmarshal(body, &data)
+	var userRegistRequestFromClient model.UserRegistRequestFromClient
+	err = json.Unmarshal(body, &userRegistRequestFromClient)
 	if err != nil {
-		http.Error(w, "Error parsing request body", http.StatusInternalServerError)
+		http.Error(w, "Bad request", http.StatusBadRequest)
 		return
 	}
 
-	email, ok := data["email"]
-	if !ok {
-		http.Error(w, "Email is required", http.StatusBadRequest)
-		return
-	}
+	email := userRegistRequestFromClient.Email
+	password := userRegistRequestFromClient.Password
+	nickname := userRegistRequestFromClient.Nickname
 
-	password, ok := data["password"]
-	if !ok {
-		http.Error(w, "Password is required", http.StatusBadRequest)
-		return
-	}
-
-	nickname, ok := data["nickname"]
-	if !ok {
-		http.Error(w, "Nickname is required", http.StatusBadRequest)
-		return
-	}
-
-	resp, err := service.RegistService(email.(string), password.(string), nickname.(string))
+	resp, err := service.RegistService(email, password, nickname)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-
-	body, err = io.ReadAll(resp.Body)
-	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		w.WriteHeader(resp.StatusCode)
@@ -77,27 +57,22 @@ func RegistController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var response map[string]interface{}
-	err = json.Unmarshal(body, &response)
+	// print all response body
+	body, err = io.ReadAll(resp.Body)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	userId, ok := response["data"].(map[string]interface{})["userId"]
-	if !ok {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-
-	userIdInt, ok := userId.(float64)
-	if !ok {
+	var userRegistResponseFromMSA model.UserRegistResponseFromMSA
+	err = json.Unmarshal(body, &userRegistResponseFromMSA)
+	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
 	jsonToRank := map[string]interface{}{
-		"userId": userIdInt,
+		"userId": userRegistResponseFromMSA.Data,
 	}
 
 	jsonToRankStr, err := json.Marshal(jsonToRank)

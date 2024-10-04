@@ -122,7 +122,7 @@ function TranslatedChange() {
         setIsLoading(false);
         setIsEmailSent(true);
         setModalMessage({
-          message: "Passcode issued successfully",
+          message: "passcode-issued-successfully",
           background: "bird",
           buttonType: 2,
         });
@@ -131,7 +131,7 @@ function TranslatedChange() {
         setIsLoading(false);
         setIsEmailSent(false);
         setModalMessage({
-          message: "Failed to issue password",
+          message: "failed-to-issue-password",
           background: "bird",
           buttonType: 2,
         });

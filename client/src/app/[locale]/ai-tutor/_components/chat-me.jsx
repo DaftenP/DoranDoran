@@ -1,14 +1,17 @@
 'use client';
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
+import { expGemUpdate } from '@/store/user'
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image'
 import Credit from '@/public/icon/credit.webp'
 import Exp from '@/public/icon/exp.webp'
 import Microphone from '@/app/[locale]/ai-tutor/_components/microphone';
+import { toggleScorePlus } from '@/store/ai-tutor'
 
-export default function ChatMe ({ message, params }) {
+export default function ChatMe ({ message, params, index }) {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
 
@@ -30,14 +33,16 @@ export default function ChatMe ({ message, params }) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedChatMe message={message} params={params}/>
+      <TranslatedChatMe message={message} params={params} index={index} />
     </NextIntlClientProvider>
   );
 }
 
-function TranslatedChatMe({ message, params }) {
+function TranslatedChatMe({ message, params, index }) {
   const [isRecordingComplete, setIsRecordingComplete] = useState(false)
   const t = useTranslations('index');
+  const chatMessages = useSelector((state) => {state.chatMessages})
+  const dispatch = useDispatch()
 
   const handleRecordingComplete = (() => {
     setIsRecordingComplete(true)
@@ -48,6 +53,17 @@ function TranslatedChatMe({ message, params }) {
       setIsRecordingComplete(true)
     }
   }, [])
+
+  useEffect(() => {
+    if (message.content && !message.scorePlus) {
+      if (message.score) {
+        const gem = Math.floor(message.score)
+        const xp = Math.floor(message.score)
+        dispatch(expGemUpdate({ gem, xp }))
+        dispatch(toggleScorePlus(index))
+      }
+    }
+  }, [message])
 
   return (
     <div className='flex justify-end items-center m-[2vh]'>
@@ -67,11 +83,11 @@ function TranslatedChatMe({ message, params }) {
                 <div className='flex justify-around'>
                   <div className='flex items-center'>
                     <Image src={Credit} alt="credit_icon" className="cursor-pointer w-7 h-7 md:w-10 md:h-10 lg:w-16 lg:h-16 mr-1" />
-                    +400
+                    + {Math.floor(message.score)}
                   </div>
                   <div className='flex items-center'>
                     <Image src={Exp} alt="exp_icon" className="cursor-pointer w-7 h-7 md:w-10 md:h-10 lg:w-16 lg:h-16 mr-1" />
-                    +400
+                    + {Math.floor(message.score)}
                   </div>
                 </div>
               </div>

@@ -112,6 +112,12 @@ const aiTutorSlice = createSlice({
         msg.isResponsePlay = false
       });
     },
+    toggleScorePlus: (state, action) => {
+      const payIndex = action.payload;
+      if (state.chatMessages[payIndex]) {
+        state.chatMessages[payIndex].scorePlus = true;
+      }
+    },
     resetPlayState: (state) => {
       state.chatMessages.forEach((msg) => {
         msg.isResponsePlay = false
@@ -134,6 +140,7 @@ const aiTutorSlice = createSlice({
       const myMessage = {
         role: "user",
         isTyping: false,
+        scorePlus: false,
         ...action.payload,
       }
       state.chatMessages.push(myMessage)
@@ -194,6 +201,6 @@ const aiTutorSlice = createSlice({
   },
 });
 
-export const { toggleTyping, typeChange, changeChatMessages, changeMessages, resetState, resetPlayState, toggleHint, toggleResponsePlay, toggleHintPlay, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage, deleteMyMessage } = aiTutorSlice.actions;
+export const { toggleScorePlus, toggleTyping, typeChange, changeChatMessages, changeMessages, resetState, resetPlayState, toggleHint, toggleResponsePlay, toggleHintPlay, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage, deleteMyMessage } = aiTutorSlice.actions;
 
 export default aiTutorSlice.reducer;

@@ -117,7 +117,7 @@ function TranslatedTopicConversation({ params }) {
       .then((response) => {
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));
-        dispatch(addMyMessage({ content: '' }));
+        dispatch(addMyMessage({ content: '', score: 0 }));
       })
       .catch((error) => {
         console.log(error);

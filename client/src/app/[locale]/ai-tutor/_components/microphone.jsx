@@ -200,7 +200,7 @@ export default function Microphone({ onRecordingComplete, params }) {
       .unwrap()
       .then((response) => {
         const messageContent = recordMessageRef.current || 'Please speak';
-        dispatch(addMyMessage({ content: messageContent }));
+        dispatch(addMyMessage({ content: messageContent, score: response.data.pronunciation }));
         dispatch(addSimpleMyMessage({ content: messageContent }));
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));
@@ -210,7 +210,7 @@ export default function Microphone({ onRecordingComplete, params }) {
       })
       .then((response) => {
         if (!response.data.isOver) {
-          dispatch(addMyMessage({ content: '' }));
+          dispatch(addMyMessage({ content: '', score: 0 }));
         }
       })
       .catch((error) => {

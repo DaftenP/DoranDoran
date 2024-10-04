@@ -58,6 +58,7 @@ function TranslatedChatAi({ index, message, handleIsOver }) {
   const chatMessages = useSelector((state) => state.aiTutor.chatMessages)
   const [isTranslate, setIsTranslate] = useState(false)
   const [showPronunciation, setShowPronunciation] = useState(false);
+  const [score, setScore] = useState(0)
 
   useEffect(() => {
     if (index !== 0 && message.pronunciation !== null && message.pronunciation !== undefined) {

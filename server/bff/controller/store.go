@@ -2,11 +2,13 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
 	"strings"
 
+	"com.doran.bff/model"
 	"com.doran.bff/service"
 )
 
@@ -49,38 +51,73 @@ func BuyItem(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	var data map[string]interface{}
-	err = json.Unmarshal(body, &data)
+	var randomItemRequestFromClient model.RandomItemRequestFromClient
+	err = json.Unmarshal(body, &randomItemRequestFromClient)
 	if err != nil {
-		http.Error(w, "Error parsing request body", http.StatusInternalServerError)
+		http.Error(w, "Bad request", http.StatusBadRequest)
 		return
 	}
 
-	itemType, ok := data["itemType"]
-	if !ok {
-		http.Error(w, "Invalid item type", http.StatusBadRequest)
-		return
-	}
-
-	itemId, ok := data["itemId"]
-	if !ok {
-		http.Error(w, "Invalid item ID", http.StatusBadRequest)
-		return
-	}
-
-	req, err := service.BuyItemService(userIdInt, int(itemType.(float64)), int(itemId.(float64)))
+	resp, err := service.GetRandomItem(strconv.Itoa(randomItemRequestFromClient.ItemType))
 	if err != nil {
-		http.Error(w, "Error sending request", http.StatusInternalServerError)
+		fmt.Println(err)
+		fmt.Println("error in GetRandomItem")
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	defer req.Body.Close()
 
-	//forward response body to client
-	_, err = io.Copy(w, req.Body)
+	if resp.StatusCode != http.StatusOK {
+		w.WriteHeader(resp.StatusCode)
+		return
+	}
+
+	var randomItemResponseFromMSA model.RandomItemResponseFromMSA
+	body, err = io.ReadAll(resp.Body)
 	if err != nil {
-		http.Error(w, "Error forwarding response", http.StatusInternalServerError)
+		fmt.Println(err)
+		fmt.Println("error in io.ReadAll")
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	w.WriteHeader(req.StatusCode)
+	err = json.Unmarshal(body, &randomItemResponseFromMSA)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("error in json.Unmarshal")
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	itemId := randomItemResponseFromMSA.Data.Chosen
+
+	resp, err = service.BuyItemService(userIdInt, randomItemRequestFromClient.ItemType, itemId)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("error in BuyItemService")
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		w.WriteHeader(http.StatusOK)
+		io.Copy(w, resp.Body)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+
+	// new response looks like: {"data": $itemId, "message": responseMessage, "timestamp": $timestamp}
+	jsonToClient := map[string]interface{}{
+		"data":      itemId,
+		"message":   "Item bought successfully",
+		"timestamp": randomItemResponseFromMSA.Timestamp,
+	}
+
+	jsonToClientStr, err := json.Marshal(jsonToClient)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(jsonToClientStr)
 }

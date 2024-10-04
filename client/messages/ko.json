@@ -189,6 +189,10 @@
     "signup-failed": "가입 실패",
     "please-speak": "말을 해주세요!",
     "correct-answer": "정답 수",
-    "gem": "보석"
+    "gem": "보석",
+    "password-at-least-8-digits": "비밀번호는 최소 8자리 이상이어야 합니다",
+    "password-mismatch": "비밀번호가 일치하지 않습니다",
+    "passcode-issued-successfully": "임시 비밀번호가 발급되었습니다",
+    "failed-to-issue-password": "비밀번호 발급에 실패했습니다"
   }
 }

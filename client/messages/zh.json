@@ -189,6 +189,8 @@
     "signup-failed": "注册失败",
     "please-speak": "请说话！",
     "correct-answer": "总正确答案数",
-    "gem": "宝石"
+    "gem": "宝石",
+    "passcode-issued-successfully": "密码已成功发布",
+    "failed-to-issue-password": "密码发布失败"
   }
 }

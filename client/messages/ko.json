@@ -189,6 +189,8 @@
     "signup-failed": "가입 실패",
     "please-speak": "말을 해주세요!",
     "correct-answer": "정답 수",
-    "gem": "보석"
+    "gem": "보석",
+    "passcode-issued-successfully": "암호가 성공적으로 발급되었습니다",
+    "failed-to-issue-password": "비밀번호 발급에 실패했습니다"
   }
 }

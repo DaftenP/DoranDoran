@@ -189,6 +189,8 @@
     "signup-failed": "サインアップ失敗",
     "please-speak": "話してください！",
     "correct-answer": "正解の総数",
-    "gem": "ジェム"
+    "gem": "ジェム",
+    "passcode-issued-successfully": "パスコードが正常に発行されました",
+    "failed-to-issue-password": "パスワードの発行に失敗しました"
   }
 }

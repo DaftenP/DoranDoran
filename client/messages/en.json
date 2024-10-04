@@ -189,6 +189,8 @@
     "signup-failed": "Signup Failed",
     "please-speak": "Please speak",
     "correct-answer": "Correct Answer",
-    "gem": "Gem"
+    "gem": "Gem",
+    "passcode-issued-successfully": "Passcode issued successfully",
+    "failed-to-issue-password": "Failed to issue password"
   }
 }

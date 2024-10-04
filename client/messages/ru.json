@@ -189,6 +189,8 @@
     "signup-failed": "Регистрация не удалась",
     "please-speak": "Пожалуйста, говорите!",
     "correct-answer": "количество правильных ответов",
-    "gem": "Самоцвет"
+    "gem": "Самоцвет",
+    "passcode-issued-successfully": "Пароль успешно выдан",
+    "failed-to-issue-password": "Не удалось выдать пароль"
   }
 }

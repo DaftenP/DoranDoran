@@ -1,19 +1,3 @@
-// export default function Hat() {
-//   return (
-//     <div className="relative w-[90%] h-full z-10">
-//       <div className="h-full grid grid-cols-3 grid-rows-5">
-//         {[...Array(15)].map((_, index) => (
-//           <div key={index}>
-//             <div className="h-full flex items-center justify-center text-white font-bold text-lg md:text-4xl">
-//               {index + 1}
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
 import Image from 'next/image';
 import Hat1 from "@/public/shop-hat/hat (1).webp";
 import Hat2 from "@/public/shop-hat/hat (2).webp";
@@ -39,11 +23,11 @@ export default function Hat() {
   ];
 
   return (
-    <div className="relative w-[90%] h-[88%] z-10">
+    <div className="relative w-[90%] h-full z-10">
       <div className="h-full grid grid-cols-3 grid-rows-5">
         {hats.map((hat, index) => (
           <div key={index} className="flex items-center justify-center">
-            <Image src={hat} alt='hat' className='w-[90%] h-[80%]' />
+            <Image src={hat} alt='hat' className='w-auto h-[60%]' />
           </div>
         ))}
       </div>

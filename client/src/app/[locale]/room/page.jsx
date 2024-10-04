@@ -45,18 +45,19 @@ function TranslatedBottom() {
   const locale = useLocale();
   // 활성 탭 상태 관리
   const [activeTab, setActiveTab] = useState("color");
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
 
   // 현재 선택된 탭에 따라 컴포넌트 렌더링
   const renderTabContent = () => {
     switch (activeTab) {
       case "color":
-        return <Color />;
+        return <Color onSelectCharacter={setSelectedCharacter} />;
       case "hat":
         return <Hat />;
       case "background":
         return <Background />;
       default:
-        return <Color />;
+        return <Color onSelectCharacter={setSelectedCharacter} />;
     }
   };
 
@@ -80,84 +81,8 @@ function TranslatedBottom() {
       });
   };
 
-  // 상점 구매 502
-  const handleBuy = (e) => {
-    e.preventDefault();
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .post(
-        `${apiUrl}/store/item/buy`,
-        {
-          itemType: 1,
-          itemId: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        localStorage.getItem("accessToken");
-        console.log("response:", response);
-      })
-      .catch((error) => {
-        console.log("error:", error);
-      });
-  };
-
-  // 아이템 장착 Network Error
-  const equipItem = (e) => {
-    e.preventDefault();
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .patch(
-        `${apiUrl}/inventory/equip`,
-        {
-          itemType: 1,
-          itemId: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        localStorage.getItem("accessToken");
-        console.warn(response);
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
-  };
-
   return (
     <div className="w-screen h-screen">
-      {/* <button
-        type="button"
-        onClick={handleList}
-        className="absolute top-0 left-0"
-      >
-        보유 아이템 조회
-      </button>
-      <button
-        type="button"
-        onClick={handleBuy}
-        className="absolute top-0 right-0"
-      >
-        상점 구매
-      </button>
-      <button
-        type="button"
-        onClick={equipItem}
-        className="absolute top-10 right-0"
-      >
-        아이템 장착
-      </button> */}
-
       {/* 상단바 */}
       <div className="flex justify-center items-center w-full h-[7.5%]">
         <div className="w-[20%] flex justify-center">
@@ -172,7 +97,7 @@ function TranslatedBottom() {
       </div>
 
       {/* 나의 캐릭터 */}
-      <MyCharacter />
+      <MyCharacter selectedCharacter={selectedCharacter} />
 
       {/* 메뉴 탭 */}
       <div className="relative">

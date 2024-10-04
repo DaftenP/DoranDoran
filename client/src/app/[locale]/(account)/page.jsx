@@ -1,7 +1,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
-import Google from "@/public/icon/google.webp";
+// import Google from "@/public/icon/google.webp";
 import LogoKr from "@/public/logo/logo-kr.webp";
 import LoginForm from "./_components/login-component";
 
@@ -21,9 +21,9 @@ export default function Login() {
         />
         {/* 로그인 컴포넌트 */}
         <LoginForm />
-        <hr className="w-[75%] border-t border-[#ACACAC]" />
+        <hr className="w-[75%] my-5 border-t border-[#ACACAC]" />
         {/* 구글 이미지 */}
-        <Image src={Google} alt="Google" className="my-5 md:w-[10%]" />
+        {/* <Image src={Google} alt="Google" className="my-5 md:w-[10%]" /> */}
         {/* 회원가입 링크 */}
         <div className="flex flex-col">
           <p className="text-sm md:text-3xl">

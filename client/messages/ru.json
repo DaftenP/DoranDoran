@@ -191,6 +191,8 @@
     "correct-answer": "количество правильных ответов",
     "gem": "Самоцвет",
     "passcode-issued-successfully": "Пароль успешно выдан",
+    "password-at-least-8-digits": "Пароль должен содержать не менее 8 символов",
+    "password-mismatch": "Пароли не совпадают",
     "failed-to-issue-password": "Не удалось выдать пароль"
   }
 }

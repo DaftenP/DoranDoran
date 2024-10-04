@@ -190,6 +190,8 @@
     "please-speak": "Please speak",
     "correct-answer": "Correct Answer",
     "gem": "Gem",
+    "password-at-least-8-digits": "Password at least 8 digits",
+    "password-mismatch": "Password mismatch",
     "passcode-issued-successfully": "Passcode issued successfully",
     "failed-to-issue-password": "Failed to issue password"
   }

@@ -8,6 +8,7 @@ import Doryeoni from "@/public/logo/doryeoni.webp";
 import Raoni from "@/public/logo/raoni.webp";
 import Button from "../_components/button";
 import Modal from "@/components/modal/modal";
+import { useRouter } from "next/navigation";
 
 export default function ChangeComponent() {
   const [messages, setMessages] = useState(null);
@@ -41,6 +42,7 @@ function LoadingOverlay() {
 
 // 비밀번호 변경 폼 컴포넌트
 function TranslatedChange() {
+  const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("index");
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -53,6 +55,7 @@ function TranslatedChange() {
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [isPasswordResetSuccess, setIsPasswordResetSuccess] = useState(false);
 
   // 입력 변경 핸들러
   const signupChange = (e) => {
@@ -69,6 +72,46 @@ function TranslatedChange() {
   // 모달 닫기 핸들러
   const handleCloseModal = () => {
     setIsOpenModal(false);
+    if (isPasswordResetSuccess) {
+      router.push("/"); // 메인 페이지로 이동
+    }
+  };
+
+  // 임시 비밀번호 변경
+  const PasswordSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    axios
+      .put(`${apiUrl}/mail/reset`, null, {
+        params: { email: formData.email },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setIsLoading(false);
+        setIsEmailSent(true);
+        setIsPasswordResetSuccess(true);
+        setModalMessage({
+          message: "Passcode issued successfully",
+          background: "bird",
+          buttonType: 2,
+        });
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setIsEmailSent(false);
+        setIsPasswordResetSuccess(false);
+        setModalMessage({
+          message: "Failed to issue password",
+          background: "bird",
+          buttonType: 2,
+        });
+      })
+      .finally(() => {
+        setIsOpenModal(true);
+      });
   };
 
   // 이메일 전송 핸들러
@@ -77,7 +120,7 @@ function TranslatedChange() {
     setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     axios
-      .post(`${apiUrl}/mail/regist`, null, {
+      .post(`${apiUrl}/mail/password`, null, {
         params: { email: formData.email },
         headers: {
           "Content-Type": "application/json",
@@ -97,41 +140,6 @@ function TranslatedChange() {
         setIsEmailSent(false);
         setModalMessage({
           message: "email-sending-failed",
-          background: "bird",
-          buttonType: 2,
-        });
-      })
-      .finally(() => {
-        setIsOpenModal(true);
-      });
-  };
-
-  // 임시 비밀번호 변경
-  const PasswordSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .put(`${apiUrl}/mail/reset`, null, {
-        params: { email: formData.email },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        setIsLoading(false);
-        setIsEmailSent(true);
-        setModalMessage({
-          message: "passcode-issued-successfully",
-          background: "bird",
-          buttonType: 2,
-        });
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        setIsEmailSent(false);
-        setModalMessage({
-          message: "failed-to-issue-password",
           background: "bird",
           buttonType: 2,
         });
@@ -181,7 +189,7 @@ function TranslatedChange() {
 
   // 입력 필드 기본 스타일
   const inputStyle =
-    "w-full h-10 md:h-20 rounded-full bg-white/60 shadow-md text-xl md:text-3xl pl-8 pr-20 transition-colors";
+    "w-full h-10 md:h-20 rounded-full bg-white/60 shadow-md text-xl md:text-3xl pl-5 pr-16 transition-colors";
 
   // 입력 필드 클래스 생성 함수
   const getInputClass = (name, value) => {
@@ -191,6 +199,12 @@ function TranslatedChange() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return `${inputStyle} ${
           emailRegex.test(value)
+            ? "border-2 border-green-500"
+            : "border-2 border-red-500"
+        }`;
+      case "verificationCode":
+        return `${inputStyle} ${
+          isEmailVerified
             ? "border-2 border-green-500"
             : "border-2 border-red-500"
         }`;
@@ -249,7 +263,7 @@ function TranslatedChange() {
               value={formData.verificationCode}
               onChange={signupChange}
               onBlur={handleBlur}
-              placeholder="123456"
+              placeholder="12345678"
               className={getInputClass(
                 "verificationCode",
                 formData.verificationCode

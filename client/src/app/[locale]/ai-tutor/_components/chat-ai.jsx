@@ -53,6 +53,19 @@ function TranslatedChatAi({ index, message }) {
   const dispatch = useDispatch()
   const chatMessages = useSelector((state) => state.aiTutor.chatMessages)
   const [isTranslate, setIsTranslate] = useState(false)
+  const [showPronunciation, setShowPronunciation] = useState(false);
+
+  useEffect(() => {
+    if (message.pronunciation) {
+      setShowPronunciation(true);
+
+      const timer = setTimeout(() => {
+        setShowPronunciation(false); // 일정 시간이 지나면 사라지도록 설정
+      }, 3000); // 3초 후 사라짐
+
+      return () => clearTimeout(timer); // 타이머 정리
+    }
+  }, [message.pronunciation]);
 
   const handlePlay = (index) => {
     speechSynthesis.cancel()
@@ -127,6 +140,19 @@ function TranslatedChatAi({ index, message }) {
     <div className='flex items-center m-[2vh]'>
       <Image src={Bird1} alt="bird_icon" className="w-11 h-11 md:w-16 md:h-16 lg:w-20 lg:h-20 mr-1" />
       <div className='rounded-[3vh] min-w-[40vw] max-w-[70vw] bg-[#FED9D0]/90 border border-[#FFC0B1]/90 text-md md:text-2xl lg:text-5xl p-[2vh]'>
+        <AnimatePresence>
+          {showPronunciation && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}  // 처음에는 위에서 등장
+              animate={{ opacity: 1, y: 0 }}     // 나타날 때 애니메이션
+              exit={{ opacity: 0, y: -20 }}      // 사라질 때 애니메이션
+              transition={{ duration: 0.5 }}     // 애니메이션 속도
+              className="text-xl text-red-500"
+            >
+              Score : {parseFloat(message.pronunciation).toFixed(1)} / 4.0
+            </motion.div>
+          )}
+        </AnimatePresence>
         {isTranslate ? (
             <div>
               {message.translatedResponse}

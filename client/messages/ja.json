@@ -189,6 +189,10 @@
     "signup-failed": "サインアップ失敗",
     "please-speak": "話してください！",
     "correct-answer": "正解の総数",
-    "gem": "ジェム"
+    "gem": "ジェム",
+    "password-at-least-8-digits": "パスワードは8桁以上である必要があります",
+    "password-mismatch": "パスワードが一致しません",
+    "passcode-issued-successfully": "パスコードが正常に発行されました",
+    "failed-to-issue-password": "パスワードの発行に失敗しました"
   }
 }

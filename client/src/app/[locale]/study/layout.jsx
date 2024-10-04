@@ -12,6 +12,7 @@ export default function Layout({ children }) {
   const pathname = usePathname();
 
   const shouldShowTop = !(pathname.startsWith(`/${locale}/study/detail`) || pathname.startsWith(`/${locale}/study/daily`));
+  const shouldShowBottom = !(pathname.startsWith(`/${locale}/study/detail`) || pathname.startsWith(`/${locale}/study/daily`));
   const backgroundHeight = pathname.startsWith(`/${locale}/study/detail`) || pathname.startsWith(`/${locale}/study/daily`) ? 'h-[100vh]' : 'h-[200vh]';
 
   return (
@@ -25,7 +26,7 @@ export default function Layout({ children }) {
       />
       {shouldShowTop && <Top className="relative z-30" />}
       <div className="relative z-0">{children}</div>
-      <Bottom className="relative z-30"/>
+      {shouldShowBottom && <Bottom className="relative z-30"/>}
     </div>
   );
 }

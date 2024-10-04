@@ -9,7 +9,8 @@ import Back from "@/public/icon/back.webp";
 import MyCharacter from "./_components/my-character";
 import Hat from "./_components/hat";
 import Color from "./_components/color";
-import Character from "./_components/character";
+import Background from "./_components/background";
+import axios from "axios";
 
 export default function Room() {
   // 메시지 상태 관리
@@ -44,19 +45,40 @@ function TranslatedBottom() {
   const locale = useLocale();
   // 활성 탭 상태 관리
   const [activeTab, setActiveTab] = useState("color");
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
 
   // 현재 선택된 탭에 따라 컴포넌트 렌더링
   const renderTabContent = () => {
     switch (activeTab) {
       case "color":
-        return <Color />;
+        return <Color onSelectCharacter={setSelectedCharacter} />;
       case "hat":
         return <Hat />;
-      case "character":
-        return <Character />;
+      case "background":
+        return <Background />;
       default:
-        return <Color />;
+        return <Color onSelectCharacter={setSelectedCharacter} />;
     }
+  };
+
+  // 보유 아이템 조회 200
+  const handleList = (e) => {
+    e.preventDefault();
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    axios
+      .get(`${apiUrl}/inventory/item`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
+        localStorage.getItem("accessToken");
+        console.log("response:", response);
+      })
+      .catch((error) => {
+        console.log("error:", error);
+      });
   };
 
   return (
@@ -75,13 +97,13 @@ function TranslatedBottom() {
       </div>
 
       {/* 나의 캐릭터 */}
-      <MyCharacter />
+      <MyCharacter selectedCharacter={selectedCharacter} />
 
       {/* 메뉴 탭 */}
       <div className="relative">
         <div className="w-full h-full absolute flex flex-col justify-center items-center z-10">
           <div className="flex w-[90%] h-[14.5%]">
-            {["color", "hat", "character"].map((tab) => (
+            {["color", "hat", "background"].map((tab) => (
               <div
                 key={tab}
                 className={`w-full flex justify-center items-center text-xl rounded-tl-[15px] rounded-tr-[15px]  ${

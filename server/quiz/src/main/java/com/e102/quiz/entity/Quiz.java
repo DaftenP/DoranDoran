@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -43,9 +44,9 @@ public class Quiz {
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
-    private Set<QuizImage> quizImages;
+    private List<QuizImage> quizImages;
 
-    public void updateQuizImages(Set<QuizImage> quizImages) {
+    public void updateQuizImages(List<QuizImage> quizImages) {
         this.quizImages = quizImages;
     }
 }

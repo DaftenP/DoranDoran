@@ -75,14 +75,14 @@ public class QuizService {
                 .build();
         
         // 퀴즈 이미지 엔티티 컬렉션 생성
-        Set<QuizImage> quizImages = quizRequestDto.getQuizImages().stream()
+        List<QuizImage> quizImages = quizRequestDto.getQuizImages().stream()
                 .map(quizImageRequestDto -> QuizImage.builder()
                         .url(quizImageRequestDto.getQuizImageUrl())
                         .text(quizImageRequestDto.getQuizImageText())
                         .quiz(quiz)
                         .build()
                 )
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
         
         // 퀴즈 엔티티에 이미지 필드 설정
         quiz.updateQuizImages(quizImages);

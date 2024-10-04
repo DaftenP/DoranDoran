@@ -1,4 +1,9 @@
 spring:
+  kafka:
+    bootstrap-servers: ENC(opos+Wzflmyg4oOI7Ctq6sWBGVYagrLSupFKBd/T+qni06lB1HfQ+pIfzYXq+8NIvfQUgpsg7A0=)
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   redis:
     lettuce:
       pool:
@@ -43,8 +48,3 @@ logging:
     com.e102: DEBUG  # com.e102 패키지의 로그 레벨 DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"  # 콘솔에만 로그 출력
-kafka:
-  bootstrap-servers: ENC(gYGmnT12R9uowfThQJueyAVJ8MNdzeNKbFwoR01eBa3fqc/BpJlEwJRlVPWuf85h)
-  consumer:
-    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

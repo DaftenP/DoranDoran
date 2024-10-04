@@ -14,4 +14,6 @@ public class RandomResponseDTO {
 
     private final int chosen;
 
+    private final int price;
+
 }

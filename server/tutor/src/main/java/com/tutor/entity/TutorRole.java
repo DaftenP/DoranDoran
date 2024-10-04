@@ -1,11 +1,12 @@
 package com.tutor.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import static jakarta.persistence.GenerationType.*;
 
 @Entity
 @Table(name = "tutor_role")
@@ -14,7 +15,6 @@ import static jakarta.persistence.GenerationType.*;
 @AllArgsConstructor
 public class TutorRole {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "tutor_role_id", nullable = false)
     private Long id;
 

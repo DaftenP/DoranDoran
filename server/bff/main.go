@@ -6,6 +6,7 @@ import (
 
 	"com.doran.bff/controller"
 	"com.doran.bff/middleware"
+	"com.doran.bff/util"
 )
 
 func main() {
@@ -53,6 +54,7 @@ func main() {
 
 	http.Handle("/api/v1/bff/rank/league", middleware.JWTMiddleware(http.HandlerFunc(controller.GetLeagueRank)))
 	http.Handle("/api/v1/bff/rank/leaderboard", middleware.JWTMiddleware(http.HandlerFunc(controller.GetLeaderBoard)))
+	http.Handle("/api/v1/bff/rank/xp_gem", middleware.JWTMiddleware(http.HandlerFunc(controller.UpdateXpGem)))
 
 	http.Handle("/api/v1/bff/store/item/buy", middleware.JWTMiddleware(http.HandlerFunc(controller.BuyItem)))
 	http.Handle("/api/v1/bff/inventory/item", middleware.JWTMiddleware(http.HandlerFunc(controller.GetItems)))
@@ -64,4 +66,6 @@ func main() {
 
 	log.Println("BFF Server started at :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
+
+	defer util.CloseKafkaWriters()
 }

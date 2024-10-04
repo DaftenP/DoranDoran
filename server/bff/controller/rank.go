@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -10,6 +11,7 @@ import (
 
 	"com.doran.bff/model"
 	"com.doran.bff/service"
+	"com.doran.bff/util"
 )
 
 // GET /api/v1/bff/rank/league
@@ -277,6 +279,93 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+// PATCH /api/v1/bff/rank/xp_gem
+func UpdateXpGem(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPatch {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	cookie, err := r.Cookie("refresh")
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
+
+	parts := strings.Split(cookie.Value, "%3A")
+	userId := parts[0]
+
+	var userIdInt int
+	userIdInt, err = strconv.Atoi(userId)
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
+
+	var data map[string]interface{}
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		http.Error(w, "Error parsing request body", http.StatusInternalServerError)
+		return
+	}
+
+	xp, ok := data["xp"]
+	if !ok {
+		http.Error(w, "Invalid xp", http.StatusBadRequest)
+		return
+	}
+
+	gem, ok := data["gem"]
+	if !ok {
+		http.Error(w, "Invalid gem", http.StatusBadRequest)
+		return
+	}
+
+	xpInt, ok := xp.(float64)
+	if !ok {
+		http.Error(w, "Invalid xp", http.StatusBadRequest)
+		return
+	}
+
+	gemInt, ok := gem.(float64)
+	if !ok {
+		http.Error(w, "Invalid gem", http.StatusBadRequest)
+		return
+	}
+
+	jsonToRank := map[string]interface{}{
+		"userId": userIdInt,
+		"xp":     int(xpInt),
+	}
+
+	jsonToUser := map[string]interface{}{
+		"userId": userIdInt,
+		"gem":    int(gemInt),
+		"xp":     int(xpInt),
+	}
+
+	jsonToRankStr, err := json.Marshal(jsonToRank)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	jsonToUserStr, err := json.Marshal(jsonToUser)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	// publish kafka event
+	util.PublishKafkaEventAsync("topic-rank-updateXP", string(jsonToRankStr))
+	util.PublishKafkaEventAsync("topic-user-updateXP", string(jsonToUserStr))
 
 	w.WriteHeader(http.StatusOK)
 }

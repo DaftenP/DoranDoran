@@ -20,6 +20,7 @@ COPY package.json package-lock.json ./
 RUN npm install --only=production --force
 
 COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
 
 EXPOSE 3000
 

@@ -1,14 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Link from 'next/link';
 
 export default function QuizContentSpeak({ type, index }) {
-
-  // const quizList = useSelector((state) => state.quiz.stageDetail.data);
   const quizList = useSelector((state) => 
-    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail
+    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail.data
   );
   const image = quizList[0].quizImages[0];
 

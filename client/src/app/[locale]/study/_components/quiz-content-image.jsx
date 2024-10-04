@@ -5,7 +5,7 @@ import QuizContentImageBox from "./quiz-content-image-box";
 
 export default function QuizContentImage({ type, onButtonClick, clickedIndex }) {
   const quizList = useSelector((state) => 
-    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail
+    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail.data
   );
   const images = quizList[0]?.quizImages;
 

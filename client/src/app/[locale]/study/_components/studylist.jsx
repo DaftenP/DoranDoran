@@ -27,7 +27,7 @@ const calculateTopPositions = (dataLength) => {
 export default function StudyList({ className }) {
   const dispatch = useDispatch();
   const locale = useLocale();
-  const stageList = useSelector((state) => state.quiz.stage);
+  const stageList = useSelector((state) => state.quiz.stage.data);
   
   useEffect(() => {
     dispatch(fetchStageAll()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
@@ -45,15 +45,11 @@ export default function StudyList({ className }) {
   const colorList = ['#FED9D0', '#E5CBF8', '#FDE1AF', '#E5CBF8'];
 
   const router = useRouter();
-  // const handleStepQuiz = (index) => {
-  //   router.push(`/${locale}/study/detail/${index+1}/${0}`);
-  // };
 
   const handleStepQuiz = (index) => {
     const stageId = stageList[index].id; 
     router.push(`/${locale}/study/detail/${stageId}/${1}`); 
   };
-
 
   return (
     <div className={`w-[80vw] h-auto left-[10vw] relative ${className}`}>

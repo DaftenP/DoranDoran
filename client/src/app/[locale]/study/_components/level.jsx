@@ -19,7 +19,6 @@ export default function Level({ level, className }) {
           height: height   
         }}
       />
-
       <span className="absolute inset-0 flex items-center justify-center text-white text-4xl md:text-5xl lg:text-6xl" >
         {level}
       </span>

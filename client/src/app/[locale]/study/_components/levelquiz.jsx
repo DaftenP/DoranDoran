@@ -12,7 +12,6 @@ export default function LevelQuiz({ level, style, className }) {
       ...style
      }} 
     >
-
     </div>
   );
 }

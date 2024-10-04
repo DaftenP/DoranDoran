@@ -55,6 +55,10 @@ public class UserService {
         }
     }
 
+    public int getUserId(String email) {
+        return userRepository.findIdByEmail(email);
+    }
+
     @Transactional
     public HashMap<Integer,String> rankUserResponse(List<Integer> reqLst){
         HashMap<Integer,String> hmap = new HashMap<>();

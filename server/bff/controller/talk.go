@@ -90,9 +90,10 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, sendServiceErr.Error(), http.StatusInternalServerError)
 		return
 	}
-	if pronunciationServiceErr != nil {
-		http.Error(w, pronunciationServiceErr.Error(), http.StatusInternalServerError)
-		return
+
+	var pronunciationScore float64 = 0
+	if pronunciationServiceErr == nil {
+		pronunciationScore = pronunciationResBody.Data
 	}
 
 	// make response
@@ -104,7 +105,7 @@ func SendController(w http.ResponseWriter, r *http.Request) {
 			TranslatedHint:     sendResBody.Data.TranslatedHint,
 			IsOver:             sendResBody.Data.IsOver,
 			Correctness:        sendResBody.Data.Correctness,
-			Pronunciation:      pronunciationResBody.Data,
+			Pronunciation:      pronunciationScore,
 		},
 		Message:   sendResBody.Message,
 		Timestamp: sendResBody.Timestamp,

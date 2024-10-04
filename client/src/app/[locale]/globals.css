@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&family=Itim&family=Gamja+Flower&family=Oswald:wght@400;700&family=Kosugi+Maru:wght@400;700&family=ZCOOL+KuaiLe:wght@400;700&family=Noto+Sans:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sunflower:wght@300;500;700&family=Noto+Sans+KR:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&family=Itim&family=Gamja+Flower&family=Oswald:wght@400;700&family=Kosugi+Maru:wght@400;700&family=ZCOOL+KuaiLe:wght@400;700&family=Noto+Sans:wght@400;700;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -23,13 +23,13 @@ body {
 }
 
 html:lang(en) body {
-  font-family: 'Noto Sans', 'Itim', 'Gamja Flower', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-family: 'Itim', 'Gamja Flower', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
   font-weight: 600;
 }
 
 html:lang(ko) body {
-  font-family: 'Noto Sans KR', 'Gamja Flower', 'Itim', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
-  font-weight: 600;
+  font-family: 'Sunflower', 'Noto Sans KR', 'Gamja Flower', 'Itim', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-weight: 500;
 }
 
 html:lang(ru) body {

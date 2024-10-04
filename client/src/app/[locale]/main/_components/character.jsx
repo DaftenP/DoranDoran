@@ -4,6 +4,7 @@ import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchDailyAll } from '@/store/quiz';
 import Link from 'next/link';
 import Image from 'next/image'
 import Bird from '@/public/shop-bird/bird (1).webp'
@@ -26,8 +27,13 @@ import Hat15 from '@/public/shop-hat/hat (15).webp';
 import MainButton from '@/public/icon2/main-button.webp'
 
 export default function Character() {
+  const dispatch = useDispatch();
   const [messages, setMessages] = useState(null);
   const locale = useLocale()
+
+  useEffect(() => {
+    dispatch(fetchDailyAll()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
+  }, [dispatch]);
 
   useEffect(() => {
     async function loadMessages() {
@@ -55,7 +61,7 @@ export default function Character() {
 function TranslatedCharacter({ locale }) {
   const t = useTranslations('index');
   const router = useRouter();
-  const quizList = useSelector((state) => state.quiz.dailyQuizList);
+  const quizList = useSelector((state) => state.quiz.dailyQuiz.data);
 
   const handleFastQuiz = () => {
     if(quizList.length > 0) {

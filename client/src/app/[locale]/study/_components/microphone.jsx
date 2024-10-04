@@ -5,15 +5,16 @@ import Image from 'next/image';
 import MicrophoneNormal from '@/public/icon/microphone-normal.webp'
 import MicrophoneActive from '@/public/icon/microphone-active.webp'
 
-export default function STTComponent({ onDataSend }) {
+export default function STTComponent({ onDataSend, onListeningChange }) {
   const [transcript, setTranscript] = useState(''); // 최종 인식된 텍스트 저장
   const [isListening, setIsListening] = useState(false); // 음성 인식 중인지 여부
   const isListeningRef = useRef(isListening); // 최신 isListening 값을 추적
   const recognitionRef = useRef(null); // SpeechRecognition 객체 참조
 
   useEffect(() => {
-    isListeningRef.current = isListening; // isListening 값이 변경될 때마다 최신 값 저장
-  }, [isListening]);
+    isListeningRef.current = isListening;
+    onListeningChange(isListening); // isListening 상태 변경 시 상위로 전달
+  }, [isListening, onListeningChange]);
 
   const sendSTT = () => {
     // const newTranscript = '고양이'; // 임시로 설정한 값

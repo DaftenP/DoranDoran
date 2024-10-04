@@ -29,8 +29,7 @@ public class UserController {
     @PostMapping("/regist")
     public ResponseEntity<ResponseDto> regist(@RequestBody UserRequestDTO userRequestDTO){
         StatusCode statusCode = userService.registUser(userRequestDTO);
-
-        if (statusCode == StatusCode.SUCCESS) {
+        if (statusCode.equals(StatusCode.REG_SUCCESS)) {
             int userId = userService.getUserId(userRequestDTO.getEmail());
             return ResponseDto.response(statusCode, userId);
         } else {

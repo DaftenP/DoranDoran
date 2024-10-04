@@ -14,6 +14,7 @@ export const fetchUserData = createAsyncThunk(
         },
         withCredentials: true,
       });
+
       return response.data;
     } catch (error) {
       console.log(error)
@@ -53,8 +54,13 @@ const userSlice = createSlice({
   isChange: false,
   initialState,
   reducers: {
-
+    updateColor: (state, action) => {
+      state.profile.color = action.payload;
     },
+    updateEquipment: (state, action) => {
+      state.profile.equipment = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserData.pending, (state) => {
@@ -89,6 +95,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { } = userSlice.actions;
+export const { updateColor, updateEquipment } = userSlice.actions;
 
 export default userSlice.reducer;

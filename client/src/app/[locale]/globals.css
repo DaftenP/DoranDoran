@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Itim&family=Gamja Flower&family=Oswald&family=Kosugi Maru&family=ZCOOL KuaiLe:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&family=Itim&family=Gamja+Flower&family=Oswald:wght@400;700&family=Kosugi+Maru:wght@400;700&family=ZCOOL+KuaiLe:wght@400;700&family=Noto+Sans:wght@400;700;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -19,27 +19,32 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Noto Sans', Arial, Helvetica, sans-serif;
 }
 
 html:lang(en) body {
-  font-family: 'Itim', 'Gamja Flower', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-family: 'Noto Sans', 'Itim', 'Gamja Flower', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-weight: 600;
 }
 
 html:lang(ko) body {
-  font-family: 'Gamja Flower', 'Itim', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-family: 'Noto Sans KR', 'Gamja Flower', 'Itim', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-weight: 600;
 }
 
 html:lang(ru) body {
-  font-family: 'Oswald', 'Gamja Flower', 'Itim', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-family: 'Noto Sans', 'Oswald', 'Gamja Flower', 'Itim', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-weight: 600;
 }
 
 html:lang(ja) body {
-  font-family: 'Kosugi Maru', 'Gamja Flower', 'Itim', 'Oswald', 'ZCOOL KuaiLe' Arial, Helvetica, sans-serif;
+  font-family: 'Noto Sans JP', 'Kosugi Maru', 'Gamja Flower', 'Itim', 'Oswald', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-weight: 600;
 }
 
 html:lang(zh) body {
-  font-family: 'ZCOOL KuaiLe','Gamja Flower', 'Itim', 'Oswald', 'Kosugi Maru', Arial, Helvetica, sans-serif;
+  font-family: 'Noto Sans SC', 'ZCOOL KuaiLe', 'Gamja Flower', 'Itim', 'Oswald', 'Kosugi Maru', Arial, Helvetica, sans-serif;
+  font-weight: 600;
 }
 
 /* 스크롤바 숨기는 CSS */

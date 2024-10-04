@@ -193,6 +193,7 @@
     "password-at-least-8-digits": "密码至少需要8位",
     "password-mismatch": "密码不匹配",
     "passcode-issued-successfully": "验证码已成功发行",
-    "failed-to-issue-password": "密码发行失败"
+    "failed-to-issue-password": "密码发行失败",
+    "do-you-want-to-leave?": "你确定要退出吗？"
   }
 }

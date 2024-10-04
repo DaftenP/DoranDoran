@@ -55,6 +55,16 @@ function loadFromLocalStorage() {
   }
 }
 
+// 로컬 스토리지에서 aiTutorState 삭제하는 함수
+function clearLocalStorage() {
+  try {
+    localStorage.removeItem('aiTutorState');
+    console.log('aiTutorState has been removed from local storage');
+  } catch (error) {
+    console.error('Could not clear local storage', error);
+  }
+}
+
 const persistedState = loadFromLocalStorage();
 
 // Initial state
@@ -159,6 +169,7 @@ const aiTutorSlice = createSlice({
       state.chatMessages = []
       state.messages = []
       state.type = []
+      clearLocalStorage()
     },
     changeChatMessages: (state, action) => {
       state.chatMessages = action.payload;

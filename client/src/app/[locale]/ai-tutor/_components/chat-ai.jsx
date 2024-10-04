@@ -2,8 +2,10 @@
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetPlayState, toggleHint, toggleResponsePlay, toggleTyping } from '@/store/ai-tutor';
+import { resetPlayState, toggleHint, toggleResponsePlay, toggleTyping, resetState } from '@/store/ai-tutor';
+import Modal from '@/components/modal/modal';
 import Link from 'next/link';
 import Image from 'next/image'
 import Play1 from '@/public/icon/play1.webp'
@@ -13,7 +15,7 @@ import Hint from '@/public/icon/hint.webp'
 import Bird1 from '@/public/shop-bird/bird (6).webp'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export default function ChatAi ({ index, message }) {
+export default function ChatAi ({ index, message, handleIsOver }) {
   const [messages, setMessages] = useState(null);
   const dispatch = useDispatch()
   const locale = useLocale();
@@ -41,29 +43,25 @@ export default function ChatAi ({ index, message }) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedChatAi index={index} message={message} />
+      <TranslatedChatAi index={index} message={message} handleIsOver={handleIsOver} />
     </NextIntlClientProvider>
   );
 }
 
 let currentUtterance = null
 
-function TranslatedChatAi({ index, message }) {
+function TranslatedChatAi({ index, message, handleIsOver }) {
   const t = useTranslations('index');
   const dispatch = useDispatch()
+  const router = useRouter()
+  const locale = useLocale()
   const chatMessages = useSelector((state) => state.aiTutor.chatMessages)
   const [isTranslate, setIsTranslate] = useState(false)
   const [showPronunciation, setShowPronunciation] = useState(false);
 
   useEffect(() => {
-    if (message.pronunciation) {
+    if (index !== 0 && message.pronunciation !== null && message.pronunciation !== undefined) {
       setShowPronunciation(true);
-
-      const timer = setTimeout(() => {
-        setShowPronunciation(false); // 일정 시간이 지나면 사라지도록 설정
-      }, 3000); // 3초 후 사라짐
-
-      return () => clearTimeout(timer); // 타이머 정리
     }
   }, [message.pronunciation]);
 
@@ -124,7 +122,8 @@ function TranslatedChatAi({ index, message }) {
         animate="animate"
         onAnimationComplete={() => {
           // 애니메이션이 완료된 후 toggleTyping 실행
-          dispatch(toggleTyping(index));
+          dispatch(toggleTyping(index))
+          setShowPronunciation(false)
         }}
       >
         {letters.map((letter, index) => (
@@ -135,6 +134,12 @@ function TranslatedChatAi({ index, message }) {
       </motion.div>
     );
   };
+
+  useEffect(() => {
+    if (message.isOver) {
+      handleIsOver();
+    }
+  }, [message.isOver]);
 
   return (
     <div className='flex items-center m-[2vh]'>
@@ -147,9 +152,17 @@ function TranslatedChatAi({ index, message }) {
               animate={{ opacity: 1, y: 0 }}     // 나타날 때 애니메이션
               exit={{ opacity: 0, y: -20 }}      // 사라질 때 애니메이션
               transition={{ duration: 0.5 }}     // 애니메이션 속도
-              className="text-xl text-red-500"
+              className={
+                parseFloat(message.pronunciation) <= 2 
+                  ? 'text-xl md:text-2xl lg:text-4xl text-red-500'  // 2점 이하일 때 빨간색
+                  : parseFloat(message.pronunciation) > 2 && parseFloat(message.pronunciation) <= 3.5 
+                  ? 'text-xl md:text-2xl lg:text-4xl text-yellow-500'  // 2점 초과 3.5점 이하일 때 노란색
+                  : 'text-xl md:text-2xl lg:text-4xl text-green-500'  // 3.5점 초과일 때 초록색
+              }
             >
-              Score : {parseFloat(message.pronunciation).toFixed(1)} / 4.0
+              {parseFloat(message.pronunciation) <= 2 ? 'BAD' : 
+              parseFloat(message.pronunciation) > 2 && parseFloat(message.pronunciation) <= 3.5 ? 'NOT BAD' :
+              'GOOD'}
             </motion.div>
           )}
         </AnimatePresence>

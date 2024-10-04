@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChatMessages, typeChange, changeChatMessages, changeMessages, resetState, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage } from '@/store/ai-tutor';
@@ -50,11 +50,24 @@ function TranslatedTopicConversation({ params }) {
   const { chatMessages, messages, loading, error } = useSelector((state) => state.aiTutor)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalMessage, setModalMessage] = useState(null)
+  const [isEnd, setIsEnd] = useState(false)
   const locale = params.locale;
   const role = params.people;
   const situation = params.topic;
 
-  const letters = "L o a d i n g 중".split("");
+  // 스크롤을 제일 마지막으로 지속해서 이동
+  const scrollToBottom = () => {
+    const scrollableContainer = document.getElementById('chat-container');
+    if (scrollableContainer) {
+      scrollableContainer.scrollTop = scrollableContainer.scrollHeight; // Scroll to the bottom
+    }
+  };
+  
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
+
+  const letters = "L o a d i n g ...".split("");
 
   const containerVariants = {
     initial: { opacity: 1 },
@@ -110,20 +123,11 @@ function TranslatedTopicConversation({ params }) {
         console.log(error);
       });
   }, [dispatch]);
-
-  function clearChatDataFromLocalStorage() {
-    try {
-      localStorage.removeItem('aiTutorState'); // 로컬 스토리지에서 chatMessages와 messages 삭제
-    } catch (error) {
-      console.error("Could not clear chat data from local storage", error);
-    }
-  }
   
   const handleYesClick = (buttonLink) => {
     setIsOpenModal(false)
     if (buttonLink === 'ai-tutor') {
       dispatch(resetState())
-      clearChatDataFromLocalStorage()
     }
     router.push(`/${locale}/${buttonLink}`)
   }
@@ -135,6 +139,16 @@ function TranslatedTopicConversation({ params }) {
 
   const handleCloseModal = () => {
     setIsOpenModal(false)
+    if (isEnd) {
+      dispatch(resetState())
+      setIsEnd(false)
+      router.push(`/${locale}/main`)
+    }
+  }
+
+  const handleIsOver = () => {
+    handleOpenModal(3)
+    setIsEnd(true)
   }
 
   const modalMessages = [
@@ -157,6 +171,13 @@ function TranslatedTopicConversation({ params }) {
       'message': 'would-you-like-to-return-to-the-home-screen?',
       'background': 'bird',
       'buttonLink': 'main',
+      'buttonType': 1
+    },
+    // 대화 종료 메세지
+    {
+      'message': 'the-conversation-has-ended-Would-you-like-to-start-a-new-topic',
+      'background': 'bird',
+      'buttonLink': 'ai-tutor',
       'buttonType': 1
     },
   ]
@@ -183,7 +204,7 @@ function TranslatedTopicConversation({ params }) {
           <Image onClick={() => handleOpenModal(1)} src={NewTopic} alt='new_topic_icon' className='w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2'/>
         </div>
       </div>
-      <div className='max-h-[87vh] overflow-y-scroll hide-scrollbar'>
+      <div id="chat-container" className='max-h-[87vh] overflow-y-scroll hide-scrollbar'>
         {chatMessages.length > 0 ? (
           chatMessages.map((msg, index) => {
             if (msg.role === 'assistant') {
@@ -196,7 +217,7 @@ function TranslatedTopicConversation({ params }) {
                   transition={{ duration: 0.5 }}
                   variants={chatBubbleVariants}
                 >
-                  <ChatAi index={index} message={msg} />
+                  <ChatAi index={index} message={msg} handleIsOver={handleIsOver} />
                   <AnimatePresence>
                     {msg.isHint === true && (
                       <motion.div

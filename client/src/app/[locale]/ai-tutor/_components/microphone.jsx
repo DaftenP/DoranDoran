@@ -32,7 +32,6 @@ export default function Microphone({ onRecordingComplete, params }) {
   }, [isListening]);
   
   useEffect(() => {
-    console.log('음성인식중', transcript)
     recordMessageRef.current = transcript
   }, [transcript])
 
@@ -196,10 +195,6 @@ export default function Microphone({ onRecordingComplete, params }) {
 
     formData.append('msg', recordMessageRef.current);
     formData.append('file', blob, 'recording.raw');
-
-    for (let pair of formData.entries()) {
-      console.log(pair);
-    }
 
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()

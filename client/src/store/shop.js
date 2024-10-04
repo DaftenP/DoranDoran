@@ -7,7 +7,6 @@ export const buyItem = createAsyncThunk(
   async ({ itemType, itemId }, thunkAPI) => {
     try {
       const apiUrl = '/store/item/buy'
-      console.log(itemType, itemId)
 
       const response = await apiClient.post(apiUrl, { itemType, itemId }, {
         headers: {
@@ -16,15 +15,14 @@ export const buyItem = createAsyncThunk(
         withCredentials: true,
       });
 
-      if (itemType === 1) {
-        // Color 업데이트
-        thunkAPI.dispatch(updateColor(itemId)); // Color에 itemId를 넣음
-      } else if (itemType === 2) {
-        // Equipment 업데이트
-        thunkAPI.dispatch(updateEquipment(itemId)); // Equipment에 itemId를 넣음
-      }
+      // if (itemType === 1) {
+      //   // Color 업데이트
+      //   thunkAPI.dispatch(updateColor(itemId)); // Color에 itemId를 넣음
+      // } else if (itemType === 2) {
+      //   // Equipment 업데이트
+      //   thunkAPI.dispatch(updateEquipment(itemId)); // Equipment에 itemId를 넣음
+      // }
 
-      // 서버에서 받은 chatMessages 데이터를 반환
       return response.data;
     } catch (error) {
       console.log(error)

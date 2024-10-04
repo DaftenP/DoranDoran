@@ -88,14 +88,14 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
     {
       'message': 'would-you-like-to-purchase-random-color?',
       'background': 'bird',
-      'buttonLink': 'shop',
+      'buttonLink': 'store',
       'buttonType': 1
     },
     // 장비 구매 물어보는 메세지
     {
       'message': 'would-you-like-to-purchase-random-equipment?',
       'background': 'bird',
-      'buttonLink': 'shop',
+      'buttonLink': 'store',
       'buttonType': 1
     },
     // 구매 성공 메세지
@@ -109,12 +109,17 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
     {
       'message': "you-don't-have-enough-credits",
       'background': 'bird',
-      'buttonLink': 'shop',
+      'buttonLink': 'store',
       'buttonType': 2
     },
   ]
 
-  const itemId = Math.floor(Math.random() * 5) + 1;
+  let itemId
+  if (itemType === 1) {
+    itemId = Math.floor(Math.random() * 11) + 1;
+  } else {
+    itemId = Math.floor(Math.random() * 15) + 1;
+  }
 
   return (
     <div className={`${itemType === 1 || itemType === 2 ? '' : 'opacity-30 pointer-events-none'}`}>

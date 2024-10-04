@@ -59,7 +59,7 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
         )}
         {message.buttonType === 2 && (
           <div className='absolute left-1/2 transform -translate-x-1/2 bottom-[5vw] w-full flex justify-around'>
-            <button onClick={handleCloseModal} className="mt-4 p-2 bg-[#FFC0B1]/80 border border-[#FF8669] text-black rounded-2xl z-10 w-[20vw] md:w-[15vw] text-xl md:text-2xl lg:text-4xl">{t('check')}</button>
+            <button onClick={handleCloseModal} className="mt-4 p-2 bg-[#FFC0B1]/80 border border-[#FF8669] text-black rounded-2xl z-10 w-[20vw] md:w-[15vw] text-xl md:text-2xl lg:text-4xl">{t('yes')}</button>
           </div>
         )}
       </div>

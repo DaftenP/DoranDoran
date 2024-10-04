@@ -118,17 +118,21 @@ public class RankService {
     }
 
     public void placement(Long userId) {
+        leagueMemberRepository.findByUserId(userId).ifPresent(leagueMember -> {
+            throw new RestApiException(StatusCode.ALREADY_EXIST_LEAGUEMEMBER);
+        });
+
         // 리그 아이디 prefix
         String leagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now());
 
         // 현재 브론즈 리그 중 마지막 리그 가져오기
-        List<League> leagues = leagueRepository.findLeaguesByPrefixAndRank(leagueIdPrefix, 100);
+        List<League> leagues = leagueRepository.findLeaguesByPrefixAndRank(leagueIdPrefix, 1000);
         League league = leagues.stream().max(Comparator.comparing(League::getNum)).orElse(null);
 
         if (league == null) {
             league = League.builder()
-                    .id(leagueIdPrefix + "-100-1")
-                    .rank(100)
+                    .id(leagueIdPrefix + "-1000-1")
+                    .rank(1000)
                     .num(1)
                     .createdAt(LocalDateTime.now())
                     .build();
@@ -147,8 +151,8 @@ public class RankService {
         } else {
             // 리그 생성
             League newLeague = League.builder()
-                    .id(leagueIdPrefix + "-100-" + (league.getNum() + 1))
-                    .rank(100)
+                    .id(leagueIdPrefix + "-1000-" + (league.getNum() + 1))
+                    .rank(1000)
                     .num(league.getNum() + 1)
                     .createdAt(LocalDateTime.now())
                     .build();

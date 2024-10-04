@@ -7,7 +7,7 @@ spring:
       chat:
         options:
           model: gpt-4o-2024-08-06
-          temperature: 1.0
+          temperature: 0
 
   datasource:
     url: ENC(ND7ataPAw3IQRTlkDQ5m/rGseS+B8SXNqxugUiCkwUyfzkUxRxFpWA==)

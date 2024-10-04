@@ -18,6 +18,10 @@ var (
 			Brokers: []string{kafkaBroker},
 			Topic:   "topic-user-updateXP",
 		}),
+		"topic-rank-placement": kafka.NewWriter(kafka.WriterConfig{
+			Brokers: []string{kafkaBroker},
+			Topic:   "topic-rank-placement",
+		}),
 	}
 )
 

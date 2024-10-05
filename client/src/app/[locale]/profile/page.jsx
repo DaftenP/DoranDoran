@@ -1,10 +1,10 @@
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
 import Bottom from "@/components/bottom/bottom";
 import Setting from "@/public/icon/setting.webp";
+import Character from "@/components/character/character";
 import UserInfo from "@/app/[locale]/profile/_components/user-info";
-import MyCharacter from "@/app/[locale]/profile/_components/my-character";
 
 export default function Profile() {
   const locale = useLocale();
@@ -24,7 +24,7 @@ export default function Profile() {
         </div>
         <hr className="w-full border-t border-[#ACACAC]" />
         <div className="w-full h-full flex flex-col items-center">
-          <MyCharacter />
+          <Character />
           <UserInfo />
         </div>
       </div>

@@ -1,15 +1,19 @@
-export default function Character() {
+export default function Background() {
   return (
-    <div className="relative w-[90%] h-full z-10">
-      <div className="h-full grid grid-cols-3 grid-rows-5">
-        {[...Array(15)].map((_, index) => (
-          <div key={index}>
-            <div className="h-full flex items-center justify-center text-white font-bold text-lg md:text-4xl">
-              {index + 1}
+    <div className="w-full h-full grid grid-cols-3 grid-rows-5">
+      {[...Array(15)].map((_, index) => {
+        const backgroundNumber = index + 1;
+        return (
+          <div
+            key={index}
+            className="rounded-md border border-[#5c3d21]/60 flex items-center justify-center"
+          >
+            <div className="text-[#5c3d21] font-bold text-lg md:text-4xl">
+              {backgroundNumber}
             </div>
           </div>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 }

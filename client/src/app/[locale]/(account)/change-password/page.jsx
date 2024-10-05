@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
 import axios from "axios";
 import Image from "next/image";
-import Doryeoni from "@/public/logo/doryeoni.webp";
-import Raoni from "@/public/logo/raoni.webp";
 import Button from "../_components/button";
 import Modal from "@/components/modal/modal";
-import { useRouter } from "next/navigation";
+import Raoni from "@/public/logo/raoni.webp";
+import Doryeoni from "@/public/logo/doryeoni.webp";
 
 export default function ChangeComponent() {
   const [messages, setMessages] = useState(null);
@@ -46,11 +46,8 @@ function TranslatedChange() {
   const locale = useLocale();
   const t = useTranslations("index");
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [formData, setFormData] = useState({ email: "", verificationCode: "" });
-  const [touched, setTouched] = useState({
-    email: false,
-    verificationCode: false,
-  });
+  const [formData, setFormData] = useState({email: "", verificationCode: "" });
+  const [touched, setTouched] = useState({email: false, verificationCode: false});
   const [modalMessage, setModalMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -72,9 +69,7 @@ function TranslatedChange() {
   // 모달 닫기 핸들러
   const handleCloseModal = () => {
     setIsOpenModal(false);
-    if (isPasswordResetSuccess) {
-      router.push("/"); // 메인 페이지로 이동
-    }
+    if (isPasswordResetSuccess) {router.push("/")}
   };
 
   // 임시 비밀번호 변경
@@ -82,36 +77,23 @@ function TranslatedChange() {
     e.preventDefault();
     setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .put(`${apiUrl}/mail/reset`, null, {
+    axios.put(`${apiUrl}/mail/reset`, null, {
         params: { email: formData.email },
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: {"Content-Type": "application/json"},
       })
       .then((response) => {
         setIsLoading(false);
         setIsEmailSent(true);
         setIsPasswordResetSuccess(true);
-        setModalMessage({
-          message: "Passcode issued successfully",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "Passcode issued successfully", background: "bird", buttonType: 2});
       })
       .catch((error) => {
         setIsLoading(false);
         setIsEmailSent(false);
         setIsPasswordResetSuccess(false);
-        setModalMessage({
-          message: "Failed to issue password",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "Failed to issue password", background: "bird", buttonType: 2});
       })
-      .finally(() => {
-        setIsOpenModal(true);
-      });
+      .finally(() => {setIsOpenModal(true)});
   };
 
   // 이메일 전송 핸들러
@@ -119,34 +101,21 @@ function TranslatedChange() {
     e.preventDefault();
     setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .post(`${apiUrl}/mail/password`, null, {
-        params: { email: formData.email },
-        headers: {
-          "Content-Type": "application/json",
-        },
+    axios.post(`${apiUrl}/mail/password`, null, {
+        params: {email: formData.email},
+        headers: {"Content-Type": "application/json"},
       })
       .then((response) => {
         setIsLoading(false);
         setIsEmailSent(true);
-        setModalMessage({
-          message: "email-sending-successful",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "email-sending-successful", background: "bird", buttonType: 2});
       })
       .catch((error) => {
         setIsLoading(false);
         setIsEmailSent(false);
-        setModalMessage({
-          message: "email-sending-failed",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "email-sending-failed", background: "bird", buttonType: 2});
       })
-      .finally(() => {
-        setIsOpenModal(true);
-      });
+      .finally(() => {setIsOpenModal(true)});
   };
 
   // 인증 코드 확인 핸들러
@@ -154,72 +123,46 @@ function TranslatedChange() {
     e.preventDefault();
     setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .get(`${apiUrl}/mail/check`, {
-        params: {
-          email: formData.email,
-          userNumber: formData.verificationCode,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
+    axios.get(`${apiUrl}/mail/check`, {
+        params: {email: formData.email, userNumber: formData.verificationCode},
+        headers: {"Content-Type": "application/json"},
       })
       .then((response) => {
         setIsLoading(false);
         setIsEmailVerified(true);
-        setModalMessage({
-          message: "verification-successful",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "verification-successful", background: "bird", buttonType: 2});
       })
       .catch((error) => {
         setIsLoading(false);
         setIsEmailVerified(false);
-        setModalMessage({
-          message: "verification-failed",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "verification-failed", background: "bird", buttonType: 2});
       })
-      .finally(() => {
-        setIsOpenModal(true);
-      });
+      .finally(() => {setIsOpenModal(true)});
   };
 
   // 입력 필드 기본 스타일
   const inputStyle =
     "w-full h-10 md:h-20 rounded-full bg-white/60 shadow-md text-xl md:text-3xl pl-5 pr-16 transition-colors";
 
+  const buttonStyle =
+    "absolute top-1/2 right-5 md:text-3xl bg-gradient-to-r from-[#DBB4F3] to-[#FFC0B1] text-transparent bg-clip-text"
+     
   // 입력 필드 클래스 생성 함수
   const getInputClass = (name, value) => {
     if (!touched[name]) return inputStyle;
     switch (name) {
       case "email":
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return `${inputStyle} ${
-          emailRegex.test(value)
-            ? "border-2 border-green-500"
-            : "border-2 border-red-500"
-        }`;
+        return `${inputStyle} ${emailRegex.test(value) ? "border-2 border-green-500" : "border-2 border-red-500"}`;
       case "verificationCode":
-        return `${inputStyle} ${
-          isEmailVerified
-            ? "border-2 border-green-500"
-            : "border-2 border-red-500"
-        }`;
-      default:
-        return inputStyle;
-    }
-  };
+        return `${inputStyle} ${ isEmailVerified ? "border-2 border-green-500" : "border-2 border-red-500"}`;
+      default: return inputStyle;
+    }};
 
   return (
     <>
       {isLoading && <LoadingOverlay />}
-      <form
-        onSubmit={PasswordSubmit}
-        className="w-screen h-screen flex flex-col items-center"
-      >
+      <form onSubmit={PasswordSubmit} className="w-screen h-screen flex flex-col items-center">
         {/* 제목 */}
         <div className="mt-14 mb-7 text-center">
           <p className="text-2xl md:text-5xl mb-2">{t("change-password")}</p>
@@ -241,16 +184,10 @@ function TranslatedChange() {
               placeholder={t("e-mail")}
               className={getInputClass("email", formData.email)}
             />
-            <button
-              type="button"
-              onClick={emailSubmit}
-              className="absolute top-1/2 right-5 md:text-3xl bg-gradient-to-r from-[#DBB4F3] to-[#FFC0B1] text-transparent bg-clip-text"
-              disabled={!formData.email || isEmailSent}
-            >
+            <button type="button" onClick={emailSubmit} className={buttonStyle} disabled={!formData.email || isEmailSent}>
               {t("send")}
             </button>
           </div>
-
           {/* 인증 코드 입력 필드 */}
           <div className="relative">
             <div className="flex">
@@ -264,51 +201,26 @@ function TranslatedChange() {
               onChange={signupChange}
               onBlur={handleBlur}
               placeholder="12345678"
-              className={getInputClass(
-                "verificationCode",
-                formData.verificationCode
-              )}
+              className={getInputClass("verificationCode", formData.verificationCode)}
               required
             />
-            <button
-              type="button"
-              onClick={verifyCode}
-              className="absolute top-1/2 right-5 md:text-3xl bg-gradient-to-r from-[#DBB4F3] to-[#FFC0B1] text-transparent bg-clip-text"
-              disabled={!formData.verificationCode || isEmailVerified}
-            >
+            <button type="button" onClick={verifyCode} className={buttonStyle} disabled={!formData.verificationCode || isEmailVerified}>
               {t("confirm")}
             </button>
           </div>
-
           {/* 취소 및 확인 버튼 */}
           <div className="flex justify-center">
             <Button text={t("cancel")} href={`/${locale}`} />
             <Button text={t("ok")} type="submit" />
           </div>
         </div>
-
         {/* 이미지 */}
-        <Image
-          src={Doryeoni}
-          alt="Doryeoni"
-          className="w-[18%] absolute top-[55%] right-[15%]"
-          priority
-        />
-        <Image
-          src={Raoni}
-          alt="Raoni"
-          className="w-[28%] absolute top-[60%] left-[15%]"
-          priority
-        />
+        <Image src={Doryeoni} alt="Doryeoni" className="w-[18%] absolute top-[55%] right-[15%]" priority />
+        <Image src={Raoni} alt="Raoni" className="w-[28%] absolute top-[60%] left-[15%]" priority />
       </form>
-
       {/* 모달 컴포넌트 */}
       {isOpenModal && (
-        <Modal
-          handleYesClick={handleCloseModal}
-          handleCloseModal={handleCloseModal}
-          message={modalMessage}
-        />
+        <Modal handleYesClick={handleCloseModal} handleCloseModal={handleCloseModal} message={modalMessage} />
       )}
     </>
   );

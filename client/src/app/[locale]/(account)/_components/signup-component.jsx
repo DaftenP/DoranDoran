@@ -7,6 +7,7 @@ import axios from "axios";
 import Button from "./button";
 import Modal from "@/components/modal/modal";
 
+// 메인 회원가입 컴포넌트
 export default function SignupComponent() {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
@@ -37,7 +38,7 @@ function LoadingOverlay() {
   );
 }
 
-// 회원가입 폼 컴포넌트
+// 번역된 회원가입 폼 컴포넌트
 function TranslatedSignup() {
   const locale = useLocale();
   const t = useTranslations("index");
@@ -49,36 +50,13 @@ function TranslatedSignup() {
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showPasswordError, setShowPasswordError] = useState(false);
-  const [showPasswordMismatchError, setShowPasswordMismatchError] =
-    useState(false);
-
-  // 폼 데이터 상태
-  const [formData, setFormData] = useState({
-    nickname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    verificationCode: "",
-  });
-
-  // 입력 필드 터치 상태
-  const [touched, setTouched] = useState({
-    nickname: false,
-    email: false,
-    password: false,
-    confirmPassword: false,
-    verificationCode: false,
-  });
+  const [showPasswordMismatchError, setShowPasswordMismatchError] = useState(false);
+  const [formData, setFormData] = useState({nickname: "", email: "", password: "", confirmPassword: "", verificationCode: ""});
+  const [touched, setTouched] = useState({nickname: false, email: false, password: false, confirmPassword: false, verificationCode: false});
 
   // 폼 데이터 및 관련 상태 초기화 함수
   const resetFormData = () => {
-    setFormData({
-      nickname: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      verificationCode: "",
-    });
+    setFormData({nickname: "", email: "", password: "", confirmPassword: "", verificationCode: ""});
     setIsEmailVerified(false);
     setIsEmailSent(false);
     localStorage.removeItem("signupFormData");
@@ -87,25 +65,16 @@ function TranslatedSignup() {
   };
 
   // Cancel 버튼 클릭 핸들러
-  const handleCancel = () => {
-    resetFormData();
-    router.push(`/${locale}`);
-  };
+  const handleCancel = () => { resetFormData(); router.push(`/${locale}`)};
 
   // localStorage에서 데이터 불러오기
   useEffect(() => {
     const savedFormData = localStorage.getItem("signupFormData");
-    if (savedFormData) {
-      setFormData(JSON.parse(savedFormData));
-    }
+    if (savedFormData) {setFormData(JSON.parse(savedFormData))}
     const savedIsEmailVerified = localStorage.getItem("isEmailVerified");
-    if (savedIsEmailVerified) {
-      setIsEmailVerified(JSON.parse(savedIsEmailVerified));
-    }
+    if (savedIsEmailVerified) {setIsEmailVerified(JSON.parse(savedIsEmailVerified))}
     const savedIsEmailSent = localStorage.getItem("isEmailSent");
-    if (savedIsEmailSent) {
-      setIsEmailSent(JSON.parse(savedIsEmailSent));
-    }
+    if (savedIsEmailSent) {setIsEmailSent(JSON.parse(savedIsEmailSent))}
   }, []);
 
   // 입력 변경 핸들러
@@ -116,16 +85,13 @@ function TranslatedSignup() {
     // localStorage에 데이터 저장
     localStorage.setItem("signupFormData", JSON.stringify(updatedFormData));
     // 비밀번호 필드에 대한 유효성 검사
-    if (name === "password") {
-      setShowPasswordError(value.length > 0 && value.length < 8);
-    }
+    if (name === "password") {setShowPasswordError(value.length > 0 && value.length < 8)}
     if (name === "confirmPassword" || name === "password") {
       setShowPasswordMismatchError(
         updatedFormData.password !== updatedFormData.confirmPassword &&
           updatedFormData.confirmPassword.length > 0
       );
-    }
-  };
+    }};
 
   // 블러 이벤트 핸들러
   const handleBlur = (e) => {
@@ -133,18 +99,12 @@ function TranslatedSignup() {
     setTouched({ ...touched, [name]: true });
     // 비밀번호 필드에 대한 추가 검사
     if (name === "password") {
-      setShowPasswordError(
-        formData.password.length > 0 && formData.password.length < 8
-      );
+      setShowPasswordError(formData.password.length > 0 && formData.password.length < 8);
     }
     // 비밀번호 확인 필드에 대한 추가 검사
     if (name === "confirmPassword") {
-      setShowPasswordMismatchError(
-        formData.password !== formData.confirmPassword &&
-          formData.confirmPassword.length > 0
-      );
-    }
-  };
+      setShowPasswordMismatchError(formData.password !== formData.confirmPassword && formData.confirmPassword.length > 0);
+    }};
 
   // 모달 닫기 핸들러
   const handleCloseModal = () => {
@@ -163,36 +123,23 @@ function TranslatedSignup() {
     e.preventDefault();
     setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .post(`${apiUrl}/mail/regist`, null, {
-        params: { email: formData.email },
-        headers: {
-          "Content-Type": "application/json",
-        },
+    axios.post(`${apiUrl}/mail/regist`, null, {
+        params: {email: formData.email},
+        headers: {"Content-Type": "application/json"},
       })
       .then((response) => {
         setIsLoading(false);
         setIsEmailSent(true);
         localStorage.setItem("isEmailSent", JSON.stringify(true));
-        setModalMessage({
-          message: "email-sending-successful",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "email-sending-successful", background: "bird", buttonType: 2});
       })
       .catch((error) => {
         setIsLoading(false);
         setIsEmailSent(false);
         localStorage.setItem("isEmailSent", JSON.stringify(false));
-        setModalMessage({
-          message: "email-sending-failed",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "email-sending-failed", background: "bird", buttonType: 2});
       })
-      .finally(() => {
-        setIsOpenModal(true);
-      });
+      .finally(() => {setIsOpenModal(true)});
   };
 
   // 인증 코드 확인 핸들러
@@ -200,39 +147,23 @@ function TranslatedSignup() {
     e.preventDefault();
     setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .get(`${apiUrl}/mail/check`, {
-        params: {
-          email: formData.email,
-          userNumber: formData.verificationCode,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
+    axios.get(`${apiUrl}/mail/check`, {
+        params: {email: formData.email, userNumber: formData.verificationCode},
+        headers: {"Content-Type": "application/json"},
       })
       .then((response) => {
         setIsLoading(false);
         setIsEmailVerified(true);
         localStorage.setItem("isEmailVerified", JSON.stringify(true));
-        setModalMessage({
-          message: "verification-successful",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "verification-successful", background: "bird", buttonType: 2});
       })
       .catch((error) => {
         setIsLoading(false);
         setIsEmailVerified(false);
         localStorage.setItem("isEmailVerified", JSON.stringify(false));
-        setModalMessage({
-          message: "verification-failed",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "verification-failed", background: "bird", buttonType: 2});
       })
-      .finally(() => {
-        setIsOpenModal(true);
-      });
+      .finally(() => {setIsOpenModal(true)});
   };
 
   // 폼 유효성 검사
@@ -250,47 +181,23 @@ function TranslatedSignup() {
   const signupSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) {
-      setModalMessage({
-        message: "signup-failed",
-        background: "bird",
-        buttonType: 2,
-      });
+      setModalMessage({message: "signup-failed", background: "bird", buttonType: 2});
       setIsOpenModal(true);
       return;
     }
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .post(
-        `${apiUrl}/regist`,
-        {
-          nickname: formData.nickname,
-          email: formData.email,
-          password: formData.password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+    axios.post(`${apiUrl}/regist`,
+        {nickname: formData.nickname, email: formData.email, password: formData.password},
+        {headers: {"Content-Type": "application/json"}}
       )
       .then((response) => {
-        setModalMessage({
-          message: "signup-successful",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "signup-successful", background: "bird", buttonType: 2});
         setShouldRedirect(true);
       })
       .catch((error) => {
-        setModalMessage({
-          message: "signup-failed",
-          background: "bird",
-          buttonType: 2,
-        });
+        setModalMessage({message: "signup-failed", background: "bird", buttonType: 2});
       })
-      .finally(() => {
-        setIsOpenModal(true);
-      });
+      .finally(() => {setIsOpenModal(true)});
   };
 
   // 입력 필드 클래스 생성 함수
@@ -298,39 +205,19 @@ function TranslatedSignup() {
     if (!touched[name]) return inputStyle;
     switch (name) {
       case "nickname":
-        return `${inputStyle} ${
-          value.trim() ? "border-2 border-green-500" : "border-2 border-red-500"
-        }`;
+        return `${inputStyle} ${value.trim() ? "border-2 border-green-500" : "border-2 border-red-500"}`;
       case "email":
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return `${inputStyle} ${
-          emailRegex.test(value)
-            ? "border-2 border-green-500"
-            : "border-2 border-red-500"
-        }`;
+        return `${inputStyle} ${emailRegex.test(value) ? "border-2 border-green-500" : "border-2 border-red-500"}`;
       case "verificationCode":
-        return `${inputStyle} ${
-          isEmailVerified
-            ? "border-2 border-green-500"
-            : "border-2 border-red-500"
-        }`;
+        return `${inputStyle} ${isEmailVerified ? "border-2 border-green-500" : "border-2 border-red-500"}`;
       case "password":
         const isValidPassword = value && value.length >= 8;
-        return `${inputStyle} ${
-          isValidPassword
-            ? "border-2 border-green-500"
-            : "border-2 border-red-500"
-        }`;
+        return `${inputStyle} ${isValidPassword ? "border-2 border-green-500" : "border-2 border-red-500"}`;
       case "confirmPassword":
-        return `${inputStyle} ${
-          value && value === formData.password
-            ? "border-2 border-green-500"
-            : "border-2 border-red-500"
-        }`;
-      default:
-        return inputStyle;
-    }
-  };
+        return `${inputStyle} ${value && value === formData.password ? "border-2 border-green-500" : "border-2 border-red-500"}`;
+      default: return inputStyle;
+    }};
 
   // 스타일 정의
   const inputStyle =
@@ -343,10 +230,7 @@ function TranslatedSignup() {
     <>
       {isLoading && <LoadingOverlay />}
       {/* 회원가입 폼 */}
-      <form
-        onSubmit={signupSubmit}
-        className="w-[75%] flex flex-col items-center"
-      >
+      <form onSubmit={signupSubmit} className="w-[75%] flex flex-col items-center">
         <div className="w-full flex flex-col gap-2 md:gap-5">
           {/* 닉네임 입력 필드 */}
           <div className="relative">
@@ -365,7 +249,6 @@ function TranslatedSignup() {
               required
             />
           </div>
-
           {/* 이메일 입력 필드 */}
           <div className="relative">
             <div className="flex">
@@ -382,16 +265,10 @@ function TranslatedSignup() {
               className={getInputClass("email", formData.email)}
               required
             />
-            <button
-              type="button"
-              onClick={emailSubmit}
-              className={buttonStyle}
-              disabled={!formData.email || isEmailSent}
-            >
+            <button type="button" onClick={emailSubmit} className={buttonStyle} disabled={!formData.email || isEmailSent}>
               {t("send")}
             </button>
           </div>
-
           {/* 인증 코드 입력 필드 */}
           <div className="relative">
             <div className="flex">
@@ -405,22 +282,13 @@ function TranslatedSignup() {
               onChange={signupChange}
               onBlur={handleBlur}
               placeholder="12345678"
-              className={getInputClass(
-                "verificationCode",
-                formData.verificationCode
-              )}
+              className={getInputClass("verificationCode", formData.verificationCode)}
               required
             />
-            <button
-              type="button"
-              onClick={verifyCode}
-              className={buttonStyle}
-              disabled={!formData.verificationCode || isEmailVerified}
-            >
+            <button type="button" onClick={verifyCode} className={buttonStyle} disabled={!formData.verificationCode || isEmailVerified}>
               {t("confirm")}
             </button>
           </div>
-
           {/* 비밀번호 입력 필드 */}
           <div>
             <div className="flex">
@@ -444,7 +312,6 @@ function TranslatedSignup() {
               </p>
             )}
           </div>
-
           {/* 비밀번호 확인 입력 필드 */}
           <div>
             <div className="flex">
@@ -458,10 +325,7 @@ function TranslatedSignup() {
               onChange={signupChange}
               onBlur={handleBlur}
               placeholder={t("confirm-password")}
-              className={getInputClass(
-                "confirmPassword",
-                formData.confirmPassword
-              )}
+              className={getInputClass("confirmPassword", formData.confirmPassword)}
               required
             />
             {showPasswordMismatchError && (
@@ -481,11 +345,7 @@ function TranslatedSignup() {
 
       {/* 모달 컴포넌트 */}
       {isOpenModal && (
-        <Modal
-          handleYesClick={handleCloseModal}
-          handleCloseModal={handleCloseModal}
-          message={modalMessage}
-        />
+        <Modal handleYesClick={handleCloseModal} handleCloseModal={handleCloseModal} message={modalMessage} />
       )}
     </>
   );

@@ -14,6 +14,7 @@ import HidePassword from "@/public/icon/hide-password.webp";
 import ShowPassword from "@/public/icon/show-password.webp";
 import Modal from "@/components/modal/modal";
 
+// 메인 로그인 폼 컴포넌트
 export default function LoginForm() {
   const locale = useLocale();
   const [messages, setMessages] = useState(null);
@@ -44,7 +45,7 @@ function LoadingOverlay() {
   );
 }
 
-// 실제 로그인 폼
+// 실제 로그인 폼 컴포넌트
 function LoginFormContent() {
   const t = useTranslations("index");
   const locale = useLocale();
@@ -54,57 +55,42 @@ function LoginFormContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState({});
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({email: "", password: ""});
 
   // 비밀번호 표시/숨김 토글 함수
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+  const togglePasswordVisibility = () => {setShowPassword(!showPassword)};
 
   // 입력 필드 변경 핸들러
-  const loginChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const loginChange = (e) => {setFormData({ ...formData, [e.target.name]: e.target.value })};
 
-  // 폼 제출 핸들러
+  // 로그인 폼 제출 핸들러
   const loginSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     axios.post(`${apiUrl}/login`,
+        {email: formData.email, password: formData.password},
         {
-          email: formData.email,
-          password: formData.password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },        
+          headers: {"Content-Type": "application/json"},        
           withCredentials: true,
         })
       .then((response) => {
+        // 로그인 성공 시 처리
         const accessToken = response.headers["access"];
         localStorage.setItem("accessToken", accessToken);
         dispatch(login(accessToken));
         router.push(`/${locale}/main`);
       })
       .catch((error) => {
+        // 로그인 실패 시 처리
         setIsOpenModal(true);
-        setModalMessage({
-          message: "login-failed",
-          background: "bird",
-          buttonType: 2,
-        });
-        setIsLoading(false);
-      })      
-  };
+        setModalMessage({message: "login-failed", background: "bird", buttonType: 2});
+      })
+      .finally(() => {setIsLoading(false)});
+    };
 
-  const handleCloseModal = () => {
-    setIsOpenModal(false);
-  };
+  // 모달 닫기 핸들러
+  const handleCloseModal = () => {setIsOpenModal(false);};
 
   return (
     <>
@@ -164,14 +150,9 @@ function LoginFormContent() {
           </Link>
         </div>
       </form>
-
       {/* 모달 컴포넌트 */}
       {isOpenModal && (
-        <Modal
-          handleYesClick={handleCloseModal}
-          handleCloseModal={handleCloseModal}
-          message={modalMessage}
-        />
+        <Modal handleYesClick={handleCloseModal} handleCloseModal={handleCloseModal} message={modalMessage}/>
       )}
     </>
   );

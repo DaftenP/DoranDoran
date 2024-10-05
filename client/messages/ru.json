@@ -194,6 +194,7 @@
     "password-at-least-8-digits": "Пароль должен содержать не менее 8 символов",
     "password-mismatch": "Пароли не совпадают",
     "failed-to-issue-password": "Не удалось выдать пароль",
-    "do-you-want-to-leave?": "Вы действительно хотите уйти?"
+    "do-you-want-to-leave?": "Вы действительно хотите уйти?",
+    "login-failed": "Ошибка входа"
   }
 }

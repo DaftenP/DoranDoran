@@ -194,6 +194,7 @@
     "password-mismatch": "パスワードが一致しません",
     "passcode-issued-successfully": "パスコードが正常に発行されました",
     "failed-to-issue-password": "パスワードの発行に失敗しました",
-    "do-you-want-to-leave?": "本当に退会しますか？"
+    "do-you-want-to-leave?": "本当に退会しますか？",
+    "login-failed": "ログインに失敗しました"
   }
 }

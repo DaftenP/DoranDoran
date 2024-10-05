@@ -194,6 +194,7 @@
     "password-mismatch": "Password mismatch",
     "passcode-issued-successfully": "Passcode issued successfully",
     "failed-to-issue-password": "Failed to issue password",
-    "do-you-want-to-leave?": "Do you want to leave?"
+    "do-you-want-to-leave?": "Do you want to leave?",
+    "login-failed": "Login failed"
   }
 }

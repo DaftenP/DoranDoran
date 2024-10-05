@@ -3,13 +3,16 @@
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
-import { login } from "@/store/authSlice";
-import { useDispatch } from "react-redux";
+import { login } from '@/store/authSlice';
+import { useDispatch } from 'react-redux';
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
+import Email from "@/public/icon/email.webp";
+import Password from "@/public/icon/password.webp";
 import HidePassword from "@/public/icon/hide-password.webp";
 import ShowPassword from "@/public/icon/show-password.webp";
+import Modal from "@/components/modal/modal";
 
 export default function LoginForm() {
   const locale = useLocale();
@@ -49,6 +52,8 @@ function LoginFormContent() {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState({});
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -69,9 +74,7 @@ function LoginFormContent() {
     e.preventDefault();
     setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .post(
-        `${apiUrl}/login`,
+    axios.post(`${apiUrl}/login`,
         {
           email: formData.email,
           password: formData.password,
@@ -79,10 +82,9 @@ function LoginFormContent() {
         {
           headers: {
             "Content-Type": "application/json",
-          },
+          },        
           withCredentials: true,
-        }
-      )
+        })
       .then((response) => {
         const accessToken = response.headers["access"];
         localStorage.setItem("accessToken", accessToken);
@@ -90,37 +92,54 @@ function LoginFormContent() {
         router.push(`/${locale}/main`);
       })
       .catch((error) => {
+        setIsOpenModal(true);
+        setModalMessage({
+          message: "login-failed",
+          background: "bird",
+          buttonType: 2,
+        });
         setIsLoading(false);
-      });
+      })      
+  };
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
   };
 
   return (
     <>
       {isLoading && <LoadingOverlay />}
-      <form
-        onSubmit={loginSubmit}
-        className="w-full flex flex-col justify-center items-center gap-5"
-      >
+      <form onSubmit={loginSubmit} className="w-full flex flex-col justify-center items-center gap-5">
         {/* 이메일 입력 필드 */}
         <div className="relative w-[75%] h-10 md:h-20">
+          <Image
+            src={Email}
+            alt="email"
+            className="absolute w-[6%] md:w-[5%] top-1/2 transform -translate-y-1/2 left-5 md:left-10 pointer-events-none"
+          />
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={loginChange}
             placeholder={t("e-mail")}
-            className="w-full h-full rounded-full bg-white/60 shadow-md text-xl md:text-4xl pl-7 md:pl-14"
+            className="w-full h-full rounded-full bg-white/60 shadow-md text-xl md:text-4xl pl-14 md:pl-28"
           />
         </div>
         {/* 비밀번호 입력 필드 */}
         <div className="relative w-[75%] h-10 md:h-20">
+          <Image
+            src={Password}
+            alt="password"
+            className="absolute w-[6%] md:w-[5%] top-1/2 transform -translate-y-1/2 left-5 md:left-10 pointer-events-none"
+          />
           <input
             type={showPassword ? "text" : "password"}
             name="password"
             value={formData.password}
             onChange={loginChange}
             placeholder={t("password")}
-            className="w-full h-full rounded-full bg-white/60 shadow-md text-xl md:text-4xl pl-7 md:pl-14"
+            className="w-full h-full rounded-full bg-white/60 shadow-md text-xl md:text-4xl pl-14 md:pl-28"
           />
           {/* 비밀번호 표시/숨김 토글 버튼 */}
           <Image
@@ -131,30 +150,29 @@ function LoginFormContent() {
           />
         </div>
         {/* 로그인 버튼 */}
-        <button
-          type="submit"
-          className="w-[75%] h-10 md:h-20 rounded-full bg-white/60 shadow-md"
-        >
+        <button type="submit" className="w-[75%] h-10 md:h-20 rounded-full bg-white/60 shadow-md">
           <p
             className="text-2xl md:text-5xl bg-gradient-to-r from-[#DBB4F3] to-[#FFC0B1]"
-            style={{
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
+            style={{WebkitBackgroundClip: "text",WebkitTextFillColor: "transparent"}}>
             {t("login")}
           </p>
         </button>
         {/* 비밀번호 찾기 링크 */}
-        <div className="w-[75%] flex justify-end">
-          <Link
-            href={`/${locale}/change-password`}
-            className="text-sm md:text-3xl text-[#1f7efa]"
-          >
+        <div className="w-[75%] flex justify-end mb-5">
+          <Link href={`/${locale}/change-password`} className="text-sm md:text-3xl text-[#1f7efa]">
             {t("forgot-your-password?")}
           </Link>
         </div>
       </form>
+
+      {/* 모달 컴포넌트 */}
+      {isOpenModal && (
+        <Modal
+          handleYesClick={handleCloseModal}
+          handleCloseModal={handleCloseModal}
+          message={modalMessage}
+        />
+      )}
     </>
   );
 }

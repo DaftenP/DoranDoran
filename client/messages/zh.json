@@ -194,6 +194,7 @@
     "password-mismatch": "密码不匹配",
     "passcode-issued-successfully": "验证码已成功发行",
     "failed-to-issue-password": "密码发行失败",
-    "do-you-want-to-leave?": "你确定要退出吗？"
+    "do-you-want-to-leave?": "你确定要退出吗？",
+    "login-failed": "登录失败"
   }
 }

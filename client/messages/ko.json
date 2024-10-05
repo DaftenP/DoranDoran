@@ -194,6 +194,7 @@
     "password-at-least-8-digits": "비밀번호는 최소 8자리 이상이어야 합니다",
     "password-mismatch": "비밀번호가 일치하지 않습니다",
     "failed-to-issue-password": "비밀번호 발급에 실패했습니다",
-    "do-you-want-to-leave?": "정말로 탈퇴하시겠습니까?"
+    "do-you-want-to-leave?": "정말로 탈퇴하시겠습니까?",
+    "login-failed": "로그인 실패"
   }
 }

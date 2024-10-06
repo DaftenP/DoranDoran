@@ -12,6 +12,7 @@ export default function STTComponent() {
   const mediaRecorderRef = useRef(null); // MediaRecorder 참조
   const audioChunks = useRef([]); // 녹음된 오디오 청크 저장
   const audioContext = useRef(null); // AudioContext 참조
+  const sourceRef = useRef(null); // Web Audio API에서 사용하는 스트림 소스 참조
 
   useEffect(() => {
     console.log('음성인식중', transcript);
@@ -121,6 +122,7 @@ export default function STTComponent() {
       mediaRecorder.start();
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
+
     } catch (error) {
       console.error('녹음 시작 오류:', error);
     }
@@ -136,6 +138,9 @@ export default function STTComponent() {
 
       setIsRecording(false);
     }
+
+    // STT도 중지
+    stopListening();
   };
 
   // PCM 변환 후 다운로드
@@ -176,7 +181,6 @@ export default function STTComponent() {
     window.URL.revokeObjectURL(url);
   };
 
-  // STT와 녹음을 동시에 실행하는 함수
   const startSTTandRecording = () => {
     startListening(); // STT 시작
     startRecording(); // 녹음 시작
@@ -198,16 +202,15 @@ export default function STTComponent() {
       <button onClick={toggleRecording}>
         {isRecording ? 'Stop Recording' : 'Start Recording'}
       </button>
-
-      {/* STT와 녹음을 동시에 실행하는 버튼 */}
+      <br />
       <button onClick={startSTTandRecording}>
         Start STT & Recording
       </button>
-
-      {/* STT와 녹음을 동시에 중지하는 버튼 */}
+      <br />
       <button onClick={stopSTTandRecording}>
         Stop STT & Recording
       </button>
     </div>
+    
   );
 }

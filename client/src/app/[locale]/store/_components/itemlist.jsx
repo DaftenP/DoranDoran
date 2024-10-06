@@ -42,7 +42,7 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalMessage, setModalMessage] = useState(null)
   const [isBuy, setIsBuy] = useState(false)
-  // [itemType, itemId] 형식
+  // 현재 [itemType, itemId] 형식으로 저장 중
   const [itemInfo, setItemInfo] = useState([])
   const router = useRouter()
   const locale = useLocale()
@@ -52,12 +52,12 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
     .unwrap()
     .then(() => {
       setIsBuy(true)
-      setModalMessage(modalMessages[2]); // 구매 성공 메시지
+      setModalMessage(modalMessages[3]); // 구매 성공 메시지
       setIsOpenModal(true);
     })
     .catch(() => {
       setIsBuy(false)
-      setModalMessage(modalMessages[3]); // 구매 실패 메시지
+      setModalMessage(modalMessages[4]); // 구매 실패 메시지
       setIsOpenModal(true);
     });
   })
@@ -81,6 +81,7 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
 
   const handleCloseModal = () => {
     setIsOpenModal(false)
+    setIsBuy(false)
   }
 
   const modalMessages = [
@@ -94,6 +95,13 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
     // 장비 구매 물어보는 메세지
     {
       'message': 'would-you-like-to-purchase-random-equipment?',
+      'background': 'bird',
+      'buttonLink': 'store',
+      'buttonType': 1
+    },
+    // 배경 구매 물어보는 메세지
+    {
+      'message': 'would-you-like-to-purchase-random-background?',
       'background': 'bird',
       'buttonLink': 'store',
       'buttonType': 1
@@ -117,12 +125,14 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
   let itemId
   if (itemType === 1) {
     itemId = Math.floor(Math.random() * 11) + 1;
-  } else {
+  } else if (itemType === 2) {
     itemId = Math.floor(Math.random() * 15) + 1;
+  } else if (itemType === 3) {
+    itemId = Math.floor(Math.random() * 5) + 1;
   }
 
   return (
-    <div className={`${itemType === 1 || itemType === 2 ? '' : 'opacity-30 pointer-events-none'}`}>
+    <div className={`${itemType === 1 || itemType === 2 || itemType === 3 ? '' : 'opacity-30 pointer-events-none'}`}>
       <div className="w-[35vw] h-[19vh] relative border border-[#D1D6DE] p-4 rounded-[10px] bg-[#8E9094] bg-opacity-80" >
         <div className="left-[50%] transform -translate-x-1/2 top-[5%] absolute text-white text-center text-lg md:text-2xl lg:text-4xl">
           {itemName}
@@ -136,7 +146,7 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
             <Image src={Credit} alt="credit" className="w-auto h-[110%] left-[0%] absolute" />
             <div className="text-white" >{itemCost}</div>
           </div>
-          <div onClick={itemType === 1 || itemType === 2 ? () => handleOpenModal(itemType, itemId) : null} 
+          <div onClick={itemType === 1 || itemType === 2 || itemType === 3 ? () => handleOpenModal(itemType, itemId) : null} 
              className="absolute bottom-[0%] text-black cursor-pointer">
           {t('purchase')}
           </div>

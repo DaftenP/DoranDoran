@@ -128,6 +128,11 @@ export default function STTComponent() {
   const stopRecording = () => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.stop();
+
+      // 마이크 스트림 해제
+      const stream = mediaRecorderRef.current.stream;
+      stream.getTracks().forEach(track => track.stop());
+
       setIsRecording(false);
     }
   };

@@ -125,7 +125,10 @@ export default function Microphone({ onRecordingComplete, params }) {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioContext.current = new AudioContext({ sampleRate: 16000 });
-      const input = audioContext.current.createMediaStreamSource(stream);
+
+      // 녹음 청크 초기화
+      audioChunks.current = [];
+
       const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
       
       mediaRecorder.ondataavailable = (e) => {

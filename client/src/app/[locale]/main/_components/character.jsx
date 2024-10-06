@@ -107,7 +107,7 @@ function TranslatedCharacter({ locale }) {
         return <Image src={Hat13} alt="hat_icon" className="absolute transform scale-x-[-1] -translate-y-[3vh] translate-x-[11vh] w-auto h-[9vh] z-30" />;
       case 14:
         return <Image src={Hat14} alt="hat_icon" className="absolute transform -translate-y-[2.5vh] translate-x-[14.5vh] w-[12vh] h-[8vh] z-30" />;
-      case 0:
+      case 15:
         return <Image src={Hat15} alt="hat_icon" className="absolute transform -translate-y-[2vh] translate-x-[13vh] w-auto h-[9vh] z-30" />;
       default:
         return null;
@@ -116,27 +116,27 @@ function TranslatedCharacter({ locale }) {
 
   const renderBird = () => {
     switch (color) {
-      case 0:
-        return <Image src={Bird1} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 1:
-        return <Image src={Bird2} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 2:
-        return <Image src={Bird3} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 3:
-        return <Image src={Bird4} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 4:
-        return <Image src={Bird5} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 5:
-        return <Image src={Bird6} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 6:
-        return <Image src={Bird7} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
       case 7:
-        return <Image src={Bird8} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
+        return <Image src={Bird1} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
+      case 2:
+        return <Image src={Bird2} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
+      case 3:
+        return <Image src={Bird3} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
+      case 4:
+        return <Image src={Bird4} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
+      case 5:
+        return <Image src={Bird5} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
+      case 6:
+        return <Image src={Bird6} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
+      case 1:
+        return <Image src={Bird7} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
       case 8:
-        return <Image src={Bird9} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
+        return <Image src={Bird8} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
       case 9:
-        return <Image src={Bird10} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
+        return <Image src={Bird9} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
       case 10:
+        return <Image src={Bird10} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
+      case 11:
         return <Image src={Bird11} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
       default:
         return null;

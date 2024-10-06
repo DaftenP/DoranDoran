@@ -88,7 +88,7 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
         setFeedbackType('wrong');
       }
     } else if (recordedSTT && (quizType === 5002 || quizType === 5003)) {
-      if (recordedSTT.trim() === quizAnswer) { // transcript와 quizAnswer 비교
+      if (recordedSTT.trim() === quizAnswer) {
         setFeedbackMessage('정답입니다!');
         setFeedbackType('correct');
         handleSubmit();
@@ -97,12 +97,12 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
         setFeedbackType('wrong');
       }
     }
+    onResetIndex(); // 클릭된 인덱스 리셋
+    setRecordedSTT(''); // STT 초기화
     // 상태 초기화
     setTimeout(() => {
       setFeedbackMessage(null);
       setFeedbackType(null);
-      onResetIndex(); // 클릭된 인덱스 리셋
-      setRecordedSTT(''); // STT 초기화
     }, 2000); // 2초 후 메시지 사라짐
   };
   

@@ -35,10 +35,10 @@ public class UserService {
     @Transactional
     @Scheduled(cron = "0 0 0 * * ?")
     //@Scheduled(cron = "0 * * * * *") // for test 1분 마다 실행
-    public void resetDailyMission(){
+    public void resetDailyMission() {
         List<User> allUser = userRepository.findAll();
         //유저 Daily Mission과 시도 횟수 삭제
-        for(User u : allUser){
+        for (User u : allUser) {
             u.resetDailyStatus();
         }
     }
@@ -46,11 +46,11 @@ public class UserService {
     @Transactional
     @Scheduled(cron = "0 0 0 * * MON")
     //@Scheduled(cron = "0 * * * * *") // for test 1분 마다 실행
-    public void resetWeeklyMission(){
+    public void resetWeeklyMission() {
         List<User> allUser = userRepository.findAll();
 
         //유저 Weekly Mission 초기화
-        for(User u : allUser){
+        for (User u : allUser) {
             u.resetWeeklyStatus();
         }
     }
@@ -64,18 +64,18 @@ public class UserService {
     }
 
     @Transactional
-    public HashMap<Integer,String> rankUserResponse(List<Integer> reqLst){
-        HashMap<Integer,String> hmap = new HashMap<>();
+    public HashMap<Integer, String> rankUserResponse(List<Integer> reqLst) {
+        HashMap<Integer, String> hmap = new HashMap<>();
         List<User> users = userRepository.findByIdIn(reqLst);
         // User 정보를 RankUserResponseDTO로 변환하여 lst에 추가
         for (User user : users) {
-            hmap.put(user.getId(),user.getNickname());
+            hmap.put(user.getId(), user.getNickname());
         }
         return hmap;
     }
 
 
-    public MyPageResponseDTO findMyPageById(int userId){
+    public MyPageResponseDTO findMyPageById(int userId) {
         User sUser = userRepository.findById(userId);
 
         MyPageResponseDTO myPageResponseDTO = MyPageResponseDTO.builder()
@@ -94,12 +94,12 @@ public class UserService {
         return myPageResponseDTO;
     }
 
-    public String resetPassword(String email){
+    public String resetPassword(String email) {
         //System.out.println("reset CALLEED");
         User sUser = userRepository.findByEmail(email);
 
         //System.out.println(sUser);
-        if(sUser == null){
+        if (sUser == null) {
             return null;
             //return new ResponseDto(StatusCode.NOT_FOUND);
         }
@@ -126,41 +126,38 @@ public class UserService {
         return rawPassword;
     }
 
-    public StatusCode registUser(UserRequestDTO userRequestDTO){
+    public StatusCode registUser(UserRequestDTO userRequestDTO) {
         User sUser = userRepository.findByEmail(userRequestDTO.getEmail());
         //찾은 유저
-        if (sUser == null){
+        if (sUser == null) {
             User newUser = new User(userRequestDTO.getNickname(), userRequestDTO.getEmail(),
                     bCryptPasswordEncoder.encode(userRequestDTO.getPassword()));
 
             userRepository.save(newUser);
             //유저 저장한다.
             return StatusCode.REG_SUCCESS;
-        }
-        else{
+        } else {
             return StatusCode.DUPLICATE_EMAIL;
         }
     }
 
-    public StatusCode deleteUser(int userId){
+    public StatusCode deleteUser(int userId) {
         User sUser = userRepository.findById(userId);
 
-        if(sUser == null){
+        if (sUser == null) {
             return StatusCode.NO_EMAIL;
-        }
-        else{
+        } else {
             userRepository.deleteById(sUser.getId());
             //해당하는 유저 지운다
             return StatusCode.DROP_SUCCESS;
         }
     }
 
-    public StatusCode duplicateUser(String email){
+    public StatusCode duplicateUser(String email) {
         User sUser = userRepository.findByEmail(email);
-        if(sUser == null){
+        if (sUser == null) {
             return StatusCode.REG_DUP_OK;
-        }
-        else{
+        } else {
             return StatusCode.DUPLICATE_EMAIL;
         }
     }
@@ -168,18 +165,17 @@ public class UserService {
     public List<CreditLogResponseDTO> getAllCreditLog(int userId) {
         User sUser = userRepository.findById(userId);
         List<CreditLogResponseDTO> lst = new ArrayList<>();
-        if(sUser != null){
-            for(CreditLog creditLog : sUser.getCreditLogList())
+        if (sUser != null) {
+            for (CreditLog creditLog : sUser.getCreditLogList())
                 lst.add(CreditLogResponseDTO.builder()
                         .logTypes(creditLog.getLogTypes())
                         .createdAt(creditLog.getCreatedAt())
                         .changes(creditLog.getChanges())
                         .build());
-            }
+        }
         //User의 List에 추가한다.
         return lst;
     }
-
 
 
     public List<PlayLogResponseDTO> getAllPlayLog(int userId) {
@@ -258,11 +254,10 @@ public class UserService {
     }
 
 
-
     @Transactional
     public StatusCode insertCreditLog(CreditLogRequestDTO creditLogRequestDTO) {
         User sUser = userRepository.findById(creditLogRequestDTO.getUserId());
-        if(sUser != null){
+        if (sUser != null) {
             if (sUser.getGem() + creditLogRequestDTO.getChanges() < 0) {
                 throw new RuntimeException("not enough GEM");
             }
@@ -278,20 +273,18 @@ public class UserService {
             userRepository.save(sUser);
             //DB에 반영
             return StatusCode.SUCCESS;
-        }
-        else{
+        } else {
             return StatusCode.BAD_REQUEST;
         }
     }
 
-    public StatusCode solveDaily(PlayLogRequestDTO playLogRequestDTO){
+    public StatusCode solveDaily(PlayLogRequestDTO playLogRequestDTO) {
         User sUser = userRepository.findById(playLogRequestDTO.getUserId());
-        if(sUser != null){
-            if(sUser.isMissionCleared()){
+        if (sUser != null) {
+            if (sUser.isMissionCleared()) {
                 //Mission
                 return StatusCode.MISSION_DONE;
-            }
-            else{
+            } else {
                 sUser.increaseDaily();
                 //하나 증가하고
 
@@ -308,7 +301,7 @@ public class UserService {
                 userRepository.save(sUser);
                 //DB에 반영
 
-                if(sUser.getDailyStatus() == 10){
+                if (sUser.getDailyStatus() == 10) {
                     sUser.todayMissionCleared();
                     //오늘 미션 클리어 처리
                     //50씩 준다 xp, gem
@@ -316,74 +309,78 @@ public class UserService {
                 }
                 return StatusCode.SUCCESS;
             }
-        }
-        else{
+        } else {
             return StatusCode.NO_EMAIL;
         }
     }
 
 
-    public StatusCode loginUser(UserLoginDTO userLoginDTO){
+    public StatusCode loginUser(UserLoginDTO userLoginDTO) {
         User sUser = userRepository.findByEmail(userLoginDTO.getEmail());
-        if(sUser != null){
+        if (sUser != null) {
             String encPassword = sUser.getPassword();
             //비밀번호 가져와서 매칭되는지 확인한다.
-            boolean match = bCryptPasswordEncoder.matches(userLoginDTO.getPassword(),encPassword);
-            if(match){
+            boolean match = bCryptPasswordEncoder.matches(userLoginDTO.getPassword(), encPassword);
+            if (match) {
                 return StatusCode.SUCCESS;
-            }
-            else{
+            } else {
                 return StatusCode.WRONG_PW;
             }
-        }
-        else{
+        } else {
             return StatusCode.NO_EMAIL;
         }
     }
 
-    public StatusCode modifyGX(GemXpModifyDTO gemXpModifyDTO){
+    public StatusCode modifyGX(GemXpModifyDTO gemXpModifyDTO) {
         User sUser = userRepository.findById(gemXpModifyDTO.getUserId());
 
-        if(sUser != null){
+        if (sUser != null) {
             sUser.addGem(gemXpModifyDTO.getGem());
             sUser.addXp(gemXpModifyDTO.getXp());
             return StatusCode.SUCCESS;
-        }
-        else{
+        } else {
             return StatusCode.NO_EMAIL;
         }
     }
 
-    public StatusCode buyItem(ItemRequestDTO itemRequestDTO){
+    public StatusCode buyItem(ItemRequestDTO itemRequestDTO) {
         User sUser = userRepository.findById(itemRequestDTO.getUserId());
-        if(sUser != null){
+        if (sUser != null) {
             Set<ItemKey> items = sUser.getItems();
-            ItemKey inputKey =  ItemKey.builder()
+            ItemKey inputKey = ItemKey.builder()
                     .itemId(itemRequestDTO.getItemId())
                     .itemType(itemRequestDTO.getItemType())
                     .build();
-            if(items.contains(inputKey)){
+            if (items.contains(inputKey)) {
                 return StatusCode.ALREADY_GET;
-            }
-            else{
-                items.add(inputKey);
-                //해당하는 아이템에 넣는다.
+            } else {
+                if (sUser.getGem() - itemRequestDTO.getPrice() < 0) {
+                    //가진 젬이 - 가지고 있는 price 보다 음수로 떨어진다면
+                    throw new RuntimeException("not enough GEM");
+                } else {
+                    items.add(inputKey);
+                    //해당하는 아이템에 넣는다.
+                    sUser.addGem(itemRequestDTO.getPrice() * -1);
+                    //gem을 price만큼 뺸다.
+                }
+
+
                 return StatusCode.SUCCESS;
+                //성공 처리 한다.
             }
-        }
-        else{
+        } else {
             return StatusCode.NO_EMAIL;
         }
     }
 
-    public List<ItemResponseDTO> getItems(int userId){
+    public List<ItemResponseDTO> getItems(int userId) {
         User sUser = userRepository.findById(userId);
 
         List<ItemResponseDTO> lst = new ArrayList<>();
 
-        if(sUser != null){
+        if (sUser != null) {
             Set<ItemKey> items = sUser.getItems();
-            for( ItemKey ik : items ){
+            for (ItemKey ik : items) {
                 lst.add(
                         ItemResponseDTO.builder()
                                 .itemId(ik.getItemId())

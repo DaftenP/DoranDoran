@@ -46,7 +46,9 @@ public class ShopService {
     }
 
     public RandomResponseDTO getRandomPool(int type){
-        int cSize = shopRepository.findById(type).get().getItems().size();
+        Shop shop = shopRepository.findById(type).get();
+        int cSize = shop.getItems().size();
+        int price = shop.getPrice();
         //보유한 색깔의 길이
         List<Integer> pool = new ArrayList<>();
         IntStream.rangeClosed(1,cSize).forEach(pool::add);
@@ -59,6 +61,7 @@ public class ShopService {
         return RandomResponseDTO.builder()
                 .pool(pool)
                 .chosen(randomIndex)
+                .price(price)
                 .build();
     }
     public SpecResponseDTO getSpecification(int type, int sid){

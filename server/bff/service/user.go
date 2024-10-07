@@ -144,18 +144,14 @@ func GetItemService(userId string) (*http.Response, error) {
 }
 
 // PATCH /api/v1/user/cloth
-func EquipItemService(userId, itemType, itemId string) (*http.Response, error) {
+func EquipItemService(userId, itemType, itemId int) (*http.Response, error) {
 	req, err := http.NewRequest(http.MethodPatch, UserUrl+"/api/v1/user/cloth", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	userIdInt, _ := strconv.Atoi(userId)
-	itemTypeInt, _ := strconv.Atoi(itemType)
-	itemIdInt, _ := strconv.Atoi(itemId)
-
 	req.Header.Set("Content-Type", "application/json")
-	body := fmt.Sprintf(`{"userId":%d,"itemType":%d,"itemId":%d}`, userIdInt, itemTypeInt, itemIdInt)
+	body := fmt.Sprintf(`{"userId":%d,"itemType":%d,"itemId":%d}`, userId, itemType, itemId)
 	req.Body = io.NopCloser(strings.NewReader(body))
 
 	return http.DefaultClient.Do(req)

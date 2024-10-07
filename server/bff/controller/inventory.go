@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 
+	"com.doran.bff/model"
 	"com.doran.bff/service"
 )
 
@@ -65,27 +67,16 @@ func EquipItem(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	var data map[string]interface{}
-	err = json.Unmarshal(body, &data)
+	var equipRequestFromClient model.EquipRequestFromClient
+	err = json.Unmarshal(body, &equipRequestFromClient)
 	if err != nil {
-		http.Error(w, "Error parsing request body", http.StatusInternalServerError)
+		http.Error(w, "Error unmarshalling request body", http.StatusInternalServerError)
 		return
 	}
 
-	// get itemType and itemId from request body
-	itemType, ok := data["itemType"]
-	if !ok {
-		http.Error(w, "Invalid item type", http.StatusBadRequest)
-		return
-	}
+	userIdInt, _ := strconv.Atoi(userId)
 
-	itemId, ok := data["itemId"]
-	if !ok {
-		http.Error(w, "Invalid item ID", http.StatusBadRequest)
-		return
-	}
-
-	req, err := service.EquipItemService(userId, itemType.(string), itemId.(string))
+	req, err := service.EquipItemService(userIdInt, equipRequestFromClient.ItemType, equipRequestFromClient.ItemId)
 	if err != nil {
 		http.Error(w, "Error sending request", http.StatusInternalServerError)
 		return

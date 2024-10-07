@@ -4,6 +4,7 @@ import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteDailyQuiz, deleteQuiz } from '@/store/quiz';
+import { fetchQuizSolve } from '@/store/quiz';
 import QuizContentImage from "./quiz-content-image";
 import QuizContentSpeak from "./quiz-content-speak";
 import Button from './button';
@@ -67,6 +68,8 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
   const images = quizList[0]?.quizImages;
   const quizType = quizList[0]?.quizType;
   const quizAnswer = quizList[0]?.quizAnswer;
+  const quizId = quizList[0]?.quizId;
+  const userId = 11;
 
   const [feedbackMessage, setFeedbackMessage] = useState(null); // 피드백 메시지 상태
   const [feedbackType, setFeedbackType] = useState(null); // 정답/오답 타입
@@ -107,6 +110,8 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
   };
   
   const handleSubmit = () => {
+    dispatch(fetchQuizSolve({ userId, quizId }));
+    
     setTimeout(() => {
       if(type === 'daily'){
         dispatch(deleteDailyQuiz());

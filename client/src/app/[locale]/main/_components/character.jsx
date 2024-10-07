@@ -37,13 +37,8 @@ import Hat15 from '@/public/shop-hat/hat (15).webp';
 import MainButton from '@/public/icon2/main-button.webp'
 
 export default function Character() {
-  const dispatch = useDispatch();
   const [messages, setMessages] = useState(null);
   const locale = useLocale()
-
-  useEffect(() => {
-    dispatch(fetchDailyAll()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
-  }, [dispatch]);
 
   useEffect(() => {
     async function loadMessages() {
@@ -69,6 +64,7 @@ export default function Character() {
 }
 
 function TranslatedCharacter({ locale }) {
+  // const dispatch = useDispatch();
   const t = useTranslations('index');
   const router = useRouter();
   const quizList = useSelector((state) => state.quiz.dailyQuiz.data);
@@ -76,6 +72,15 @@ function TranslatedCharacter({ locale }) {
 
   const equipment = user.profile.equipment
   const color = user.profile.color
+
+  // const savedRemainingCount = localStorage.getItem('remainingCount');
+  // const remainingCount = savedRemainingCount ? parseInt(savedRemainingCount) : 10;
+  // // const remainingCount = useSelector((state) => state.quiz.dailyQuiz.remainingCount); // 남은 문제 수
+
+  // useEffect(() => {
+    
+  //   dispatch(fetchDailyAll(remainingCount)); // 남은 문제 수만큼 문제 가져오기
+  // }, [dispatch, remainingCount]);
 
   const renderHat = () => {
     switch (equipment) {

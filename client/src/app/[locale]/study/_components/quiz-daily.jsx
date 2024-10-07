@@ -9,6 +9,7 @@ import QuizContent from '@/app/[locale]/study/_components/quiz-content';
 import Button from '@/app/[locale]/study/_components/button';
 import Play from "@/public/icon/play1.webp";
 import { useRouter } from 'next/navigation';
+import { fetchDailyAll } from '@/store/quiz';
 
 export default function QuizDaily({type}) {
   const [messages, setMessages] = useState(null);
@@ -41,9 +42,19 @@ function TranslatedQuizDaily({locale, type, index}) {
   const t = useTranslations('index');
   const quizList = useSelector((state) => state.quiz.dailyQuiz.data);
   const quizType = quizList[0]?.quizType;
+  const dispatch = useDispatch();
   const totalQuizzes = quizList.length;
   const quizVoiceUrl = quizList[0]?.quizVoiceUrl;
   const router = useRouter();
+
+  const savedRemainingCount = localStorage.getItem('remainingCount');
+  const remainingCount = savedRemainingCount ? parseInt(savedRemainingCount) : 10;
+  // const remainingCount = useSelector((state) => state.quiz.dailyQuiz.remainingCount); // 남은 문제 수
+
+  useEffect(() => {
+    
+    dispatch(fetchDailyAll(remainingCount)); // 남은 문제 수만큼 문제 가져오기
+  }, [dispatch]);
 
   // 음성 재생 함수
   const playVoice = () => {

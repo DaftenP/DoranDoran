@@ -25,6 +25,9 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false, // Strict Mode 비활성화
+  images: {
+    domains: ['ssafy-tailored.b-cdn.net'],
+  },
 };
 
 export default withNextIntl(nextConfig);

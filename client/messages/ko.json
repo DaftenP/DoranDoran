@@ -55,7 +55,7 @@
     "discuss-what-is-important-to-the-applicant-when-working": "지원자에게 일할 때 중요한 것이 무엇인지 논의하기",
     "do-you-want-to-leave?": "정말로 탈퇴하시겠습니까?",
     "doctor": "의사",
-    "dressing-room": "탈의실",
+    "dressing-room": "옷장",
     "during-holidays-families-perform-'세배'-and-exchange-well-wishing-words": "명절에는 가족과 함께 '세배'를 하고 덕담을 주고받습니다.",
     "e-mail": "이메일",
     "email-sending-failed": "이메일 전송 실패",
@@ -196,7 +196,8 @@
     "you-cannot-proceed-with-free-talking-you-don't-have-enough-speakers": "스피커가 부족하여 자유 대화를 진행할 수 없습니다.",
     "you-don't-have-enough-credits": "크레딧이 부족합니다.",
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "이 주제에 대해 이전 대화가 있습니다. 이전 위치에서 계속하시겠습니까?",
-    "your-purchase-was-successful-would-you-like-to-go-to-the-store?": "구매가 완료되었습니다. 상점으로 이동하시겠습니까?",
-    "password-change-error": "비밀번호 변경 오류"
+    "password-change-error": "비밀번호 변경 오류",
+    "your-purchase-was-successful-would-you-like-to-go-to-the-dressing-room?": "구매가 완료되었습니다. 옷장으로 이동하시겠습니까?",
+    "a-duplicate-item-has-appeared!-would-you-like-to-go-to-the-dressing-room?": "중복된 아이템이 나왔습니다! 옷장으로 이동하시겠습니까?"
   }
 }

@@ -7,7 +7,6 @@ import Silver from "@/public/rank/silver.webp";
 import Gold from "@/public/rank/gold.webp";
 import Platinum from "@/public/rank/platinum.webp";
 import Diamond from "@/public/rank/diamond.webp";
-import Bird2 from "@/public/shop-bird/bird (2).webp";
 
 export default forwardRef(function RankListAll({userRank, userChar, userName, userTier, userXP, borderColor }, ref) {
   return (
@@ -18,8 +17,10 @@ export default forwardRef(function RankListAll({userRank, userChar, userName, us
     >
       <span className="font-bold text-gray-600">{userRank}</span>
       <Image
-        src={Bird2}
+        src={"https://ssafy-tailored.b-cdn.net/shop/bird/2.webp"}
         alt="bird2"
+        width={200}
+        height={100}
         className="w-[auto] h-[80%] left-[12%] absolute"
       />
       <span className="left-[25%] absolute text-purple-500 font-medium">{userName}</span>

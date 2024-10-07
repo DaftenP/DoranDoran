@@ -1,11 +1,6 @@
 'use client'
 
 import { useSelector } from "react-redux";
-import One from "@/public/background/day.webp";
-import Two from "@/public/background/launch.webp";
-import Three from "@/public/background/day-blue.webp";
-import Four from "@/public/background/night-blue.webp";
-import Five from "@/public/background/launch-blue.webp";
 
 export default function Layout({ children }) {
   const userBackground = useSelector((state) => state.user.profile.background);
@@ -13,17 +8,17 @@ export default function Layout({ children }) {
   const renderBackground = () => {
     switch (userBackground) {
       case 1:
-        return One.src;
+        return "https://ssafy-tailored.b-cdn.net/shop/bg/day.webp";
       case 2:
-        return Two.src;
+        return "https://ssafy-tailored.b-cdn.net/shop/bg/launch.webp";
       case 3:
-        return Three.src;
+        return "https://ssafy-tailored.b-cdn.net/shop/bg/day-blue.webp";
       case 4:
-        return Four.src;
+        return "https://ssafy-tailored.b-cdn.net/shop/bg/night-blue.webp";
       case 5:
-        return Five.src;
+        return "https://ssafy-tailored.b-cdn.net/shop/bg/launch-blue.webp";
       default:
-        return One.src; // 기본 배경 이미지
+        return "https://ssafy-tailored.b-cdn.net/shop/bg/day.webp"; // 기본 배경 이미지
     }
   };
 

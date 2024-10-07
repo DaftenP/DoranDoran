@@ -1,13 +1,30 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '@/utils/apiClient';
 
+export const updateNickname = createAsyncThunk(
+  'user/updateNickname',
+  async (nickname, thunkAPI) => {
+    try {
+      const apiUrl = '/my-page/nickname';
+      const response = await apiClient.patch(apiUrl, { nickname }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
   async (_, thunkAPI) => {
-
     try {
       const apiUrl = '/my-page/user'
-
       const response = await apiClient.get(apiUrl, {
         headers: {
           'Content-Type': 'application/json',
@@ -27,14 +44,12 @@ export const expGemUpdate = createAsyncThunk(
   async ({ gem, xp }, thunkAPI) => {
     try {
       const apiUrl = '/rank/xp_gem'
-
       const response = await apiClient.patch(apiUrl, { gem, xp }, {
         headers: {
           'Content-Type': 'application/json',
         },
         withCredentials: true,
       });
-
       return response.data;
     } catch (error) {
       console.log(error)
@@ -124,6 +139,18 @@ const userSlice = createSlice({
       .addCase(expGemUpdate.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Something went wrong';
+      })
+      .addCase(updateNickname.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateNickname.fulfilled, (state, action) => {
+        state.loading = false;
+        state.profile.nickname = action.payload.nickname;
+      })
+      .addCase(updateNickname.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to update nickname';
       });
   },
 });

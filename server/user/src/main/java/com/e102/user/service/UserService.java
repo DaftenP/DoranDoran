@@ -11,7 +11,9 @@ import com.e102.user.dto.*;
 import com.e102.user.entity.User;
 import com.e102.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,16 +23,20 @@ import java.util.*;
 
 @Transactional
 @Service
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, KafkaTemplate<String, Object> kafkaTemplate) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.kafkaTemplate = kafkaTemplate;
     }
+
 
     @Transactional
     @Scheduled(cron = "0 0 0 * * ?")
@@ -207,13 +213,28 @@ public class UserService {
                     .quizId(playLogRequestDTO.getQuizId())
                     .build();
 
-            userRepository.updateXpById(playLogRequestDTO.getUserId(), 10);
 
-            sUser.getPlayLogList().add(playLog);
-            //넣고
-            userRepository.save(sUser);
-            //DB에 반영
+            if(userRepository.updateXpById(playLogRequestDTO.getUserId(), 10)> 0){
 
+                try {
+                    // 플레이 로그 추가
+                    sUser.getPlayLogList().add(playLog);
+
+                    // Kafka 메시지 생성
+                    Map<String, Object> message = new HashMap<>();
+                    message.put("userId", playLogRequestDTO.getUserId());
+                    message.put("xp", 10);
+
+                    log.info("KAFKA 메시지 전송");
+
+                    // Kafka 토픽에 메시지 발행
+                    kafkaTemplate.send("topic-rank-updateXP", message);
+
+                } catch (Exception e) {
+                    // 카프카 전송 실패 시 예외 발생 -> 트랜잭션 롤백
+                    throw new RuntimeException("Kafka 메시지 전송 실패", e);
+                }
+            }
             return StatusCode.SUCCESS;
 
         } else {
@@ -297,11 +318,11 @@ public class UserService {
 
                 PlayLog playLog = PlayLog.builder()
                         .puser(sUser)
-                        .xp(10) //Dummy Data
+                        .xp(10)
                         .quizId(playLogRequestDTO.getQuizId())
                         .build();
 
-                userRepository.updateXpById(playLogRequestDTO.getUserId(), playLogRequestDTO.getQuizId());
+                userRepository.updateXpById(playLogRequestDTO.getUserId(),10);
 
                 sUser.getPlayLogList().add(playLog);
                 //넣고

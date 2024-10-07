@@ -14,7 +14,6 @@ public class KafkaConsumer {
     private final UserService userService;
     private final ObjectMapper objectMapper;
 
-
     @KafkaListener(topics = "topic-user-updateXP", groupId = "group-user-updateXP")
     public void consume(String kafkaMessage) {
         log.info("Consumed message: {} ", kafkaMessage);

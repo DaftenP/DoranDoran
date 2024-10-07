@@ -37,11 +37,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.gem = u.gem + :gem WHERE u.id = :id")
-    void updateGemById(@Param("id") Integer id, @Param("gem") int gem);
+    int updateGemById(@Param("id") Integer id, @Param("gem") int gem);
 
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.xp = u.xp + :xp WHERE u.id = :id")
-    void updateXpById(@Param("id") Integer id, @Param("xp") int xp);
+    int updateXpById(@Param("id") Integer id, @Param("xp") int xp);
 
 }

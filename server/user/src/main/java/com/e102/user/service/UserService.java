@@ -368,6 +368,7 @@ public class UserService {
                         .itemType(itemRequestDTO.getItemType())
                         .build();
                 if (items.contains(inputKey)) {
+                    sUser.addGem(price * -1);
                     return StatusCode.ALREADY_GET;
                 } else {
                     items.add(inputKey);

@@ -35,8 +35,6 @@ public class UserController {
         } else {
             return ResponseDto.response(statusCode);
         }
-
-
     }
 
     @PostMapping("/login")

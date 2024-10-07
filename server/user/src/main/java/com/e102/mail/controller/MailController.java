@@ -22,7 +22,6 @@ public class MailController {
     @PostMapping("/regist")
     public ResponseEntity<ResponseDto> registerSend(@RequestParam("email") String email) {
         StatusCode statusCode;
-
         if (userService.isUserExists(email)) {
             statusCode = StatusCode.DUPLICATE_EMAIL;
         } else {
@@ -74,10 +73,5 @@ public class MailController {
         return ResponseDto.response(statusCode);
 
     }
-
-
-
-
-
 
 }

@@ -31,12 +31,11 @@ spring:
             enable: 'true'
           timeout: '5000'
           auth: 'true'
-    password: ENC(oMgaQ8k8MORaSQMwQ7htvi3hUTwhe4rdrX3IqkbW7jI=)
+    password: ENC(2q0Pt8bu2W8Vmzn9HPIrKJhKY6ojm756+TPsC8hFR9k=)
   application:
     name: jwt
   datasource:
     password: ENC(1ztXQyCv5zjC8JNxUIoAupi9jxmxc5oN) #root
-
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ENC(65p/O5PVH9wYpofTyi7E6w==) #root
     url: ENC(U1hQY3jJtQTFvdz/MC0wN8m5/cKdzK9Y1auUq7nQ7lGgC4HhWsGVGA==) #jdbc:mysql://localhost:3306/user

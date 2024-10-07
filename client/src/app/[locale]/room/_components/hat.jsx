@@ -64,7 +64,7 @@ function TranslatedHat({ onSelectHat }) {
         );
         setItems(filteredItems);
       })
-      .catch((error) => console.log("오류:", error));
+      .catch();
   }, [apiUrl]);
 
   // 모자 선택 처리 함수
@@ -74,8 +74,6 @@ function TranslatedHat({ onSelectHat }) {
     if (typeof onSelectHat === "function") {
       onSelectHat(newSelectedHat);
     }
-    console.log(`선택된 모자: ${itemId}`);
-    console.log("newSelectedHat:", newSelectedHat);
 
     // 선택된 모자 정보를 서버에 전송
     axios.patch(`${apiUrl}/inventory/equip`, newSelectedHat, {
@@ -83,11 +81,9 @@ function TranslatedHat({ onSelectHat }) {
         withCredentials: true,
       })
       .then((response) => {
-        console.log("패치 응답:", response.data);
+        window.location.reload();
       })
-      .catch((error) => {
-        console.error("선택된 모자 패치 중 오류:", error);
-      });
+      .catch((error) => {});
   };
 
   // 모자 그리드 렌더링

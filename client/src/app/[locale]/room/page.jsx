@@ -69,7 +69,7 @@ function TranslatedBottom() {
 
       {/* 나의 캐릭터 */}
       <div className="w-full h-[32%] flex justify-center items-center">
-        <Character selectedCharacter={selectedCharacter} />
+        <Character />
       </div>
 
       {/* 메뉴 탭 */}

@@ -6,17 +6,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
 @Builder
-public class League {
+public class LeagueLog {
     @Id
     @Column(name = "league_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +33,6 @@ public class League {
     @Column(name = "league_num", nullable = false)
     private Integer num;
 
-    public void updateRank(int i) {
-        this.rank = i;
-    }
+    @OneToMany(mappedBy = "leagueLog")
+    private List<LeagueMemberLog> leagueMemberLogs = new ArrayList<>();
 }

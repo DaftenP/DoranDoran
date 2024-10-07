@@ -58,7 +58,9 @@ func BuyItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := service.GetRandomItem(strconv.Itoa(randomItemRequestFromClient.ItemType))
+	var itemType string = strconv.Itoa(randomItemRequestFromClient.ItemType)
+
+	resp, err := service.GetRandomItem(itemType)
 	if err != nil {
 		fmt.Println(err)
 		fmt.Println("error in GetRandomItem")
@@ -90,7 +92,39 @@ func BuyItem(w http.ResponseWriter, r *http.Request) {
 
 	itemId := randomItemResponseFromMSA.Data.Chosen
 
-	resp, err = service.BuyItemService(userIdInt, randomItemRequestFromClient.ItemType, itemId)
+	resp, err = service.GetItemSpec(itemType, strconv.Itoa(itemId))
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("error in GetItemSpec")
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		w.WriteHeader(resp.StatusCode)
+		return
+	}
+
+	var itemInfoResponseFromMSA model.ItemInfoResponseFromMSA
+	body, err = io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("error in io.ReadAll")
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	err = json.Unmarshal(body, &itemInfoResponseFromMSA)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("error in json.Unmarshal")
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	var itemPrice int = itemInfoResponseFromMSA.Data.Price
+
+	resp, err = service.BuyItemService(userIdInt, randomItemRequestFromClient.ItemType, itemId, itemPrice)
 	if err != nil {
 		fmt.Println(err)
 		fmt.Println("error in BuyItemService")

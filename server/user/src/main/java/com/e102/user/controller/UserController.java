@@ -83,25 +83,25 @@ public class UserController {
         return ResponseDto.response(statusCode);
     }
 
-    @PostMapping("/creditLog")
+    @PostMapping("/credit-log")
     public ResponseEntity<ResponseDto> insertCLog(@RequestBody CreditLogRequestDTO creditLogRequestDTO) {
         StatusCode statusCode = userService.insertCreditLog(creditLogRequestDTO);
         return ResponseDto.response(statusCode);
     }
 
-    @GetMapping("/creditLog/{userId}")
+    @GetMapping("/credit-log/{userId}")
     public ResponseEntity<ResponseDto> getAllCLog(@PathVariable("userId") int userId) {
         List<CreditLogResponseDTO> lst = userService.getAllCreditLog(userId);
         return ResponseDto.response(StatusCode.SUCCESS,lst);
     }
 
-    @PostMapping("/playLog")
+    @PostMapping("/play-log")
     public ResponseEntity<ResponseDto> insertPLog(@RequestBody PlayLogRequestDTO playLogRequestDTO) {
         StatusCode statusCode = userService.insertPlayLog(playLogRequestDTO);
         return ResponseDto.response(statusCode);
     }
 
-    @GetMapping("/playLog/{userId}")
+    @GetMapping("/play-log/{userId}")
     public ResponseEntity<ResponseDto> getAllPLog(@PathVariable("userId") int userId) {
         List<PlayLogResponseDTO> lst = userService.getAllPlayLog(userId);
         return ResponseDto.response(StatusCode.SUCCESS, lst);

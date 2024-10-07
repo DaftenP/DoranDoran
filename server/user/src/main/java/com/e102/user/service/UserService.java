@@ -356,19 +356,25 @@ public class UserService {
 
     public StatusCode buyItem(ItemRequestDTO itemRequestDTO){
         User sUser = userRepository.findById(itemRequestDTO.getUserId());
+        int price = itemRequestDTO.getPrice();
+
         if(sUser != null){
-            Set<ItemKey> items = sUser.getItems();
-            ItemKey inputKey =  ItemKey.builder()
-                    .itemId(itemRequestDTO.getItemId())
-                    .itemType(itemRequestDTO.getItemType())
-                    .build();
-            if(items.contains(inputKey)){
-                return StatusCode.ALREADY_GET;
-            }
-            else{
-                items.add(inputKey);
-                //해당하는 아이템에 넣는다.
-                return StatusCode.SUCCESS;
+            if (price > sUser.getGem()) {
+                return StatusCode.NOT_ENOUGH_MONEY;
+            } else {
+                Set<ItemKey> items = sUser.getItems();
+                ItemKey inputKey = ItemKey.builder()
+                        .itemId(itemRequestDTO.getItemId())
+                        .itemType(itemRequestDTO.getItemType())
+                        .build();
+                if (items.contains(inputKey)) {
+                    return StatusCode.ALREADY_GET;
+                } else {
+                    items.add(inputKey);
+                    //해당하는 아이템에 넣는다.
+                    sUser.addGem(price * -1);
+                    return StatusCode.SUCCESS;
+                }
             }
         }
         else{

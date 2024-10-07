@@ -29,7 +29,8 @@ public enum StatusCode {
     LOG_REGISTER(HttpStatus.OK,"문제가 등록되었습니다."),
     MISSION_DONE(HttpStatus.METHOD_NOT_ALLOWED,"오늘의 미션을 진행 완료하셨습니다."),
     DAILY_CLEARED(HttpStatus.OK,"오늘의 미션을 클리어 하였습니다."),
-    ALREADY_GET(HttpStatus.BAD_REQUEST,"이미 가지고 있는 상품입니다.");
+    ALREADY_GET(HttpStatus.BAD_REQUEST, "이미 가지고 있는 상품입니다."),
+    NOT_ENOUGH_MONEY(HttpStatus.BAD_REQUEST, "돈이 부족합니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

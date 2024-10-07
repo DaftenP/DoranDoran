@@ -4,21 +4,19 @@ import { useState, useEffect } from "react";
 import { useLocale, NextIntlClientProvider } from "next-intl";
 import axios from "axios";
 import Image from "next/image";
-import bird1 from "@/public/shop-bird/bird (1).webp";
-import bird2 from "@/public/shop-bird/bird (2).webp";
-import bird3 from "@/public/shop-bird/bird (3).webp";
-import bird4 from "@/public/shop-bird/bird (4).webp";
-import bird5 from "@/public/shop-bird/bird (5).webp";
-import bird6 from "@/public/shop-bird/bird (6).webp";
-import bird7 from "@/public/shop-bird/bird (7).webp";
-import bird8 from "@/public/shop-bird/bird (8).webp";
-import bird9 from "@/public/shop-bird/bird (9).webp";
-import bird10 from "@/public/shop-bird/bird (10).webp";
-import bird11 from "@/public/shop-bird/bird (11).webp";
 
 const birdImages = {
-  1: bird1, 2: bird2, 3: bird3, 4: bird4, 5: bird5,
-  6: bird6, 7: bird7, 8: bird8, 9: bird9, 10: bird10, 11: bird11,
+  1: "https://ssafy-tailored.b-cdn.net/shop/bird/1.webp",
+  2: "https://ssafy-tailored.b-cdn.net/shop/bird/2.webp",
+  3: "https://ssafy-tailored.b-cdn.net/shop/bird/3.webp",
+  4: "https://ssafy-tailored.b-cdn.net/shop/bird/4.webp",
+  5: "https://ssafy-tailored.b-cdn.net/shop/bird/5.webp",
+  6: "https://ssafy-tailored.b-cdn.net/shop/bird/6.webp",
+  7: "https://ssafy-tailored.b-cdn.net/shop/bird/7.webp",
+  8: "https://ssafy-tailored.b-cdn.net/shop/bird/8.webp",
+  9: "https://ssafy-tailored.b-cdn.net/shop/bird/9.webp",
+  10: "https://ssafy-tailored.b-cdn.net/shop/bird/10.webp",
+  11: "https://ssafy-tailored.b-cdn.net/shop/bird/11.webp",
 };
 
 export default function Color({ onSelectCharacter }) {
@@ -49,7 +47,6 @@ function TranslatedColor({ onSelectCharacter }) {
         withCredentials: true,
       })
       .then((response) => {
-        // itemType이 1인 아이템만 필터링 (캐릭터)
         const filteredItems = response.data.data.filter(
           (item) => item.itemType === 1
         );
@@ -87,7 +84,7 @@ function TranslatedColor({ onSelectCharacter }) {
           >
             {item && (
               <div className="w-full h-full flex items-center justify-center">
-                <Image src={birdImages[item.itemId]} alt="캐릭터" className="w-auto h-[90%]" />
+                <Image src={birdImages[item.itemId]} alt="캐릭터" width={200} height={100} className="w-auto h-[90%]" />
               </div>
             )}
           </div>

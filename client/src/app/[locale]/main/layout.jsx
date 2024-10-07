@@ -10,13 +10,13 @@ export default function Layout({ children }) {
       case 1:
         return "https://ssafy-tailored.b-cdn.net/shop/bg/day.webp";
       case 2:
-        return "https://ssafy-tailored.b-cdn.net/shop/bg/launch.webp";
-      case 3:
         return "https://ssafy-tailored.b-cdn.net/shop/bg/day-blue.webp";
+      case 3:
+        return "https://ssafy-tailored.b-cdn.net/shop/bg/launch.webp";
       case 4:
-        return "https://ssafy-tailored.b-cdn.net/shop/bg/night-blue.webp";
-      case 5:
         return "https://ssafy-tailored.b-cdn.net/shop/bg/launch-blue.webp";
+      case 5:
+        return "https://ssafy-tailored.b-cdn.net/shop/bg/night-blue.webp";
       default:
         return "https://ssafy-tailored.b-cdn.net/shop/bg/day.webp"; // 기본 배경 이미지
     }

@@ -1,27 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '@/utils/apiClient';
-import { updateColor, updateEquipment } from '@/store/user'
+import { updateGem } from '@/store/user'
 
 export const buyItem = createAsyncThunk(
   'shop/buyItem',
-  async ({ itemType, itemId }, thunkAPI) => {
+  async ({ itemType }, thunkAPI) => {
     try {
       const apiUrl = '/store/item/buy'
 
-      const response = await apiClient.post(apiUrl, { itemType, itemId }, {
+      const response = await apiClient.post(apiUrl, { itemType }, {
         headers: {
           'Content-Type': 'application/json',
         },
         withCredentials: true,
       });
 
-      // if (itemType === 1) {
-      //   // Color 업데이트
-      //   thunkAPI.dispatch(updateColor(itemId)); // Color에 itemId를 넣음
-      // } else if (itemType === 2) {
-      //   // Equipment 업데이트
-      //   thunkAPI.dispatch(updateEquipment(itemId)); // Equipment에 itemId를 넣음
-      // }
+      if (itemType === 1) {
+        // Gem 업데이트
+        thunkAPI.dispatch(updateGem(600));
+      } else if (itemType === 2) {
+        thunkAPI.dispatch(updateGem(400));
+      } else if (itemType === 3) {
+        thunkAPI.dispatch(updateGem(900));
+      }
       return response.data;
     } catch (error) {
       console.log(error)

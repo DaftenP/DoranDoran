@@ -109,13 +109,11 @@ const userSlice = createSlice({
   isChange: false,
   initialState,
   reducers: {
-    // 색상 업데이트 리듀서
-    updateColor: (state, action) => {
-      state.profile.color = action.payload;
+    updateGem: (state, action) => {
+      state.status.gem += action.payload;
     },
-    // 장비 업데이트 리듀서
-    updateEquipment: (state, action) => {
-      state.profile.equipment = action.payload;
+    updateXp: (state, action) => {
+      state.status.xp += action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -193,6 +191,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { updateColor, updateEquipment } = userSlice.actions;
+export const { updateGem, updateColor } = userSlice.actions;
 
 export default userSlice.reducer;

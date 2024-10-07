@@ -43,17 +43,26 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
   const [modalMessage, setModalMessage] = useState(null)
   const [isBuy, setIsBuy] = useState(false)
   // 현재 [itemType, itemId] 형식으로 저장 중
-  const [itemInfo, setItemInfo] = useState([])
+  const [currentItem, setCurrentItem] = useState([])
   const router = useRouter()
   const locale = useLocale()
 
-  const handleBuyItem = ((itemType, itemId) => {
-    dispatch(buyItem({ itemType, itemId }))
+  const handleBuyItem = ((itemType) => {
+    dispatch(buyItem({ itemType }))
     .unwrap()
-    .then(() => {
-      setIsBuy(true)
-      setModalMessage(modalMessages[3]); // 구매 성공 메시지
-      setIsOpenModal(true);
+    .then((response) => {
+      console.log(response)
+      if (response.message === '이미 가지고 있는 상품입니다.') {
+        const duplicationMessage = { ...modalMessages[5], imageUrl: [itemType, response.data] }
+        setIsBuy(true)
+        setModalMessage(duplicationMessage); // 구매 중복 메시지
+        setIsOpenModal(true);  
+      } else {
+        const successMessage = { ...modalMessages[3], imageUrl: [itemType, response.data] }
+        setIsBuy(true)
+        setModalMessage(successMessage); // 구매 성공 메시지
+        setIsOpenModal(true);
+      }
     })
     .catch(() => {
       setIsBuy(false)
@@ -65,7 +74,7 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
   const handleYesClick = (buttonLink) => {
     if (isBuy === false) {
       setIsOpenModal(false)
-      handleBuyItem(itemInfo[0], itemInfo[1])
+      handleBuyItem(currentItem[0])
     } else {
       setIsOpenModal(false)
       router.push(`/${locale}/${buttonLink}`)
@@ -73,9 +82,9 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
     }
   }
 
-  const handleOpenModal = (itemType, itemId) => {
+  const handleOpenModal = (itemType) => {
+    setCurrentItem([itemType, 0])
     setModalMessage(modalMessages[itemType-1])
-    setItemInfo([itemType, itemId])
     setIsOpenModal(true)
   }
 
@@ -88,6 +97,7 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
     // 색 구매 물어보는 메세지
     {
       'message': 'would-you-like-to-purchase-random-color?',
+      'image': 'color',
       'background': 'bird',
       'buttonLink': 'store',
       'buttonType': 1
@@ -95,6 +105,7 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
     // 장비 구매 물어보는 메세지
     {
       'message': 'would-you-like-to-purchase-random-equipment?',
+      'image': 'equipment',
       'background': 'bird',
       'buttonLink': 'store',
       'buttonType': 1
@@ -102,13 +113,16 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
     // 배경 구매 물어보는 메세지
     {
       'message': 'would-you-like-to-purchase-random-background?',
+      'image': 'background',
       'background': 'bird',
       'buttonLink': 'store',
       'buttonType': 1
     },
     // 구매 성공 메세지
     {
-      'message': 'your-purchase-was-successful-would-you-like-to-go-to-the-store?',
+      'message': 'your-purchase-was-successful-would-you-like-to-go-to-the-dressing-room?',
+      'image': 'response',
+      'imageUrl': '',
       'background': 'bird',
       'buttonLink': 'room',
       'buttonType': 1
@@ -120,16 +134,16 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
       'buttonLink': 'store',
       'buttonType': 2
     },
+    // 중복 구매 메세지
+    {
+      'message': 'a-duplicate-item-has-appeared!-would-you-like-to-go-to-the-dressing-room?',
+      'image': 'response',
+      'imageUrl': '',
+      'background': 'bird',
+      'buttonLink': 'room',
+      'buttonType': 1
+    },
   ]
-
-  let itemId
-  if (itemType === 1) {
-    itemId = Math.floor(Math.random() * 11) + 1;
-  } else if (itemType === 2) {
-    itemId = Math.floor(Math.random() * 15) + 1;
-  } else if (itemType === 3) {
-    itemId = Math.floor(Math.random() * 5) + 1;
-  }
 
   return (
     <div className={`${itemType === 1 || itemType === 2 || itemType === 3 ? '' : 'opacity-30 pointer-events-none'}`}>
@@ -146,7 +160,7 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
             <Image src={Credit} alt="credit" className="w-auto h-[110%] left-[0%] absolute" />
             <div className="text-white" >{itemCost}</div>
           </div>
-          <div onClick={itemType === 1 || itemType === 2 || itemType === 3 ? () => handleOpenModal(itemType, itemId) : null} 
+          <div onClick={itemType === 1 || itemType === 2 || itemType === 3 ? () => handleOpenModal(itemType) : null} 
              className="absolute bottom-[0%] text-black cursor-pointer">
           {t('purchase')}
           </div>

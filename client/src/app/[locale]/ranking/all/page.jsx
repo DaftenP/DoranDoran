@@ -7,9 +7,7 @@ import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useRef } from 'react';
 import RankListAll from '../_components/ranklist-all';
-import { fetchRankList, setRankList } from '@/store/ranking';
-import Bird2 from "@/public/shop-bird/bird (2).webp";
-
+import { fetchRankList, setRankList } from '@/store/ranking'
 
 export default function Rank() {
   const [messages, setMessages] = useState(null);
@@ -123,8 +121,10 @@ function Ranklist() {
         <article className="h-[25%] relative flex justify-center items-end">
           <div className="w-[25%] h-[85%] grid place-items-center bg-[#d9d9d9] rounded-tl-[10px] rounded-tr-[10px]">
             <Image
-              src={Bird2}
+              src={"https://ssafy-tailored.b-cdn.net/shop/bird/2.webp"}
               alt="bird2"
+              width={200}
+              height={100}
               className="w-[auto] h-[30%] bottom-[85%] absolute"
             />
             <div>
@@ -137,8 +137,10 @@ function Ranklist() {
           </div>
           <div className="w-[25%] h-[100%] grid place-items-center text-center bg-[#f8d87b] rounded-tl-[10px] rounded-tr-[10px] mx-[2%]">
             <Image
-              src={Bird2}
+              src={"https://ssafy-tailored.b-cdn.net/shop/bird/2.webp"}
               alt="bird2"
+              width={200}
+              height={100}
               className="w-[auto] h-[30%] bottom-[100%] absolute"
             />
             <div>
@@ -151,8 +153,10 @@ function Ranklist() {
           </div>
           <div className="w-[25%] h-[70%] grid place-items-center text-center bg-[#e8a57e] rounded-tl-[10px] rounded-tr-[10px]">
             <Image
-              src={Bird2}
+              src={"https://ssafy-tailored.b-cdn.net/shop/bird/2.webp"}
               alt="bird2"
+              width={200}
+              height={100}
               className="w-[auto] h-[30%] bottom-[70%] absolute"
             />
             <div>

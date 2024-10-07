@@ -44,9 +44,9 @@ function TranslatedStorelist() {
 
   const items = [
     { itemType: 0, itemName: t('character'), itemIcon: ShopCharacter, itemCost: '500' },
-    { itemType: 1, itemName: t('color'), itemIcon: ShopColor, itemCost: '500' },
-    { itemType: 2, itemName: t('equipment'), itemIcon: ShopEquipment, itemCost: '500' },
-    { itemType: 3, itemName: t('background'), itemIcon: ShopBackground, itemCost: '500' },
+    { itemType: 1, itemName: t('color'), itemIcon: ShopColor, itemCost: '600' },
+    { itemType: 2, itemName: t('equipment'), itemIcon: ShopEquipment, itemCost: '400' },
+    { itemType: 3, itemName: t('background'), itemIcon: ShopBackground, itemCost: '900' },
     { itemType: 4, itemName: t('item'), itemIcon: ShopItem, itemCost: '500' },
     { itemType: 5, itemName: t('gambling'), itemIcon: ShopGambling, itemCost: '500' },
   ];

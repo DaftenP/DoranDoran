@@ -196,6 +196,7 @@
     "you-cannot-proceed-with-free-talking-you-don't-have-enough-speakers": "你无法进行自由对话。你没有足够的扬声器",
     "you-don't-have-enough-credits": "你没有足够的积分",
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "你之前有关于这个话题的对话。你想从上次中断的地方继续吗？",
-    "your-purchase-was-successful-would-you-like-to-go-to-the-store?": "您的购买已成功。您想去商店吗?"
+    "your-purchase-was-successful-would-you-like-to-go-to-the-dressing-room?": "您的购买已成功。您想去更衣室吗?",
+    "a-duplicate-item-has-appeared!-would-you-like-to-go-to-the-dressing-room?": "出现了重复的物品！您想去更衣室吗？"
   }
 }

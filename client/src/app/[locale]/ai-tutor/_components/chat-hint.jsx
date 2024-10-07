@@ -9,7 +9,6 @@ import Image from 'next/image'
 import Play1 from '@/public/icon/play1.webp'
 import Play2 from '@/public/icon/play2.webp'
 import Translation from '@/public/icon/translation.webp'
-import Bird2 from '@/public/shop-bird/bird (7).webp'
 
 export default function ChatHint ({ index, message }) {
   const [messages, setMessages] = useState(null);
@@ -77,7 +76,7 @@ function TranslatedChatHint({ index, message }) {
 
   return (
     <div className='flex items-center m-[2vh]'>
-      <Image src={Bird2} alt="bird_icon" className="w-11 h-11 md:w-16 md:h-16 lg:w-20 lg:h-20 mr-1" />
+      <Image src={"https://ssafy-tailored.b-cdn.net/shop/bird/7.webp"} alt="bird_icon" width={200} height={100} className="w-11 h-11 md:w-16 md:h-16 lg:w-20 lg:h-20 mr-1" />
       <div className='rounded-[3vh] min-w-[40vw] max-w-[70vw] bg-[#DFF8E1]/90 border border-[#A8D5B6]/90 text-md md:text-2xl lg:text-4xl p-[2vh]'>
         {isTranslate ? (
           <div>

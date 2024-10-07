@@ -196,6 +196,7 @@
     "you-cannot-proceed-with-free-talking-you-don't-have-enough-speakers": "You cannot proceed with free talking. You don't have enough Speakers",
     "you-don't-have-enough-credits": "You don't have enough credits",
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "You have a previous conversation on this topic. Would you like to pick up where you left off?",
-    "your-purchase-was-successful-would-you-like-to-go-to-the-store?": "Your purchase was successful. Would you like to go to the store?"
+    "your-purchase-was-successful-would-you-like-to-go-to-the-dressing-room?": "Your purchase was successful. Would you like to go to the Dressing room?",
+    "a-duplicate-item-has-appeared!-would-you-like-to-go-to-the-dressing-room?": "A duplicate item has appeared! Would you like to go to the Dressing room?"
   }
 }

@@ -196,6 +196,7 @@
     "you-cannot-proceed-with-free-talking-you-don't-have-enough-speakers": "Вы не можете продолжить свободное общение. У вас недостаточно динамиков",
     "you-don't-have-enough-credits": "У вас недостаточно кредитов",
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "У вас есть предыдущий разговор на эту тему. Хотите продолжить с того места, где вы остановились?",
-    "your-purchase-was-successful-would-you-like-to-go-to-the-store?": "Ваша покупка прошла успешно. Хотите перейти в магазин?"
+    "your-purchase-was-successful-would-you-like-to-go-to-the-dressing-room?": "Ваша покупка прошла успешно. Хотите перейти в примерочную?",
+    "a-duplicate-item-has-appeared!-would-you-like-to-go-to-the-dressing-room?": "Появился дублирующийся предмет! Хотите перейти в примерочную?"
   }
 }

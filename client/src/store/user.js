@@ -74,11 +74,11 @@ const userSlice = createSlice({
   isChange: false,
   initialState,
   reducers: {
-    updateColor: (state, action) => {
-      state.profile.color = action.payload;
+    updateGem: (state, action) => {
+      state.status.gem += action.payload;
     },
-    updateEquipment: (state, action) => {
-      state.profile.equipment = action.payload;
+    updateXp: (state, action) => {
+      state.status.xp += action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -128,6 +128,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { updateColor, updateEquipment } = userSlice.actions;
+export const { updateGem, updateColor } = userSlice.actions;
 
 export default userSlice.reducer;

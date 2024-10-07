@@ -9,7 +9,7 @@ import { buyItem } from '@/store/shop'
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import Credit from "@/public/icon/credit.webp";
 
-export default function Itemlist({ itemType, itemName, itemIcon, itemCost }) {
+export default function Itemlist({ setBuyComplete, itemType, itemName, itemIcon, itemCost }) {
   const [messages, setMessages] = useState(null);
   const locale = useLocale()
 
@@ -31,12 +31,12 @@ export default function Itemlist({ itemType, itemName, itemIcon, itemCost }) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedItemlist itemType={itemType} itemName={itemName} itemIcon={itemIcon} itemCost={itemCost} />
+      <TranslatedItemlist setBuyComplete={setBuyComplete} itemType={itemType} itemName={itemName} itemIcon={itemIcon} itemCost={itemCost} />
     </NextIntlClientProvider>
   );
 }
 
-function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
+function TranslatedItemlist({ setBuyComplete, itemType, itemName, itemIcon, itemCost }) {
   const t = useTranslations('index');
   const dispatch = useDispatch()
   const [isOpenModal, setIsOpenModal] = useState(false)
@@ -51,7 +51,11 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
     dispatch(buyItem({ itemType }))
     .unwrap()
     .then((response) => {
-      console.log(response)
+      const audio = new Audio('/bgm/coin-drop.mp3')
+      audio.play();
+
+      setBuyComplete(true)
+
       if (response.message === '이미 가지고 있는 상품입니다.') {
         const duplicationMessage = { ...modalMessages[5], imageUrl: [itemType, response.data] }
         setIsBuy(true)
@@ -75,10 +79,12 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
     if (isBuy === false) {
       setIsOpenModal(false)
       handleBuyItem(currentItem[0])
+      setBuyComplete(false)
     } else {
       setIsOpenModal(false)
       router.push(`/${locale}/${buttonLink}`)
       setIsBuy(false)
+      setBuyComplete(false)
     }
   }
 
@@ -91,6 +97,7 @@ function TranslatedItemlist({ itemType, itemName, itemIcon, itemCost }) {
   const handleCloseModal = () => {
     setIsOpenModal(false)
     setIsBuy(false)
+    setBuyComplete(false)
   }
 
   const modalMessages = [

@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -31,13 +33,14 @@ public class KafkaConsumer {
     }
 
     @KafkaListener(topics="topic-rank-placement", groupId="group-rank-placement")
-    public void consumePlacement(String userId){
-        log.info("Consumed message: {}", userId);
+    public void consumePlacement(String placementMessage){
+        log.info("Consumed message: {}", placementMessage);
 
         try {
-            rankService.placement(Long.parseLong(userId));
+            Map<String, String> message = objectMapper.readValue(placementMessage, Map.class);
+            rankService.placement(Long.parseLong(message.get("userId")));
         } catch (Exception e) {
-            log.error("Error occurred while consuming message: {}", userId);
+            log.error("Error occurred while consuming message: {}", placementMessage);
         }
     }
 }

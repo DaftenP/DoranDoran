@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image'
 import BankEmployee from '@/public/job/bank-employee.webp'
@@ -44,6 +45,7 @@ export default function PeopleList () {
 
 function TranslatedPeopleList() {
   const t = useTranslations('index');
+  const router = useRouter()
   const peopleArray = [
     {
       'rule': '1',
@@ -97,6 +99,12 @@ function TranslatedPeopleList() {
     setSelectedIndex(index)
   })
 
+  const handleGoTopic = (index) => {
+    const audio = new Audio('/bgm/pencil_check_mark.mp3')
+    audio.play();
+    router.push(`ai-tutor/${index}`)
+  }
+ 
   return (
     <div>
       {peopleArray.map((item, index) => (
@@ -127,11 +135,11 @@ function TranslatedPeopleList() {
                   transition={{ duration: 0.2 }}
                   className="absolute right-5 -translate-y-1/2"
                 >
-                  <Link href={`ai-tutor/${index}`}>
+                  <div onClick={() => handleGoTopic(index)}>
                     <button className="text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1 cursor-pointer">
                       {t('next')}
                     </button>
-                  </Link>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>

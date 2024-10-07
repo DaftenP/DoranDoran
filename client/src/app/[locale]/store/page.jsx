@@ -11,35 +11,38 @@ import ShopEquipment from "@/public/icon2/shop-equipment.webp";
 import ShopBackground from "@/public/icon2/shop-background.webp";
 import ShopItem from "@/public/icon2/shop-item.webp";
 import ShopGambling from "@/public/icon2/shop-gambling.webp";
+import Confetti from "react-confetti";
 
 export default function Store() {
-    const [messages, setMessages] = useState(null);
-    const locale = useLocale();
+  const [messages, setMessages] = useState(null);
+  const locale = useLocale();
+  const [buyComplete, setBuyComplete] = useState(false)
   
-    useEffect(() => {
-      async function loadMessages() {
-        try {
-          const loadedMessages = await import(`messages/${locale}.json`);
-          setMessages(loadedMessages.default); // 메시지 로드
-        } catch (error) {
-          console.error(`Failed to load messages for locale: ${locale}`);
-        }
+  useEffect(() => {
+    async function loadMessages() {
+      try {
+        const loadedMessages = await import(`messages/${locale}.json`);
+        setMessages(loadedMessages.default); // 메시지 로드
+      } catch (error) {
+        console.error(`Failed to load messages for locale: ${locale}`);
       }
-      loadMessages();
-    }, [locale]);
-
-    if (!messages) {
-      return <div>Loading...</div>; // 메시지가 로드될 때까지 로딩 표시
     }
-  
-    return (
-      <NextIntlClientProvider locale={locale} messages={messages}>
-        <TranslatedStorelist />
-      </NextIntlClientProvider>
-    );
-  }
+    loadMessages();
+  }, [locale]);
 
-function TranslatedStorelist() {
+  if (!messages) {
+    return <div>Loading...</div>; // 메시지가 로드될 때까지 로딩 표시
+  }
+  
+  return (
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <TranslatedStorelist setBuyComplete={setBuyComplete} />
+      {buyComplete && <Confetti />}
+    </NextIntlClientProvider>
+  );
+}
+
+function TranslatedStorelist({ setBuyComplete }) {
   const t = useTranslations('index');
 
   const items = [
@@ -53,6 +56,7 @@ function TranslatedStorelist() {
 
   return (
     <div className="w-[100vw] h-[100vh] relative">
+      {/* {buyComplete && <Confetti />} */}
       <section className="w-[90vw] h-[75vh] top-[10%] left-[5%] absolute bg-[#D9D9D9] bg-opacity-[30%] rounded-[20px] border-[3px] border-[#ffffff]">
         <Image
           src={Signs}
@@ -71,6 +75,7 @@ function TranslatedStorelist() {
               itemIcon={item.itemIcon} 
               itemCost={item.itemCost}
               itemType={item.itemType}
+              setBuyComplete={setBuyComplete} 
             />
           ))}
         </article>

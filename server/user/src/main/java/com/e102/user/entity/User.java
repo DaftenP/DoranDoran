@@ -55,7 +55,7 @@ public class User {
     private int color = 1;
 
     @Column(name = "user_equipment", nullable = true)
-    private int equipment = 1;
+    private int equipment = 0;
 
     @Column(name = "user_background", nullable = true)
     private int background = 1;

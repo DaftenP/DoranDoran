@@ -68,9 +68,7 @@ function TranslatedBackground({ onSelectBackground }) {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
-      .then((response) => {
-        window.location.reload();
-      })
+      .then((response) => {})
       .catch((error) => {});
   };
 

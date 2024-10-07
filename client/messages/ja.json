@@ -196,6 +196,7 @@
     "you-cannot-proceed-with-free-talking-you-don't-have-enough-speakers": "フリートーキングを続行できません。スピーカーが足りません",
     "you-don't-have-enough-credits": "クレジットが足りません",
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "このトピックに関する以前の会話があります。中断したところから再開しますか？",
-    "your-purchase-was-successful-would-you-like-to-go-to-the-store?": "購入が完了しました。ストアに移動しますか?"
+    "your-purchase-was-successful-would-you-like-to-go-to-the-store?": "購入が完了しました。ストアに移動しますか?",
+    "password-change-error": "パスワード変更エラー"
   }
 }

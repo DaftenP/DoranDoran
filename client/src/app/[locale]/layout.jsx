@@ -1,8 +1,8 @@
 'use client'
 
+import "./globals.css";
 import { useEffect, useRef } from "react";
 import { useLocale } from "next-intl";
-import "./globals.css";
 import AuthWrapper from "./AuthWrapper";
 import { ReduxProvider } from "./providers";
 import { usePathname } from "next/navigation";

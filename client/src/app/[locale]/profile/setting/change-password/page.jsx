@@ -45,24 +45,12 @@ function TranslatedInformation() {
     }
     // API를 통해 비밀번호 변경 요청
     axios.patch(`${apiUrl}/my-page/password`,
-        {
-          prevPassword: currentPassword, 
-          modPassword: newPassword
-        },
-        {
-          headers: {"Content-Type": "application/json"},
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        localStorage.getItem("accessToken", accessToken);
-        console.warn("성공:", response)
-        router.back();
-      })
-      .catch((error) => {
-        console.warn("실패:", error);
-        setError(t("password-change-error"));
-      });
+      { prevPassword: currentPassword,  modPassword: newPassword },
+      { headers: {"Content-Type": "application/json"}, withCredentials: true }
+    )
+      .then((response) => { router.back() })
+      .catch((error) => { setError(t("password-change-error")) }
+    );
   };
 
   return (

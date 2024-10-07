@@ -196,6 +196,7 @@
     "you-cannot-proceed-with-free-talking-you-don't-have-enough-speakers": "스피커가 부족하여 자유 대화를 진행할 수 없습니다.",
     "you-don't-have-enough-credits": "크레딧이 부족합니다.",
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "이 주제에 대해 이전 대화가 있습니다. 이전 위치에서 계속하시겠습니까?",
-    "your-purchase-was-successful-would-you-like-to-go-to-the-store?": "구매가 완료되었습니다. 상점으로 이동하시겠습니까?"
+    "your-purchase-was-successful-would-you-like-to-go-to-the-store?": "구매가 완료되었습니다. 상점으로 이동하시겠습니까?",
+    "password-change-error": "비밀번호 변경 오류"
   }
 }

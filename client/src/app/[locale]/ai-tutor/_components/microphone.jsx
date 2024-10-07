@@ -204,6 +204,8 @@ export default function Microphone({ handleListening, onRecordingComplete, param
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
+        const audio = new Audio('/bgm/message-incoming.mp3')
+        audio.play();
         const messageContent = recordMessageRef.current || 'Please speak';
         dispatch(addMyMessage({ content: messageContent, score: response.data.pronunciation }));
         dispatch(addSimpleMyMessage({ content: messageContent }));

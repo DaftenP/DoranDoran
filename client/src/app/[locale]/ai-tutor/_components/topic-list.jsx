@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'
+import { useRouter } from 'next/navigation';
+import user from '@/store/user';
 
 export default function TopicList ({ params }) {
   const [messages, setMessages] = useState(null);
@@ -34,6 +36,7 @@ export default function TopicList ({ params }) {
 
 function TranslatedTopicList({ params }) {
   const t = useTranslations('index');
+  const router = useRouter()
   const people = params.people
 
   const topicArray = {
@@ -106,6 +109,12 @@ function TranslatedTopicList({ params }) {
   const handleTopicClick = ((index) => {
     setSelectedIndex(index)
   })
+
+  const handleGoTalking = (people, index) => {
+    const audio = new Audio('/bgm/pencil_check_mark.mp3')
+    audio.play();
+    router.push(`${people}/${index}`)
+  }
   
   return (
     <div>
@@ -136,11 +145,11 @@ function TranslatedTopicList({ params }) {
                   transition={{ duration: 0.3 }}
                   className="absolute right-5 -translate-y-1/2"
                 >
-                  <Link href={`${people}/${index}`}>
+                  <div onClick={() => handleGoTalking(people, index)}>
                     <button className="text-white bg-[#1F7EFA] rounded-3xl text-xxl md:text-4xl lg:text-6xl pr-5 pl-5 pt-1 pb-1 cursor-pointer">
                       {t('next')}
                     </button>
-                  </Link>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>

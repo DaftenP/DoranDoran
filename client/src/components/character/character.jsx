@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fetchUserData } from "@/store/user";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocale, NextIntlClientProvider } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
@@ -21,45 +23,50 @@ const birdImages = {
   7: bird7, 8: bird8, 9: bird9, 10: bird10, 11: bird11,
 };
 
-export default function Character({ selectedCharacter }) {
+export default function Character() {
   const [messages, setMessages] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const locale = useLocale();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function loadMessages() {
       try {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default);
-      } catch (error) {}
+      } catch (error) {
+        console.error("Failed to load messages:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
     loadMessages();
-  }, [locale]);
 
-  if (!messages) {
-    return <div>Loading...</div>;
-  }
+    dispatch(fetchUserData());
+  }, [locale, dispatch]);
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedCharacter
-        locale={locale}
-        selectedCharacter={selectedCharacter}
-      />
+      {isLoading ? (
+        <div className="w-[50%] aspect-square flex items-center justify-center md:w-[60%] md:aspect-[4/3]">
+          <p>loading...</p>
+        </div>
+      ) : (
+        <TranslatedCharacter />
+      )}
     </NextIntlClientProvider>
   );
 }
 
-function TranslatedCharacter({ selectedCharacter }) {
+function TranslatedCharacter() {
   const locale = useLocale();
-  const characterImage = 
-    selectedCharacter && selectedCharacter.itemId ? birdImages[selectedCharacter.itemId] : bird1;
+  const user = useSelector((state) => state.user);
+  const colorNumber = user.profile.color;
+  const characterImage = (colorNumber && birdImages[colorNumber]) || bird1;
 
   return (
     <div className="w-[50%] aspect-square flex items-center justify-center md:w-[60%] md:aspect-[4/3]">
-      <Link
-        href={`/${locale}/room`}
-        className="w-full h-full flex items-center justify-center"
-      >
+      <Link href={`/${locale}/room`} className="w-full h-full flex items-center justify-center">
         <div className="relative flex items-center justify-center">
           <Image
             src={characterImage}

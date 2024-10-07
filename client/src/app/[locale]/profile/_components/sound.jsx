@@ -60,6 +60,25 @@ function TranslatedSound() {
                   background: `linear-gradient(to right, #FFE4B5 0%, #FFE4B5 ${volume}%, #FFFBF2 ${volume}%, #FFFBF2 100%)`,
                 }}
               />
+              <style jsx>{`
+                input[type="range"]::-webkit-slider-thumb {
+                  -webkit-appearance: none;
+                  appearance: none;
+                  width: 20px;
+                  height: 20px;
+                  background: #FFE4B5;
+                  cursor: pointer;
+                  border-radius: 50%;
+                }
+                input[type="range"]::-moz-range-thumb {
+                  width: 20px;
+                  height: 20px;
+                  background: #FFE4B5;
+                  cursor: pointer;
+                  border-radius: 50%;
+                  border: none;
+                }
+              `}</style>
             </div>
           </div>
           <p className="md:text-3xl">{volume}%</p>

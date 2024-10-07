@@ -9,7 +9,7 @@ import MicrophoneActive from '@/public/icon/microphone-active.webp';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-export default function Microphone({ onRecordingComplete, params }) {
+export default function Microphone({ handleListening, onRecordingComplete, params }) {
   const recordMessageRef = useRef(''); // 음성 인식 메시지 저장
   const [transcript, setTranscript] = useState(''); // 최종 인식된 텍스트 저장
   const [progress, setProgress] = useState(0);
@@ -50,9 +50,11 @@ export default function Microphone({ onRecordingComplete, params }) {
       setProgress(0);
       startRecording();
       startListening();
+      handleListening()
     } else {
       stopListening();
       stopRecording();
+      handleListening()
     }
   };
 
@@ -222,7 +224,7 @@ export default function Microphone({ onRecordingComplete, params }) {
   };
 
   return (
-    <div className='flex-col flex items-center justify-center min-w-[60vw]'>
+    <div className='flex-col flex items-center justify-center min-w-[60vw] relative'>
       <div className="relative flex items-center justify-center w-[16vh] h-[16vh]">
         <CircularProgressbar
           value={progress}
@@ -235,13 +237,15 @@ export default function Microphone({ onRecordingComplete, params }) {
         />
         <button onClick={toggleListening}>
           {isListening ? (
-            <Image src={MicrophoneActive} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
+            <Image src={MicrophoneActive} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer opacity-50" />
           ) : (
             <Image src={MicrophoneNormal} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
           )}
         </button>
       </div>
-      <div>{transcript}</div>
+      <div className="absolute text-center text-white text-md md:text-2xl lg:text-4xl top-1/2 transform -translate-y-1/2 pointer-events-none">
+        {transcript}
+      </div>
     </div>
   );
 }

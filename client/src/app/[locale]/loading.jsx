@@ -12,7 +12,6 @@ import 'react-circular-progressbar/dist/styles.css';
 
 export default function Loading() {
   const [messages, setMessages] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const locale = useLocale();
 
   useEffect(() => {

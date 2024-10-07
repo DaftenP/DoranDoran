@@ -51,7 +51,7 @@ function TranslatedBackground({ onSelectBackground }) {
         );
         setItems(filteredItems);
       })
-      .catch((error) => console.log("error:", error));
+      .catch();
   }, [apiUrl]);
 
   // 배경 선택 처리 함수
@@ -61,8 +61,7 @@ function TranslatedBackground({ onSelectBackground }) {
     if (typeof onSelectBackground === "function") {
       onSelectBackground(newSelectedBackground);
     }
-    console.log(`선택된 배경: ${itemId}`);
-    console.log("newSelectedBackground:", newSelectedBackground);
+
 
     // 선택된 배경 정보를 서버에 전송
     axios.patch(`${apiUrl}/inventory/equip`, newSelectedBackground, {
@@ -70,11 +69,9 @@ function TranslatedBackground({ onSelectBackground }) {
         withCredentials: true,
       })
       .then((response) => {
-        console.log("패치 응답:", response.data);
+        window.location.reload();
       })
-      .catch((error) => {
-        console.error("선택된 배경 패치 중 오류:", error);
-      });
+      .catch((error) => {});
   };
 
   // 배경 그리드 렌더링

@@ -1,22 +1,27 @@
 package com.rank.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 
 @Entity
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
 @Builder
-public class League {
+public class LeagueLog {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "league_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @CreatedDate
@@ -28,4 +33,7 @@ public class League {
 
     @Column(name = "league_num", nullable = false)
     private Integer num;
+
+    @OneToMany(mappedBy = "leagueLog")
+    private List<LeagueMemberLog> leagueMemberLogs = new ArrayList<>();
 }

@@ -4,34 +4,39 @@ import com.rank.common.exception.RestApiException;
 import com.rank.common.exception.StatusCode;
 import com.rank.dto.LeagueInfoDTO;
 import com.rank.dto.LeagueMemberDTO;
+import com.rank.dto.RankCode;
 import com.rank.entity.League;
+import com.rank.entity.LeagueLog;
 import com.rank.entity.LeagueMember;
+import com.rank.entity.LeagueMemberLog;
+import com.rank.repository.LeagueLogRepository;
+import com.rank.repository.LeagueMemberLogRepository;
 import com.rank.repository.LeagueMemberRepository;
 import com.rank.repository.LeagueRepository;
 import com.rank.util.DateIdenfier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class RankService {
 
-    private final DateIdenfier dateIdenfier;
     private final LeagueMemberRepository leagueMemberRepository;
     private final LeagueRepository leagueRepository;
+    private final LeagueMemberLogRepository leagueMemberLogRepository;
+    private final LeagueLogRepository leagueLogRepository;
 
     public Map<String, Object> getUserLeagueInfo(Long userId) {
         Map<String, Object> ret = new HashMap<>();
 
-        // 리그 아이디 prefix
-        String leagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now());
-
         // 리그 멤버 객체 조회
-        Optional<LeagueMember> lm = leagueMemberRepository.findByUserIdAndLeagueIdPrefix(userId, leagueIdPrefix);
+        Optional<LeagueMember> lm = leagueMemberRepository.findByUserId(userId);
         if (lm.isEmpty()) {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
@@ -44,7 +49,7 @@ public class RankService {
         }
 
         LeagueInfoDTO leagueInfoDTO = LeagueInfoDTO.builder()
-                .leagueId(league.get().getId())
+                .leagueId(RankCode.BRONZE.getRankName() + "-" + league.get().getNum())
                 .leagueRank(league.get().getRank())
                 .leagueNum(league.get().getNum())
                 .createdAt(league.get().getCreatedAt())
@@ -70,19 +75,9 @@ public class RankService {
     }
 
     public void updateXP(Long userId, Long xp) {
-        // 리그 아이디 prefix
-        String leagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now());
-
         // 리그 멤버 객체 조회
-        Optional<LeagueMember> lm = leagueMemberRepository.findByUserIdAndLeagueIdPrefix(userId, leagueIdPrefix);
+        Optional<LeagueMember> lm = leagueMemberRepository.findByUserId(userId);
         if (lm.isEmpty()) {
-            throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
-        }
-
-        // 리그 정보 조회
-        Optional<League> league = Optional.ofNullable(lm.get().getLeague());
-
-        if (league.isEmpty()) {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
 
@@ -94,11 +89,8 @@ public class RankService {
     public Map<String, Object> getUserRankInfo(Long userId) {
         Map<String, Object> ret = new HashMap<>();
 
-        // 리그 아이디 prefix
-        String leagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now());
-
         // 리그 멤버 객체 조회
-        Optional<LeagueMember> lm = leagueMemberRepository.findByUserIdAndLeagueIdPrefix(userId, leagueIdPrefix);
+        Optional<LeagueMember> lm = leagueMemberRepository.findByUserId(userId);
         if (lm.isEmpty()) {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
@@ -122,22 +114,25 @@ public class RankService {
             throw new RestApiException(StatusCode.ALREADY_EXIST_LEAGUEMEMBER);
         });
 
-        // 리그 아이디 prefix
-        String leagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now());
-
         // 현재 브론즈 리그 중 마지막 리그 가져오기
-        List<League> leagues = leagueRepository.findLeaguesByPrefixAndRank(leagueIdPrefix, 1000);
+        List<League> leagues = leagueRepository.findByRank(1000);
         League league = leagues.stream().max(Comparator.comparing(League::getNum)).orElse(null);
 
         if (league == null) {
             league = League.builder()
-                    .id(leagueIdPrefix + "-1000-1")
+                    .rank(1000)
+                    .num(1)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+
+            LeagueLog leagueLog = LeagueLog.builder()
                     .rank(1000)
                     .num(1)
                     .createdAt(LocalDateTime.now())
                     .build();
 
             leagueRepository.save(league);
+            leagueLogRepository.save(leagueLog);
         }
 
         // 해당 리그에 속한 인원이 10이라면 해당 리그에 userId 생성 및 배치
@@ -146,22 +141,31 @@ public class RankService {
                     .userId(userId)
                     .league(league)
                     .gainXP(0L)
+                    .rank(1000)
                     .build();
             leagueMemberRepository.save(leagueMember);
         } else {
             // 리그 생성
             League newLeague = League.builder()
-                    .id(leagueIdPrefix + "-1000-" + (league.getNum() + 1))
                     .rank(1000)
                     .num(league.getNum() + 1)
                     .createdAt(LocalDateTime.now())
                     .build();
             leagueRepository.save(newLeague);
 
+            // 리그 로그 생성
+            LeagueLog leagueLog = LeagueLog.builder()
+                    .rank(1000)
+                    .num(league.getNum() + 1)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+            leagueLogRepository.save(leagueLog);
+
             LeagueMember leagueMember = LeagueMember.builder()
                     .userId(userId)
                     .league(newLeague)
                     .gainXP(0L)
+                    .rank(1000)
                     .build();
             leagueMemberRepository.save(leagueMember);
         }
@@ -175,22 +179,30 @@ public class RankService {
     public Map<String, Object> settlement(Long userId) {
         Map<String, Object> ret = new HashMap<>();
 
-        // 지난주 리그 prefix
-        String lastWeekLeagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now().minusWeeks(1));
-        // 이번주 리그 prefix
-        String thisWeekLeagueIdPrefix = dateIdenfier.getDateIdenfier(LocalDate.now());
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate today = now.toLocalDate();
+
+        // 지난주 시작 (월요일)과 끝 (일요일) 구하기
+        LocalDate startOfLastWeek = today.minusWeeks(1).with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate endOfLastWeek = startOfLastWeek.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+        // 시간까지 포함한 LocalDateTime 계산
+        LocalDateTime startDateTime = startOfLastWeek.atStartOfDay();
+        LocalDateTime endDateTime = endOfLastWeek.atTime(23, 59, 59);
 
         // 지난주 리그 멤버 객체 조회
-        Optional<LeagueMember> lastWeekLeagueMember = leagueMemberRepository.findByUserIdAndLeagueIdPrefix(userId, lastWeekLeagueIdPrefix);
-        if(lastWeekLeagueMember.isEmpty()) {
+        List<LeagueMemberLog> lastWeekLeagueMembers = leagueMemberLogRepository.findLogsByUserIdAndLastWeek(userId, startDateTime, endDateTime);
+        LeagueMemberLog lastWeekLeagueMember = lastWeekLeagueMembers.get(0);
+
+        if(lastWeekLeagueMember == null) {
             ret.put("result", 0);
             ret.put("prevRank", null);
         } else{
-            ret.put("prevRank", lastWeekLeagueMember.get().getLeague().getRank());
+            ret.put("prevRank", lastWeekLeagueMember.getRank());
         }
 
         // 이번주 리그 멤버 객체 조회
-        Optional<LeagueMember> thisWeekLeagueMember = leagueMemberRepository.findByUserIdAndLeagueIdPrefix(userId, thisWeekLeagueIdPrefix);
+        Optional<LeagueMember> thisWeekLeagueMember = leagueMemberRepository.findByUserId(userId);
         if(thisWeekLeagueMember.isEmpty()) {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         } else{

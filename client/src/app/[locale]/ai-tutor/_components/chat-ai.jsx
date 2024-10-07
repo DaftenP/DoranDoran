@@ -145,7 +145,7 @@ function TranslatedChatAi({ index, message, handleIsOver }) {
   return (
     <div className='flex items-center m-[2vh]'>
       <Image src={Bird1} alt="bird_icon" className="w-11 h-11 md:w-16 md:h-16 lg:w-20 lg:h-20 mr-1" />
-      <div className='rounded-[3vh] min-w-[40vw] max-w-[70vw] bg-[#FED9D0]/90 border border-[#FFC0B1]/90 text-md md:text-2xl lg:text-5xl p-[2vh]'>
+      <div className='rounded-[3vh] min-w-[40vw] max-w-[70vw] bg-[#FED9D0]/90 border border-[#FFC0B1]/90 text-md md:text-2xl lg:text-4xl p-[2vh]'>
         <AnimatePresence>
           {showPronunciation && (
             <motion.div

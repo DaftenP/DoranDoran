@@ -40,6 +40,7 @@ export default function ChatMe ({ message, params, index }) {
 
 function TranslatedChatMe({ message, params, index }) {
   const [isRecordingComplete, setIsRecordingComplete] = useState(false)
+  const [isListening, setIsListening] = useState(false)
   const t = useTranslations('index');
   const chatMessages = useSelector((state) => {state.chatMessages})
   const dispatch = useDispatch()
@@ -65,11 +66,15 @@ function TranslatedChatMe({ message, params, index }) {
     }
   }, [message])
 
+  const handleListening = (() => {
+    setIsListening(!isListening)
+  })
+
   return (
     <div className='flex justify-end items-center m-[2vh]'>
-      <div className='rounded-[3vh] min-w-[40vw] max-w-[70vw] bg-[#DFF8E1]/90 border border-[#A8D5B6]/90 text-md md:text-2xl lg:text-5xl p-[2vh]'>
+      <div className={`rounded-[3vh] min-w-[40vw] max-w-[70vw] ${isListening ? 'bg-[#3CB371]/70' : 'bg-[#DFF8E1]/90'} border border-[#A8D5B6]/90 text-md md:text-2xl lg:text-4xl p-[2vh] transition-colors duration-500`}>
         {!isRecordingComplete ? (
-          <Microphone onRecordingComplete={handleRecordingComplete} params={params} />
+          <Microphone handleListening={handleListening} onRecordingComplete={handleRecordingComplete} params={params} />
         ) : (
           <>
             {!message.content ? (

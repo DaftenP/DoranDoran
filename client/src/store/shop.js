@@ -22,7 +22,6 @@ export const buyItem = createAsyncThunk(
       //   // Equipment 업데이트
       //   thunkAPI.dispatch(updateEquipment(itemId)); // Equipment에 itemId를 넣음
       // }
-
       return response.data;
     } catch (error) {
       console.log(error)

@@ -98,18 +98,34 @@ func BuyItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		w.WriteHeader(http.StatusOK)
-		io.Copy(w, resp.Body)
+	var respBody map[string]interface{}
+	body, err = io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("error in io.ReadAll")
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
+	}
+
+	err = json.Unmarshal(body, &respBody)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("error in json.Unmarshal")
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	var message string = "구매 완료"
+
+	if respBody["message"] != nil {
+		message = respBody["message"].(string)
 	}
 
 	w.WriteHeader(http.StatusOK)
 
-	// new response looks like: {"data": $itemId, "message": responseMessage, "timestamp": $timestamp}
 	jsonToClient := map[string]interface{}{
 		"data":      itemId,
-		"message":   "Item bought successfully",
+		"message":   message,
 		"timestamp": randomItemResponseFromMSA.Timestamp,
 	}
 

@@ -12,3 +12,14 @@ type RandomItemResponseFromMSA struct {
 type RandomItemRequestFromClient struct {
 	ItemType int `json:"itemType"`
 }
+
+type ItemInfoResponseFromMSA struct {
+	Data struct {
+		Id       int    `json:"id"`
+		Price    int    `json:"price"`
+		Name     string `json:"name"`
+		ImageURL string `json:"imageURL"`
+	} `json:"data"`
+	Message   string `json:"message"`
+	Timestamp string `json:"timestamp"`
+}

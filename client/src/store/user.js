@@ -89,7 +89,7 @@ const initialState = {
     birthday: '',
     color: '',
     equipment: '',
-    background: '',
+    background: 1,
     psize: 0, // 전체 문제 수
   },
   status: {

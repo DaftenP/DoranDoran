@@ -2,12 +2,11 @@
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useSelector } from 'react-redux';
 import Image from 'next/image'
-import BackgroundDay from '@/public/background/day.webp'
 import Bird1 from '@/public/logo/doryeoni.webp'
 import Bird2 from '@/public/logo/raoni.webp'
-import { CircularProgressbarWithChildren, CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 export default function Loading() {
@@ -43,6 +42,15 @@ function TranslatedLoading() {
   const [bird1Position, setBird1Position] = useState(-30);
   const [bird2Position, setBird2Position] = useState(-30);
   const [randomText, setRandomText] = useState('')
+  const userBackground = useSelector((state) => state.user.profile.background);
+
+  const imageMap = {
+    1: "day",
+    2: "launch",
+    3: "day-blue",
+    4: "night-blue",
+    5: "launch-blue"
+  };
 
   const randomTips = [
     "there-are-formal-and-informal-speech-levels-in-korean-use-them-appropriately-depending-on-the-situation",
@@ -62,9 +70,10 @@ function TranslatedLoading() {
     setRandomText(randomTips[randomIndex])
   }, [])
 
-  const duration = 10000; // 전체 애니메이션 시간 (밀리초)
+  const duration = 5000; // 전체 애니메이션 시간 (밀리초)
 
   useEffect(() => {
+    setProgress(2)
     let start = null;
     let frame;
 
@@ -109,7 +118,7 @@ function TranslatedLoading() {
         className='w-[20vw] h-auto z-10'
         style={{ transform: `translateX(${bird1Position}vw) translateY(15vh)` }}
       />
-      <Image src={BackgroundDay} alt='background_day' className='fixed top-0 z-0 w-full h-full'/>
+      <Image src={`https://ssafy-tailored.b-cdn.net/shop/bg/${imageMap[userBackground]}.webp`} width={200} height={100} alt='background_day' className='fixed top-0 z-0 w-full h-full'/>
       <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[40vh] h-[40vh] md:w-[55vh] md:h-[55vh]'>
         <CircularProgressbarWithChildren
           value={progress}

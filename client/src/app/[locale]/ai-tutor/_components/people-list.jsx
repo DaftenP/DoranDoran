@@ -46,6 +46,7 @@ export default function PeopleList () {
 function TranslatedPeopleList() {
   const t = useTranslations('index');
   const router = useRouter()
+  const effectVolume = useSelector((state) => state.sound.effectVolume)
   const peopleArray = [
     {
       'rule': '1',
@@ -101,6 +102,7 @@ function TranslatedPeopleList() {
 
   const handleGoTopic = (index) => {
     const audio = new Audio('/bgm/pencil_check_mark.mp3')
+    audio.volume = effectVolume
     audio.play();
     router.push(`ai-tutor/${index}`)
   }

@@ -54,6 +54,7 @@ function TranslatedTopicConversation({ params }) {
   const locale = params.locale;
   const role = params.people;
   const situation = params.topic;
+  const effectVolume = useSelector((state) => state.sound.effectVolume)
 
   // 스크롤을 제일 마지막으로 지속해서 이동
   const scrollToBottom = () => {
@@ -116,6 +117,7 @@ function TranslatedTopicConversation({ params }) {
       .unwrap()
       .then((response) => {
         const audio = new Audio('/bgm/message-incoming.mp3')
+        audio.volume = effectVolume
         audio.play();
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));

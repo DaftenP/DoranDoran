@@ -46,12 +46,14 @@ function TranslatedItemlist({ setBuyComplete, itemType, itemName, itemIcon, item
   const [currentItem, setCurrentItem] = useState([])
   const router = useRouter()
   const locale = useLocale()
+  const effectVolume = useSelector((state) => state.sound.effectVolume)
 
   const handleBuyItem = ((itemType) => {
     dispatch(buyItem({ itemType }))
     .unwrap()
     .then((response) => {
       const audio = new Audio('/bgm/coin-drop.mp3')
+      audio.volume = effectVolume
       audio.play();
 
       setBuyComplete(true)

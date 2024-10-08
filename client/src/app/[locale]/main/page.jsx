@@ -1,7 +1,6 @@
 'use client'
 
 import { useTranslations } from 'next-intl';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserData } from '@/store/user';
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
@@ -13,7 +12,6 @@ import WeekTask from '@/app/[locale]/main/_components/week-task'
 import Character from '@/app/[locale]/main/_components/character'
 
 export default function Main() {
-  const dispatch = useDispatch()
   const [cloud1Position, setCloud1Position] = useState(-10);
   const [cloud2Position, setCloud2Position] = useState(-10);
 

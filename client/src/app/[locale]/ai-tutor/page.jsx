@@ -2,7 +2,6 @@
 
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Top from '@/components/top/top';
 import Bottom from '@/components/bottom/bottom';
 import PeopleList from '@/app/[locale]/ai-tutor/_components/people-list';

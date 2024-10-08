@@ -198,6 +198,10 @@
     "you-have-a-previous-conversation-on-this-topic-would-you-like-to-pick-up-where-you-left-off": "You have a previous conversation on this topic. Would you like to pick up where you left off?",
     "password-change-error": "Password change Error",
     "your-purchase-was-successful-would-you-like-to-go-to-the-dressing-room?": "Your purchase was successful. Would you like to go to the Dressing room?",
-    "a-duplicate-item-has-appeared!-would-you-like-to-go-to-the-dressing-room?": "A duplicate item has appeared! Would you like to go to the Dressing room?"
+    "a-duplicate-item-has-appeared!-would-you-like-to-go-to-the-dressing-room?": "A duplicate item has appeared! Would you like to go to the Dressing room?",
+    "study": "Study",
+    "home": "Home",
+    "ranking": "Ranking",
+    "profile": "Profile"
   }
 }

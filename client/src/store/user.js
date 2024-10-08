@@ -53,6 +53,7 @@ export const fetchUserData = createAsyncThunk(
         },
         withCredentials: true,
       });
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.log(error)
@@ -87,15 +88,15 @@ const initialState = {
     nickname: '',
     email: '',
     birthday: '',
-    color: '',
-    equipment: '',
+    color: 1,
+    equipment: 1,
     background: 1,
     psize: 0, // 전체 문제 수
   },
   status: {
     xp: 0,
     gem: 0,
-    rank: 0,
+    rank: 1000,
   },
   mission: {
     status: '', // 주간 테스크 상태

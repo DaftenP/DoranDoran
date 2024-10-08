@@ -68,14 +68,15 @@ type LeagueMember struct {
 }
 
 type RankInfoResponseFromMSA struct {
-	Data    RankInfoFromMSA `json:"data"`
-	Message string          `json:"message"`
+	Data      RankInfoFromMSA `json:"data"`
+	Message   string          `json:"message"`
+	TimeStamp string          `json:"timestamp"`
 }
 
 type RankInfoFromMSA struct {
-	UserId   string `json:"userId"`
-	Rank     int    `json:"rank"`
-	LeagueId string `json:"leagueId"`
+	UserId   int `json:"userId"`
+	Rank     int `json:"rank"`
+	LeagueId int `json:"leagueId"`
 }
 
 type LeaderBoardResponseFromMSA struct {

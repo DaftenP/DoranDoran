@@ -49,7 +49,7 @@ function TranslatedTopicSelect({ params }) {
           <div className='text-4xl md:text-6xl lg:text-8xl'>
             {t("topic-selection")}
           </div>
-          <div className='text-xl md:text-4xl lg:text-6xl'>
+          <div className='text-xl md:text-4xl lg:text-6xl text-center'>
             {t("what-topic-would-you-like-to-talk-about")}
           </div>
           <div>

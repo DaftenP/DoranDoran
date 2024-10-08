@@ -27,6 +27,8 @@ export default function RootLayout({ children, modal, params }) {
 
     // 로딩 시작 (페이지가 바뀔 때마다 로딩 활성화)
     setLoading(true);
+
+    const randomLoadingTime = Math.random() * 250 + 600;
     
     // main, profile, ranking, study, ai-tutor 대화 진입 직전 페이지 그룹에 있을 때 Main BGM 시작
     if (
@@ -54,8 +56,8 @@ export default function RootLayout({ children, modal, params }) {
     }
 
     const timer = setTimeout(() => {
-      setLoading(false); // 로딩 상태를 1.5초 후에 false로 변경
-    }, 1500);
+      setLoading(false);
+    }, randomLoadingTime);
 
     // 페이지가 바뀔 때 기존의 BGM이 재생 중이면 그대로 유지
     return () => {
@@ -89,8 +91,8 @@ export default function RootLayout({ children, modal, params }) {
       <body>
         <ReduxProvider>
           <AuthWrapper locale={locale}>
-            {loading && <LoadingComponent />} {/* 로딩 중일 때 표시 */}
-            {!loading && children} {/* 로딩이 끝나면 실제 페이지 컨텐츠 표시 */}
+            {loading && <LoadingComponent />}
+            {!loading && children}
             {modal}
           </AuthWrapper>
         </ReduxProvider>

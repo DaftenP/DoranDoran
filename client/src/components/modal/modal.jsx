@@ -53,7 +53,7 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
   const t = useTranslations('index');
   return (
     <div className='fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center'>
-      <div className="relative bg-white p-6 rounded-lg shadow-lg w-[70vw] h-[75vw] md:w-[50vw] md:h-[40vw] lg:w-[50vw] lg:h-[40vw] overflow-hidden z-9999">
+      <div className="relative bg-white p-6 rounded-lg shadow-lg w-[80vw] h-[80vw] md:w-[60vw] md:h-[50vw] lg:w-[60vw] lg:h-[50vw] overflow-hidden z-9999">
         <div className='relative z-10 text-center text-xl md:text-2xl lg:text-4xl'>
           {t(message.message)}
         </div>
@@ -65,9 +65,9 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                   <Image
                     src={ShopColor}
                     alt="color_icon"
-                    className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/3 z-10"
+                    className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/2 z-10"
                   />
-                  <div className='absolute left-1/2 transform -translate-x-1/2 z-10 translate-y-1/2 mt-[2vh]'>
+                  <div className='absolute left-1/2 transform -translate-x-1/2 z-10 translate-y-6 md:translate-y-10 mt-[2vh]'>
                     <div className="relative w-[24vw] h-auto md:w-[16vw] md:h-auto lg:w-[16vw] lg:h-auto bg-[#d1d6de] rounded-[10px] flex items-center justify-center z-10" style={{ boxShadow: '0 1px 5px rgba(0, 0, 0, 0.5)'}}>
                       <Image src={Credit} alt="credit" className="w-auto h-[4vh] -left-[5%] absolute" />
                       <div className="text-white" >600</div>
@@ -80,9 +80,9 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                   <Image
                     src={ShopEquipment}
                     alt="color_icon"
-                    className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/3 z-10"
+                    className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/2 z-10"
                   />
-                  <div className='absolute left-1/2 transform -translate-x-1/2 z-10 translate-y-1/2 mt-[2vh]'>
+                  <div className='absolute left-1/2 transform -translate-x-1/2 z-10 translate-y-6 md:translate-y-10 mt-[2vh]'>
                     <div className="relative w-[24vw] h-auto md:w-[16vw] md:h-auto lg:w-[16vw] lg:h-auto bg-[#d1d6de] rounded-[10px] flex items-center justify-center z-10" style={{ boxShadow: '0 1px 5px rgba(0, 0, 0, 0.5)'}}>
                       <Image src={Credit} alt="credit" className="w-auto h-[4vh] -left-[5%] absolute" />
                       <div className="text-white" >400</div>
@@ -95,9 +95,9 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                   <Image
                     src={ShopBackground}
                     alt="color_icon"
-                    className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/3 z-10"
+                    className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/2 z-10"
                   />
-                  <div className='absolute left-1/2 transform -translate-x-1/2 z-10 translate-y-1/2 mt-[2vh]'>
+                  <div className='absolute left-1/2 transform -translate-x-1/2 z-10 translate-y-6 md:translate-y-10 mt-[2vh]'>
                     <div className="relative w-[24vw] h-auto md:w-[16vw] md:h-auto lg:w-[16vw] lg:h-auto bg-[#d1d6de] rounded-[10px] flex items-center justify-center z-10" style={{ boxShadow: '0 1px 5px rgba(0, 0, 0, 0.5)'}}>
                       <Image src={Credit} alt="credit" className="w-auto h-[4vh] -left-[5%] absolute" />
                       <div className="text-white" >900</div>
@@ -118,7 +118,7 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                     alt="color_icon"
                     width={200}
                     height={100}
-                    className="relative w-[12vw] h-[12vw] md:w-[8vw] md:h-[8vw] lg:w-[8vw] lg:h-[8vw] left-[50%] absolute transform -translate-x-1/2 translate-y-1/3 z-10"
+                    className="relative w-[30vw] h-[30vw] md:w-[20vw] md:h-[20vw] lg:w-[20vw] lg:h-[20vw] left-[50%] absolute transform -translate-x-1/2 md:translate-y-7 z-10"
                   />
                 </div>
               )}
@@ -129,7 +129,7 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                     alt="color_icon"
                     width={200}
                     height={100}
-                    className="relative w-[12vw] h-[12vw] md:w-[8vw] md:h-[8vw] lg:w-[8vw] lg:h-[8vw] left-[50%] absolute transform -translate-x-1/2 translate-y-1/3 z-10"
+                    className="relative w-auto h-[26vw] md:w-auto md:h-[16vw] lg:w-auto lg:h-[16vw] left-[50%] absolute transform -translate-x-1/2 md:translate-y-7 z-10"
                   />
                 </div>
               )}
@@ -140,7 +140,7 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                     alt="color_icon"
                     width={200}
                     height={100}
-                    className="relative w-[12vw] h-[12vw] md:w-[8vw] md:h-[8vw] lg:w-[8vw] lg:h-[8vw] left-[50%] absolute transform -translate-x-1/2 translate-y-1/3 z-10"
+                    className="relative rounded-3xl opacity-80 w-[30vw] h-[30vw] md:w-[20vw] md:h-[20vw] lg:w-[20vw] lg:h-[20vw] left-[50%] absolute transform -translate-x-1/2 md:translate-y-7 z-10"
                   />
                 </div>
               )}

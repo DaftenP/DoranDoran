@@ -72,7 +72,7 @@ function TranslatedChatMe({ message, params, index }) {
 
   return (
     <div className='flex justify-end items-center m-[2vh]'>
-      <div className={`rounded-[3vh] min-w-[40vw] max-w-[70vw] ${isListening ? 'bg-[#3CB371]/90' : 'bg-[#DFF8E1]/90'} border border-[#A8D5B6]/90 text-md md:text-2xl lg:text-4xl p-[2vh] transition-colors duration-500`}>
+      <div className={`rounded-[3vh] min-w-[40vw] max-w-[70vw] ${isListening ? 'bg-blue-300/80' : 'bg-[#DFF8E1]/90'} border border-[#A8D5B6]/90 text-md md:text-2xl lg:text-4xl p-[2vh] transition-colors duration-500`}>
         {!isRecordingComplete ? (
           <Microphone handleListening={handleListening} onRecordingComplete={handleRecordingComplete} params={params} />
         ) : (

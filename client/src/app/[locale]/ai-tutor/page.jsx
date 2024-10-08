@@ -48,7 +48,7 @@ function TranslatedPeopleSelect() {
           <div className='text-4xl md:text-6xl lg:text-8xl'>
             {t("topic-selection")}
           </div>
-          <div className='text-xl md:text-4xl lg:text-6xl'>
+          <div className='text-xl md:text-4xl lg:text-6xl text-center'>
             {t("please-choose-a-person-to-talk-to")}
           </div>
         </div>

@@ -115,6 +115,8 @@ function TranslatedTopicConversation({ params }) {
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
+        const audio = new Audio('/bgm/message-incoming.mp3')
+        audio.play();
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));
         dispatch(addMyMessage({ content: '', score: 0 }));
@@ -199,7 +201,7 @@ function TranslatedTopicConversation({ params }) {
         </div>
       </div>
       <div className='flex-col flex justify-center items-center'>
-        <div className='flex justify-center items-center text-xxl md:text-4xl lg:text-6xl'>
+      <div className='flex justify-center items-center text-2xl md:text-4xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500'>
           {t("ai-tutor")}
           <Image onClick={() => handleOpenModal(1)} src={NewTopic} alt='new_topic_icon' className='w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2'/>
         </div>

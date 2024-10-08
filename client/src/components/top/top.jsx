@@ -44,13 +44,22 @@ function TranslatedTop() {
   const t = useTranslations('index')
   const user = useSelector((state) => state.user)
 
+  const rankImage = {
+    0: Bronze,
+    1000: Bronze,
+    2000: Silver,
+    3000: Gold,
+    4000: Platinum,
+    5000: Diamond,
+  }
+
   return (
     <div
       className="fixed top-0 left-0 w-full h-[6vh] flex justify-between pr-[5vw] pl-[5vw] z-10"
       style={{ marginTop: '2vh', marginBottom: '1vh' }}
     >
       <div className="flex items-center">
-        <Image src={Gold} alt="gold_rank" className="w-auto h-5/6" />
+        <Image src={rankImage[user.status.rank]} alt="gold_rank" className="w-auto h-5/6" />
       </div>
       <div className="flex-col flex justify-center">
         <div className="text-sm overflow-hidden whitespace-nowrap text-ellipsis max-w-[27vw] text-sm md:text-2xl lg:text-4xl">

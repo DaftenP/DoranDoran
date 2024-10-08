@@ -87,7 +87,7 @@ function TranslatedLoading() {
         style={{ transform: `translateX(${bird1Position}vw) translateY(15vh)` }}
       />
       <Image src={`https://ssafy-tailored.b-cdn.net/shop/bg/${imageMap[userBackground]}.webp`} width={200} height={100} alt='background_day' className='fixed top-0 z-0 w-full h-full'/>
-      <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[40vh] h-[40vh] md:w-[55vh] md:h-[55vh]'>
+      <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[35vh] h-[35vh] md:w-[50vh] md:h-[50vh]'>
         <div className='relative flex justify-center items-center w-full h-full'>
           {/* 로딩 애니메이션 */}
           <div

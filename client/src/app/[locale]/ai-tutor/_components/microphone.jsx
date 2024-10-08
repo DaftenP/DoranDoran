@@ -6,6 +6,10 @@ import { fetchChatMessages, addResponseMessage, addMyMessage, addSimpleResponseM
 import Image from 'next/image';
 import MicrophoneNormal from '@/public/icon/microphone-normal.webp';
 import MicrophoneActive from '@/public/icon/microphone-active.webp';
+import MicrophoneNormal2 from '@/public/icon2/microphone2-normal.webp'
+import MicrophoneActive2 from '@/public/icon2/microphone2-active.webp'
+import MicrophoneActive3 from '@/public/icon2/microphone2-active2.webp'
+import MicrophoneActive4 from '@/public/icon2/microphone2-active3.webp'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -24,6 +28,7 @@ export default function Microphone({ handleListening, onRecordingComplete, param
   const locale = params.locale;
   const role = params.people;
   const situation = params.topic;
+  const [activeImage, setActiveImage] = useState(1)
 
 
   useEffect(() => {
@@ -164,6 +169,7 @@ export default function Microphone({ handleListening, onRecordingComplete, param
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.stop();
     }
+
     setIsListening(false);
     onRecordingComplete();
   };
@@ -204,7 +210,7 @@ export default function Microphone({ handleListening, onRecordingComplete, param
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()
       .then((response) => {
-        const audio = new Audio('/bgm/message-incoming.mp3')
+        const audio = new Audio('/bgm/new-notification.mp3')
         audio.play();
         const messageContent = recordMessageRef.current || 'Please speak';
         dispatch(addMyMessage({ content: messageContent, score: response.data.pronunciation }));
@@ -225,6 +231,34 @@ export default function Microphone({ handleListening, onRecordingComplete, param
       });
   };
 
+  // 마이크 이미지 반복 함수
+  useEffect(() => {
+    let interval;
+    if (isListening) {
+      interval = setInterval(() => {
+        setActiveImage((prev) => (prev === 3 ? 1 : prev + 1));
+      }, 500);
+    } else {
+      setActiveImage(1);
+    }
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, [isListening]);
+
+  // 언마운트 시 음성인식, 녹음 종료
+  useEffect(() => {
+    return () => {
+      if (isListening) {
+        stopListening();
+      }
+      if (isRecording) {
+        stopRecording();
+      }
+    };
+  }, [isListening, isRecording]);
+
   return (
     <div className='flex-col flex items-center justify-center min-w-[60vw] relative'>
       <div className="relative flex items-center justify-center w-[16vh] h-[16vh]">
@@ -232,20 +266,30 @@ export default function Microphone({ handleListening, onRecordingComplete, param
           value={progress}
           strokeWidth={5}
           styles={buildStyles({
-            pathColor: progress === 100 ? '#ACACAC' : `rgba(255, 0, 0, ${progress / 100})`,
-            trailColor: '#ACACAC',
+            pathColor: progress === 100 ? '#D3D3D3' : `rgba(0, 0, 255, ${progress / 100})`,
+            trailColor: '#D3D3D3',
           })}
           className="absolute inset-0"
         />
         <button onClick={toggleListening}>
           {isListening ? (
-            <Image src={MicrophoneActive} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer opacity-50" />
+            <Image
+              src={
+                activeImage === 1
+                  ? MicrophoneActive4
+                  : activeImage === 2
+                  ? MicrophoneActive3
+                  : MicrophoneActive2
+              }
+              alt="microphone_icon"
+              className="absolute w-[11vh] h-[11vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer opacity-50"
+            />
           ) : (
-            <Image src={MicrophoneNormal} alt="microphone_icon" className="absolute w-[13vh] h-[13vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
+            <Image src={MicrophoneNormal2} alt="microphone_icon" className="absolute w-[11vh] h-[11vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
           )}
         </button>
       </div>
-      <div className="absolute text-center text-white text-md md:text-2xl lg:text-4xl top-1/2 transform -translate-y-1/2 pointer-events-none">
+      <div className="absolute text-center text-blue-900 text-md md:text-2xl lg:text-4xl top-1/2 transform -translate-y-1/2 pointer-events-none">
         {transcript}
       </div>
     </div>

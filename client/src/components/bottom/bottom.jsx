@@ -99,6 +99,8 @@ function TranslatedBottom() {
       if (parsedData.type && parsedData.type.length > 0) {
         setType([parsedData.type[0], parsedData.type[1]])
         handleOpenModal(0)
+      } else {
+        router.push(`/${countryCode}/ai-tutor`)
       }
     } else {
       router.push(`/${countryCode}/ai-tutor`)
@@ -123,34 +125,40 @@ function TranslatedBottom() {
           >
             <Link href={`/${countryCode}/store`} className='w-full h-full flex justify-center items-center'>
                 {currentPage === 'store' ? (
-                  <div className='flex items-center h-full ml-6'>
+                  <div className='flex flex-col items-center justify-center h-full ml-6'>
                     <motion.div
                       key="store2"
                       initial={currentPage === 'store' ? { opacity: 0, scale: 0.9 } : {}}
                       animate={currentPage === 'store' ? { opacity: 1, scale: 1 } : {}}
                       transition={{ duration: 0.8 }}
-                      className="w-auto h-2/5 cursor-pointer"
+                      className="flex items-center justify-center w-auto h-2/5 cursor-pointer"
                     >
                       <Image src={Store2} alt="store_link" className="w-auto h-full cursor-pointer" />
                     </motion.div>
+                    <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                      {t('store')}
+                    </div>
                   </div>
                 ) : (
-                  <div className='flex items-center h-full ml-6'>
+                  <div className='flex flex-col items-center justify-center h-full ml-6'>
                     <motion.div
                       key="store1"
                       initial={currentPage === 'store' ? { opacity: 0, scale: 0.9 } : {}}
                       animate={currentPage === 'store' ? { opacity: 1, scale: 1 } : {}}
                       transition={{ duration: 0.8 }}
-                      className="w-auto h-2/5 cursor-pointer"
+                      className="flex items-center justify-center w-auto h-2/5 cursor-pointer"
                     >
                       <Image src={Store1} alt="store_link" className="w-auto h-full cursor-pointer" />
                     </motion.div>
+                    <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                      {t('store')}
+                    </div>
                   </div>
                 )}
             </Link>
             <Link href={`/${countryCode}/study`} className='w-full h-full flex justify-center items-center'>
                 {currentPage === 'study' ? (
-                  <div className='flex items-center h-full mr-9'>
+                  <div className='flex flex-col justify-center items-center h-full mr-9'>
                     <motion.div
                       key="study2"
                       initial={currentPage === 'study' ? { opacity: 0, scale: 0.9 } : {}}
@@ -160,9 +168,12 @@ function TranslatedBottom() {
                     >
                       <Image src={Study2} alt="study_link" className="w-auto h-full cursor-pointer" />
                     </motion.div>
+                    <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                      {t('study')}
+                    </div>
                   </div>
                 ) : (
-                  <div className='flex items-center h-full mr-9'>
+                  <div className='flex flex-col justify-center items-center h-full mr-9'>
                     <motion.div
                       key="study1"
                       initial={currentPage === 'study' ? { opacity: 0, scale: 0.9 } : {}}
@@ -172,6 +183,9 @@ function TranslatedBottom() {
                     >
                       <Image src={Study1} alt="study_link" className="w-auto h-full cursor-pointer" />
                     </motion.div>
+                    <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                      {t('study')}
+                    </div>
                   </div>
                 )}
             </Link>
@@ -183,22 +197,28 @@ function TranslatedBottom() {
         style={{ boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)" }}
       >
           {currentPage === 'main' ? (
-            <div onClick={handleAiTutorLink} className='w-full h-full flex justify-center items-center'>
+            <div onClick={handleAiTutorLink} className='w-full h-full flex flex-col justify-center items-center'>
                 <motion.div
                   key="ai_tutor"
                   className="w-auto h-3/5 cursor-pointer"
                 >
                   <Image src={AiTutor} alt="ai_tutor_link" className="w-auto h-full cursor-pointer" />
                 </motion.div>
+                <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                  {t('ai-tutor')}
+                </div>
             </div>
           ) : (
-            <Link href={`/${countryCode}/main`} className='w-full h-full flex justify-center items-center'>
+            <Link href={`/${countryCode}/main`} className='w-full h-full flex flex-col justify-center items-center'>
                 <motion.div
                   key="home"
                   className="w-auto h-3/5 cursor-pointer"
                 >
                   <Image src={Home} alt="Home_link" className="w-auto h-full cursor-pointer" />
                 </motion.div>
+                <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                  {t('home')}
+                </div>
             </Link>
           )}
       </div>
@@ -216,7 +236,7 @@ function TranslatedBottom() {
           >
             <Link href={`/${countryCode}/ranking/all`} className='w-full h-full flex justify-center items-center'>
               {currentPage === 'ranking' ? (
-                <div className='flex items-center h-full ml-9'>
+                <div className='flex flex-col justify-center items-center h-full ml-9'>
                   <motion.div
                     key="ranking2"
                     initial={currentPage === 'ranking' ? { opacity: 0, scale: 0.9 } : {}}
@@ -226,9 +246,12 @@ function TranslatedBottom() {
                   >
                     <Image src={Ranking2} alt="ranking_link" className="w-auto h-full cursor-pointer" />
                   </motion.div>
+                  <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                    {t('ranking')}
+                  </div>
                 </div>
               ) : (
-                <div className='flex items-center h-full ml-9'>
+                <div className='flex flex-col justify-center items-center h-full ml-9'>
                   <motion.div
                     key="ranking1"
                     initial={currentPage === 'ranking' ? { opacity: 0, scale: 0.9 } : {}}
@@ -238,12 +261,15 @@ function TranslatedBottom() {
                   >
                     <Image src={Ranking1} alt="ranking_link" className="w-auto h-full cursor-pointer" />
                   </motion.div>
+                  <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                    {t('ranking')}
+                  </div>
                 </div>
               )}
             </Link>
             <Link href={`/${countryCode}/profile`}className='w-full h-full flex justify-center items-center'>
               {currentPage === 'profile' ? (
-                <div className='flex items-center h-full mr-6'>
+                <div className='flex flex-col justify-center items-center h-full mr-6'>
                   <motion.div
                     key="profile2"
                     initial={currentPage === 'profile' ? { opacity: 0, scale: 0.9 } : {}}
@@ -253,9 +279,12 @@ function TranslatedBottom() {
                   >
                     <Image src={Profile2} alt="profile_link" className="w-auto h-full cursor-pointer" />
                   </motion.div>
+                  <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                    {t('profile')}
+                  </div>
                 </div>
               ) : (
-                <div className='flex items-center h-full mr-6'>
+                <div className='flex flex-col justify-center items-center h-full mr-6'>
                   <motion.div
                     key="profile1"
                     initial={currentPage === 'profile' ? { opacity: 0, scale: 0.9 } : {}}
@@ -265,6 +294,9 @@ function TranslatedBottom() {
                   >
                     <Image src={Profile1} alt="profile_link" className="w-auto h-full cursor-pointer" />
                   </motion.div>
+                  <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                    {t('profile')}
+                  </div>
                 </div>
               )}
             </Link>

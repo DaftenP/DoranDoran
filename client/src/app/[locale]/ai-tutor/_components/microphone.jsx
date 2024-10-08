@@ -29,10 +29,9 @@ export default function Microphone({ handleListening, onRecordingComplete, param
   const role = params.people;
   const situation = params.topic;
   const [activeImage, setActiveImage] = useState(1)
-
+  const effectVolume = useSelector((state) => state.sound.effectVolume)
 
   useEffect(() => {
-    console.log('isListening updated:', isListening)
     isListeningRef.current = isListening; // isListening 값 변경 시 최신 값으로 갱신
   }, [isListening]);
   
@@ -69,12 +68,10 @@ export default function Microphone({ handleListening, onRecordingComplete, param
       createNewRecognitionInstance(); // 새로운 recognition 인스턴스 생성
 
       recognitionRef.current.onstart = () => {
-        console.log("Speech recognition started");
         setIsListening(true); // 음성 인식이 시작되면 상태를 true로 설정
       };
 
       recognitionRef.current.onresult = (event) => {
-        console.log("Speech recognition result event fired")
         let finalTranscript = '';
 
         for (let i = 0; i < event.results.length; i++) {
@@ -82,7 +79,6 @@ export default function Microphone({ handleListening, onRecordingComplete, param
             finalTranscript += event.results[i][0].transcript; // 최종 결과 저장
           }
         }
-        console.log("Final Transcript:", finalTranscript);
         setTranscript((prevTranscript) => prevTranscript + ' ' + finalTranscript); // 최종 결과 누적
       };
 
@@ -92,12 +88,8 @@ export default function Microphone({ handleListening, onRecordingComplete, param
       };
 
       recognitionRef.current.onend = () => {
-        console.log("Speech recognition ended");
-        console.log("Current isListeningRef:", isListeningRef.current); // Ref 값을 확인
-      
         // isListening이 true일 때만 재시작
         if (isListeningRef.current) {
-          console.log("Restarting speech recognition...");
           startListening(); // 종료 시 다시 음성 인식 시작
         }
       };
@@ -123,7 +115,6 @@ export default function Microphone({ handleListening, onRecordingComplete, param
       recognitionRef.current.stop(); // 음성 인식을 중단
       isListeningRef.current = false; // 수동으로 중지 시 상태를 false로 설정
       setIsListening(false); // 음성 인식 중단 시 상태 변경
-      console.log("Speech recognition stopped");
     }
   };
 
@@ -211,6 +202,7 @@ export default function Microphone({ handleListening, onRecordingComplete, param
       .unwrap()
       .then((response) => {
         const audio = new Audio('/bgm/new-notification.mp3')
+        audio.volume = effectVolume
         audio.play();
         const messageContent = recordMessageRef.current || 'Please speak';
         dispatch(addMyMessage({ content: messageContent, score: response.data.pronunciation }));

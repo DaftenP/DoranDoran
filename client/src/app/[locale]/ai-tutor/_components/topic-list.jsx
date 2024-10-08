@@ -5,7 +5,7 @@ import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation';
-import user from '@/store/user';
+import { useSelector } from 'react-redux';
 
 export default function TopicList ({ params }) {
   const [messages, setMessages] = useState(null);
@@ -38,6 +38,7 @@ function TranslatedTopicList({ params }) {
   const t = useTranslations('index');
   const router = useRouter()
   const people = params.people
+  const effectVolume = useSelector((state) => state.sound.effectVolume)
 
   const topicArray = {
     '0': [
@@ -112,6 +113,7 @@ function TranslatedTopicList({ params }) {
 
   const handleGoTalking = (people, index) => {
     const audio = new Audio('/bgm/pencil_check_mark.mp3')
+    audio.volume = effectVolume
     audio.play();
     router.push(`${people}/${index}`)
   }

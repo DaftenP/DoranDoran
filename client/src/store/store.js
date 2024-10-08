@@ -29,6 +29,7 @@ import stageReducer from "./quiz";
 import rankListReducer from "./ranking";
 import userReducer from "./user";
 import shopReducer from "./shop";
+import soundReducer from "./sound"
 
 // Redux Persist 설정
 const persistConfig = {
@@ -44,7 +45,8 @@ const rootReducer = combineReducers({
   quiz: stageReducer,
   rankList: rankListReducer,
   user: userReducer,
-  shop: shopReducer
+  shop: shopReducer,
+  sound: soundReducer
 });
 
 // 유지된 리듀서 생성

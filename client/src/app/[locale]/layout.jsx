@@ -94,7 +94,9 @@ export default function RootLayout({ children, modal, params }) {
         <ReduxProvider>
           {/* ReduxProvider로 감싼 후에 Redux 관련 훅 사용 */}
           <AuthWrapper locale={locale}>
-            <MainContent children={children} modal={modal} />
+            <MainContent modal={modal}>
+              {children}
+            </MainContent>
           </AuthWrapper>
         </ReduxProvider>
         <div id="modal-root" />

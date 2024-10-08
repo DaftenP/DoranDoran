@@ -37,8 +37,11 @@ public class KafkaConsumer {
         log.info("Consumed message: {}", placementMessage);
 
         try {
-            Map<String, String> message = objectMapper.readValue(placementMessage, Map.class);
-            rankService.placement(Long.parseLong(message.get("userId")));
+            Map<String, Integer> message = objectMapper.readValue(placementMessage, Map.class);
+
+            Long userId = message.get("userId").longValue();
+
+            rankService.placement(userId);
         } catch (Exception e) {
             log.error("Error occurred while consuming message: {}", placementMessage);
         }

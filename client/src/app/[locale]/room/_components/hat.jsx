@@ -56,7 +56,7 @@ function TranslatedHat({ onSelectHat }) {
         );
         setItems(filteredItems);
       })
-      .catch(error => console.error("Failed to fetch items:", error));
+      .catch();
   }, [apiUrl]);
 
   const handleHatSelect = (itemId) => {
@@ -68,10 +68,8 @@ function TranslatedHat({ onSelectHat }) {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
-      .then((response) => {
-        window.location.reload();
-      })
-      .catch((error) => console.error("Failed to equip hat:", error));
+      .then((response) => {})
+      .catch();
   };
 
   return (

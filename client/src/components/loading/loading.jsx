@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux';
 import Image from 'next/image'
 import Bird1 from '@/public/logo/doryeoni.webp'
 import Bird2 from '@/public/logo/raoni.webp'
-import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
 
 export default function Loading() {
   const [messages, setMessages] = useState(null);
@@ -38,7 +36,6 @@ export default function Loading() {
 
 function TranslatedLoading() {
   const t = useTranslations('index');
-  const [progress, setProgress] = useState(0);
   const [bird1Position, setBird1Position] = useState(-30);
   const [bird2Position, setBird2Position] = useState(-30);
   const [randomText, setRandomText] = useState('')
@@ -70,35 +67,6 @@ function TranslatedLoading() {
     setRandomText(randomTips[randomIndex])
   }, [])
 
-  const duration = 5000; // 전체 애니메이션 시간 (밀리초)
-
-  useEffect(() => {
-    setProgress(2)
-    let start = null;
-    let frame;
-
-    const animateProgress = (timestamp) => {
-      if (!start) start = timestamp;
-      const progressTime = timestamp - start;
-
-      const percentage = Math.min((progressTime / duration) * 100, 100); // 0~100% 사이의 값 계산
-      setProgress(percentage);
-
-      if (percentage < 100) {
-        frame = requestAnimationFrame(animateProgress);
-      } else {
-        setTimeout(() => {
-          start = null; // 100%에 도달하면 잠시 멈추고 다시 시작
-          frame = requestAnimationFrame(animateProgress);
-        }, 1000);
-      }
-    };
-
-    frame = requestAnimationFrame(animateProgress);
-
-    return () => cancelAnimationFrame(frame); // 컴포넌트가 언마운트될 때 애니메이션 정지
-  }, []);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setBird1Position((prev) => (prev >= 130 ? -90 : prev + 1)); // 끝까지 가면 다시 시작
@@ -120,21 +88,21 @@ function TranslatedLoading() {
       />
       <Image src={`https://ssafy-tailored.b-cdn.net/shop/bg/${imageMap[userBackground]}.webp`} width={200} height={100} alt='background_day' className='fixed top-0 z-0 w-full h-full'/>
       <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[40vh] h-[40vh] md:w-[55vh] md:h-[55vh]'>
-        <CircularProgressbarWithChildren
-          value={progress}
-          strokeWidth={5}
-          styles={buildStyles({
-            pathColor: '#B785E8', // 로딩바 색상
-            trailColor: 'transparent', // 트레일 색상
-          })}
-        >
-          <div className='flex justify-center items-center text-3xl md:text-6xl lg:text-8xl'>
-            - {t('tip')} -
+        <div className='relative flex justify-center items-center w-full h-full'>
+          {/* 로딩 애니메이션 */}
+          <div
+            className='w-full h-full border-8 border-t-transparent border-purple-500 rounded-full absolute' 
+            style={{ animation: 'spin 2s linear infinite' }}>
+          </div> 
+          <div className='flex-col'>
+            <div className='flex justify-center items-center text-3xl md:text-6xl lg:text-8xl mt-4'>
+              - {t('tip')} -
+            </div>
+            <div className='text-center w-[30vh] text-xxl md:text-4xl lg:text-5xl break-words overflow-wrap'>
+              {t(randomText)}
+            </div>
           </div>
-          <div className='text-center w-[30vh] text-xxl md:text-4xl lg:text-5xl break-words overflow-wrap'>
-            {t(randomText)}
-          </div>
-        </CircularProgressbarWithChildren>
+        </div>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 package com.scheduler.job;
 
-import com.scheduler.entity.LeaderBoardMember;
-import com.scheduler.entity.League;
-import com.scheduler.entity.LeagueMember;
+import com.scheduler.entity.*;
+import com.scheduler.repository.LeagueLogRepository;
+import com.scheduler.repository.LeagueMemberLogRepository;
 import com.scheduler.repository.LeagueMemberRepository;
 import com.scheduler.repository.LeagueRepository;
 import com.scheduler.util.DateIdenfier;
@@ -15,15 +15,17 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Slf4j
 public class LeaderBoardBatch {
     private final LeagueMemberRepository leagueMemberRepository;
     private final LeagueRepository leagueRepository;
+    private final LeagueLogRepository leagueLogRepository;
+    private final LeagueMemberLogRepository leagueMemberLogRepository;
     private final RedisTemplate<String, Object> redisTemplate;
     // SortedSet을 사용 객체
     private final ZSetOperations<String, Object> zSetOperations;
@@ -31,16 +33,16 @@ public class LeaderBoardBatch {
     private final HashOperations<String, String, LeaderBoardMember> hashOperations;
     // 키 값 생성 객체
     private final RedisKeyGenerator redisKeyGenerator;
-    private final DateIdenfier dateIdenfier;
 
-    public LeaderBoardBatch(LeagueMemberRepository leagueMemberRepository, LeagueRepository leagueRepository, RedisTemplate<String, Object> redisTemplate1, RedisTemplate<String, Object> redisTemplate, RedisKeyGenerator redisKeyGenerator, DateIdenfier dateIdenfier) {
+    public LeaderBoardBatch(LeagueMemberRepository leagueMemberRepository, LeagueRepository leagueRepository, LeagueLogRepository leagueLogRepository, LeagueMemberLogRepository leagueMemberLogRepository, RedisTemplate<String, Object> redisTemplate1, RedisTemplate<String, Object> redisTemplate, RedisKeyGenerator redisKeyGenerator, DateIdenfier dateIdenfier) {
         this.leagueMemberRepository = leagueMemberRepository;
         this.leagueRepository = leagueRepository;
+        this.leagueLogRepository = leagueLogRepository;
+        this.leagueMemberLogRepository = leagueMemberLogRepository;
         this.redisTemplate = redisTemplate1;
         this.zSetOperations = redisTemplate.opsForZSet(); // ZSetOperations는 RedisTemplate을 통해 얻어옴
         this.hashOperations = redisTemplate.opsForHash(); // HashOperations는 RedisTemplate을 통해 얻어옴
         this.redisKeyGenerator = redisKeyGenerator;
-        this.dateIdenfier = dateIdenfier;
     }
 
     /**
@@ -81,11 +83,12 @@ public class LeaderBoardBatch {
     }
 
     /**
-     * 미사용 배치 작업
+     *
      * 일주일 단위로 리그 정보 갱신
      */
     @Transactional
-//    @Scheduled(fixedRateString = "${batch.schedule.fixed-rate}")
+    // 일요일 24:00에 실행
+    @Scheduled(cron = "0 0 0 * * SUN")
     public void updateLeagueSettlement() {
         log.info("updateLeagueSettlement start");
 
@@ -98,25 +101,48 @@ public class LeaderBoardBatch {
         // 현재를 지난 주로 변경
         String currentLeaderBoardKey = redisKeyGenerator.getLeaderboardKey(0L);
         String currentLeaderBoardHashKey = redisKeyGenerator.getLeaderboardHashKey(0L);
-        redisTemplate.rename(currentLeaderBoardKey, previousLeaderBoardKey);
-        redisTemplate.rename(currentLeaderBoardHashKey, previousLeaderBoardHashKey);
+        if (redisTemplate.hasKey(currentLeaderBoardKey)) {
+            redisTemplate.rename(currentLeaderBoardKey, previousLeaderBoardKey);
+        }
+        if (redisTemplate.hasKey(currentLeaderBoardHashKey)) {
+            redisTemplate.rename(currentLeaderBoardHashKey, previousLeaderBoardHashKey);
+        }
 
         // 리그 멤버 갱신
-        // 일주일 전 리그 조회
-        String leaguePrefix = dateIdenfier.getDateIdenfier(LocalDate.now().minusWeeks(1));
-        List<League> leagues = leagueRepository.findAllByIdStartingWith(leaguePrefix);
+        List<LeagueMember> leagueMembers = leagueMemberRepository.findAll();
+        for (LeagueMember leagueMember : leagueMembers) {
+            Long leagueId = leagueMember.getLeague().getId();
+            Optional<LeagueLog> leagueLog = leagueLogRepository.findById(leagueId);
+
+            if (leagueLog.isEmpty()) {
+                continue;
+            }
+
+            LeagueMemberLog leagueMemberLog = LeagueMemberLog.builder()
+                    .userId(leagueMember.getUserId())
+                    .gainXP(leagueMember.getGainXP())
+                    .leagueLog(leagueLog.get())
+                    .createdAt(LocalDateTime.now())
+                    .build();
+
+            leagueMemberLogRepository.save(leagueMemberLog);
+        }
+
+        // 금주 리그 조회
+        List<League> leagues = leagueRepository.findAll();
+
         // 리그에 속한 상위 3명 멤버 승급, 하위 멤버 강등
         for (League league : leagues) {
             List<LeagueMember> leagueMembersByLeague = leagueMemberRepository.findAllByLeagueIdOrderByGainXP(league.getId());
             for (int i = 0; i < leagueMembersByLeague.size(); i++) {
                 LeagueMember leagueMember = leagueMembersByLeague.get(i);
-                if (i < 3 && leagueMember.getLeague().getRank() < 400) {
-                    leagueMember.getLeague().updateRank(leagueMember.getLeague().getRank() + 100);
+                leagueMember.updateGainXP0();
+                if (i < 3 && leagueMember.getLeague().getRank() < 5000) {
+                    leagueMember.getLeague().updateRank(leagueMember.getLeague().getRank() + 1000);
+                } else if (i >= 7 && leagueMember.getLeague().getRank() > 1000) {
+                    leagueMember.getLeague().updateRank(leagueMember.getLeague().getRank() - 1000);
                 }
-                if (i >= 3 && leagueMember.getLeague().getRank() > 100) {
-                    leagueMember.getLeague().updateRank(leagueMember.getLeague().getRank() - 100);
-                }
-                leagueMember.updateGainXP(0L);
+
                 leagueMemberRepository.save(leagueMember);
             }
         }
@@ -129,26 +155,33 @@ public class LeaderBoardBatch {
     private void generateNewLeague() {
         log.info("generateNewLeague start");
 
-        String leaguePrefix = dateIdenfier.getDateIdenfier(LocalDate.now());
+        List<League> curLeagues = leagueRepository.findAll();
+
         // 브론즈, 골드, 플래, 다이아 리그 생성
-        for (int i = 100; i <= 400; i += 100) {
+        for (int i = 1000; i <= 5000; i += 1000) {
             // 해당 티어인 멤버 조회
-            List<LeagueMember> leagueMembers = leagueMemberRepository.findAllByLeagueRank(i);
+            List<LeagueMember> leagueMembers = leagueMemberRepository.findByRank((long) i);
             // 리그를 하나씩 생성하고 리그멤버 10명씩 배치
             // 리그 멤버가 더 이상 없으면 리그 생성 종료
-            for (int j = 0; j < 100; j++) {
+            for (int j = 0; ; j++) {
                 if (leagueMembers.isEmpty()) {
                     break;
                 }
-                String leagueId = leaguePrefix + "-" + i + "-" + j;
                 League league = League.builder()
-                        .id(leagueId)
+                        .rank(i)
+                        .num(j)
+                        .createdAt(LocalDateTime.now())
+                        .build();
+
+                LeagueLog leagueLog = LeagueLog.builder()
                         .rank(i)
                         .num(j)
                         .createdAt(LocalDateTime.now())
                         .build();
 
                 leagueRepository.save(league);
+                leagueLogRepository.save(leagueLog);
+
                 for (int k = 0; k < 10; k++) {
                     if (leagueMembers.isEmpty()) {
                         break;
@@ -159,5 +192,8 @@ public class LeaderBoardBatch {
                 }
             }
         }
+
+        // 현재 리그 삭제
+        leagueRepository.deleteAll(curLeagues);
     }
 }

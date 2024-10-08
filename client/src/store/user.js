@@ -100,6 +100,9 @@ const initialState = {
   mission: {
     status: '', // 주간 테스크 상태
     dailyStatus: 0, // 일일 테스크 상태
+  },
+  tutor: {
+    number: 10
   }
 }
 

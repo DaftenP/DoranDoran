@@ -34,12 +34,12 @@ const MainContent = ({ children, modal }) => {
   }, []);
 
   useEffect(() => {
-    console.log('안녕')
     if ([`/${locale}/main`, `/${locale}/profile`, `/${locale}/profile/setting`, `/${locale}/ranking/all`, `/${locale}/ranking/group`, `/${locale}/study`, `/${locale}/ai-tutor`].includes(pathname) ||
       (pathname.startsWith(`/${locale}/ai-tutor`) && pathname.split('/').length === 4)) {
         if (!isMainPlaying) {
           if (audioNightRef.current) audioNightRef.current.pause();
 
+          audioMainRef.current.volume = volume;
           audioMainRef.current.currentTime = 0;
           audioMainRef.current.play();
           dispatch(playMainBgm());
@@ -48,6 +48,7 @@ const MainContent = ({ children, modal }) => {
       if (!isNightPlaying) {
         if (audioMainRef.current) audioMainRef.current.pause();
         
+        audioNightRef.current.volume = volume
         audioNightRef.current.currentTime = 0;
         audioNightRef.current.play();
         dispatch(playNightBgm());
@@ -57,7 +58,7 @@ const MainContent = ({ children, modal }) => {
       if (audioNightRef.current) audioNightRef.current.pause();
       dispatch(stopBgm())
     }
-  }, [dispatch, pathname, isMainPlaying, isNightPlaying]);
+  }, [dispatch, pathname, isMainPlaying, isNightPlaying, locale, volume]);
 
   useEffect(() => {
     // 로딩 시작 (페이지가 바뀔 때마다 로딩 활성화)

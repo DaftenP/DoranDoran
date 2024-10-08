@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/")
 public class ConnectionTestController {
-    // 서버 응답 확인용 메소드
+    /**
+     * 서버 확인 용 메소드
+     * @return
+     */
     @GetMapping("/healthz")
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity

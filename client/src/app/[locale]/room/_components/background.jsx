@@ -4,14 +4,24 @@ import { useState, useEffect } from "react";
 import { useLocale, NextIntlClientProvider } from "next-intl";
 import axios from "axios";
 import Image from "next/image";
-import Day from "@/public/background/day.webp";
-import DayBlue from "@/public/background/day-blue.webp";
-import Launch from "@/public/background/launch.webp";
-import LaunchBlue from "@/public/background/launch-blue.webp";
-import NightBlue from "@/public/background/night-blue.webp";
 
-// 모든 배경 이미지를 객체로 저장
-const backgroundImages = {1: Day, 2: DayBlue, 3: Launch, 4: LaunchBlue, 5: NightBlue};
+// 배경 이미지 URL을 반환하는 함수
+const renderBackground = (backgroundId) => {
+  switch (backgroundId) {
+    case 1:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/day.webp";
+    case 2:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/launch.webp";
+    case 3:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/day-blue.webp";
+    case 4:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/night-blue.webp";
+    case 5:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/launch-blue.webp";
+    default:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/day.webp";
+  }
+};
 
 // 메인 컴포넌트: 언어 설정 및 번역된 컴포넌트 렌더링
 export default function Background({ onSelectBackground }) {
@@ -62,7 +72,6 @@ function TranslatedBackground({ onSelectBackground }) {
       onSelectBackground(newSelectedBackground);
     }
 
-
     // 선택된 배경 정보를 서버에 전송
     axios.patch(`${apiUrl}/inventory/equip`, newSelectedBackground, {
         headers: { "Content-Type": "application/json" },
@@ -87,7 +96,13 @@ function TranslatedBackground({ onSelectBackground }) {
           >
             {item && (
               <div className="w-full h-full flex items-center justify-center">
-                <Image src={backgroundImages[item.itemId]} alt="background" className="w-full h-full object-cover" />
+                <Image 
+                  src={renderBackground(item.itemId)} 
+                  alt="background" 
+                  className="w-full h-full object-cover"
+                  width={100}
+                  height={100}
+                />
               </div>
             )}
           </div>

@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
+import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import Back from "@/public/icon/back.webp";
 import Hat from "@/app/[locale]/room/_components/hat";
-import Character from "@/components/character/character";
 import Color from "@/app/[locale]/room/_components/color";
 import Background from "@/app/[locale]/room/_components/background";
-// import Shelf from "@/public/icon2/shelf.webp";
+import BirdCharacter from "@/app/[locale]/room/_components/birdcharacter";
 
 export default function Room() {
   const [messages, setMessages] = useState(null);
@@ -20,7 +20,9 @@ export default function Room() {
       try {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default);
-      } catch (error) {}
+      } catch (error) {
+        console.error("Failed to load messages:", error);
+      }
     }
     loadMessages();
   }, [locale]);
@@ -36,25 +38,38 @@ function TranslatedBottom() {
   const t = useTranslations("index");
   const locale = useLocale();
   const [activeTab, setActiveTab] = useState("color");
-  const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedHat, setSelectedHat] = useState(null);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  // 현재 선택된 탭에 따라 컴포넌트 렌더링
+  useEffect(() => {
+    axios.get(`${apiUrl}/my-page/user`, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      })
+      .then((response) => {
+        const { color, hat } = response.data.data;
+        setSelectedColor({ itemType: 1, itemId: color });
+        setSelectedHat({ itemType: 2, itemId: hat });
+      })
+      .catch((error) => console.error("Failed to fetch user data:", error))
+  }, [apiUrl]);
+
   const renderTabContent = () => {
     switch (activeTab) {
       case "color":
-        return <Color onSelectCharacter={setSelectedCharacter} />;
+        return <Color onSelectCharacter={setSelectedColor} />;
       case "hat":
-        return <Hat />;
+        return <Hat onSelectHat={setSelectedHat} />;
       case "background":
         return <Background />;
       default:
-        return <Color onSelectCharacter={setSelectedCharacter} />;
+        return <Color onSelectCharacter={setSelectedColor} />;
     }
   };
 
   return (
     <div className="w-screen h-screen">
-      {/* 상단바 */}
       <div className="w-full h-[8%] flex justify-center items-center">
         <div className="w-[20%] flex justify-center">
           <Link href={`/${locale}/main`}>
@@ -67,12 +82,15 @@ function TranslatedBottom() {
         <div className="w-[20%]" />
       </div>
 
-      {/* 나의 캐릭터 */}
       <div className="w-full h-[32%] flex justify-center items-center">
-        <Character />
+        {selectedColor && selectedHat && (
+          <BirdCharacter 
+            color={selectedColor.itemId} 
+            hatId={selectedHat.itemId}
+          />
+        )}
       </div>
 
-      {/* 메뉴 탭 */}
       <div className="w-full h-[60%] flex flex-col items-center justify-center">
         <div className="flex w-[90%] h-[15%]">
           {["color", "hat", "background"].map((tab) => (
@@ -93,9 +111,6 @@ function TranslatedBottom() {
         <div className="w-[90%] h-[80%] flex justify-center items-center bg-[#A46D46]/50">
           {renderTabContent()}
         </div>
-
-        {/* 옷장 이미지 */}
-        {/* <Image src={Shelf} alt="shelf" className="w-full" /> */}
       </div>
     </div>
   );

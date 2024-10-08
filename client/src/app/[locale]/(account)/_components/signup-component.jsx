@@ -53,6 +53,7 @@ function TranslatedSignup() {
   const [showPasswordMismatchError, setShowPasswordMismatchError] = useState(false);
   const [formData, setFormData] = useState({nickname: "", email: "", password: "", confirmPassword: "", verificationCode: ""});
   const [touched, setTouched] = useState({nickname: false, email: false, password: false, confirmPassword: false, verificationCode: false});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 폼 데이터 및 관련 상태 초기화 함수
   const resetFormData = () => {
@@ -177,14 +178,14 @@ function TranslatedSignup() {
     );
   };
 
-  // 회원가입 제출 핸들러
-  const signupSubmit = (e) => {
+   // 회원가입 제출 핸들러
+   const signupSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm()) {
-      setModalMessage({message: "signup-failed", background: "bird", buttonType: 2});
-      setIsOpenModal(true);
+    if (!validateForm() || isSubmitting) {
       return;
     }
+    setIsSubmitting(true);
+    setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     axios.post(`${apiUrl}/regist`,
         {nickname: formData.nickname, email: formData.email, password: formData.password},
@@ -197,7 +198,11 @@ function TranslatedSignup() {
       .catch((error) => {
         setModalMessage({message: "signup-failed", background: "bird", buttonType: 2});
       })
-      .finally(() => {setIsOpenModal(true)});
+      .finally(() => {
+        setIsOpenModal(true);
+        setIsLoading(false);
+        setIsSubmitting(false);
+      });
   };
 
   // 입력 필드 클래스 생성 함수
@@ -250,7 +255,7 @@ function TranslatedSignup() {
             />
           </div>
           {/* 이메일 입력 필드 */}
-          <div className="relative">
+          <div className="relative mt-3 md:mt-6">
             <div className="flex">
               <p className="text-red-500 md:text-3xl mr-1">*</p>
               <p className="md:text-3xl">{t("e-mail")}</p>
@@ -270,7 +275,7 @@ function TranslatedSignup() {
             </button>
           </div>
           {/* 인증 코드 입력 필드 */}
-          <div className="relative">
+          <div className="relative my-3  md:my-6">
             <div className="flex">
               <p className="text-red-500 md:text-3xl mr-1">*</p>
               <p className="md:text-3xl">{t("verification-code")}</p>
@@ -306,11 +311,13 @@ function TranslatedSignup() {
               required
               minLength={8}
             />
+            <div className="h-3 md:h-6">
             {showPasswordError && (
               <p className="text-red-500 md:text-3xl flex justify-end">
                 {t("password-at-least-8-digits")}
               </p>
             )}
+            </div>
           </div>
           {/* 비밀번호 확인 입력 필드 */}
           <div>
@@ -328,19 +335,21 @@ function TranslatedSignup() {
               className={getInputClass("confirmPassword", formData.confirmPassword)}
               required
             />
-            {showPasswordMismatchError && (
-              <p className="text-red-500 md:text-3xl flex justify-end">
-                {t("password-mismatch")}
-              </p>
-            )}
+            <div className="h-3 md:h-6">
+              {showPasswordMismatchError && (
+                <p className="text-red-500 md:text-3xl flex justify-end">
+                  {t("password-mismatch")}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
         {/* 취소 및 확인 버튼 */}
         <div>
-          <Button text={t("cancel")} onClick={handleCancel} />
-          <Button text={t("ok")} type="submit" disabled={!validateForm()} />
-        </div>
+        <Button text={t("cancel")} onClick={handleCancel} />
+        <Button text={t("ok")} type="submit" disabled={!validateForm() || isSubmitting} />
+      </div>
       </form>
 
       {/* 모달 컴포넌트 */}

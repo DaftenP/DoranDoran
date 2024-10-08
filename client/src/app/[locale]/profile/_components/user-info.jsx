@@ -5,7 +5,11 @@ import { useEffect, useState } from "react";
 import { fetchUserData } from "@/store/user";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
-import Gold from "@/public/rank/gold.webp";
+import Bronze from '@/public/rank/bronze.webp'
+import Diamond from '@/public/rank/diamond.webp'
+import Gold from '@/public/rank/gold.webp'
+import Platinum from '@/public/rank/platinum.webp'
+import Silver from '@/public/rank/silver.webp'
 import Logout from "@/app/[locale]/profile/_components/logout";
 
 export default function UserInfo() {
@@ -36,6 +40,15 @@ function TranslatedUser() {
   const t = useTranslations("index");
   const user = useSelector((state) => state.user);
 
+  const rankImage = {
+    0: Bronze,
+    1000: Bronze,
+    2000: Silver,
+    3000: Gold,
+    4000: Platinum,
+    5000: Diamond,
+  }
+
   return (
     <div className="bg-white w-[90%] h-[40%] rounded-3xl flex flex-col justify-center items-center">
       <div className="border-2 border-[#B0BEC5] bg-[#FFF5E1] w-[90%] h-[70%] rounded-3xl">
@@ -46,7 +59,7 @@ function TranslatedUser() {
               {t("rank")}
             </div>
             <div className="w-full h-1/2 flex justify-center items-center">
-              <Image src={Gold} alt="gold" className="w-[40%] md:w-[30%]" />
+            <Image src={rankImage[user.status.rank]} alt="rank" className="w-auto h-5/6" />
             </div>
           </div>
           {/* 레벨 */}

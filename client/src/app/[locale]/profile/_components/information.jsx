@@ -95,7 +95,7 @@ function TranslatedInformation() {
         {/* 닉네임 수정 */}
         <div className="w-[90%] h-1/4 flex items-center justify-between">
           <div className="flex items-center">
-            <Image src={Profile} alt="Profile" className="w-[22%] md:w-[35%] pointer-events-none" />
+            <Image src={Profile} alt="Profile" className="w-[16%] md:w-[30%] pointer-events-none" />
             <div className="ml-2 md:ml-5 flex flex-col">
               <p className="text-sm md:text-2xl">{t("nickname")}</p>
               {isEditingNickname ? (
@@ -120,7 +120,7 @@ function TranslatedInformation() {
         <hr className="w-[90%] border-t border-[#ACACAC]" />
         {/* 이메일 표시 */}
         <div className="w-[90%] h-1/4 flex items-center">
-          <Image src={Email} alt="Email" className="w-[10%] md:w-[9%] ml-1 pointer-events-none"/>
+          <Image src={Email} alt="Email" className="w-[11%] md:w-[9%] ml-1 pointer-events-none"/>
           <div className="ml-2 flex flex-col md:ml-5">
             <p className="text-sm md:text-2xl">{t("e-mail")}</p>
             <p className="text-xl md:text-4xl">{user.profile.email}</p>
@@ -130,7 +130,7 @@ function TranslatedInformation() {
         {/* 생년월일 표시 및 수정 */}
         <div className="w-[90%] h-1/4 flex items-center justify-between">
           <div className="flex items-center">
-            <Image src={Birthday} alt="Birthday" className="w-[15%] md:w-[25%] pointer-events-none"/>
+            <Image src={Birthday} alt="Birthday" className="w-[15%] md:w-[22%] pointer-events-none"/>
             <div className="ml-2 flex flex-col md:ml-4">
               <p className="text-sm md:text-2xl">{t("birth")}</p>
               {isEditingBirthday ? (

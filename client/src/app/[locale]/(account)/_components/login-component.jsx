@@ -98,34 +98,24 @@ function LoginFormContent() {
       <form onSubmit={loginSubmit} className="w-full flex flex-col justify-center items-center gap-5">
         {/* 이메일 입력 필드 */}
         <div className="relative w-[75%] h-10 md:h-20">
-          <Image
-            src={Email}
-            alt="email"
-            className="absolute w-[6%] md:w-[5%] top-1/2 transform -translate-y-1/2 left-5 md:left-10 pointer-events-none"
-          />
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={loginChange}
             placeholder={t("e-mail")}
-            className="w-full h-full rounded-full bg-white/60 shadow-md text-xl md:text-4xl pl-14 md:pl-28"
+            className="w-full h-full rounded-full bg-white/60 shadow-md text-xl md:text-4xl pl-7 md:pl-14"
           />
         </div>
         {/* 비밀번호 입력 필드 */}
         <div className="relative w-[75%] h-10 md:h-20">
-          <Image
-            src={Password}
-            alt="password"
-            className="absolute w-[6%] md:w-[5%] top-1/2 transform -translate-y-1/2 left-5 md:left-10 pointer-events-none"
-          />
           <input
             type={showPassword ? "text" : "password"}
             name="password"
             value={formData.password}
             onChange={loginChange}
             placeholder={t("password")}
-            className="w-full h-full rounded-full bg-white/60 shadow-md text-xl md:text-4xl pl-14 md:pl-28"
+            className="w-full h-full rounded-full bg-white/60 shadow-md text-xl md:text-4xl pl-7 md:pl-14"
           />
           {/* 비밀번호 표시/숨김 토글 버튼 */}
           <Image
@@ -144,7 +134,7 @@ function LoginFormContent() {
           </p>
         </button>
         {/* 비밀번호 찾기 링크 */}
-        <div className="w-[75%] flex justify-end mb-5">
+        <div className="w-[75%] flex justify-end md:my-3">
           <Link href={`/${locale}/change-password`} className="text-sm md:text-3xl text-[#1f7efa]">
             {t("forgot-your-password?")}
           </Link>

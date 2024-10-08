@@ -52,7 +52,7 @@ func SubmitPlayLogController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	util.ForwardRequest(w, r, http.MethodPost, service.QuizUrl+"/api/v1/user/play-log/submit")
+	util.ForwardRequest(w, r, http.MethodPost, service.UserUrl+"/api/v1/user/play-log/submit")
 }
 
 // GET /api/v1/bff/quiz/play-log
@@ -71,7 +71,7 @@ func GetPlayLogController(w http.ResponseWriter, r *http.Request) {
 	parts := strings.Split(cookie.Value, "%3A")
 	userID := parts[0]
 
-	util.ForwardRequest(w, r, http.MethodGet, service.QuizUrl+"/api/v1/user/play-log/"+userID)
+	util.ForwardRequest(w, r, http.MethodGet, service.UserUrl+"/api/v1/user/play-log/"+userID)
 }
 
 // POST /api/v1/bff/quiz/quizzes/regist

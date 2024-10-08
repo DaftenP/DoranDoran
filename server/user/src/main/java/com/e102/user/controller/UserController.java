@@ -150,7 +150,7 @@ public class UserController {
      * @return 해당하는 StatusCode를 반환한다.
      */
 
-    @PostMapping("/play-log")
+    @PostMapping("/play-log/submit")
     public ResponseEntity<ResponseDto> insertPLog(@RequestBody PlayLogRequestDTO playLogRequestDTO) {
         StatusCode statusCode = userService.insertPlayLog(playLogRequestDTO);
         return ResponseDto.response(statusCode);

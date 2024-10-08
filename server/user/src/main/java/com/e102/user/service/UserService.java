@@ -219,16 +219,18 @@ public class UserService {
                 try {
                     // 플레이 로그 추가
                     sUser.getPlayLogList().add(playLog);
+                    userRepository.save(sUser);  // 상태 변경 저장
 
-                    // Kafka 메시지 생성
-                    Map<String, Object> message = new HashMap<>();
+                    // Kafka 메시지 생성 (Map 객체)
+                    Map<String, Integer> message = new HashMap<>();
                     message.put("userId", playLogRequestDTO.getUserId());
                     message.put("xp", 10);
 
                     log.info("KAFKA 메시지 전송");
 
-                    // Kafka 토픽에 메시지 발행
-                    kafkaTemplate.send("topic-rank-updateXP", message);
+                    // Kafka 메시지를 동기적으로 전송하여 전송 성공 여부 확인
+                    kafkaTemplate.send("topic-rank-updateXP", message).get();
+
 
                 } catch (Exception e) {
                     // 카프카 전송 실패 시 예외 발생 -> 트랜잭션 롤백

@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
 import axios from "axios";
 import Image from "next/image";
-import Button from "../_components/button";
 import Modal from "@/components/modal/modal";
 import Raoni from "@/public/logo/raoni.webp";
 import Doryeoni from "@/public/logo/doryeoni.webp";
+import Button from "@/app/[locale]/(account)/_components/button";
 
 export default function ChangeComponent() {
   const [messages, setMessages] = useState(null);
@@ -72,7 +72,7 @@ function TranslatedChange() {
     if (isPasswordResetSuccess) {router.push("/")}
   };
 
-  // 임시 비밀번호 변경
+  // 임시 비밀번호 변경 핸들러
   const PasswordSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);

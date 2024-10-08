@@ -1,4 +1,4 @@
-"use client";
+"use client"; // 클라이언트 사이드 렌더링을 위한 지시어
 
 import { useState, useEffect } from "react";
 import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
@@ -38,11 +38,12 @@ function TranslatedBottom() {
   const t = useTranslations("index");
   const locale = useLocale();
   const [activeTab, setActiveTab] = useState("color");
-  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null); 
   const [selectedHat, setSelectedHat] = useState(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
+    // 사용자 데이터 가져오기
     axios.get(`${apiUrl}/my-page/user`, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -52,9 +53,10 @@ function TranslatedBottom() {
         setSelectedColor({ itemType: 1, itemId: color });
         setSelectedHat({ itemType: 2, itemId: hat });
       })
-      .catch((error) => console.error("Failed to fetch user data:", error))
+      .catch()
   }, [apiUrl]);
 
+  // 활성 탭에 따른 컴포넌트 렌더링
   const renderTabContent = () => {
     switch (activeTab) {
       case "color":
@@ -82,32 +84,29 @@ function TranslatedBottom() {
         <div className="w-[20%]" />
       </div>
 
+      {/* 캐릭터 표시 영역 */}
       <div className="w-full h-[32%] flex justify-center items-center">
         {selectedColor && selectedHat && (
-          <BirdCharacter 
-            color={selectedColor.itemId} 
-            hatId={selectedHat.itemId}
-          />
+          <BirdCharacter color={selectedColor.itemId} hatId={selectedHat.itemId} />
         )}
       </div>
 
+      {/* 커스터마이징 옵션 영역 */}
       <div className="w-full h-[60%] flex flex-col items-center justify-center">
+        {/* 탭 메뉴 */}
         <div className="flex w-[90%] h-[15%]">
           {["color", "hat", "background"].map((tab) => (
             <div
               key={tab}
               className={`w-full flex justify-center items-center text-xl rounded-t-[15px] rounded-b-md  
-                ${
-                  activeTab === tab
-                    ? "bg-[#A46D46] border border-[#5c3d21]/60"
-                    : "bg-[#d3b88c]/60 border border-[#5c3d21]/60"
-                }`}
+                ${activeTab === tab ? "bg-[#A46D46] border border-[#5c3d21]/60" : "bg-[#d3b88c]/60 border border-[#5c3d21]/60"}`}
               onClick={() => setActiveTab(tab)}
             >
               <p className="md:text-5xl">{t(tab)}</p>
             </div>
           ))}
         </div>
+        {/* 선택된 탭의 내용 */}
         <div className="w-[90%] h-[80%] flex justify-center items-center bg-[#A46D46]/50">
           {renderTabContent()}
         </div>

@@ -1,18 +1,16 @@
 "use client";
 
-import axios from "axios";
-import Link from "next/link";
-import Image from "next/image";
 import { login } from '@/store/authSlice';
 import { useDispatch } from 'react-redux';
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
-import Email from "@/public/icon/email.webp";
-import Password from "@/public/icon/password.webp";
+import axios from "axios";
+import Link from "next/link";
+import Image from "next/image";
+import Modal from "@/components/modal/modal";
 import HidePassword from "@/public/icon/hide-password.webp";
 import ShowPassword from "@/public/icon/show-password.webp";
-import Modal from "@/components/modal/modal";
 
 // 메인 로그인 폼 컴포넌트
 export default function LoginForm() {
@@ -69,7 +67,7 @@ function LoginFormContent() {
     setIsLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     axios.post(`${apiUrl}/login`,
-        {email: formData.email, password: formData.password},
+        { email: formData.email, password: formData.password },
         {
           headers: {"Content-Type": "application/json"},        
           withCredentials: true,

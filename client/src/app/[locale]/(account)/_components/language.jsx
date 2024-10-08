@@ -68,10 +68,7 @@ function TranslatedLanguage() {
       {isOpen && (
         <div className="absolute top-full left-0 right-0 w-[30%] ml-auto mt-1 bg-white rounded-md shadow-md z-10">
           {languages.map((lang) => (
-            <div
-              key={lang.code}
-              className="px-4 py-2 md:text-2xl text-center whitespace-nowrap"
-              onClick={() => selectLanguage(lang)}
+            <div key={lang.code} className="px-4 py-2 md:text-2xl text-center whitespace-nowrap" onClick={() => selectLanguage(lang)}
             >
               {t(lang.name)}
             </div>

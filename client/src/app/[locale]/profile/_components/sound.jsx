@@ -43,7 +43,6 @@ function TranslatedSound() {
     <>
       <p className="text-2xl md:text-5xl pb-2">{t("sound")}</p>
       <div className="border-2 border-[#B0BEC5] bg-[#FFF5E1] w-[90%] h-[10%] rounded-3xl flex items-center justify-center flex-col">
-        {/* background music */}
         <div className="w-[90%] h-[85%] flex items-center justify-between">
           <div className="h-full flex flex-col w-full">
             <p className="md:text-3xl">{t("background-music")}</p>

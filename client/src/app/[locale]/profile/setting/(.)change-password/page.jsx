@@ -34,28 +34,18 @@ function TranslatedChagnePassword() {
 
   useEffect(() => {
     // 컴포넌트가 마운트되면 다이얼로그를 표시
-    if (!dialogRef.current?.open) {
-      dialogRef.current?.showModal();
-    }
+    if (!dialogRef.current?.open) { dialogRef.current?.showModal() }
   }, []);
 
   return (
     <dialog
       // 다이얼로그 외부를 클릭하면 이전 페이지로 돌아감
-      onClick={(e) => {
-        if (e.target.nodeName === "DIALOG") {
-          router.back();
-        }
-      }}
+      onClick={(e) => { if (e.target.nodeName === "DIALOG") {router.back()}}}
       className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[60%] flex flex-col items-center rounded-3xl shadow-xl z-10 bg-[#FFF5E1]"
       ref={dialogRef}
     >
       <ChangePassword />
-      <style jsx>{`
-        dialog::backdrop {
-          background-color: rgba(0, 0, 0, 0.5);
-        }
-      `}</style>
+      <style jsx>{`dialog::backdrop { background-color: rgba(0, 0, 0, 0.5) }`}</style>
     </dialog>
   );
 }

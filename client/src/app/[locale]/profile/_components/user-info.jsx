@@ -39,15 +39,7 @@ export default function UserInfo() {
 function TranslatedUser() {
   const t = useTranslations("index");
   const user = useSelector((state) => state.user);
-
-  const rankImage = {
-    0: Bronze,
-    1000: Bronze,
-    2000: Silver,
-    3000: Gold,
-    4000: Platinum,
-    5000: Diamond,
-  }
+  const rankImage = { 0: Bronze, 1000: Bronze, 2000: Silver, 3000: Gold, 4000: Platinum, 5000: Diamond }
 
   return (
     <div className="bg-white w-[90%] h-[40%] rounded-3xl flex flex-col justify-center items-center">

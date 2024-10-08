@@ -56,9 +56,7 @@ function TranslatedBackground({ onSelectBackground }) {
       })
       .then((response) => {
         // itemType이 3인 아이템만 필터링 (배경)
-        const filteredItems = response.data.data.filter(
-          (item) => item.itemType === 3
-        );
+        const filteredItems = response.data.data.filter((item) => item.itemType === 3);
         setItems(filteredItems);
       })
       .catch();

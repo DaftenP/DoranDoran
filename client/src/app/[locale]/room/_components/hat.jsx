@@ -5,6 +5,7 @@ import { useLocale, NextIntlClientProvider } from "next-intl";
 import axios from "axios";
 import Image from "next/image";
 
+// 모자 이미지 URL 매핑
 const hatImages = {
   1: "https://ssafy-tailored.b-cdn.net/shop/hat/1.webp",
   2: "https://ssafy-tailored.b-cdn.net/shop/hat/2.webp",
@@ -46,11 +47,13 @@ function TranslatedHat({ onSelectHat }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
+    // 컴포넌트 마운트 시 아이템 목록 가져오기
     axios.get(`${apiUrl}/inventory/item`, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
       .then((response) => {
+        // itemType이 2인 아이템만 필터링 (모자 아이템)
         const filteredItems = response.data.data.filter(
           (item) => item.itemType === 2
         );
@@ -60,10 +63,12 @@ function TranslatedHat({ onSelectHat }) {
   }, [apiUrl]);
 
   const handleHatSelect = (itemId) => {
+    // 새로운 모자 선택 처리
     const newSelectedHat = { itemType: 2, itemId };
     setSelectedHat(newSelectedHat);
     onSelectHat(newSelectedHat);
 
+    // 선택된 아이템 장착 요청
     axios.patch(`${apiUrl}/inventory/equip`, newSelectedHat, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -86,7 +91,7 @@ function TranslatedHat({ onSelectHat }) {
           >
             {item && (
               <div className="w-full h-full flex items-center justify-center">
-                <Image src={hatImages[item.itemId]} alt="모자" width={200} height={100} className="w-auto h-[60%]" />
+                <Image src={hatImages[item.itemId]} alt="hat" width={200} height={100} className="w-auto h-[60%]" />
               </div>
             )}
           </div>

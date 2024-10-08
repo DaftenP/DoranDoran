@@ -155,7 +155,7 @@ func BuyItem(w http.ResponseWriter, r *http.Request) {
 		message = respBody["message"].(string)
 	}
 
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(resp.StatusCode)
 
 	jsonToClient := map[string]interface{}{
 		"data":      itemId,

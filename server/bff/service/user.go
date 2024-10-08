@@ -121,6 +121,8 @@ func DeleteUserService(userId string) (*http.Response, error) {
 
 // POST /api/v1/user/item/buy
 func BuyItemService(userId, itemType, itemId, price int) (*http.Response, error) {
+	fmt.Println("BuyItemService")
+	fmt.Println(userId, itemType, itemId, price)
 	req, err := http.NewRequest(http.MethodPost, UserUrl+"/api/v1/user/item/buy", nil)
 	if err != nil {
 		return nil, err

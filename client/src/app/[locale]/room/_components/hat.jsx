@@ -83,14 +83,14 @@ function TranslatedHat({ onSelectHat }) {
     <div className="w-full h-full overflow-hidden">
       <div className="w-full h-full overflow-y-auto">
         {/* 3열 그리드 레이아웃, 각 행의 높이는 100px */}
-        <div className="grid grid-cols-3 gap-2 p-2" style={{ gridAutoRows: "100px" }}>
+        <div className="grid grid-cols-2 gap-3 p-3" style={{ gridAutoRows: "100px" }}>
           {/* 각 모자 아이템을 그리드 아이템으로 렌더링 */}
           {items.map((item) => (
             <div
               key={item.itemId}
-              className={`rounded-md border border-[#5c3d21]/60 ${
-                selectedHat.itemId === item.itemId ? "border-2 border-white" : ""
-              }`}
+              className={`rounded-md transition-colors
+                transition-transform transform hover:scale-105
+                ${selectedHat.itemId === item.itemId ? "bg-[#FFFFF0]/50 " : "bg-[#FFFFF0]/10"}`}
               onClick={() => handleHatSelect(item.itemId)}
             >
               <div className="w-full h-full flex items-center justify-center">

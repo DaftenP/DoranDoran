@@ -11,6 +11,23 @@ import Color from "@/app/[locale]/room/_components/color";
 import Background from "@/app/[locale]/room/_components/background";
 import BirdCharacter from "@/app/[locale]/room/_components/birdcharacter";
 
+const renderBackground = (backgroundId) => {
+  switch (backgroundId) {
+    case 1:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/day.webp";
+    case 2:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/launch.webp";
+    case 3:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/day-blue.webp";
+    case 4:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/night-blue.webp";
+    case 5:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/launch-blue.webp";
+    default:
+      return "https://ssafy-tailored.b-cdn.net/shop/bg/day.webp";
+  }
+};
+
 export default function Room() {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
@@ -40,6 +57,7 @@ function TranslatedBottom() {
   const [activeTab, setActiveTab] = useState("color");
   const [selectedColor, setSelectedColor] = useState(null); 
   const [selectedHat, setSelectedHat] = useState(null);
+  const [selectedBackground, setSelectedBackground] = useState(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -64,7 +82,7 @@ function TranslatedBottom() {
       case "hat":
         return <Hat onSelectHat={setSelectedHat} />;
       case "background":
-        return <Background />;
+        return <Background onSelectBackground={setSelectedBackground} />;
       default:
         return <Color onSelectCharacter={setSelectedColor} />;
     }
@@ -89,26 +107,29 @@ function TranslatedBottom() {
         {selectedColor && selectedHat && (
           <BirdCharacter color={selectedColor.itemId} hatId={selectedHat.itemId} />
         )}
+        <Image src={renderBackground(selectedBackground?.itemId)} alt="background" layout="fill" objectFit="fit"
+        style={{ zIndex: -1 }}
+        />
       </div>
 
       {/* 커스터마이징 옵션 영역 */}
       <div className="w-full h-[60%] flex flex-col items-center justify-center">
+        {/* 선택된 탭의 내용 */}
+        <div className="w-[90%] h-[80%] flex justify-center items-center bg-[#151638]/50 backdrop-blur-md rounded-[10px]">
+          {renderTabContent()}
+        </div>
         {/* 탭 메뉴 */}
-        <div className="flex w-[90%] h-[15%]">
+        <div className="flex w-[90%] h-[8%] mt-5">
           {["color", "hat", "background"].map((tab) => (
             <div
               key={tab}
-              className={`w-full flex justify-center items-center text-xl rounded-t-[15px] rounded-b-md  
-                ${activeTab === tab ? "bg-[#A46D46] border border-[#5c3d21]/60" : "bg-[#d3b88c]/60 border border-[#5c3d21]/60"}`}
+              className={`w-full flex justify-center items-center text-xl rounded-[100px] m-1  backdrop-blur-md transition-colors duration-300
+                ${activeTab === tab ? "bg-[#151638]/90 border border-[#151638] text-[#FFFFF0]" : "border border-[#151638]/60 text-[#151638]/60"}`}
               onClick={() => setActiveTab(tab)}
             >
               <p className="md:text-5xl">{t(tab)}</p>
             </div>
           ))}
-        </div>
-        {/* 선택된 탭의 내용 */}
-        <div className="w-[90%] h-[80%] flex justify-center items-center bg-[#A46D46]/50">
-          {renderTabContent()}
         </div>
       </div>
     </div>

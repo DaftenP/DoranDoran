@@ -90,8 +90,10 @@ function TranslatedBackground({ onSelectBackground }) {
           {items.map((item) => (
             <div
               key={item.itemId}
-              className={`rounded-md border border-[#5c3d21]/60 overflow-hidden ${
-                selectedBackground.itemId === item.itemId ? "border-2 border-white" : ""
+              className={`rounded-md border border-[#5c3d21]/60 overflow-hidden 
+                transition-transform transform
+                ${
+                selectedBackground.itemId === item.itemId ? "border-2 border-white scale-105" : ""
               }`}
               onClick={() => handleBackgroundSelect(item.itemId)}
             >

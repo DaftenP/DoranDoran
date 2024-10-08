@@ -25,8 +25,15 @@ public class LeagueMember {
     @JoinColumn(name = "league_id", nullable = false)
     private League league;
 
+    @Column(name="league_member_rank", nullable = false, columnDefinition = "INT DEFAULT 1000")
+    private Long rank;
+
     public void updateGainXP(long l) {
         this.gainXP += l;
+    }
+
+    public void updateGainXP0() {
+        this.gainXP = 0L;
     }
 
     public void updateLeague(League league) {

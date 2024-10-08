@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchDailyAll } from '@/store/quiz';
+import { getLocalStorageData } from '@/store/quiz';
 import Link from 'next/link';
 import Image from 'next/image'
 import Bird1 from '@/public/shop-bird/bird (1).webp'
@@ -64,10 +65,11 @@ export default function Character() {
 }
 
 function TranslatedCharacter({ locale }) {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const t = useTranslations('index');
   const router = useRouter();
-  const quizList = useSelector((state) => state.quiz.dailyQuiz.data);
+  const localData = getLocalStorageData('dailyQuizData');
+  const quizList = localData.data;
   const user = useSelector((state) => state.user)
 
   const equipment = user.profile.equipment
@@ -77,10 +79,10 @@ function TranslatedCharacter({ locale }) {
   // const remainingCount = savedRemainingCount ? parseInt(savedRemainingCount) : 10;
   // // const remainingCount = useSelector((state) => state.quiz.dailyQuiz.remainingCount); // 남은 문제 수
 
-  // useEffect(() => {
+  useEffect(() => {
     
-  //   dispatch(fetchDailyAll(remainingCount)); // 남은 문제 수만큼 문제 가져오기
-  // }, [dispatch, remainingCount]);
+    dispatch(fetchDailyAll()); // 남은 문제 수만큼 문제 가져오기
+  }, [dispatch]);
 
   const renderHat = () => {
     switch (equipment) {

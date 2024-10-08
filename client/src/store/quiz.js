@@ -1,13 +1,65 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+export const getLocalStorageData = (key) => {
+  const storedData = localStorage.getItem(key);
+  if (storedData) {
+    const parsedData = JSON.parse(storedData);
+    
+    // 저장된 날짜가 오늘인지 확인
+    const today = new Date().toISOString().split('T')[0];
+    if (parsedData.timestamp === today) {
+      return parsedData.data;  // 오늘 날짜면 저장된 데이터를 리턴
+    }
+  }
+  return null;
+};
+
+const setLocalStorageData = (key, data) => {
+  const today = new Date().toISOString().split('T')[0];
+  const storedData = {
+    data: data,
+    timestamp: today
+  };
+  localStorage.setItem(key, JSON.stringify(storedData));
+};
+
+export const updateLocalStorageQuiz = (key) => {
+  const storedData = localStorage.getItem(key);
+
+  if (storedData) {
+    const parsedData = JSON.parse(storedData);
+
+    if (parsedData.data.data.length > 0) {
+      // 첫 번째 퀴즈를 삭제 (첫 번째 퀴즈부터 차례로 삭제)
+      parsedData.data.data.shift();
+      // console.log('퀴즈 삭제 완료:', parsedData.data.data);
+
+      // 퀴즈가 모두 삭제된 경우 로컬스토리지에서도 제거
+      if (parsedData.data.length === 0) {
+        localStorage.removeItem(key);
+      } else {
+        localStorage.setItem(key, JSON.stringify(parsedData));
+      }
+    }
+  }
+};
+
 export const fetchDailyAll = createAsyncThunk(
   'dailyAll/fetchDailyAll', 
-  async (remainingCount, thunkAPI) => {
+  async (_, thunkAPI) => {
+
+    const localData = getLocalStorageData('dailyQuizData');
+    if (localData.data.length > 0) {
+      console.log("local 데이터:", localData.data);
+      // return { data: localData, message: '로컬 저장소에서 데이터를 가져왔습니다.' };
+      return localData;
+    }
 
     try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/quiz/quizzes?cnt=${remainingCount}`
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/quiz/quizzes?cnt=${10}`
       const response = await axios.get(apiUrl); 
+      setLocalStorageData('dailyQuizData', response.data);
       return response.data; // API에서 반환되는 데이터를 리턴
 
     } catch (error) {
@@ -147,6 +199,11 @@ const stageSlice = createSlice({
   name: 'quiz',
   initialState,
   reducers: {
+    deleteLocalDailyQuiz: (state) => {
+      updateLocalStorageQuiz('dailyQuizData');
+      state.dailyQuiz.data.shift(); // state에서도 첫 번째 퀴즈 삭제
+      state.dailyQuiz.remainingCount -= 1;
+    },
     deleteDailyQuiz: (state) => {
       const firstItem = state.dailyQuiz.data.shift();
       if (firstItem) {
@@ -225,5 +282,5 @@ const stageSlice = createSlice({
   }
 });
 
-export const { deleteDailyQuiz, deleteQuiz, backQuiz } = stageSlice.actions;
+export const { deleteLocalDailyQuiz, deleteDailyQuiz, deleteQuiz, backQuiz } = stageSlice.actions;
 export default stageSlice.reducer;

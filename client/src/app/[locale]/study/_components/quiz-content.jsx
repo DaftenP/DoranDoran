@@ -3,13 +3,16 @@
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteDailyQuiz, deleteQuiz } from '@/store/quiz';
+import { deleteLocalDailyQuiz, deleteDailyQuiz, deleteQuiz } from '@/store/quiz';
 import { fetchQuizSolve } from '@/store/quiz';
+import { getLocalStorageData } from '@/store/quiz';
+import { updateLocalStorageQuiz } from '@/store/quiz';
 import QuizContentImage from "./quiz-content-image";
 import QuizContentSpeak from "./quiz-content-speak";
 import Button from './button';
 import InputForm from './input-form';
 import { motion } from 'framer-motion'
+
 
 
 export default function QuizContent({ type, index }) {
@@ -62,9 +65,12 @@ export default function QuizContent({ type, index }) {
 function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onResetIndex }) {
   const t = useTranslations('index');
   const dispatch = useDispatch();
+  const localData = getLocalStorageData('dailyQuizData');
+  // const [quizList, setQuizList] = useState(localData?.data);
   const quizList = useSelector((state) => 
-    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail.data
+    type === 'daily' ? localData.data : state.quiz.stageDetail.data
   );
+  const quiz = quizList?.[0];
   const images = quizList[0]?.quizImages;
   const quizType = quizList[0]?.quizType;
   const quizAnswer = quizList[0]?.quizAnswer;
@@ -74,6 +80,14 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
   const [feedbackMessage, setFeedbackMessage] = useState(null); // 피드백 메시지 상태
   const [feedbackType, setFeedbackType] = useState(null); // 정답/오답 타입
   const [recordedSTT, setRecordedSTT] = useState('');
+
+  useEffect(() => {
+    // 로컬 저장소에서 데이터가 업데이트되면 상태 갱신
+    const localData = getLocalStorageData('dailyQuizData');
+    // setQuizList(localData.data);  // quizList 업데이트
+  }, [quiz]);
+
+  // console.log(quizList);
 
   const handleSubmitSTT = (data) => {
     setRecordedSTT(data);  // 부모 컴포넌트로부터 받은 데이터를 상태에 저장
@@ -114,7 +128,12 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
     
     setTimeout(() => {
       if(type === 'daily'){
-        dispatch(deleteDailyQuiz());
+        dispatch(deleteLocalDailyQuiz());
+        // updateLocalStorageQuiz('dailyQuizData');
+        const updatedQuizList = getLocalStorageData('dailyQuizData');
+        console.log('퀴즈 삭제 후 로컬 저장소 데이터:', updatedQuizList);
+        // setQuizList(updatedQuizList.data);
+        // dispatch(deleteDailyQuiz());
       } else {
         dispatch(deleteQuiz());
       }

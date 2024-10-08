@@ -4,6 +4,7 @@ import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchStageDetail } from '@/store/quiz';
+import { getLocalStorageData } from '@/store/quiz';
 import Link from 'next/link';
 
 export default function QuizTitle({ type, index }) {
@@ -35,9 +36,10 @@ export default function QuizTitle({ type, index }) {
 
 function TranslatedQuizTitle({ type, index }) {
   const t = useTranslations('index');
+  const localData = getLocalStorageData('dailyQuizData');
 
   const quizList = useSelector((state) => 
-    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail.data
+    type === 'daily' ? localData.data : state.quiz.stageDetail.data
   );
   const quizTitle = quizList[0]?.quizQuestion;
 

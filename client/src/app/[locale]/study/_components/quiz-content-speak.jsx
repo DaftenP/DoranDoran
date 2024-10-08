@@ -1,10 +1,12 @@
 'use client';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { getLocalStorageData } from '@/store/quiz';
 
 export default function QuizContentSpeak({ type, index }) {
+  const localData = getLocalStorageData('dailyQuizData');
   const quizList = useSelector((state) => 
-    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail.data
+    type === 'daily' ? localData.data : state.quiz.stageDetail.data
   );
   const image = quizList[0].quizImages[0];
 

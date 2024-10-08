@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { getLocalStorageData } from '@/store/quiz';
 import QuizTitle from '@/app/[locale]/study/_components/quiz-title'
 import QuizContent from '@/app/[locale]/study/_components/quiz-content';
 import Button from '@/app/[locale]/study/_components/button';
@@ -40,21 +41,46 @@ export default function QuizDaily({type}) {
 
 function TranslatedQuizDaily({locale, type, index}) {
   const t = useTranslations('index');
-  const quizList = useSelector((state) => state.quiz.dailyQuiz.data);
-  const quizType = quizList[0]?.quizType;
   const dispatch = useDispatch();
+  const [localData, setLocalData] = useState(getLocalStorageData('dailyQuizData'));
+  // let localData = getLocalStorageData('dailyQuizData');
+
+  // useEffect(() => {
+  //   setLocalData(getLocalStorageData('dailyQuizData'));
+  // }, [localData.data]);
+
+  useEffect(() => {
+    const updateLocalData = () => {
+      const newData = getLocalStorageData('dailyQuizData');
+      // 기존 데이터와 비교하여 변경되었을 때만 상태를 업데이트
+      if (JSON.stringify(localData) !== JSON.stringify(newData)) {
+        setLocalData(newData);
+      }
+    };
+
+    const intervalId = setInterval(updateLocalData, 1000); // 1초마다 업데이트 확인
+
+    return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 클리어
+  }, [localData]);
+
+  const quizList = localData.data;
+  // const quizList = useSelector((state) => state.quiz.dailyQuiz.data);
+  const quizType = quizList[0]?.quizType;
+  
   const totalQuizzes = quizList.length;
   const quizVoiceUrl = quizList[0]?.quizVoiceUrl;
   const router = useRouter();
 
-  const savedRemainingCount = localStorage.getItem('remainingCount');
-  const remainingCount = savedRemainingCount ? parseInt(savedRemainingCount) : 10;
+  // const savedRemainingCount = localStorage.getItem('remainingCount');
+  // const remainingCount = savedRemainingCount ? parseInt(savedRemainingCount) : 10;
   // const remainingCount = useSelector((state) => state.quiz.dailyQuiz.remainingCount); // 남은 문제 수
 
-  useEffect(() => {
-    
-    dispatch(fetchDailyAll(remainingCount)); // 남은 문제 수만큼 문제 가져오기
-  }, [dispatch]);
+  // useEffect(() => {
+  //   // dispatch(fetchDailyAll(remainingCount)); // 남은 문제 수만큼 문제 가져오기
+  //   dispatch(fetchDailyAll()); // 남은 문제 수만큼 문제 가져오기
+  // }, [dispatch]);
+
+  
 
   // 음성 재생 함수
   const playVoice = () => {

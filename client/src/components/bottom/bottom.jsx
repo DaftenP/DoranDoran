@@ -123,7 +123,7 @@ function TranslatedBottom() {
           >
             <Link href={`/${countryCode}/store`} className='w-full h-full flex justify-center items-center'>
                 {currentPage === 'store' ? (
-                  <div className='ml-6'>
+                  <div className='flex items-center h-full ml-6'>
                     <motion.div
                       key="store2"
                       initial={currentPage === 'store' ? { opacity: 0, scale: 0.9 } : {}}
@@ -135,7 +135,7 @@ function TranslatedBottom() {
                     </motion.div>
                   </div>
                 ) : (
-                  <div className='ml-6'>
+                  <div className='flex items-center h-full ml-6'>
                     <motion.div
                       key="store1"
                       initial={currentPage === 'store' ? { opacity: 0, scale: 0.9 } : {}}
@@ -150,7 +150,7 @@ function TranslatedBottom() {
             </Link>
             <Link href={`/${countryCode}/study`} className='w-full h-full flex justify-center items-center'>
                 {currentPage === 'study' ? (
-                  <div className='mr-9'>
+                  <div className='flex items-center h-full mr-9'>
                     <motion.div
                       key="study2"
                       initial={currentPage === 'study' ? { opacity: 0, scale: 0.9 } : {}}
@@ -162,7 +162,7 @@ function TranslatedBottom() {
                     </motion.div>
                   </div>
                 ) : (
-                  <div className='mr-9'>
+                  <div className='flex items-center h-full mr-9'>
                     <motion.div
                       key="study1"
                       initial={currentPage === 'study' ? { opacity: 0, scale: 0.9 } : {}}
@@ -216,7 +216,7 @@ function TranslatedBottom() {
           >
             <Link href={`/${countryCode}/ranking/all`} className='w-full h-full flex justify-center items-center'>
               {currentPage === 'ranking' ? (
-                <div className='ml-9'>
+                <div className='flex items-center h-full ml-9'>
                   <motion.div
                     key="ranking2"
                     initial={currentPage === 'ranking' ? { opacity: 0, scale: 0.9 } : {}}
@@ -228,7 +228,7 @@ function TranslatedBottom() {
                   </motion.div>
                 </div>
               ) : (
-                <div className='ml-9'>
+                <div className='flex items-center h-full ml-9'>
                   <motion.div
                     key="ranking1"
                     initial={currentPage === 'ranking' ? { opacity: 0, scale: 0.9 } : {}}
@@ -243,7 +243,7 @@ function TranslatedBottom() {
             </Link>
             <Link href={`/${countryCode}/profile`}className='w-full h-full flex justify-center items-center'>
               {currentPage === 'profile' ? (
-                <div className='mr-6'>
+                <div className='flex items-center h-full mr-6'>
                   <motion.div
                     key="profile2"
                     initial={currentPage === 'profile' ? { opacity: 0, scale: 0.9 } : {}}
@@ -255,7 +255,7 @@ function TranslatedBottom() {
                   </motion.div>
                 </div>
               ) : (
-                <div className='mr-6'>
+                <div className='flex items-center h-full mr-6'>
                   <motion.div
                     key="profile1"
                     initial={currentPage === 'profile' ? { opacity: 0, scale: 0.9 } : {}}

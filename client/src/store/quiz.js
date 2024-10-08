@@ -50,10 +50,10 @@ export const fetchDailyAll = createAsyncThunk(
   async (_, thunkAPI) => {
 
     const localData = getLocalStorageData('dailyQuizData');
-    if (localData.data.length > 0) {
-      console.log("local 데이터:", localData.data);
+    if (localData) {
+      // console.log("local 데이터:", localData.data);
       // return { data: localData, message: '로컬 저장소에서 데이터를 가져왔습니다.' };
-      return localData;
+      return localData.data;
     }
 
     try {

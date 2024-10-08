@@ -66,23 +66,20 @@ export default function Character() {
 
 function TranslatedCharacter({ locale }) {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchDailyAll()); // 남은 문제 수만큼 문제 가져오기
+  }, [dispatch]);
+
   const t = useTranslations('index');
   const router = useRouter();
   const localData = getLocalStorageData('dailyQuizData');
-  const quizList = localData.data;
+  const quizList = localData ? localData.data : []; // localData가 null인 경우 빈 배열로 초기화
+
   const user = useSelector((state) => state.user)
 
   const equipment = user.profile.equipment
   const color = user.profile.color
-
-  // const savedRemainingCount = localStorage.getItem('remainingCount');
-  // const remainingCount = savedRemainingCount ? parseInt(savedRemainingCount) : 10;
-  // // const remainingCount = useSelector((state) => state.quiz.dailyQuiz.remainingCount); // 남은 문제 수
-
-  useEffect(() => {
-    
-    dispatch(fetchDailyAll()); // 남은 문제 수만큼 문제 가져오기
-  }, [dispatch]);
 
   const renderHat = () => {
     switch (equipment) {

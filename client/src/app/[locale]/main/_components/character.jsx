@@ -43,16 +43,26 @@ function TranslatedCharacter({ locale }) {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalMessage, setModalMessage] = useState(null)
   const [isWobbling, setIsWobbling] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const [randomText, setRandomText] = useState('')
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIsWobbling(true);
 
+      const randomText = Math.floor(Math.random() * textArray.length)
+      setRandomText(randomText)
+      setIsVisible(true)
+
       setTimeout(() => {
         setIsWobbling(false);
       }, 1000);
 
-    }, 7000);
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 4000);
+
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -108,17 +118,35 @@ function TranslatedCharacter({ locale }) {
     }
   };
 
+  const textArray = [
+    "do-you-have-anything-to-do-right-now",
+    "yesterday-i-ate-some-fruit-it-was-really-good",
+    "how-is-the-weather-today-im-curious-about-the-sky",
+    "what-should-we-do-now-just-wondering",
+    "whats-your-favorite-number",
+    "guess-what-im-thinking-right-now",
+    "did-something-just-pass-by",
+    "do-you-prefer-day-or-night",
+    "im-feeling-a-bit-sleepy-am-i-the-only-one",
+    "did-you-hear-that-sound",
+    "what-did-you-have-for-lunch-today-im-craving-fruit",
+    "i-like-this-moment-just-because",
+    "what-have-you-been-thinking-about-lately",
+    "whats-your-favorite-color-i-like-blue",
+    "im-just-staring-into-space-doing-nothing-what-about-you",
+    "what-would-be-fun-to-do-right-now",
+    "i-feel-like-im-forgetting-something",
+    "it-feels-nice-to-just-be-still-right-now",
+    "when-was-the-last-time-you-laughed",
+    "do-you-know-any-good-stories"
+  ];
+
   return (
     <div className='flex items-center justify-center mt-[3vh]'>
       <div className='relative'>
-        <div className='transform translate-x-[38vw] rounded-full w-[35vw] h-[9vh] bg-[#FFFFFF]/80 flex-col flex justify-center items-center text-md md:text-3xl lg:text-5xl'>
-          {t("today's-topic")}
-          <br />
-          <div>
-            {t("animal")}
-          </div>
+        <div className={`transform translate-x-[30vw] rounded-full w-[60vw] h-[12vh] bg-[#FFFFFF]/80 flex-col flex justify-center items-center text-md md:text-3xl lg:text-4xl transition-opacity duration-1000 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'} p-[5vw] border border-gray-300 shadow-md`}>
+          {t(textArray[randomText])}
         </div>
-        <div className="transform translate-x-[53vw] w-0 h-0 border-l-[3vw] border-r-[3vw] border-t-[3vw] border-l-transparent border-r-transparent border-t-white/80"></div>
         <div className='flex flex-col'>
           <div className='relative flex items-center justify-center w-[100vw] bottom-5 md:bottom-9'>
           <div className={isWobbling ? 'animate-wobble' : ''}>

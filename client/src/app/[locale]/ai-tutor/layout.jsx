@@ -1,9 +1,10 @@
 'use client'
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Layout({ children }) {
   const userBackground = useSelector((state) => state.user.profile.background);
+
 
   const renderBackground = () => {
     switch (userBackground) {

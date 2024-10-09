@@ -126,13 +126,13 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                     className="relative w-[20vw] h-auto md:w-[14vw] md:h-auto lg:w-[14vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/3 z-10"
                   />
                   <div className='absolute flex items-center justify-center left-1/2 transform -translate-x-1/2 z-10 translate-y-6 md:translate-y-[5vh] mt-[2vh] text-black text-2xl md:text-4xl lg:text-5xl font-bold'>
-                    <span className='text-blue-500'>{tutorData.tutorLimit}</span> {/* 첫 번째 숫자 */}
+                    <span className='text-blue-500'>{tutorData.tutorLimit}</span>
                     <Image 
                       src={Arrow} 
                       alt="arrow_icon" 
                       className="w-[4vw] h-auto md:w-[3vw] lg:w-[3vw] mx-4" 
-                    /> {/* 화살표 크기를 작게 하고 hover 애니메이션 추가 */}
-                    <span className='text-red-500'>{tutorData.tutorLimit - 1}</span> {/* 두 번째 숫자 */}
+                    />
+                    <span className='text-red-500'>{tutorData.tutorLimit - 1}</span>
                   </div>
                 </div>
               )}
@@ -185,14 +185,29 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
           <Image src={ModalNight} alt="background_night" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full z-0" priority />
         )}
         {message.buttonType === 1 && (
-          <div className='absolute left-1/2 transform -translate-x-1/2 bottom-[5vw] w-full flex justify-around'>
-            <button onClick={handleCloseModal} className="mt-4 p-2 bg-[#FFC0B1]/80 border border-[#FF8669] text-black rounded-2xl z-10 w-[20vw] md:w-[15vw] text-xl md:text-2xl lg:text-4xl">{t('no')}</button>
-            <button onClick={() => handleYesClick(message.buttonLink)} className=" mt-4 p-2 bg-[#DBB4F3]/80 border border-[#9E00FF] text-black rounded-2xl z-10 w-[20vw] md:w-[15vw] text-xl md:text-2xl lg:text-4xl">{t('yes')}</button>
+          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-[5vw] w-full flex justify-around">
+            <button 
+              onClick={handleCloseModal} 
+              className="mt-4 p-2 bg-gradient-to-r from-[#FFD1C1] to-[#FFB3A5] text-white rounded-full shadow-md transition-all duration-300 hover:shadow-lg hover:scale-90 w-[30vw] md:w-[22vw] text-xl md:text-2xl lg:text-4xl"
+            >
+              {t('no')}
+            </button>
+            <button 
+              onClick={() => handleYesClick(message.buttonLink)} 
+              className="mt-4 p-2 bg-gradient-to-r from-[#D7B4F3] to-[#BFA6E6] text-white rounded-full shadow-md transition-all duration-300 hover:shadow-lg hover:scale-90 w-[30vw] md:w-[22vw] text-xl md:text-2xl lg:text-4xl"
+            >
+              {t('yes')}
+            </button>
           </div>
         )}
         {message.buttonType === 2 && (
-          <div className='absolute left-1/2 transform -translate-x-1/2 bottom-[5vw] w-full flex justify-around'>
-            <button onClick={handleCloseModal} className="mt-4 p-2 bg-[#FFC0B1]/80 border border-[#FF8669] text-black rounded-2xl z-10 w-[20vw] md:w-[15vw] text-xl md:text-2xl lg:text-4xl">{t('yes')}</button>
+          <div className="absolute left-1/2 transform -translate-x-1/2 bottom-[5vw] w-full flex justify-center">
+            <button 
+              onClick={handleCloseModal} 
+              className="mt-4 p-2 bg-gradient-to-r from-[#FFD1C1] to-[#FFB3A5] text-white rounded-full shadow-md transition-all duration-300 hover:shadow-lg hover:scale-90 w-[30vw] md:w-[22vw] text-xl md:text-2xl lg:text-4xl"
+            >
+              {t('yes')}
+            </button>
           </div>
         )}
       </div>

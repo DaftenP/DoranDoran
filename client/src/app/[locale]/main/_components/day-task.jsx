@@ -37,8 +37,9 @@ export default function DayTask() {
 function TranslatedDayTask() {
   const t = useTranslations('index');
   const user = useSelector((state) => state.user)
-  const dayArray = [1, 2, 3, 4, 5, 6, 7]
+  const dayArray = [0, 1, 2, 3, 4, 5, 6]
   const missionStatus = user.mission.status.split('');
+  const day = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
   return (
     <div className='flex'>
       {dayArray.map((item, index) => (
@@ -55,7 +56,7 @@ function TranslatedDayTask() {
               objectFit="contain"
             />
           )}
-          D-{item}
+          {t(day[item])}
         </div>
       ))}
     </div>

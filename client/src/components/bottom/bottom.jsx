@@ -175,17 +175,17 @@ function TranslatedBottom() {
         className="relative w-[50vw]"
       >
         <div
-          className="w-[50vw] h-[10vh] rounded-tr-[10px] bg-[#E4FEFF]"
+          className="w-[50vw] h-[10vh] rounded-tr-[10px] bg-[#FFFFFF]/70 backdrop-blur-sm pr-[8vw]"
           style={{
-            transform: "skew(30deg) translate(-20px, 0px)",
+            // transform: "skew(30deg) translate(-20px, 0px)",
             boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)",
           }}
         >
           <div
             className="flex justify-around items-center w-full h-full"
-            style={{transform: "skew(-30deg)"}}
+            // style={{transform: "skew(-30deg)"}}
           >
-            <Link href={`/${countryCode}/store`} className='w-full h-full flex justify-center items-center'>
+            <Link href={`/${countryCode}/store`} className='w-full h-full flex justify-between items-center'>
                 {currentPage === 'store' ? (
                   <div className='flex flex-col items-center justify-center h-full ml-6'>
                     <motion.div
@@ -195,9 +195,9 @@ function TranslatedBottom() {
                       transition={{ duration: 0.8 }}
                       className="flex items-center justify-center w-auto h-2/5 cursor-pointer"
                     >
-                      <Image src={Store2} alt="store_link" className="w-auto h-full cursor-pointer" />
+                      <Image src={Store2} alt="store_link" className="w-auto h-[80%] cursor-pointer" />
                     </motion.div>
-                    <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                    <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
                       {t('store')}
                     </div>
                   </div>
@@ -210,9 +210,9 @@ function TranslatedBottom() {
                       transition={{ duration: 0.8 }}
                       className="flex items-center justify-center w-auto h-2/5 cursor-pointer"
                     >
-                      <Image src={Store1} alt="store_link" className="w-auto h-full cursor-pointer" />
+                      <Image src={Store1} alt="store_link" className="w-auto h-[80%] cursor-pointer" />
                     </motion.div>
-                    <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                    <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
                       {t('store')}
                     </div>
                   </div>
@@ -228,9 +228,9 @@ function TranslatedBottom() {
                       transition={{ duration: 0.8 }}
                       className="w-auto h-2/5 cursor-pointer"  
                     >
-                      <Image src={Study2} alt="study_link" className="w-auto h-full cursor-pointer" />
+                      <Image src={Study2} alt="study_link" className="w-auto h-[80%] cursor-pointer" />
                     </motion.div>
-                    <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                    <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
                       {t('study')}
                     </div>
                   </div>
@@ -243,9 +243,9 @@ function TranslatedBottom() {
                       transition={{ duration: 0.8 }}
                       className="w-auto h-2/5 cursor-pointer"
                     >
-                      <Image src={Study1} alt="study_link" className="w-auto h-full cursor-pointer" />
+                      <Image src={Study1} alt="study_link" className="w-auto h-[80%] cursor-pointer" />
                     </motion.div>
-                    <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                    <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
                       {t('study')}
                     </div>
                   </div>
@@ -255,8 +255,11 @@ function TranslatedBottom() {
         </div>
       </div>
       <div
-        className="absolute w-[12vh] h-[12vh] bg-[#E4FEFF] rounded-full flex items-center justify-center left-1/2 transform -translate-x-1/2 bottom-0 z-10"
-        style={{ boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)" }}
+        className="absolute w-[12vh] h-[12vh] bg-[#ffffff] flex items-center justify-center left-1/2 transform -translate-x-1/2 bottom-0 z-10 pb-3 pt-3"
+        style={{
+          boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)",
+          borderRadius: "20vw 20vw 0 0",
+         }}
       >
           {currentPage === 'main' ? (
             <div onClick={handleAiTutorLink} className='w-full h-full flex flex-col justify-center items-center'>
@@ -264,9 +267,9 @@ function TranslatedBottom() {
                   key="ai_tutor"
                   className="w-auto h-3/5 cursor-pointer"
                 >
-                  <Image src={AiTutor} alt="ai_tutor_link" className="w-auto h-full cursor-pointer" />
+                  <Image src={AiTutor} alt="ai_tutor_link" className="w-auto h-[90%] cursor-pointer" />
                 </motion.div>
-                <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
                   {t('ai-tutor')}
                 </div>
             </div>
@@ -276,9 +279,9 @@ function TranslatedBottom() {
                   key="home"
                   className="w-auto h-3/5 cursor-pointer"
                 >
-                  <Image src={Home} alt="Home_link" className="w-auto h-full cursor-pointer" />
+                  <Image src={Home} alt="Home_link" className="w-auto h-[90%] cursor-pointer" />
                 </motion.div>
-                <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                <div className='text-xl md:text-2xl lg:text-3xl text-[#3c3c9c]'>
                   {t('home')}
                 </div>
             </Link>
@@ -286,17 +289,17 @@ function TranslatedBottom() {
       </div>
       <div className="w-[50vw]">
         <div
-          className="w-[50vw] h-[10vh] rounded-tl-[10px] bg-[#E4FEFF]"
+          className="w-[50vw] h-[10vh] rounded-tl-[10px] bg-[#FFFFFF]/70 backdrop-blur-sm pl-[8vw]"
           style={{
-            transform: "skew(-30deg) translate(20px, 0px)",
+            // transform: "skew(-30deg) translate(20px, 0px)",
             boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)",
           }}
         >
           <div
             className="flex justify-around items-center w-full h-full"
-            style={{transform: "skew(30deg)"}}
+            // style={{transform: "skew(30deg)"}}
           >
-            <Link href={`/${countryCode}/ranking/all`} className='w-full h-full flex justify-center items-center'>
+            <Link href={`/${countryCode}/ranking/all`} className='w-full h-full flex justify-between items-center'>
               {currentPage === 'ranking' ? (
                 <div className='flex flex-col justify-center items-center h-full ml-9'>
                   <motion.div
@@ -306,9 +309,9 @@ function TranslatedBottom() {
                     transition={{ duration: 0.8 }}
                     className="w-auto h-2/5 cursor-pointer"
                   >
-                    <Image src={Ranking2} alt="ranking_link" className="w-auto h-full cursor-pointer" />
+                    <Image src={Ranking2} alt="ranking_link" className="w-auto h-[80%] cursor-pointer" />
                   </motion.div>
-                  <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                  <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
                     {t('ranking')}
                   </div>
                 </div>
@@ -321,15 +324,15 @@ function TranslatedBottom() {
                     transition={{ duration: 0.8 }}
                     className="w-auto h-2/5 cursor-pointer"
                   >
-                    <Image src={Ranking1} alt="ranking_link" className="w-auto h-full cursor-pointer" />
+                    <Image src={Ranking1} alt="ranking_link" className="w-auto h-[80%] cursor-pointer" />
                   </motion.div>
-                  <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                  <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
                     {t('ranking')}
                   </div>
                 </div>
               )}
             </Link>
-            <Link href={`/${countryCode}/profile`}className='w-full h-full flex justify-center items-center'>
+            <Link href={`/${countryCode}/profile`}className='w-full h-full flex justify-end items-center'>
               {currentPage === 'profile' ? (
                 <div className='flex flex-col justify-center items-center h-full mr-6'>
                   <motion.div
@@ -339,9 +342,9 @@ function TranslatedBottom() {
                     transition={{ duration: 0.8 }}
                     className="w-auto h-2/5 cursor-pointer"
                   >
-                    <Image src={Profile2} alt="profile_link" className="w-auto h-full cursor-pointer" />
+                    <Image src={Profile2} alt="profile_link" className="w-auto h-[80%] cursor-pointer" />
                   </motion.div>
-                  <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                  <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
                     {t('profile')}
                   </div>
                 </div>
@@ -354,9 +357,9 @@ function TranslatedBottom() {
                     transition={{ duration: 0.8 }}
                     className="w-auto h-2/5 cursor-pointer"
                   >
-                    <Image src={Profile1} alt="profile_link" className="w-auto h-full cursor-pointer" />
+                    <Image src={Profile1} alt="profile_link" className="w-auto h-[80%] cursor-pointer" />
                   </motion.div>
-                  <div className='text-xs md:text-xl lg:text-2xl text-blue-500'>
+                  <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
                     {t('profile')}
                   </div>
                 </div>

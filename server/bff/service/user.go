@@ -168,3 +168,17 @@ func GetPlayLogService(userId string) (*http.Response, error) {
 
 	return http.DefaultClient.Do(req)
 }
+
+// POST /api/v1/user/play-log/submit
+func SubmitPlayLogService(userId, quizId int) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodPost, UserUrl+"/api/v1/user/play-log/submit", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	body := fmt.Sprintf(`{"userId":%d,"quizId":%d}`, userId, quizId)
+	req.Body = io.NopCloser(strings.NewReader(body))
+
+	return http.DefaultClient.Do(req)
+}

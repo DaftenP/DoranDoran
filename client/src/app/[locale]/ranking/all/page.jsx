@@ -7,9 +7,9 @@ import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useRef } from 'react';
 import RankListAll from '../_components/ranklist-all';
-import { fetchRankList, setRankList } from '@/store/ranking'
+import { fetchRankList } from '@/store/ranking'
 
-export default function Rank() {
+export default function RankAll() {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
   // 현재 로케일에 맞는 메시지 파일을 동적으로 로드
@@ -32,41 +32,38 @@ export default function Rank() {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <Ranklist />
+      <RanklistAll />
     </NextIntlClientProvider>
   );
 }
 
-function Ranklist() {
+function RanklistAll() {
   const t = useTranslations('index');
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchRankList()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
+  }, [dispatch]);
 
   const router = useRouter();
   const locale = useLocale();
   const [selectedWeek, setSelectedWeek] = useState("this week");
 
-  const rankList = useSelector((state) => state.rankList.rankList);
-  const thisweekRankList = rankList.thisWeek.thisWeekLeaderBoard;
-  const lastweekRankList = rankList.lastWeek.lastWeekLeaderBoard;
-  const thisweekMyRank = rankList.thisWeek.myLeaderBoard;
-  const lastweekMyRank = rankList.lastWeek.myLeaderBoard;
+  // const rankList = useSelector((state) => state.rank.rankList.data);
+  const rankList = useSelector((state) => state.rankList.rankList.data);
+  const thisWeekRankList = rankList.thisWeek.thisWeekLeaderBoard;
+  const lastWeekRankList = rankList.lastWeek.lastWeekLeaderBoard;
+  const thisWeekMyRank = rankList.thisWeek.myLeaderBoard;
+  const lastWeekMyRank = rankList.lastWeek.myLeaderBoard;
 
   const myRankRef = useRef([]);
   const scrollToMyRank = () => {
-    const myRank = selectedWeek === "this week" ? thisweekMyRank.userRank : lastweekMyRank.userRank;
+    const myRank = selectedWeek === "this week" ? thisweekMyRank.order : lastweekMyRank.order;
     const ref = myRankRef.current[myRank - 1]; // 배열 인덱스는 0부터 시작하므로 -1
     if (ref) {
         ref.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };  
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await dispatch(fetchRankList()); // API 호출
-  //   };
-
-  //   fetchData();
-  // }, [dispatch]);
 
   const handleGroupClick = () => {
     router.push(`/${locale}/ranking/group`); 
@@ -128,10 +125,10 @@ function Ranklist() {
               className="w-[auto] h-[30%] bottom-[85%] absolute"
             />
             <div>
-              {selectedWeek === "this week" ? thisweekRankList[1].userNickname : lastweekRankList[1].userNickname}
+              {selectedWeek === "this week" ? thisWeekRankList[1].userNickname : lastWeekRankList[1].userNickname}
             </div>
             <div>
-              {selectedWeek === "this week" ? thisweekRankList[1].gainXp : lastweekRankList[1].gainXp}
+              {selectedWeek === "this week" ? thisWeekRankList[1].gainXp : lastWeekRankList[1].gainXp}
             </div>
             <div className="text-[20px] font-bold">2</div>
           </div>
@@ -144,10 +141,10 @@ function Ranklist() {
               className="w-[auto] h-[30%] bottom-[100%] absolute"
             />
             <div>
-              {selectedWeek === "this week" ? thisweekRankList[0].userNickname : lastweekRankList[0].userNickname}
+              {selectedWeek === "this week" ? thisWeekRankList[0].userNickname : lastWeekRankList[0].userNickname}
             </div>
             <div>
-              {selectedWeek === "this week" ? thisweekRankList[0].gainXp : lastweekRankList[0].gainXp}
+              {selectedWeek === "this week" ? thisWeekRankList[0].gainXp : lastWeekRankList[0].gainXp}
             </div>
             <div className="text-[30px] font-bold">1</div>
           </div>
@@ -160,10 +157,10 @@ function Ranklist() {
               className="w-[auto] h-[30%] bottom-[70%] absolute"
             />
             <div>
-              {selectedWeek === "this week" ? thisweekRankList[2].userNickname : lastweekRankList[2].userNickname}
+              {selectedWeek === "this week" ? thisWeekRankList[2].userNickname : lastWeekRankList[2].userNickname}
             </div>
             <div>
-              {selectedWeek === "this week" ? thisweekRankList[2].gainXp : lastweekRankList[2].gainXp}
+              {selectedWeek === "this week" ? thisWeekRankList[2].gainXp : lastWeekRankList[2].gainXp}
             </div>
             <div className="text-[20px] font-bold">3</div>
           </div>
@@ -172,28 +169,28 @@ function Ranklist() {
         <div className="w-[90%] h-[4%] left-[5%] absolute bg-[#9EEDE4] rounded-[5px]" />
 
         <article className='w-[90%] left-[5%] top-[33%] absolute h-[50%] overflow-auto'>
-        {(selectedWeek === "this week" ? thisweekRankList : lastweekRankList).slice(3).map((item, index) => (
+        {(selectedWeek === "this week" ? thisWeekRankList : lastWeekRankList).slice(3).map((item, index) => (
             <RankListAll
               key={item.userId}
-              userRank={item.userRank}
+              order={item.order}
               userName={item.userNickname}
               userXP={item.gainXp}
               borderColor={
-                (selectedWeek === "this week" && item.userRank === thisweekMyRank.userRank) ||
-                (selectedWeek === "last week" && item.userRank === lastweekMyRank.userRank)
+                (selectedWeek === "this week" && item.order === thisWeekMyRank.order) ||
+                (selectedWeek === "last week" && item.order === lastWeekMyRank.order)
                   ? "#1cbfff"
                   : "#bbbbbb"
               }
-              ref={(el) => myRankRef.current[item.userRank - 1] = el}
+              ref={(el) => myRankRef.current[item.order - 1] = el}
             />
           ))}
         </article>
 
         <div className="w-[90%] h-[6%] bottom-[13vh] fixed" onClick={scrollToMyRank}>
           <RankListAll 
-            userRank={selectedWeek === "this week" ? thisweekMyRank.userRank : lastweekMyRank.userRank} 
-            userName={selectedWeek === "this week" ? thisweekMyRank.userNickname : lastweekMyRank.userNickname} 
-            userXP={selectedWeek === "this week" ? thisweekMyRank.gainXp : lastweekMyRank.gainXp} 
+            order={selectedWeek === "this week" ? thisWeekMyRank.order : lastWeekMyRank.order} 
+            userName={selectedWeek === "this week" ? thisWeekMyRank.userNickname : lastWeekMyRank.userNickname} 
+            userXP={selectedWeek === "this week" ? thisWeekMyRank.gainXp : lastWeekMyRank.gainXp} 
             borderColor={"#1cbfff"} />
         </div>
       </section>

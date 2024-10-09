@@ -202,6 +202,14 @@
     "study": "학습",
     "home": "홈",
     "ranking": "랭킹",
-    "profile": "프로필"
+    "profile": "프로필",
+    "play2": "재생",
+    "translation": "번역",
+    "hint": "힌트",
+    "bronze": "브론즈",
+    "silver": "실버",
+    "gold": "골드",
+    "platinum": "플래티넘",
+    "diamond": "다이아"
   }
 }

@@ -202,6 +202,14 @@
     "study": "学习",
     "home": "家",
     "ranking": "排名",
-    "profile": "个人资料"
+    "profile": "个人资料",
+    "play2": "播放",
+    "translation": "翻译",
+    "hint": "提示",
+    "bronze": "青铜",
+    "silver": "白银",
+    "gold": "黄金",
+    "platinum": "白金",
+    "diamond": "钻石"
   }
 }

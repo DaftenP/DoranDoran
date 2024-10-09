@@ -202,6 +202,14 @@
     "study": "勉強",
     "home": "ホーム",
     "ranking": "ランキング",
-    "profile": "プロフィール"
+    "profile": "プロフィール",
+    "play2": "再生",
+    "translation": "翻訳",
+    "hint": "ヒント",
+    "bronze": "ブロンズ",
+    "silver": "シルバー",
+    "gold": "ゴールド",
+    "platinum": "プラチナ",
+    "diamond": "ダイヤモンド"
   }
 }

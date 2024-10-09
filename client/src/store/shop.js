@@ -17,11 +17,11 @@ export const buyItem = createAsyncThunk(
 
       if (itemType === 1) {
         // Gem 업데이트
-        thunkAPI.dispatch(updateGem(600));
+        thunkAPI.dispatch(updateGem(-600));
       } else if (itemType === 2) {
-        thunkAPI.dispatch(updateGem(400));
+        thunkAPI.dispatch(updateGem(-400));
       } else if (itemType === 3) {
-        thunkAPI.dispatch(updateGem(900));
+        thunkAPI.dispatch(updateGem(-900));
       }
       return response.data;
     } catch (error) {

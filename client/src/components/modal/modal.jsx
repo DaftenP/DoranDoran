@@ -10,6 +10,7 @@ import ShopEquipment from "@/public/icon2/shop-equipment.webp";
 import ShopBackground from "@/public/icon2/shop-background.webp";
 import Megaphone from "@/public/icon/megaphone.webp"
 import Credit from "@/public/icon/credit.webp";
+import Arrow from "@/public/icon/arrow.png"
 
 export default function Modal({ handleYesClick, handleCloseModal, message }) {
   const [messages, setMessages] = useState(null);
@@ -122,9 +123,17 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                   <Image
                     src={Megaphone}
                     alt="megaphone_icon"
-                    className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/2 z-10"
+                    className="relative w-[20vw] h-auto md:w-[14vw] md:h-auto lg:w-[14vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/3 z-10"
                   />
-                  <div className='absolute left-1/2 transform -translate-x-1/2 z-10 translate-y-6 md:translate-y-10 mt-[2vh] text-black'>{tutorData.tutorLimit} → {tutorData.tutorLimit - 1}</div>
+                  <div className='absolute flex items-center justify-center left-1/2 transform -translate-x-1/2 z-10 translate-y-6 md:translate-y-[5vh] mt-[2vh] text-black text-2xl md:text-4xl lg:text-5xl font-bold'>
+                    <span className='text-blue-500'>{tutorData.tutorLimit}</span> {/* 첫 번째 숫자 */}
+                    <Image 
+                      src={Arrow} 
+                      alt="arrow_icon" 
+                      className="w-[4vw] h-auto md:w-[3vw] lg:w-[3vw] mx-4" 
+                    /> {/* 화살표 크기를 작게 하고 hover 애니메이션 추가 */}
+                    <span className='text-red-500'>{tutorData.tutorLimit - 1}</span> {/* 두 번째 숫자 */}
+                  </div>
                 </div>
               )}
             </>

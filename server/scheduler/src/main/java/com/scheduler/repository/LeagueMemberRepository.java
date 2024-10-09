@@ -12,4 +12,6 @@ public interface LeagueMemberRepository extends JpaRepository<LeagueMember, Long
     List<LeagueMember> findAllByLeagueIdOrderByGainXP(Long id);
 
     List<LeagueMember> findByRank(Long rank);
+
+    List<LeagueMember> findAllByOrderByGainXPDesc();
 }

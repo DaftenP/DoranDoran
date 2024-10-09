@@ -202,6 +202,9 @@
     "study": "Study",
     "home": "Home",
     "ranking": "Ranking",
-    "profile": "Profile"
+    "profile": "Profile",
+    "play2": "Play",
+    "translation": "Trans",
+    "hint": "Hint"
   }
 }

@@ -57,12 +57,30 @@ const MainContent = ({ children, modal }) => {
       dispatch(playNightBgm());
     }
   }
-}, [dispatch, volume]);
+
+    return () => {
+      // 컴포넌트가 언마운트되거나 locale이 변경될 때 기존 오디오 정리
+      if (audioMainRef.current) {
+        audioMainRef.current.pause();
+        audioMainRef.current.currentTime = 0;
+      }
+      if (audioNightRef.current) {
+        audioNightRef.current.pause();
+        audioNightRef.current.currentTime = 0;
+      }
+    };
+  }, [dispatch]);
 
   useEffect(() => {
-    if (audioMainRef.current) audioMainRef.current.volume = volume;
-    if (audioNightRef.current) audioNightRef.current.volume = volume;
-  }, [volume]);
+    // 볼륨만 조절하고, 재생 상태에는 영향 주지 않음
+    if (audioMainRef.current && isMainPlaying) {
+      audioMainRef.current.volume = volume;  // 볼륨만 조정
+    }
+    if (audioNightRef.current && isNightPlaying) {
+      audioNightRef.current.volume = volume;  // 볼륨만 조정
+    }
+  }, [volume, isMainPlaying, isNightPlaying]);
+
 
   useEffect(() => {
     if ([`/${locale}/main`, `/${locale}/profile`, `/${locale}/profile/setting`, `/${locale}/ranking/all`, `/${locale}/ranking/group`, `/${locale}/study`, `/${locale}/ai-tutor`].includes(pathname) ||

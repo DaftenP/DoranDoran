@@ -69,6 +69,53 @@ function TranslatedTopicConversation({ params }) {
     scrollToBottom();
   }, [chatMessages]);
 
+  useEffect(() => {
+    const tutorData = JSON.parse(localStorage.getItem('tutor'));
+    const storedData = localStorage.getItem('aiTutorState');
+
+    if (!storedData && tutorData && tutorData.tutorLimit === 0) {
+      setIsEnd(true)
+      handleOpenModal(4)
+    } else {
+      dispatch(typeChange([role, situation]))
+      // 로컬 스토리지에서 chatMessages와 messages 불러오기
+      const storedData = localStorage.getItem('aiTutorState');
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+
+        // 로컬 스토리지에 chatMessages와 messages가 있는 경우 Redux에 반영
+        if (parsedData.chatMessages.length > 0 || parsedData.messages.length > 0) {
+
+          // Redux 상태 업데이트
+          dispatch(changeChatMessages(parsedData.chatMessages));
+          dispatch(changeMessages(parsedData.messages));
+
+          return; // fetch 작업 실행하지 않음
+        }
+      }
+
+      // 로컬 스토리지에 데이터가 없으면 fetch 작업 실행
+      const formData = new FormData();
+      formData.append('msg', '');
+
+      dispatch(fetchChatMessages({ role, situation, locale, formData }))
+        .unwrap()
+        .then((response) => {
+          dispatch(updateTutorLimit(-1))
+          decrementTutorLimit()
+          const audio = new Audio('/bgm/message-incoming.mp3')
+          audio.volume = effectVolume
+          audio.play();
+          dispatch(addResponseMessage(response.data));
+          dispatch(addSimpleResponseMessage(response.data));
+          dispatch(addMyMessage({ content: '', score: 0 }));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [dispatch]);
+
   const letters = "L o a d i n g ...".split("");
 
   const containerVariants = {
@@ -90,44 +137,6 @@ function TranslatedTopicConversation({ params }) {
       ease: "easeInOut",
     }
   };
-
-
-  useEffect(() => {
-    dispatch(typeChange([role, situation]))
-    // 로컬 스토리지에서 chatMessages와 messages 불러오기
-    const storedData = localStorage.getItem('aiTutorState');
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-
-      // 로컬 스토리지에 chatMessages와 messages가 있는 경우 Redux에 반영
-      if (parsedData.chatMessages.length > 0 || parsedData.messages.length > 0) {
-
-        // Redux 상태 업데이트
-        dispatch(changeChatMessages(parsedData.chatMessages));
-        dispatch(changeMessages(parsedData.messages));
-
-        return; // fetch 작업 실행하지 않음
-      }
-    }
-
-    // 로컬 스토리지에 데이터가 없으면 fetch 작업 실행
-    const formData = new FormData();
-    formData.append('msg', '');
-
-    dispatch(fetchChatMessages({ role, situation, locale, formData }))
-      .unwrap()
-      .then((response) => {
-        const audio = new Audio('/bgm/message-incoming.mp3')
-        audio.volume = effectVolume
-        audio.play();
-        dispatch(addResponseMessage(response.data));
-        dispatch(addSimpleResponseMessage(response.data));
-        dispatch(addMyMessage({ content: '', score: 0 }));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [dispatch]);
   
   const handleYesClick = (buttonLink) => {
     setIsOpenModal(false)
@@ -135,8 +144,6 @@ function TranslatedTopicConversation({ params }) {
       dispatch(resetState())
       router.push(`/${locale}/${buttonLink}`)
     } else if (buttonLink === 'new-ai-tutor') {
-      dispatch(updateTutorLimit)
-      decrementTutorLimit()
       dispatch(resetState())
       router.push(`/${locale}/ai-tutor`)
     } else {
@@ -200,6 +207,14 @@ function TranslatedTopicConversation({ params }) {
       'background': 'bird',
       'buttonLink': 'ai-tutor',
       'buttonType': 1
+    },
+    // 스피커 부족 메세지
+    {
+      'message' : "you-cannot-proceed-with-free-talking-you-don't-have-enough-speakers",
+      'background': 'bird',
+      'image': 'megaphone',
+      'buttonLink': 'ai-tutor',
+      'buttonType': 2
     },
   ]
 

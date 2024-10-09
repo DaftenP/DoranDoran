@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useSelector, useDispatch } from 'react-redux';
-import { setTutorLimit } from '@/store/user';
+import { setTutorLimit, fetchUserData } from '@/store/user';
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
 import Cloud1 from '@/public/icon2/cloud1.webp'
@@ -43,6 +43,9 @@ export default function Main() {
     }
   }, [])
 
+  useEffect(() => {
+    dispatch(fetchUserData())
+  }, [])
 
   return (
     <div className='relative z-10'>

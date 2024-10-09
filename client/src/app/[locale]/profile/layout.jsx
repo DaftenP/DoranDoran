@@ -18,7 +18,7 @@ export default function Layout({ children }) {
       case 5:
         return "https://ssafy-tailored.b-cdn.net/shop/bg/launch-blue.webp";
       default:
-        return "https://ssafy-tailored.b-cdn.net/shop/bg/day.webp"; // 기본 배경 이미지
+        return "https://ssafy-tailored.b-cdn.net/shop/bg/day.webp";
     }
   };
 
@@ -26,7 +26,7 @@ export default function Layout({ children }) {
     <div
       className="relative min-h-screen"
       style={{
-        backgroundImage: `url(${renderBackground()})`, // 배경 이미지로 설정
+        backgroundImage: `url(${renderBackground()})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}

@@ -298,7 +298,7 @@ function TranslatedBottom() {
             className="flex justify-around items-center w-full h-full"
             // style={{transform: "skew(30deg)"}}
           >
-            <Link href={`/${countryCode}/ranking/all`} className='w-full h-full flex justify-between items-center'>
+            <Link href={`/${countryCode}/ranking`} className='w-full h-full flex justify-between items-center'>
               {currentPage === 'ranking' ? (
                 <div className='flex flex-col justify-center items-center h-full ml-9 md:ml-[10vw]'>
                   <motion.div

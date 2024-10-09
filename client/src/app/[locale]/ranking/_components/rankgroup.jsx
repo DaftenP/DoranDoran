@@ -6,16 +6,15 @@ import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useRef } from 'react';
-import RankListGroup from '../_components/ranklist-group';
+import RankListGroup from './ranklist-group';
 import Bronze from "@/public/rank/bronze.webp";
 import Silver from "@/public/rank/silver.webp";
 import Gold from "@/public/rank/gold.webp";
 import Platinum from "@/public/rank/platinum.webp";
 import Diamond from "@/public/rank/diamond.webp";
-import { fetchMyLeague } from '@/store/ranking'
 
 
-export default function RankGroup() {
+export default function RankGroup({ myLeague }) {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
   // 현재 로케일에 맞는 메시지 파일을 동적으로 로드
@@ -38,24 +37,16 @@ export default function RankGroup() {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <RanklistGroup />
+      <RanklistGroup myLeague={myLeague}/>
     </NextIntlClientProvider>
   );
 }
 
-function RanklistGroup() {
+function RanklistGroup({ myLeague }) {
   const t = useTranslations('index');
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchMyLeague()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
-  }, [dispatch]);
-
-  const router = useRouter();
   const locale = useLocale();
 
-  const myLeague = useSelector((state) => state.rankList.myLeague.data);
-  console.log(myLeague)
   const myLeagueList = myLeague.leagueMembers;
   const myLeagueNum = myLeague.leagueInfo.leagueNum;
   // const myRank = myLeague.myRank;
@@ -68,27 +59,8 @@ function RanklistGroup() {
   //   }
   // };  
 
-  const handleAllClick = () => {
-    router.push(`/${locale}/ranking/all`);  // All 클릭 시 /ranking/all으로 이동
-  };
-
   return (
     <div className="w-[100vw] h-[100vh] relative">
-      <section>
-        <div className="w-[40%] h-[5%] left-[30%] top-[10%] absolute flex items-center bg-[#dddddd] rounded-[20px] border border-[#bdbdbd]">
-          <div
-            className="w-[50%] h-[100%] absolute flex justify-center items-center bg-[#f1f3c2] border border-[#d2c100] rounded-[20px]"
-          >
-            <span className="text-[15px] font-normal text-black">{t('group')}</span>
-          </div>
-          <div
-            onClick={handleAllClick}
-            className="w-[50%] h-[100%] left-[50%] absolute flex justify-center items-center bg-[#dddddd] rounded-[20px]"
-          >
-            <span className="text-[15px] font-normal text-[#ababab]">{t('all')}</span>
-          </div>
-        </div>
-      </section>
 
       <section className="w-[90%] h-[70%] left-[5%] top-[22%] py-[2%] absolute bg-[#E6F3F2] bg-opacity-60 rounded-[30px]" >
         <article className="h-[14%] relative flex flex-row justify-center items-end">
@@ -108,7 +80,7 @@ function RanklistGroup() {
         {myLeagueList.map((item, index) => (
           <RankListGroup 
             key={item.userId} 
-            userRank={item.order} 
+            userOrder={item.order} 
             userName={item.userName} 
             userXP={item.userXP}
             // myRank={myRank.userRank}

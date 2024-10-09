@@ -50,7 +50,7 @@ function TranslatedUser() {
   };
 
   return (
-    <div className="bg-white/60 backdrop-blur-md w-[90%] rounded-3xl flex flex-col justify-center items-center mb-3">
+    <div className="bg-white/60 backdrop-blur-md w-[90%] rounded-3xl flex flex-col justify-center items-center mb-3 border border-[#B0BEC5]">
       <div className="w-[90%] rounded-3xl">
         <div className="flex flex-row justify-between items-center m-3">
           <div className="text-xl md:text-4xl flex justify-center items-center">

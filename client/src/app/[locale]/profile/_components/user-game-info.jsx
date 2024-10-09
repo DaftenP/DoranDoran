@@ -69,7 +69,7 @@ function TranslatedUser() {
   return (
     <div className="w-[90%] rounded-3xl flex flex-row justify-between items-center mt-3 mb-3">
       <div
-        className="bg-white/60 backdrop-blur-md w-[32%] mr-2 text-l md:text-4xl flex justify-center items-center"
+        className="bg-white/60 backdrop-blur-md w-[32%] mr-2 text-l md:text-4xl flex justify-center items-center border border-[#B0BEC5]"
         style={{
           color: rankColor[user.status.rank],
           padding: "5px 10px",
@@ -79,7 +79,7 @@ function TranslatedUser() {
         <div className="ml-2">{rankText[user.status.rank]}</div>
       </div>
       <div
-        className="bg-white/60 backdrop-blur-md w-[28%] mr-2 text-l md:text-4xl flex justify-center items-center"
+        className="bg-white/60 backdrop-blur-md w-[28%] mr-2 text-l md:text-4xl flex justify-center items-center border border-[#B0BEC5]"
         style={{
           padding: "5px 10px",
           borderRadius: "20px",
@@ -88,7 +88,7 @@ function TranslatedUser() {
         <div className="ml-2">LV.{Math.floor(user.status.xp / 100)}</div>
       </div>
       <div
-        className="bg-white/60 backdrop-blur-md w-[40%] text-l md:text-4xl flex justify-center items-center"
+        className="bg-white/60 backdrop-blur-md w-[40%] text-l md:text-4xl flex justify-center items-center border border-[#B0BEC5]"
         style={{
           padding: "5px 10px",
           borderRadius: "20px",

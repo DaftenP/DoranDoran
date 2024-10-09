@@ -27,7 +27,7 @@ export default function Setting() {
       <hr className="w-full border-t border-[#ACACAC]" />
       {/* 세팅 컴포넌트 */}
       <div className="w-full h-full flex justify-center items-center">
-        <div className="bg-white w-[90%] h-[80%] rounded-3xl flex justify-center items-center flex-col">
+        <div className="bg-white w-[90%] h-[90%] rounded-3xl flex justify-center items-center flex-col border-2 border-[#B0BEC5]">
           <Information />
           <hr className="w-[90%] border-t border-[#ACACAC] my-6" />
           <Sound />

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -259,6 +260,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 	for err := range errCh {
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			fmt.Println(err)
 			return
 		}
 	}

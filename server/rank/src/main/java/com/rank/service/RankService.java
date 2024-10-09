@@ -48,8 +48,21 @@ public class RankService {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);
         }
 
+        RankCode rankCode = null;
+        if(league.get().getRank() == 1000) {
+            rankCode = RankCode.BRONZE;
+        } else if(league.get().getRank() == 2000) {
+            rankCode = RankCode.SILVER;
+        } else if(league.get().getRank() == 3000) {
+            rankCode = RankCode.GOLD;
+        } else if(league.get().getRank() == 4000) {
+            rankCode = RankCode.PLATINUM;
+        } else if(league.get().getRank() == 5000) {
+            rankCode = RankCode.DIAMOND;
+        }
+
         LeagueInfoDTO leagueInfoDTO = LeagueInfoDTO.builder()
-                .leagueId(RankCode.BRONZE.getRankName() + "-" + league.get().getNum())
+                .leagueId(rankCode.getRankName() + "-" + league.get().getNum())
                 .leagueRank(league.get().getRank())
                 .leagueNum(league.get().getNum())
                 .createdAt(league.get().getCreatedAt())

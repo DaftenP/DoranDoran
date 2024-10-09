@@ -83,7 +83,7 @@ const MainContent = ({ children, modal }) => {
 
 
   useEffect(() => {
-    if ([`/${locale}/main`, `/${locale}/profile`, `/${locale}/profile/setting`, `/${locale}/ranking/all`, `/${locale}/ranking/group`, `/${locale}/study`, `/${locale}/ai-tutor`].includes(pathname) ||
+    if ([`/${locale}/main`, `/${locale}/profile`, `/${locale}/profile/setting`, `/${locale}/ranking`, `/${locale}/study`, `/${locale}/ai-tutor`].includes(pathname) ||
       (pathname.startsWith(`/${locale}/ai-tutor`) && pathname.split('/').length === 4)) {
         if (!isMainPlaying) {
           if (audioNightRef.current) audioNightRef.current.pause();

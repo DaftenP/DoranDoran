@@ -8,14 +8,14 @@ import Gold from "@/public/rank/gold.webp";
 import Platinum from "@/public/rank/platinum.webp";
 import Diamond from "@/public/rank/diamond.webp";
 
-export default forwardRef(function RankListAll({userRank, userChar, userName, userTier, userXP, borderColor }, ref) {
+export default forwardRef(function RankListAll({userorder, userChar, userName, userTier, userXP, borderColor }, ref) {
   return (
     <div 
       ref={ref} 
       className={`relative flex items-center bg-white px-[4%] py-[2%] font-normal rounded-lg my-[2%] animate-scale-in`}  
       style={{ border: `2px solid ${borderColor}` }}
     >
-      <span className="font-bold text-gray-600">{userRank}</span>
+      <span className="font-bold text-gray-600">{userorder}</span>
       <Image
         src={"https://ssafy-tailored.b-cdn.net/shop/bird/2.webp"}
         alt="bird2"

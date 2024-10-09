@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useRef } from 'react';
-import RankListAll from '../_components/ranklist-all';
-import { fetchRankList } from '@/store/ranking'
+import RankListAll from './ranklist-all';
 
-export default function RankAll() {
+
+export default function RankAll({ rankList }) {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
   // 현재 로케일에 맞는 메시지 파일을 동적으로 로드
@@ -32,25 +32,17 @@ export default function RankAll() {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <RanklistAll />
+      <RanklistAll rankList = {rankList}/>
     </NextIntlClientProvider>
   );
 }
 
-function RanklistAll() {
+function RanklistAll({ rankList }) {
   const t = useTranslations('index');
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchRankList()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
-  }, [dispatch]);
-
-  const router = useRouter();
   const locale = useLocale();
   const [selectedWeek, setSelectedWeek] = useState("this week");
 
-  // const rankList = useSelector((state) => state.rank.rankList.data);
-  const rankList = useSelector((state) => state.rankList.rankList.data);
   const thisWeekRankList = rankList.thisWeek.thisWeekLeaderBoard;
   const lastWeekRankList = rankList.lastWeek.lastWeekLeaderBoard;
   const thisWeekMyRank = rankList.thisWeek.myLeaderBoard;
@@ -58,33 +50,16 @@ function RanklistAll() {
 
   const myRankRef = useRef([]);
   const scrollToMyRank = () => {
-    const myRank = selectedWeek === "this week" ? thisweekMyRank.order : lastweekMyRank.order;
+    const myRank = selectedWeek === "this week" ? thisWeekMyRank.order : lastWeekMyRank.order;
     const ref = myRankRef.current[myRank - 1]; // 배열 인덱스는 0부터 시작하므로 -1
     if (ref) {
         ref.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };  
 
-  const handleGroupClick = () => {
-    router.push(`/${locale}/ranking/group`); 
-  };
-
   return (
     <div className="w-[100vw] h-[100vh] relative">
       <section>
-        <div className="w-[40%] h-[5%] left-[30%] top-[10%] absolute flex items-center bg-[#dddddd] rounded-[20px] border border-[#bdbdbd]">
-          <div
-            onClick={handleGroupClick}
-            className="w-[50%] h-[100%] absolute flex justify-center items-center bg-[#dddddd] rounded-[20px]"
-          >
-            <span className="text-[15px] font-normal text-[#ababab]">{t('group')}</span>
-          </div>
-          <div
-            className="w-[50%] h-[100%] left-[50%] absolute flex justify-center items-center bg-[#f1f3c2] border border-[#d2c100] rounded-[20px]"
-          >
-            <span className="text-[15px] font-normal text-black">{t('all')}</span>
-          </div>
-        </div>
         
         <div className="w-[34%] h-[3%] left-[33%] top-[16%] absolute flex items-center bg-[#dddddd] rounded-[20px] border border-[#bdbdbd]">
           <div
@@ -172,7 +147,7 @@ function RanklistAll() {
         {(selectedWeek === "this week" ? thisWeekRankList : lastWeekRankList).slice(3).map((item, index) => (
             <RankListAll
               key={item.userId}
-              order={item.order}
+              userorder={item.order}
               userName={item.userNickname}
               userXP={item.gainXp}
               borderColor={
@@ -188,7 +163,7 @@ function RanklistAll() {
 
         <div className="w-[90%] h-[6%] bottom-[13vh] fixed" onClick={scrollToMyRank}>
           <RankListAll 
-            order={selectedWeek === "this week" ? thisWeekMyRank.order : lastWeekMyRank.order} 
+            userorder={selectedWeek === "this week" ? thisWeekMyRank.order : lastWeekMyRank.order} 
             userName={selectedWeek === "this week" ? thisWeekMyRank.userNickname : lastWeekMyRank.userNickname} 
             userXP={selectedWeek === "this week" ? thisWeekMyRank.gainXp : lastWeekMyRank.gainXp} 
             borderColor={"#1cbfff"} />

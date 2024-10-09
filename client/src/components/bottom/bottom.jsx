@@ -175,7 +175,7 @@ function TranslatedBottom() {
         className="relative w-[50vw]"
       >
         <div
-          className="w-[50vw] h-[10vh] rounded-tr-[10px] bg-[#FFFFFF]/70 backdrop-blur-sm pr-[8vw]"
+          className="w-[50vw] h-[10vh] rounded-tr-[10px] bg-[#FFFFFF] pr-[8vw]"
           style={{
             // transform: "skew(30deg) translate(-20px, 0px)",
             boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)",
@@ -198,7 +198,7 @@ function TranslatedBottom() {
                       <Image src={Store2} alt="store_link" className="w-auto h-[80%] cursor-pointer" />
                     </motion.div>
                     <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
-                      {t('store')}
+                      Store
                     </div>
                   </div>
                 ) : (
@@ -213,7 +213,7 @@ function TranslatedBottom() {
                       <Image src={Store1} alt="store_link" className="w-auto h-[80%] cursor-pointer" />
                     </motion.div>
                     <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
-                      {t('store')}
+                      Store
                     </div>
                   </div>
                 )}
@@ -231,7 +231,7 @@ function TranslatedBottom() {
                       <Image src={Study2} alt="study_link" className="w-auto h-[80%] cursor-pointer" />
                     </motion.div>
                     <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
-                      {t('study')}
+                      Study
                     </div>
                   </div>
                 ) : (
@@ -246,7 +246,7 @@ function TranslatedBottom() {
                       <Image src={Study1} alt="study_link" className="w-auto h-[80%] cursor-pointer" />
                     </motion.div>
                     <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
-                      {t('study')}
+                      Study
                     </div>
                   </div>
                 )}
@@ -270,7 +270,7 @@ function TranslatedBottom() {
                   <Image src={AiTutor} alt="ai_tutor_link" className="w-auto h-[90%] cursor-pointer" />
                 </motion.div>
                 <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
-                  {t('ai-tutor')}
+                  AI-Tutor
                 </div>
             </div>
           ) : (
@@ -282,14 +282,14 @@ function TranslatedBottom() {
                   <Image src={Home} alt="Home_link" className="w-auto h-[90%] cursor-pointer" />
                 </motion.div>
                 <div className='text-xl md:text-2xl lg:text-3xl text-[#3c3c9c]'>
-                  {t('home')}
+                  Home
                 </div>
             </Link>
           )}
       </div>
       <div className="w-[50vw]">
         <div
-          className="w-[50vw] h-[10vh] rounded-tl-[10px] bg-[#FFFFFF]/70 backdrop-blur-sm pl-[8vw]"
+          className="w-[50vw] h-[10vh] rounded-tl-[10px] bg-[#FFFFFF] pl-[8vw]"
           style={{
             // transform: "skew(-30deg) translate(20px, 0px)",
             boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.25)",
@@ -312,7 +312,7 @@ function TranslatedBottom() {
                     <Image src={Ranking2} alt="ranking_link" className="w-auto h-[80%] cursor-pointer" />
                   </motion.div>
                   <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
-                    {t('ranking')}
+                    Rank
                   </div>
                 </div>
               ) : (
@@ -327,7 +327,7 @@ function TranslatedBottom() {
                     <Image src={Ranking1} alt="ranking_link" className="w-auto h-[80%] cursor-pointer" />
                   </motion.div>
                   <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
-                    {t('ranking')}
+                    Rank
                   </div>
                 </div>
               )}
@@ -345,7 +345,7 @@ function TranslatedBottom() {
                     <Image src={Profile2} alt="profile_link" className="w-auto h-[80%] cursor-pointer" />
                   </motion.div>
                   <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
-                    {t('profile')}
+                    Profile
                   </div>
                 </div>
               ) : (
@@ -360,7 +360,7 @@ function TranslatedBottom() {
                     <Image src={Profile1} alt="profile_link" className="w-auto h-[80%] cursor-pointer" />
                   </motion.div>
                   <div className='text-l md:text-xl lg:text-2xl text-[#3c3c9c]'>
-                    {t('profile')}
+                    Profile
                   </div>
                 </div>
               )}

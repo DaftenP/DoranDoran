@@ -31,6 +31,7 @@ export default function Top() {
     loadMessages();
 
     dispatch(fetchUserData())
+
   }, [locale, dispatch]);
 
   return (
@@ -41,8 +42,8 @@ export default function Top() {
 }
 
 function TranslatedTop() {
-  const t = useTranslations('index')
   const user = useSelector((state) => state.user)
+  const tutorData = JSON.parse(localStorage.getItem('tutor'))
 
   const rankImage = {
     0: Bronze,
@@ -86,7 +87,7 @@ function TranslatedTop() {
           className="w-[15vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white flex justify-center items-center text-sm md:text-3xl lg:text-5xl"
           style={{ translate: '-1vw 0'}}
         >
-          10/10
+          {tutorData ? `${tutorData.tutorLimit}/10` : 'No data'}
         </div>
       </div>
     </div>

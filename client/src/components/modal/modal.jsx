@@ -8,6 +8,7 @@ import ModalNight from '@/public/modal/modal-night.webp'
 import ShopColor from "@/public/icon2/shop-color.webp";
 import ShopEquipment from "@/public/icon2/shop-equipment.webp";
 import ShopBackground from "@/public/icon2/shop-background.webp";
+import Megaphone from "@/public/icon/megaphone.webp"
 import Credit from "@/public/icon/credit.webp";
 
 export default function Modal({ handleYesClick, handleCloseModal, message }) {
@@ -51,6 +52,8 @@ const imageMap = {
 
 function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
   const t = useTranslations('index');
+  const tutorData = JSON.parse(localStorage.getItem('tutor'))
+
   return (
     <div className='fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center'>
       <div className="relative bg-white p-6 rounded-lg shadow-lg w-[80vw] h-[80vw] md:w-[60vw] md:h-[50vw] lg:w-[60vw] lg:h-[50vw] overflow-hidden z-9999">
@@ -79,7 +82,7 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                 <div>
                   <Image
                     src={ShopEquipment}
-                    alt="color_icon"
+                    alt="equipment_icon"
                     className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/2 z-10"
                   />
                   <div className='absolute left-1/2 transform -translate-x-1/2 z-10 translate-y-6 md:translate-y-10 mt-[2vh]'>
@@ -94,7 +97,7 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                 <div>
                   <Image
                     src={ShopBackground}
-                    alt="color_icon"
+                    alt="background_icon"
                     className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/2 z-10"
                   />
                   <div className='absolute left-1/2 transform -translate-x-1/2 z-10 translate-y-6 md:translate-y-10 mt-[2vh]'>
@@ -103,6 +106,25 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                       <div className="text-white" >900</div>
                     </div>
                   </div>
+                </div>
+              )}
+              {message.image === 'megaphone' && (
+                <div>
+                  <Image
+                    src={Megaphone}
+                    alt="megaphone_icon"
+                    className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/2 z-10"
+                  />
+                </div>
+              )}
+              {message.image === 'megaphone-down' && (
+                <div>
+                  <Image
+                    src={Megaphone}
+                    alt="megaphone_icon"
+                    className="relative w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] absolute transform -translate-x-1/2 translate-y-1/2 z-10"
+                  />
+                  <div className='absolute left-1/2 transform -translate-x-1/2 z-10 translate-y-6 md:translate-y-10 mt-[2vh] text-black'>{tutorData.tutorLimit} → {tutorData.tutorLimit - 1}</div>
                 </div>
               )}
             </>
@@ -126,7 +148,7 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                 <div>
                   <Image
                     src={`https://ssafy-tailored.b-cdn.net/shop/hat/${message.imageUrl[1]}.webp`}
-                    alt="color_icon"
+                    alt="equipment_icon"
                     width={200}
                     height={100}
                     className="relative w-auto h-[26vw] md:w-auto md:h-[16vw] lg:w-auto lg:h-[16vw] left-[50%] absolute transform -translate-x-1/2 md:translate-y-7 z-10"
@@ -137,7 +159,7 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
                 <div>
                   <Image
                     src={`https://ssafy-tailored.b-cdn.net/shop/bg/${imageMap[message.imageUrl[1]]}.webp`}
-                    alt="color_icon"
+                    alt="background_icon"
                     width={200}
                     height={100}
                     className="relative rounded-3xl opacity-80 w-[30vw] h-[30vw] md:w-[20vw] md:h-[20vw] lg:w-[20vw] lg:h-[20vw] left-[50%] absolute transform -translate-x-1/2 md:translate-y-7 z-10"

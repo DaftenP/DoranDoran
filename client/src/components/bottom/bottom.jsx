@@ -5,9 +5,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { usePathname, useRouter } from 'next/navigation';
 import { resetState } from '@/store/ai-tutor';
-import Modal from '@/components/modal/modal'
+import { updateTutorLimit } from '@/store/user';
+import Modal from '@/components/modal/modal';
 import Link from 'next/link';
-import Image from 'next/image'
+import Image from 'next/image';
 import AiTutor from '@/public/bottom-bar/ai-tutor.webp'
 import Home from '@/public/bottom-bar/home.webp'
 import Profile1 from '@/public/bottom-bar/profile1.webp'
@@ -56,13 +57,17 @@ function TranslatedBottom() {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalMessage, setModalMessage] = useState(null)
   const [type, setType] = useState([])
+  const [isTutorFirst, setIsTutorFirst] = useState(false)
   const dispatch = useDispatch()
 
   const handleYesClick = (buttonLink) => {
     setIsOpenModal(false)
     if (buttonLink === 'ai-tutor') {
+      router.push(`/${countryCode}/ai-tutor/${type[0]}/${type[1]}`)
+    } else {
+      setIsTutorFirst(false)
+      goTutorStudy()
     }
-    router.push(`/${countryCode}/ai-tutor/${type[0]}/${type[1]}`)
   }
 
   const handleOpenModal = (messageIndex) => {
@@ -71,9 +76,21 @@ function TranslatedBottom() {
   }
 
   const handleCloseModal = () => {
-    setIsOpenModal(false)
-    dispatch(resetState())
-    router.push(`/${countryCode}/ai-tutor`)
+    const tutorData = JSON.parse(localStorage.getItem('tutor'))
+    if (tutorData.tutorLimit > 0) {
+      if (isTutorFirst) {
+        setIsOpenModal(false)
+        setIsTutorFirst(false)
+      } else {
+        dispatch(updateTutorLimit(-1))
+        decrementTutorLimit()
+        setIsOpenModal(false)
+        dispatch(resetState())
+        router.push(`/${countryCode}/ai-tutor`)
+      }
+    } else {
+      setIsOpenModal(false)
+    }
   }
 
   const modalMessages = [
@@ -84,6 +101,23 @@ function TranslatedBottom() {
       'buttonLink': 'ai-tutor',
       'buttonType': 1
     },
+    // 스피커 부족 메세지
+    {
+      'message' : "you-cannot-proceed-with-free-talking-you-don't-have-enough-speakers",
+      'background': 'bird',
+      'image': 'megaphone',
+      'buttonLink': 'ai-tutor',
+      'buttonType': 2
+    },
+    // 스피커 까인다는 메세지
+    {
+      'message' : "ai-tutor-will-consume-speaker",
+      'background': 'bird',
+      'image': 'megaphone-down',
+      'buttonLink': 'ai-tutor-first',
+      'buttonType': 1
+    }
+
   ]
 
   useEffect(() => {
@@ -92,18 +126,46 @@ function TranslatedBottom() {
     setCountryCode(pathArray[1]);
   }, [pathname]);
 
+  const decrementTutorLimit = () => {
+    const tutorData = JSON.parse(localStorage.getItem('tutor'))
+
+    if (tutorData && tutorData.tutorLimit > 0) {
+      tutorData.tutorLimit -= 1;
+      localStorage.setItem('tutor', JSON.stringify(tutorData));
+    }
+  }
+
+  const goTutorStudy = () => {
+    dispatch(updateTutorLimit(-1))
+    decrementTutorLimit()
+    router.push(`/${countryCode}/ai-tutor`)
+  }
+
   const handleAiTutorLink = (() => {
     const storedData = localStorage.getItem('aiTutorState')
+    const tutorData = JSON.parse(localStorage.getItem('tutor'))
     if (storedData) {
       const parsedData = JSON.parse(storedData)
       if (parsedData.type && parsedData.type.length > 0) {
         setType([parsedData.type[0], parsedData.type[1]])
         handleOpenModal(0)
       } else {
-        router.push(`/${countryCode}/ai-tutor`)
+        // 만약 튜터 리미트가 남아있다면 스피커 감소한다는 메세지 on
+        if (tutorData && tutorData.tutorLimit > 0) {
+          setIsTutorFirst(true)
+          handleOpenModal(2)
+        } else {
+          // 안남아있으면 실행 불가능
+          handleOpenModal(1)
+        }
       }
     } else {
-      router.push(`/${countryCode}/ai-tutor`)
+      if (tutorData && tutorData.tutorLimit > 0) {
+        setIsTutorFirst(true)
+        handleOpenModal(2)
+      } else {
+        handleOpenModal(1)
+      }
     }
   })
 

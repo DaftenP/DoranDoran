@@ -1,7 +1,8 @@
 'use client'
 
 import { useTranslations } from 'next-intl';
-import { fetchUserData } from '@/store/user';
+import { useSelector, useDispatch } from 'react-redux';
+import { setTutorLimit } from '@/store/user';
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
 import Cloud1 from '@/public/icon2/cloud1.webp'
@@ -14,6 +15,8 @@ import Character from '@/app/[locale]/main/_components/character'
 export default function Main() {
   const [cloud1Position, setCloud1Position] = useState(-10);
   const [cloud2Position, setCloud2Position] = useState(-10);
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -24,9 +27,22 @@ export default function Main() {
     return () => clearInterval(interval)
   }, [])
 
-  // useEffect(() => {
-  //   dispatch(fetchUserData())
-  // }, [])
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0]
+    const tutorData = JSON.parse(localStorage.getItem('tutor'))
+
+    if (!tutorData || tutorData.date !== today) {
+      const newTutorData = {
+        date: today,
+        tutorLimit: 10
+      }
+      localStorage.setItem('tutor', JSON.stringify(newTutorData))
+      dispatch(setTutorLimit(10))
+    } else {
+      dispatch(setTutorLimit(tutorData.tutorLimit))
+    }
+  }, [])
+
 
   return (
     <div className='relative z-10'>

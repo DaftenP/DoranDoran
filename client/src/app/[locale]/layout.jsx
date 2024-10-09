@@ -31,6 +31,23 @@ const MainContent = ({ children, modal }) => {
     
     audioMainRef.current.loop = true;
     audioNightRef.current.loop = true;
+
+    // 새로고침 시 로컬스토리지에서 BGM 상태를 복원
+    const storedBgmState = JSON.parse(localStorage.getItem('bgmState'));
+
+    if (storedBgmState) {
+      if (storedBgmState.isMainPlaying) {
+        audioMainRef.current.volume = volume;
+        audioMainRef.current.currentTime = 0;
+        audioMainRef.current.play();
+        dispatch(playMainBgm());
+      } else if (storedBgmState.isNightPlaying) {
+        audioNightRef.current.volume = volume;
+        audioNightRef.current.currentTime = 0;
+        audioNightRef.current.play();
+        dispatch(playNightBgm());
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -43,6 +60,9 @@ const MainContent = ({ children, modal }) => {
           audioMainRef.current.currentTime = 0;
           audioMainRef.current.play();
           dispatch(playMainBgm());
+
+          // 로컬 스토리지에 BGM 상태 저장
+          localStorage.setItem('bgmState', JSON.stringify({ isMainPlaying: true, isNightPlaying: false }));
         }
     } else if ([`/${locale}/store`, `/${locale}/room`].includes(pathname)) {
       if (!isNightPlaying) {
@@ -52,13 +72,19 @@ const MainContent = ({ children, modal }) => {
         audioNightRef.current.currentTime = 0;
         audioNightRef.current.play();
         dispatch(playNightBgm());
+
+        // 로컬 스토리지에 BGM 상태 저장
+        localStorage.setItem('bgmState', JSON.stringify({ isMainPlaying: false, isNightPlaying: true }));
       }
     } else {
       if (audioMainRef.current) audioMainRef.current.pause();
       if (audioNightRef.current) audioNightRef.current.pause();
       dispatch(stopBgm())
+
+      // 로컬 스토리지에 BGM 상태 초기화
+      localStorage.setItem('bgmState', JSON.stringify({ isMainPlaying: false, isNightPlaying: false }));
     }
-  }, [dispatch, pathname, isMainPlaying, isNightPlaying, locale, volume]);
+  }, [dispatch, pathname, isMainPlaying, isNightPlaying, locale]);
 
   useEffect(() => {
     // 로딩 시작 (페이지가 바뀔 때마다 로딩 활성화)

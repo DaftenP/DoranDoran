@@ -156,7 +156,7 @@ function TranslatedItemlist({ setBuyComplete, itemType, itemName, itemIcon, item
 
   return (
     <div className={`${itemType === 1 || itemType === 2 || itemType === 3 ? '' : 'opacity-30 pointer-events-none'}`}>
-      <div className="w-[35vw] h-[19vh] relative border border-[#D1D6DE] p-4 rounded-[10px] bg-[#8E9094] bg-opacity-80" >
+      <div onClick={itemType === 1 || itemType === 2 || itemType === 3 ? () => handleOpenModal(itemType) : null} className="w-[35vw] h-[19vh] relative border border-[#D1D6DE] p-4 rounded-[10px] bg-[#8E9094] bg-opacity-80" >
         <div className="left-[50%] transform -translate-x-1/2 top-[5%] absolute text-white text-center text-lg md:text-2xl lg:text-4xl">
           {itemName}
         </div>
@@ -169,8 +169,7 @@ function TranslatedItemlist({ setBuyComplete, itemType, itemName, itemIcon, item
             <Image src={Credit} alt="credit" className="w-auto h-[110%] left-[0%] absolute" />
             <div className="text-white" >{itemCost}</div>
           </div>
-          <div onClick={itemType === 1 || itemType === 2 || itemType === 3 ? () => handleOpenModal(itemType) : null} 
-             className="absolute bottom-[0%] text-black cursor-pointer">
+          <div className="absolute bottom-[0%] text-black cursor-pointer">
           {t('purchase')}
           </div>
         </div>

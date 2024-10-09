@@ -8,6 +8,7 @@ import { fetchStageDetail } from '@/store/quiz';
 import QuizTitle from '@/app/[locale]/study/_components/quiz-title'
 import QuizContent from '@/app/[locale]/study/_components/quiz-content';
 import Play from "@/public/icon/play1.webp";
+import Pause from "@/public/icon/play2.webp";
 import { useRouter } from 'next/navigation';
 
 export default function Quiz({type, index}) {
@@ -55,17 +56,38 @@ function TranslatedQuiz({locale, type, index}) {
   const quizVoiceUrl = quizList[0]?.quizVoiceUrl;
   const router = useRouter();
 
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [audio, setAudio] = useState(null);
+
+  useEffect(() => {
+    if (quizVoiceUrl) {
+      const newAudio = new Audio(quizVoiceUrl);
+      setAudio(newAudio);
+    }
+  }, [quizVoiceUrl]);
+
   // 음성 재생 함수
-  const playVoice = () => {
-    const audio = new Audio(quizVoiceUrl);
-    audio.play().catch((error) => {
-      console.error('음성을 재생하는 데 오류가 발생했습니다:', error);
-    });
+  const toggleAudio = () => {
+    if (isPlaying) {
+      audio.pause();
+      audio.currentTime = 0;
+    } else {
+      audio.play();
+    }
+    setIsPlaying(!isPlaying);
   };
 
   useEffect(() => {
-    playVoice();
-  }, [quizVoiceUrl]);
+    if (!audio) return;
+
+    const handleEnded = () => setIsPlaying(false);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('ended', handleEnded);
+      audio.pause();
+    };
+  }, [audio]);
 
   useEffect(() => {
     if (!quizList.length) {
@@ -86,9 +108,9 @@ function TranslatedQuiz({locale, type, index}) {
         <QuizTitle type={type} index={index}/>
       </div>
       {quizType === 5001 && (
-        <button onClick={playVoice} className='absolute z-10 top-[82%] left-[50%] transform -translate-x-1/2 flex-col flex justify-center items-center w-[30vw] h-[10vh]'>
+        <button onClick={toggleAudio} className='absolute z-10 top-[82%] left-[50%] transform -translate-x-1/2 flex-col flex justify-center items-center w-[30vw] h-[10vh]'>
           <Image
-            src={Play}
+            src={isPlaying ? Pause : Play}
             alt="play"
             className="w-[30%] h-auto" // CSS에서 비율을 맞추기 위해 w와 h를 설정
           />

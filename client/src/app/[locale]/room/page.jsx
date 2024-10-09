@@ -114,12 +114,8 @@ function TranslatedBottom() {
 
       {/* 커스터마이징 옵션 영역 */}
       <div className="w-full h-[60%] flex flex-col items-center justify-center">
-        {/* 선택된 탭의 내용 */}
-        <div className="w-[90%] h-[80%] flex justify-center items-center bg-[#151638]/50 backdrop-blur-md rounded-[10px]">
-          {renderTabContent()}
-        </div>
         {/* 탭 메뉴 */}
-        <div className="flex w-[90%] h-[8%] mt-5">
+        <div className="flex w-[90%] h-[8%] mb-5">
           {["color", "hat", "background"].map((tab) => (
             <div
               key={tab}
@@ -130,6 +126,10 @@ function TranslatedBottom() {
               <p className="md:text-5xl">{t(tab)}</p>
             </div>
           ))}
+        </div>
+        {/* 선택된 탭의 내용 */}
+        <div className="w-[90%] h-[80%] flex justify-center items-center bg-[#151638]/50 backdrop-blur-md rounded-[10px]">
+          {renderTabContent()}
         </div>
       </div>
     </div>

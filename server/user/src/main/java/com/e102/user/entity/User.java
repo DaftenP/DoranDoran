@@ -26,6 +26,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Slf4j
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "user_email")})
 public class User {
 
     @Id
@@ -42,33 +43,33 @@ public class User {
     private Set<ItemKey> items = new HashSet<>();
 
 
-    @Column(name = "user_pw")
+    @Column(name = "user_password")
     private String password;
 
-    @Column(name = "user_xp")
+    @Column(name = "user_xp",columnDefinition = "int default 0")
     private int xp = 0;
 
-    @Column(name = "user_nickname")
+    @Column(name = "user_nickname", nullable = false)
     private String nickname;
 
-    @Column(name = "user_color", nullable = true)
+    @Column(name = "user_color",columnDefinition = "int default 1")
     private int color = 1;
 
-    @Column(name = "user_equipment", nullable = true)
+    @Column(name = "user_equipment",columnDefinition = "int default 0")
     private int equipment = 0;
 
-    @Column(name = "user_background", nullable = true)
+    @Column(name = "user_background",columnDefinition = "int default 1")
     private int background = 1;
 
-    @Column(name = "user_gem")
+    @Column(name = "user_gem",columnDefinition = "int default 0")
     private int gem = 0;
 
     // cron으로 일주일 마다 날릴 예정
-    @Column(name = "user_weekly_quest")
+    @Column(name = "user_weekly_quest",columnDefinition = "int default 0")
     private int weeklyStatus = 0;
 
     // cron으로 밤마다 날릴예정
-    @Column(name = "user_daily_quest")
+    @Column(name = "user_daily_quest",columnDefinition = "int default 0")
     private int dailyStatus = 0;
 
     @CreatedDate
@@ -78,10 +79,10 @@ public class User {
     @Column(name = "user_deleted_at",columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime deletedAt;
 
-    @Column(name = "user_stage" )
+    @Column(name = "user_stage",columnDefinition = "int default 1" )
     private int stage = 1;
 
-    @Column(name = "user_birthday", columnDefinition = "DATE", nullable = false)
+    @Column(name = "user_birthday", columnDefinition = "DATE DEFAULT '2000-01-01'", nullable = false)
     private LocalDate birthDay = LocalDate.of(2000, 1, 1);
 
     @OneToMany(mappedBy = "cuser", cascade = CascadeType.ALL, orphanRemoval = true)

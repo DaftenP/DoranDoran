@@ -53,8 +53,8 @@ export default function Color({ onSelectCharacter }) {
             <div
               key={item.itemId}
               className={`rounded-md transition-colors
-                transition-transform transform hover:scale-105
-                ${selectedCharacter.itemId === item.itemId ? "bg-[#FFFFF0]/50 " : "bg-[#FFFFF0]/10"}`}
+                transition-transform transform
+                ${selectedCharacter.itemId === item.itemId ? "bg-[#FFFFF0]/50 scale-105" : "bg-[#FFFFF0]/10"}`}
               onClick={() => handleCharacterSelect(item.itemId)}>
               <div className="w-full h-full flex items-center justify-center">
                 {/* BirdCharacter 컴포넌트를 사용하여 색상 표시 */}

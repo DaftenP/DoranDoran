@@ -89,8 +89,8 @@ function TranslatedHat({ onSelectHat }) {
             <div
               key={item.itemId}
               className={`rounded-md transition-colors
-                transition-transform transform hover:scale-105
-                ${selectedHat.itemId === item.itemId ? "bg-[#FFFFF0]/50 " : "bg-[#FFFFF0]/10"}`}
+                transition-transform transform
+                ${selectedHat.itemId === item.itemId ? "bg-[#FFFFF0]/50 scale-105" : "bg-[#FFFFF0]/10"}`}
               onClick={() => handleHatSelect(item.itemId)}
             >
               <div className="w-full h-full flex items-center justify-center">

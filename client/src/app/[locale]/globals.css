@@ -62,3 +62,35 @@ html:lang(zh) body {
     text-wrap: balance;
   }
 }
+
+@keyframes wobble {
+  0%, 100% {
+    transform: rotate(0deg); /* 원래 위치 */
+  }
+  15% {
+    transform: rotate(-10deg); /* 왼쪽으로 살짝 기울기 */
+  }
+  30% {
+    transform: rotate(10deg); /* 오른쪽으로 살짝 기울기 */
+  }
+  45% {
+    transform: rotate(-6deg); /* 다시 왼쪽 */
+  }
+  60% {
+    transform: rotate(6deg); /* 다시 오른쪽 */
+  }
+  75% {
+    transform: rotate(-2deg); /* 미세한 흔들림 */
+  }
+  90% {
+    transform: rotate(2deg); /* 미세한 흔들림 */
+  }
+}
+
+.animate-wobble {
+  animation: wobble 1s ease-in-out infinite;
+
+  animation-iteration-count: infinite; /* 무한 반복 */
+}
+
+

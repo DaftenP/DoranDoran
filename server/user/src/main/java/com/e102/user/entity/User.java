@@ -43,7 +43,7 @@ public class User {
     private Set<ItemKey> items = new HashSet<>();
 
 
-    @Column(name = "user_password")
+    @Column(name = "user_pw")
     private String password;
 
     @Column(name = "user_xp",columnDefinition = "int default 0")

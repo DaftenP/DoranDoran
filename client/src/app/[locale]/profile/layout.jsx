@@ -26,7 +26,7 @@ export default function Layout({ children }) {
     <div
       className="relative min-h-screen"
       style={{
-        backgroundImage: `url(${renderBackground()})`, // 배경 이미지로 설정
+        backgroundImage: `url(${renderBackground()})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}

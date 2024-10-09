@@ -83,6 +83,7 @@ export const expGemUpdate = createAsyncThunk(
 
 // 초기 상태 정의
 const initialState = {
+  tutorLimit: 0,
   profile: {
     nickname: '',
     email: '',
@@ -101,9 +102,6 @@ const initialState = {
     status: '', // 주간 테스크 상태
     dailyStatus: 0, // 일일 테스크 상태
   },
-  tutor: {
-    number: 10
-  }
 }
 
 // Redux 슬라이스 생성
@@ -117,6 +115,12 @@ const userSlice = createSlice({
     },
     updateXp: (state, action) => {
       state.status.xp += action.payload;
+    },
+    updateTutorLimit: (state, action) => {
+      state.tutorLimit += action.payload;
+    },
+    setTutorLimit: (state, action) => {
+      state.tutorLimit = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -194,6 +198,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { updateGem, updateColor } = userSlice.actions;
+export const { updateGem, updateXp, updateTutorLimit, setTutorLimit } = userSlice.actions;
 
 export default userSlice.reducer;

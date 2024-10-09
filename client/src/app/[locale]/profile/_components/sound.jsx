@@ -62,8 +62,17 @@ function TranslatedSound() {
               />
               {/* 볼륨 컨트롤의 스타일 */}
               <style jsx>{`
-                input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: #FFE4B5; cursor: pointer; border-radius: 50% }
-                input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; background: #FFE4B5; cursor: pointer; border-radius: 50%; border: none }
+                input[type="range"]::-webkit-slider-thumb {
+                  -webkit-appearance: none;
+                  appearance: none;
+                  width: 0;
+                  height: 0;
+                }
+                input[type="range"]::-moz-range-thumb {
+                  width: 0;
+                  height: 0;
+                  border: none;
+                }
               `}</style>
             </div>
           </div>

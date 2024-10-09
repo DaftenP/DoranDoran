@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChatMessages, typeChange, changeChatMessages, changeMessages, resetState, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage } from '@/store/ai-tutor';
+import { updateTutorLimit } from '@/store/user';
 import Modal from '@/components/modal/modal'
 import Link from 'next/link';
 import Image from 'next/image';
@@ -132,8 +133,24 @@ function TranslatedTopicConversation({ params }) {
     setIsOpenModal(false)
     if (buttonLink === 'ai-tutor') {
       dispatch(resetState())
+      router.push(`/${locale}/${buttonLink}`)
+    } else if (buttonLink === 'new-ai-tutor') {
+      dispatch(updateTutorLimit)
+      decrementTutorLimit()
+      dispatch(resetState())
+      router.push(`/${locale}/ai-tutor`)
+    } else {
+      router.push(`/${locale}/${buttonLink}`)
     }
-    router.push(`/${locale}/${buttonLink}`)
+  }
+
+  const decrementTutorLimit = () => {
+    const tutorData = JSON.parse(localStorage.getItem('tutor'))
+
+    if (tutorData && tutorData.tutorLimit > 0) {
+      tutorData.tutorLimit -= 1;
+      localStorage.setItem('tutor', JSON.stringify(tutorData));
+    }
   }
 
   const handleOpenModal = (messageIndex) => {
@@ -167,7 +184,7 @@ function TranslatedTopicConversation({ params }) {
     {
       'message': 'would-you-like-to select-a-new-topic-if-you-do-the-chat-history-will-be-deleted',
       'background': 'bird',
-      'buttonLink': 'ai-tutor',
+      'buttonLink': 'new-ai-tutor',
       'buttonType': 1
     },
     // 뒤로가기

@@ -106,16 +106,16 @@ export const fetchStageDetail = createAsyncThunk(
 // POST 요청 액션 생성
 export const fetchQuizSolve = createAsyncThunk(
   'quizSolve/fetchQuizSolve', 
-  async ({ userId, quizId }, thunkAPI) => {
+  async ({ quizId }, thunkAPI) => {
     try {
       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/quiz/play-log/submit`; // 엔드포인트에 맞게 수정
-      const response = await axios.post(apiUrl, { userId, quizId }, {
+      const response = await axios.post(apiUrl, { quizId }, {
         headers: {
           'Content-Type': 'application/json',
         },
         withCredentials: true,
       }); 
-      console.log(userId, quizId)
+      // console.log(quizId)
       
       return response.data; // API 응답 데이터 리턴
     } catch (error) {

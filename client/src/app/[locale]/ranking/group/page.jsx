@@ -12,9 +12,10 @@ import Silver from "@/public/rank/silver.webp";
 import Gold from "@/public/rank/gold.webp";
 import Platinum from "@/public/rank/platinum.webp";
 import Diamond from "@/public/rank/diamond.webp";
+import { fetchMyLeague } from '@/store/ranking'
 
 
-export default function Rank() {
+export default function RankGroup() {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
   // 현재 로케일에 맞는 메시지 파일을 동적으로 로드
@@ -37,30 +38,35 @@ export default function Rank() {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <Ranklist />
+      <RanklistGroup />
     </NextIntlClientProvider>
   );
 }
 
-function Ranklist() {
+function RanklistGroup() {
   const t = useTranslations('index');
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchMyLeague()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
+  }, [dispatch]);
 
   const router = useRouter();
   const locale = useLocale();
 
-  const myGroup = useSelector((state) => state.rankList.myGroup);
-  const myGroupList = myGroup.leagueMembers;
-  const myGroupNum = myGroup.leagueNum;
-  const myRank = myGroup.myRank;
+  const myLeague = useSelector((state) => state.rankList.myLeague.data);
+  console.log(myLeague)
+  const myLeagueList = myLeague.leagueMembers;
+  const myLeagueNum = myLeague.leagueInfo.leagueNum;
+  // const myRank = myLeague.myRank;
 
-  const myRankRef = useRef([]);
-  const scrollToMyRank = () => {
-    const ref = myRankRef.current[myRank.userRank - 1]; // 배열 인덱스는 0부터 시작하므로 -1
-    if (ref) {
-        ref.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };  
+  // const myRankRef = useRef([]);
+  // const scrollToMyRank = () => {
+  //   const ref = myRankRef.current[myRank.userRank - 1]; // 배열 인덱스는 0부터 시작하므로 -1
+  //   if (ref) {
+  //       ref.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //   }
+  // };  
 
   const handleAllClick = () => {
     router.push(`/${locale}/ranking/all`);  // All 클릭 시 /ranking/all으로 이동
@@ -93,27 +99,28 @@ function Ranklist() {
           />
           <div className="flex flex-col items-center font-semibold text-[3vh]" >
             <span>{t('group')}</span>
-            <span>{myGroupNum}</span>
+            <span>{myLeagueNum}</span>
           </div>
         </article>
 
-        <article className='w-[90%] left-[5%] top-[15%] absolute h-[65%] overflow-auto'>
-        {myGroupList.map((item, index) => (
+        <article className='w-[90%] left-[5%] top-[15%] absolute h-[76%] overflow-auto'>
+        {/* <article className='w-[90%] left-[5%] top-[15%] absolute h-[65%] overflow-auto'> */}
+        {myLeagueList.map((item, index) => (
           <RankListGroup 
             key={item.userId} 
-            userRank={item.userRank} 
+            userRank={item.order} 
             userName={item.userName} 
             userXP={item.userXP}
-            myRank={myRank.userRank}
-            ref={(el) => myRankRef.current[item.userRank - 1] = el} 
-            borderColor={ item.userRank === myRank.userRank ?  "#1cbfff" : "#bbbbbb"}
+            // myRank={myRank.userRank}
+            // ref={(el) => myRankRef.current[item.userRank - 1] = el} 
+            // borderColor={ item.userRank === myRank.userRank ?  "#1cbfff" : "#bbbbbb"}
           />
         ))}
         </article>
 
-        <div className="w-[90%] h-[6%] bottom-[16vh] fixed" onClick={scrollToMyRank}>
+        {/* <div className="w-[90%] h-[6%] bottom-[16vh] fixed" onClick={scrollToMyRank}>
           <RankListGroup userRank={myRank.userRank} userName={myRank.userName} userXP={myRank.userXP} myRank={myRank.userRank} borderColor={"#1cbfff"} />
-        </div>
+        </div> */}
       </section>
     </div>
   );

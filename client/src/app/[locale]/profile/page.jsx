@@ -23,7 +23,7 @@ export default function Profile() {
           </Link>
         </div>
         <hr className="w-full border-t border-[#ACACAC]" />
-        <div className="w-full h-full flex flex-col items-center">
+        <div className="w-full h-[82.5%] flex flex-col items-center justify-center gap-3 md:gap-10">
           <Character />
           <UserGameInfo />
           <UserInfo />

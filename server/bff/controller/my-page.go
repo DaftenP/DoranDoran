@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -383,6 +384,75 @@ func GetSolveController(w http.ResponseWriter, r *http.Request) {
 	resp, err := service.GetPlayLogService(userIdFromCookie)
 	if err != nil {
 		http.Error(w, "Error calling GetSolveService", http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Response to client
+	_, err = io.Copy(w, resp.Body)
+	if err != nil {
+		http.Error(w, "Error copying response body", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+// POST /api/v1/bff/my-page/daily
+func PostDailyController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// get token from cookie named 'refresh'
+	cookie, err := r.Cookie("refresh")
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
+
+	parts := strings.Split(cookie.Value, "%3A")
+	userId := parts[0]
+
+	// trim the leading space
+	userId = strings.TrimSpace(userId)
+
+	userIdInt, err := strconv.Atoi(userId)
+	if err != nil {
+		http.Error(w, "Invalid userId", http.StatusBadRequest)
+		return
+	}
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error reading request body", http.StatusInternalServerError)
+		return
+	}
+	defer r.Body.Close()
+
+	var data map[string]interface{}
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		http.Error(w, "Error parsing request body", http.StatusInternalServerError)
+		return
+	}
+
+	quizId, ok := data["quizId"]
+	if !ok {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	quizIdFloat, ok := quizId.(float64)
+	if !ok {
+		http.Error(w, "Invalid quizId", http.StatusBadRequest)
+		return
+	}
+
+	resp, err := service.PostDailyService(userIdInt, int(quizIdFloat))
+	if err != nil {
+		http.Error(w, "Error calling PostDailyService", http.StatusInternalServerError)
 		return
 	}
 	defer resp.Body.Close()

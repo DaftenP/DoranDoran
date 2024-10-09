@@ -3,7 +3,7 @@
 export default function QuizContentImageBox({ image, index, isSelected }) {
   return (
     <div className={`flex-col flex justify-center items-center relative`}> {/* 부모에 relative 추가 */}
-      <div className="p-[10%]">
+      <div className="p-[3%]">
         <img
           src={image}
           alt="image"

@@ -58,7 +58,7 @@ function TranslatedQuizDaily({locale, type, index}) {
       }
     };
 
-    const intervalId = setInterval(updateLocalData, 1000); // 1초마다 업데이트 확인
+    const intervalId = setInterval(updateLocalData, 500); // 0.5초마다 업데이트 확인
 
     return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 클리어
   }, [localData]);
@@ -119,7 +119,7 @@ function TranslatedQuizDaily({locale, type, index}) {
             className="w-[30%] h-auto" // CSS에서 비율을 맞추기 위해 w와 h를 설정
           />
         </button>
-      <div className='absolute top-[35%] w-[80%] h-[75%] left-1/2 transform -translate-x-1/2'>
+      <div className='absolute top-[30%] w-[100%] h-[75%] left-1/2 transform -translate-x-1/2'>
         <QuizContent type={type} index={index}/>
       </div>
     </div>

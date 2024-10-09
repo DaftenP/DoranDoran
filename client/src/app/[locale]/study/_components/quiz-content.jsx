@@ -6,13 +6,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteLocalDailyQuiz, deleteDailyQuiz, deleteQuiz } from '@/store/quiz';
 import { fetchQuizSolve } from '@/store/quiz';
 import { getLocalStorageData } from '@/store/quiz';
+import { getLocalStageData } from '@/store/quiz';
 import { updateLocalStorageQuiz } from '@/store/quiz';
+import { updateLocalStageQuiz } from '@/store/quiz';
 import QuizContentImage from "./quiz-content-image";
 import QuizContentSpeak from "./quiz-content-speak";
 import Button from './button';
 import InputForm from './input-form';
 import { motion } from 'framer-motion'
-
 
 
 export default function QuizContent({ type, index }) {
@@ -65,11 +66,16 @@ export default function QuizContent({ type, index }) {
 function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onResetIndex }) {
   const t = useTranslations('index');
   const dispatch = useDispatch();
-  const localData = getLocalStorageData('dailyQuizData');
-  // const [quizList, setQuizList] = useState(localData?.data);
-  const quizList = useSelector((state) => 
-    type === 'daily' ? localData.data : state.quiz.stageDetail.data
-  );
+  // const localData = getLocalStorageData('dailyQuizData');
+
+  // const quizList = useSelector((state) => 
+  //   type === 'daily' ? localData.data : state.quiz.stageDetail.data
+  // );
+  const quizList = type === 'daily' 
+                  ? (getLocalStorageData('dailyQuizData')?.data || [])  // dailyQuizData가 없으면 빈 배열 반환
+                  : (getLocalStageData(index + 1)?.data || []);  // 해당 스테이지 데이터가 없으면 빈 배열 반환
+
+
   const quiz = quizList?.[0];
   const images = quizList[0]?.quizImages;
   const quizType = quizList[0]?.quizType;
@@ -134,7 +140,8 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
         // setQuizList(updatedQuizList.data);
         // dispatch(deleteDailyQuiz());
       } else {
-        dispatch(deleteQuiz());
+        // dispatch(deleteQuiz());
+        updateLocalStageQuiz(index+1);
       }
     }, 2000);
   }
@@ -142,13 +149,17 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
   return (
     <div className='flex-col flex justify-center items-center'>
       <div className='h-[50%]'>
-        {quizType === 5001 ? (<QuizContentImage type={type} onButtonClick={onImageClick} clickedIndex={clickedIndex}/>) :
+        {quizType === 5001 ? (<QuizContentImage type={type} onButtonClick={onImageClick} clickedIndex={clickedIndex} index={index}/>) :
         (quizType === 5002 || quizType === 5003) ? (<QuizContentSpeak type={type}/>) : ''
         }
       </div>
       {!recordedSTT && (
         <InputForm quizType={quizType} onSubmit={handleSubmitSTT} />
       )}
+      <div className='absolute bottom-[26%] right-1/3 transform -translate-x-1/2'>
+        {recordedSTT && ({recordedSTT})}
+      </div>
+      
       <div onClick={handleAnswerCheck} className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
         {((quizType === 5001 && clickedIndex !== null) ||
         ((quizType === 5002 || quizType === 5003) && recordedSTT)) && <Button type={type} index={index} onClick={handleAnswerCheck}/>}

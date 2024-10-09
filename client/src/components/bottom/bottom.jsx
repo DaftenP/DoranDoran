@@ -82,8 +82,8 @@ function TranslatedBottom() {
         setIsOpenModal(false)
         setIsTutorFirst(false)
       } else {
-        dispatch(updateTutorLimit(-1))
-        decrementTutorLimit()
+        // dispatch(updateTutorLimit(-1))
+        // decrementTutorLimit()
         setIsOpenModal(false)
         dispatch(resetState())
         router.push(`/${countryCode}/ai-tutor`)
@@ -117,7 +117,6 @@ function TranslatedBottom() {
       'buttonLink': 'ai-tutor-first',
       'buttonType': 1
     }
-
   ]
 
   useEffect(() => {
@@ -136,8 +135,8 @@ function TranslatedBottom() {
   }
 
   const goTutorStudy = () => {
-    dispatch(updateTutorLimit(-1))
-    decrementTutorLimit()
+    // dispatch(updateTutorLimit(-1))
+    // decrementTutorLimit()
     router.push(`/${countryCode}/ai-tutor`)
   }
 

@@ -38,6 +38,34 @@ export default function Character() {
 
 function TranslatedCharacter({ locale }) {
   const dispatch = useDispatch();
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [modalMessage, setModalMessage] = useState(null)
+
+  const handleYesClick = (buttonLink) => {
+    setIsOpenModal(false)
+    if (buttonLink === 'main') {
+      router.push(`/${countryCode}/main`)
+    }
+  }
+
+  const handleOpenModal = (messageIndex) => {
+    setModalMessage(modalMessages[messageIndex])
+    setIsOpenModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false)
+  }
+
+  const modalMessages = [
+    // 데일리 미션 다 깼다는 메세지
+    {
+      'message': "you-have-cleared-today's-mission",
+      'background': 'bird',
+      'buttonLink': 'main',
+      'buttonType': 2
+    },
+  ]
 
   useEffect(() => {
     dispatch(fetchDailyAll()); // 남은 문제 수만큼 문제 가져오기
@@ -50,78 +78,15 @@ function TranslatedCharacter({ locale }) {
 
   const user = useSelector((state) => state.user)
 
-  const equipment = user.profile.equipment
-  const color = user.profile.color
-
-  const renderHat = () => {
-    switch (equipment) {
-      case 1:
-        return <Image src={Hat1} alt="hat_icon" className="absolute transform -translate-y-[1vh] translate-x-[13vh] w-auto h-[9vh] z-30" />;
-      case 2:
-        return <Image src={Hat2} alt="hat_icon" className="absolute transform -translate-y-[1vh] translate-x-[13vh] w-auto h-[9vh] z-30" />;
-      case 3:
-        return <Image src={Hat3} alt="hat_icon" className="absolute transform -translate-y-[2.5vh] translate-x-[14.5vh] w-[12vh] h-[8vh] z-30" />;
-      case 4:
-        return <Image src={Hat4} alt="hat_icon" className="absolute transform scale-x-[-1] -translate-y-[1.5vh] translate-x-[12vh] w-auto h-[8vh] z-30" />;
-      case 5:
-        return <Image src={Hat5} alt="hat_icon" className="absolute transform scale-x-[-1] -translate-y-[1.5vh] translate-x-[9vh] w-auto h-[9vh] z-30" />;
-      case 6:
-        return <Image src={Hat6} alt="hat_icon" className="absolute transform scale-x-[-1] -translate-y-[2.8vh] translate-x-[14vh] w-auto h-[9vh] z-30" />;
-      case 7:
-        return <Image src={Hat7} alt="hat_icon" className="absolute transform -translate-y-[2vh] translate-x-[12vh] w-auto h-[9vh] z-30" />;
-      case 8:
-        return <Image src={Hat8} alt="hat_icon" className="absolute transform -translate-y-[2vh] translate-x-[10vh] w-auto h-[9vh] z-30" />;
-      case 9:
-        return <Image src={Hat9} alt="hat_icon" className="absolute transform -translate-y-[0.2vh] translate-x-[12vh] w-auto h-[7vh] z-30" />;
-      case 10:
-        return <Image src={Hat10} alt="hat_icon" className="absolute transform -translate-y-[0.2vh] translate-x-[12.5vh] w-[15vh] h-[8vh] z-30" />;
-      case 11:
-        return <Image src={Hat11} alt="hat_icon" className="absolute transform -translate-y-[2.5vh] translate-x-[13vh] w-auto h-[9vh] z-30" />;
-      case 12:
-        return <Image src={Hat12} alt="hat_icon" className="absolute transform -translate-y-[1vh] translate-x-[12vh] w-auto h-[8vh] z-30" />;
-      case 13:
-        return <Image src={Hat13} alt="hat_icon" className="absolute transform scale-x-[-1] -translate-y-[3vh] translate-x-[11vh] w-auto h-[9vh] z-30" />;
-      case 14:
-        return <Image src={Hat14} alt="hat_icon" className="absolute transform -translate-y-[2.5vh] translate-x-[14.5vh] w-[12vh] h-[8vh] z-30" />;
-      case 15:
-        return <Image src={Hat15} alt="hat_icon" className="absolute transform -translate-y-[2vh] translate-x-[13vh] w-auto h-[9vh] z-30" />;
-      default:
-        return null;
-    }
-  }
-
-  const renderBird = () => {
-    switch (color) {
-      case 7:
-        return <Image src={Bird1} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 2:
-        return <Image src={Bird2} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 3:
-        return <Image src={Bird3} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 4:
-        return <Image src={Bird4} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 5:
-        return <Image src={Bird5} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 6:
-        return <Image src={Bird6} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 1:
-        return <Image src={Bird7} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 8:
-        return <Image src={Bird8} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 9:
-        return <Image src={Bird9} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 10:
-        return <Image src={Bird10} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      case 11:
-        return <Image src={Bird11} alt="bird_and_dressing_room" className="relative w-auto h-[29vh] z-20" />;
-      default:
-        return null;
-    }
-  }
+  const daily = user.mission.dailyStatus
 
   const handleFastQuiz = () => {
-    if(quizList.length > 0) {
-      router.push(`/${locale}/study/daily/${quizList[0].quizId}`);
+    if (daily === 10) {
+      handleOpenModal(0)
+    } else {
+      if(quizList.length > 0) {
+        router.push(`/${locale}/study/daily/${quizList[0].quizId}`);
+      }
     }
   };
 
@@ -147,6 +112,11 @@ function TranslatedCharacter({ locale }) {
         >
           Play
         </div>
+        {isOpenModal && 
+        <div className='relataive z-1000'>
+          <Modal handleYesClick={handleYesClick} handleCloseModal={handleCloseModal} message={modalMessage} />
+        </div>
+        }
       </div>
     </div>
   );

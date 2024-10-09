@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// 초기 상태 설정
 const initialState = {
-  isMainPlaying: false,  // Main BGM 재생 여부
-  isNightPlaying: false, // Night BGM 재생 여부
+  isMainPlaying: false,
+  isNightPlaying: false,
   volume: 1,
   effectVolume: 1,
 };
@@ -33,5 +32,5 @@ const soundSlice = createSlice({
   },
 });
 
-export const { initializeAudio, playMainBgm, playNightBgm, stopBgm, setVolume } = soundSlice.actions;
+export const { playMainBgm, playNightBgm, stopBgm, setVolume, setEffectVolume } = soundSlice.actions;
 export default soundSlice.reducer;

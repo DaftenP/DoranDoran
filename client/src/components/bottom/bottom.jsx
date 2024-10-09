@@ -194,7 +194,7 @@ function TranslatedBottom() {
                       transition={{ duration: 0.8 }}
                       className="flex items-center justify-center w-auto h-2/5 cursor-pointer"
                     >
-                      <Image src={Store2} alt="store_link" className="w-auto h-[80%] cursor-pointer" />
+                      <Image src={Store2} alt="store_link" className="w-auto h-[80%] cursor-pointer transform -translate-y-[10%]" />
                     </motion.div>
                     <div className='text-md md:text-xl lg:text-2xl text-[#3c3c9c]'>
                       {t('store')}

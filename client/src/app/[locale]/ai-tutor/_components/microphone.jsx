@@ -119,84 +119,99 @@ export default function Microphone({ handleListening, onRecordingComplete, param
   };
 
   // 녹음 시작
-  const startRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioContext.current = new AudioContext({ sampleRate: 16000 });
+  // const startRecording = async () => {
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  //     audioContext.current = new AudioContext({ sampleRate: 16000 });
 
-      // 녹음 청크 초기화
-      audioChunks.current = [];
+  //     // 녹음 청크 초기화
+  //     audioChunks.current = [];
 
-      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+  //     const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
       
-      mediaRecorder.ondataavailable = (e) => {
-        audioChunks.current.push(e.data); // 녹음 데이터 저장
-      };
+  //     mediaRecorder.ondataavailable = (e) => {
+  //       audioChunks.current.push(e.data); // 녹음 데이터 저장
+  //     };
 
-      mediaRecorder.onstop = () => {
-        if (!isListeningRef.current) {
-          const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
-          convertToPCM(audioBlob); // PCM 변환 및 전송
-        }
-      };
+  //     mediaRecorder.onstop = () => {
+  //       if (!isListeningRef.current) {
+  //         const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+  //         convertToPCM(audioBlob); // PCM 변환 및 전송
+  //       }
+  //     };
 
-      mediaRecorder.start();
-      mediaRecorderRef.current = mediaRecorder;
+  //     mediaRecorder.start();
+  //     mediaRecorderRef.current = mediaRecorder;
 
-      setTimeout(() => {
-        if (mediaRecorder.state === 'recording') {
-          mediaRecorder.stop();
-          onRecordingComplete();
-          setIsListening(false);
-        }
-      }, 30000); // 30초 후 자동 중지
-    } catch (error) {
-      console.error("녹음 시작 오류:", error);
-    }
-  };
+  //     setTimeout(() => {
+  //       if (mediaRecorder.state === 'recording') {
+  //         mediaRecorder.stop();
+  //         onRecordingComplete();
+  //         setIsListening(false);
+  //       }
+  //     }, 30000); // 30초 후 자동 중지
+  //   } catch (error) {
+  //     console.error("녹음 시작 오류:", error);
+  //   }
+  // };
+  const startRecording = () => {
+    convertToPCM()
+  }
 
   // 녹음 중지
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
-      mediaRecorderRef.current.stop();
-    }
+  // const stopRecording = () => {
+  //   if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+  //     mediaRecorderRef.current.stop();
+  //   }
 
+  //   setIsListening(false);
+  //   onRecordingComplete();
+  // };
+  const stopRecording = () => {
     setIsListening(false);
     onRecordingComplete();
-  };
+  }
 
   // PCM 변환 후 데이터 전송
-  const convertToPCM = async (audioBlob) => {
-    const arrayBuffer = await audioBlob.arrayBuffer();
-    const audioBuffer = await audioContext.current.decodeAudioData(arrayBuffer);
+  // const convertToPCM = async (audioBlob) => {
+  //   const arrayBuffer = await audioBlob.arrayBuffer();
+  //   const audioBuffer = await audioContext.current.decodeAudioData(arrayBuffer);
 
-    const rawPCM = convertToRawPCM(audioBuffer);
-    sendForm(rawPCM);
-  };
+  //   const rawPCM = convertToRawPCM(audioBuffer);
+  //   sendForm(rawPCM);
+  // };
+  const convertToPCM = () => {
+    sendForm()
+  }
 
-  const convertToRawPCM = (audioBuffer) => {
-    const numberOfChannels = audioBuffer.numberOfChannels;
-    const length = audioBuffer.length * numberOfChannels * 2; // 16-bit PCM
-    const result = new DataView(new ArrayBuffer(length));
+  // const convertToRawPCM = (audioBuffer) => {
+  //   const numberOfChannels = audioBuffer.numberOfChannels;
+  //   const length = audioBuffer.length * numberOfChannels * 2; // 16-bit PCM
+  //   const result = new DataView(new ArrayBuffer(length));
 
-    let offset = 0;
-    for (let i = 0; i < audioBuffer.length; i++) {
-      for (let channel = 0; channel < numberOfChannels; channel++) {
-        const sample = audioBuffer.getChannelData(channel)[i];
-        const intSample = Math.max(-1, Math.min(1, sample));
-        result.setInt16(offset, intSample * 0x7fff, true); // 16-bit PCM
-        offset += 2;
-      }
-    }
-    return result;
-  };
+  //   let offset = 0;
+  //   for (let i = 0; i < audioBuffer.length; i++) {
+  //     for (let channel = 0; channel < numberOfChannels; channel++) {
+  //       const sample = audioBuffer.getChannelData(channel)[i];
+  //       const intSample = Math.max(-1, Math.min(1, sample));
+  //       result.setInt16(offset, intSample * 0x7fff, true); // 16-bit PCM
+  //       offset += 2;
+  //     }
+  //   }
+  //   return result;
+  // };
 
-  const sendForm = (pcmData) => {
-    const blob = new Blob([pcmData], { type: 'audio/raw' });
+  const sendForm = () => {
     const formData = new FormData();
 
     formData.append('msg', recordMessageRef.current);
-    formData.append('file', blob, 'recording.raw');
+
+  // const sendForm = (pcmData) => {
+  //   const blob = new Blob([pcmData], { type: 'audio/raw' });
+  //   const formData = new FormData();
+
+  //   formData.append('msg', recordMessageRef.current);
+  //   formData.append('file', blob, 'recording.raw');
 
     dispatch(fetchChatMessages({ role, situation, locale, formData }))
       .unwrap()

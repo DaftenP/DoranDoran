@@ -181,18 +181,33 @@ function TranslatedChatAi({ index, message, handleIsOver }) {
           )}
         <div className='border-b border-[#ACACAC] w-auto h-1 mt-[2vh] mb-[2vh]'></div>
         <div className='flex justify-around'>
-          <div className='flex flex-col justify-center items-center'>
-            <Image onClick={() => handlePlay(index)} src={message.isResponsePlay ? Play2 : Play1} alt="play_button" className='cursor-pointer w-3 h-4 md:w-7 md:h-8 lg:w-11 lg:h-12' />
-            <span className='mt-1 text-sm md:text-lg lg:text-xl'>{t('play2')}</span>
-          </div>
-          <div className='flex flex-col justify-center items-center'>
-            <Image onClick={handleTranslate} src={Translation} alt="translation_button" className={`cursor-pointer ${isTranslate ? 'opacity-100 w-5 h-5 md:w-9 md:h-9 lg:w-14 lg:h-14' : 'opacity-60 w-4 h-4 md:w-8 md:h-8 lg:w-12 lg:h-12' }`} />
-            <span className='mt-1 text-sm md:text-lg lg:text-xl'>{t('translation')}</span>
-          </div>
-          <div className='flex flex-col justify-center items-center'>
-            <Image onClick={() => handleHint(index)} src={Hint} alt="hint-button" className={`cursor-pointer ${message.isHint ? 'opacity-100 w-5 h-5 md:w-9 md:h-9 lg:w-14 lg:h-14' : 'opacity-60 w-4 h-4 md:w-8 md:h-8 lg:w-12 lg:h-12' }`} />
-            <span className='mt-1 text-sm md:text-lg lg:text-xl'>{t('hint')}</span>
-          </div>
+        <div className='flex flex-col justify-center items-center'>
+          <Image 
+            onClick={() => handlePlay(index)} 
+            src={message.isResponsePlay ? Play2 : Play1} 
+            alt="play_button" 
+            className='cursor-pointer w-3 h-4 md:w-7 md:h-8 lg:w-11 lg:h-12 transition-all duration-300 ease-in-out' 
+          />
+          <span className={`mt-1 text-sm md:text-lg lg:text-xl ${message.isResponsePlay ? 'text-blue-500' : null}`}>{t('play2')}</span>
+        </div>
+        <div className='flex flex-col justify-center items-center'>
+          <Image 
+            onClick={handleTranslate} 
+            src={Translation} 
+            alt="translation_button" 
+            className={`cursor-pointer transition-all duration-300 ease-in-out ${isTranslate ? 'opacity-100 w-5 h-5 md:w-9 md:h-9 lg:w-14 lg:h-14' : 'opacity-60 w-4 h-4 md:w-8 md:h-8 lg:w-12 lg:h-12'}`} 
+          />
+          <span className={`mt-1 text-sm md:text-lg lg:text-xl ${isTranslate ? 'text-blue-500' : null}`}>{t('translation')}</span>
+        </div>
+        <div className='flex flex-col justify-center items-center'>
+          <Image 
+            onClick={() => handleHint(index)} 
+            src={Hint} 
+            alt="hint-button" 
+            className={`cursor-pointer transition-all duration-300 ease-in-out ${message.isHint ? 'opacity-100 w-5 h-5 md:w-9 md:h-9 lg:w-14 lg:h-14' : 'opacity-60 w-4 h-4 md:w-8 md:h-8 lg:w-12 lg:h-12'}`} 
+          />
+          <span className={`mt-1 text-sm md:text-lg lg:text-xl ${message.isHint ? 'text-blue-500' : null}`}>{t('hint')}</span>
+        </div>
         </div>
       </div>
     </div>

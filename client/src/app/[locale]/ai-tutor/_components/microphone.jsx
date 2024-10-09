@@ -52,7 +52,7 @@ export default function Microphone({ handleListening, onRecordingComplete, param
   const toggleListening = () => {
     if (!isListening) {
       setProgress(0);
-      startRecording();
+      // startRecording();
       startListening();
       handleListening()
     } else {
@@ -69,6 +69,14 @@ export default function Microphone({ handleListening, onRecordingComplete, param
 
       recognitionRef.current.onstart = () => {
         setIsListening(true); // 음성 인식이 시작되면 상태를 true로 설정
+
+        setTimeout(() => {
+          if (isListeningRef.current) {
+            stopListening();
+            stopRecording();
+            handleListening()
+          }
+        }, 30000); // 30초 후 자동 제출
       };
 
       recognitionRef.current.onresult = (event) => {
@@ -84,13 +92,14 @@ export default function Microphone({ handleListening, onRecordingComplete, param
 
       recognitionRef.current.onerror = (event) => {
         console.error("Speech recognition error:", event.error);
-        stopListening(); // 에러 발생 시 인식 중단
       };
 
       recognitionRef.current.onend = () => {
         // isListening이 true일 때만 재시작
         if (isListeningRef.current) {
           startListening(); // 종료 시 다시 음성 인식 시작
+        } else {
+          setIsListening(false); // 음성 인식이 종료되면 상태를 false로 설정
         }
       };
 
@@ -154,9 +163,6 @@ export default function Microphone({ handleListening, onRecordingComplete, param
   //     console.error("녹음 시작 오류:", error);
   //   }
   // };
-  const startRecording = () => {
-    convertToPCM()
-  }
 
   // 녹음 중지
   // const stopRecording = () => {
@@ -170,6 +176,7 @@ export default function Microphone({ handleListening, onRecordingComplete, param
   const stopRecording = () => {
     setIsListening(false);
     onRecordingComplete();
+    convertToPCM()
   }
 
   // PCM 변환 후 데이터 전송

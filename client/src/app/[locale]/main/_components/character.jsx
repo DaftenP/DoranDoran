@@ -67,8 +67,6 @@ function TranslatedCharacter({ locale }) {
     return () => clearInterval(interval);
   }, []);
 
-
-
   const handleYesClick = (buttonLink) => {
     setIsOpenModal(false)
     if (buttonLink === 'main') {

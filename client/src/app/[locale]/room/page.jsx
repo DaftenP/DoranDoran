@@ -55,14 +55,15 @@ function TranslatedBottom() {
   const t = useTranslations("index");
   const locale = useLocale();
   const [activeTab, setActiveTab] = useState("color");
-  const [selectedColor, setSelectedColor] = useState(null); 
+  const [selectedColor, setSelectedColor] = useState(null);
   const [selectedHat, setSelectedHat] = useState(null);
   const [selectedBackground, setSelectedBackground] = useState(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     // 사용자 데이터 가져오기
-    axios.get(`${apiUrl}/my-page/user`, {
+    axios
+      .get(`${apiUrl}/my-page/user`, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -71,7 +72,7 @@ function TranslatedBottom() {
         setSelectedColor({ itemType: 1, itemId: color });
         setSelectedHat({ itemType: 2, itemId: hat });
       })
-      .catch()
+      .catch();
   }, [apiUrl]);
 
   // 활성 탭에 따른 컴포넌트 렌더링
@@ -90,15 +91,20 @@ function TranslatedBottom() {
 
   return (
     <div className="w-screen h-screen">
+      <Image
+        src={renderBackground(selectedBackground?.itemId)}
+        alt="background"
+        layout="fill"
+        objectFit="fit"
+        style={{ zIndex: -1 }}
+      />
       <div className="w-full h-[8%] flex justify-center items-center">
         <div className="w-[20%] flex justify-center">
           <Link href={`/${locale}/main`}>
             <Image src={Back} alt="back" className="w-8 md:w-14" />
           </Link>
         </div>
-        <p className="w-[60%] text-2xl md:text-5xl text-center">
-          {t("dressing-room")}
-        </p>
+        <p className="w-[60%] text-2xl md:text-5xl text-center">{t("dressing-room")}</p>
         <div className="w-[20%]" />
       </div>
 
@@ -107,9 +113,6 @@ function TranslatedBottom() {
         {selectedColor && selectedHat && (
           <BirdCharacter color={selectedColor.itemId} hatId={selectedHat.itemId} />
         )}
-        <Image src={renderBackground(selectedBackground?.itemId)} alt="background" layout="fill" objectFit="fit"
-        style={{ zIndex: -1 }}
-        />
       </div>
 
       {/* 커스터마이징 옵션 영역 */}
@@ -120,9 +123,12 @@ function TranslatedBottom() {
             <div
               key={tab}
               className={`w-full flex justify-center items-center text-xl rounded-[100px] m-1  backdrop-blur-md transition-colors duration-300
-                ${activeTab === tab ? "bg-[#151638]/90 border border-[#151638] text-[#FFFFF0]" : "border border-[#151638]/60 text-[#151638]/60"}`}
-              onClick={() => setActiveTab(tab)}
-            >
+                ${
+                  activeTab === tab
+                    ? "bg-[#151638]/90 border border-[#151638] text-[#FFFFF0]"
+                    : "border border-[#151638]/60 text-[#151638]/60"
+                }`}
+              onClick={() => setActiveTab(tab)}>
               <p className="md:text-5xl">{t(tab)}</p>
             </div>
           ))}

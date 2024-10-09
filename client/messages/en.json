@@ -205,6 +205,11 @@
     "profile": "Profile",
     "play2": "Play",
     "translation": "Trans",
-    "hint": "Hint"
+    "hint": "Hint",
+    "bronze": "Bronze",
+    "silver": "Silver",
+    "gold": "Gold",
+    "platinum": "Platinum",
+    "diamond": "Diamond"
   }
 }

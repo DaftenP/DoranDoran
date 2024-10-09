@@ -2,10 +2,12 @@
 
 import { useSelector } from 'react-redux';
 import QuizContentImageBox from "./quiz-content-image-box";
+import { getLocalStorageData } from '@/store/quiz';
 
 export default function QuizContentImage({ type, onButtonClick, clickedIndex }) {
+  const localData = getLocalStorageData('dailyQuizData');
   const quizList = useSelector((state) => 
-    type === 'daily' ? state.quiz.dailyQuiz.data : state.quiz.stageDetail.data
+    type === 'daily' ? localData.data : state.quiz.stageDetail.data
   );
   const images = quizList[0]?.quizImages;
 

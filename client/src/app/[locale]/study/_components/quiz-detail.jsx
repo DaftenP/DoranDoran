@@ -46,9 +46,10 @@ export default function Quiz({type, index}) {
 
 function TranslatedQuiz({locale, type, index}) {
   const t = useTranslations('index');
-  const stageOrder = useSelector((state) => state.quiz.stage.data[index].order);
-  console.log(stageOrder)
+  const stageData = useSelector((state) => state.quiz.stage.data);
   const quizList = useSelector((state) => state.quiz.stageDetail.data);
+  
+  const stageOrder = stageData[index]?.order;
   const quizType = quizList[0]?.quizType;
   const totalQuizzes = quizList.length;
   const quizVoiceUrl = quizList[0]?.quizVoiceUrl;

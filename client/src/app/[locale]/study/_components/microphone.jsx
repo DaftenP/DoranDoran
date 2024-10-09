@@ -24,7 +24,14 @@ export default function STTComponent({ onDataSend, onListeningChange }) {
       onDataSend(transcript);  // newTranscript를 사용해 부모에게 데이터 전달
       setTranscript(''); // 전송 후 텍스트 초기화
     }
-};
+  };
+
+  useEffect(() => {
+    if (transcript.trim()) {
+      // console.log('Sending transcript with useEffect:', transcript);
+      sendSTT();
+    }
+  }, [transcript]); // transcript가 업데이트될 때마다 sendSTT 호출
 
   const toggleListening = () => {
     if (!isListening) {
@@ -64,6 +71,7 @@ export default function STTComponent({ onDataSend, onListeningChange }) {
       recognitionRef.current.onend = () => {
         console.log("Speech recognition ended");
         setIsListening(false); // 종료 시 상태를 false로 변경
+        // sendSTT(); // 녹음이 종료되면 STT 데이터를 바로 전송
       };
 
       recognitionRef.current.start();
@@ -83,9 +91,8 @@ export default function STTComponent({ onDataSend, onListeningChange }) {
   };
 
   const stopListening = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop(); // 음성 인식을 중단
-      // setIsListening(false); // 음성 인식 중단 시 상태 변경
+    if (recognitionRef.current) { 
+      recognitionRef.current.stop(); // 음성 인식 중단
       console.log("Speech recognition stopped");
     }
   };

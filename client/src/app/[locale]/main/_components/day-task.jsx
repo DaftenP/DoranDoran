@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image'
 import AiTutor from '@/public/bottom-bar/ai-tutor.webp'
+import Complete from '@/public/icon2/complete.webp'
 
 export default function DayTask() {
   const [messages, setMessages] = useState(null);
@@ -38,15 +39,22 @@ function TranslatedDayTask() {
   const user = useSelector((state) => state.user)
   const dayArray = [1, 2, 3, 4, 5, 6, 7]
   const missionStatus = user.mission.status.split('');
-
   return (
     <div className='flex'>
       {dayArray.map((item, index) => (
         <div
           key={index}
-          className={`w-[12vw] h-[6vh] border border-[#CFF6F9] text-center text-sm md:text-2xl lg:text-4xl
-            ${missionStatus[index] === '1' ? 'bg-[#2FB9FE]' : 'bg-transparent'}`}
+          className={`w-[12vw] h-[6vh] border border-[#CFF6F9] text-center text-sm md:text-2xl lg:text-4xl relative`}
         >
+          {missionStatus[index] === '1' && (
+            <Image
+              src={Complete}
+              alt="Completed"
+              width={'12vw'}
+              height={'12vw'}
+              objectFit="contain"
+            />
+          )}
           D-{item}
         </div>
       ))}

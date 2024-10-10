@@ -162,7 +162,7 @@ function TranslatedCharacter({ locale }) {
   return (
     <div className='flex items-center justify-center mt-[3vh]'>
       <div className='relative'>
-        <div className={`relative transform translate-x-[30vw] rounded-full w-[60vw] h-[12vh] bg-[#FFFFFF]/80 flex justify-center items-center text-md md:text-3xl lg:text-4xl transition-opacity duration-1000 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'} p-[5vw] border border-gray-300 shadow-md z-30`}>
+        <div className={`relative transform translate-x-[30vw] rounded-full w-[60vw] h-[12vh] bg-[#FFFFFF]/80 flex justify-center items-center text-md md:text-3xl lg:text-4xl transition-opacity duration-1000 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'} p-[5vw] border border-gray-300 shadow-md z-10`}>
           <div className='text-center'>
             {t(textArray[randomText])}
           </div> 
@@ -178,12 +178,12 @@ function TranslatedCharacter({ locale }) {
           <Image src={MainButton2} alt="main_button" className="absolute top-3/4 left-1/2 transform -translate-x-1/2 mt-[-2vh] h-[35vh] w-auto md:h-auto md:w-[65vw] md:mt-[-3.5vh]" />
           <div onClick={handleFastQuiz} className="absolute top-3/4 left-1/2 transform -translate-x-1/2 mt-[7vh] h-[10vh] w-[50vw] md:h-[12vh] md:w-[40vw] md:mt-[7vh]"></div>
         </div>
-        {isOpenModal && 
-        <div className='relataive z-1000'>
-          <Modal handleYesClick={handleYesClick} handleCloseModal={handleCloseModal} message={modalMessage} />
-        </div>
-        }
       </div>
+      {isOpenModal && 
+      <div className='relataive z-[1000]'>
+        <Modal handleYesClick={handleYesClick} handleCloseModal={handleCloseModal} message={modalMessage} />
+      </div>
+      }
     </div>
   );
 }

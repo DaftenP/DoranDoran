@@ -61,7 +61,7 @@ function TranslatedWeekTask() {
         {/* <div style={{ width: dynamicWidth }} className="absolute top-0 left-0 h-[3vh] bg-gradient-to-r from-[#2FB9FE] to-[#007ACC]"></div> */}
         <div
           style={{ width: dynamicWidth }}
-          className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#2FB9FE] to-[#007ACC] rounded-tr-2xl"
+          className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#2FB9FE] to-[#007ACC] rounded-tr-xl"
         ></div>
 
         {/* 물결 SVG 애니메이션 */}

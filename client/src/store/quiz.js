@@ -1,6 +1,32 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+// 스테이지 완료 상태 저장
+export const markStageAsCompleted = (stageId) => {
+  const completedStages = JSON.parse(localStorage.getItem('completedStages')) || [];
+  
+  if (!completedStages.includes(stageId)) {
+    completedStages.push(stageId);
+    localStorage.setItem('completedStages', JSON.stringify(completedStages));
+  }
+};
+
+// 스테이지 완료 상태 조회
+export const isStageCompleted = (stageId) => {
+  const completedStages = JSON.parse(localStorage.getItem('completedStages')) || [];
+  return completedStages.includes(stageId);
+};
+
+// 스테이지별로 로컬 저장소에서 데이터를 가져오는 함수
+export const getLocalStageData = (stageId) => {
+  const storedData = localStorage.getItem(`StageQuizData${stageId}`);
+  if (storedData) {
+    return JSON.parse(storedData).data;  // 데이터가 있으면 파싱하여 반환
+  }
+  return { data: [] }; 
+};
+
+
 export const getLocalStorageData = (key) => {
   const storedData = localStorage.getItem(key);
   if (storedData) {
@@ -12,8 +38,19 @@ export const getLocalStorageData = (key) => {
       return parsedData.data;  // 오늘 날짜면 저장된 데이터를 리턴
     }
   }
-  return null;
+  return { data: [] };
 };
+
+// 스테이지별로 로컬 저장소에 데이터를 저장하는 함수
+const setLocalStageData = (stageId, data) => {
+  const today = new Date().toISOString().split('T')[0];
+  const storedData = {
+    data: data,
+    timestamp: today
+  };
+  localStorage.setItem(`StageQuizData${stageId}`, JSON.stringify(storedData));  // JSON 문자열로 변환하여 저장
+};
+
 
 const setLocalStorageData = (key, data) => {
   const today = new Date().toISOString().split('T')[0];
@@ -22,6 +59,30 @@ const setLocalStorageData = (key, data) => {
     timestamp: today
   };
   localStorage.setItem(key, JSON.stringify(storedData));
+};
+
+
+
+export const updateLocalStageQuiz = (stageId) => {
+  const storedData = localStorage.getItem(`StageQuizData${stageId}`);
+
+  if (storedData) {
+    const parsedData = JSON.parse(storedData);
+    // console.log(parsedData);
+
+    if (parsedData.data.data.length > 0) {
+      // 첫 번째 퀴즈를 삭제 (첫 번째 퀴즈부터 차례로 삭제)
+      parsedData.data.data.shift();
+      // console.log('퀴즈 삭제 완료:', parsedData.data.data);
+
+      // 퀴즈가 모두 삭제된 경우 로컬스토리지에서도 제거
+      if (parsedData.data.data.length === 0) {
+        localStorage.removeItem(`StageQuizData${stageId}`);
+      } else {
+        localStorage.setItem(`StageQuizData${stageId}`, JSON.stringify(parsedData));
+      }
+    }
+  }
 };
 
 export const updateLocalStorageQuiz = (key) => {
@@ -50,9 +111,11 @@ export const fetchDailyAll = createAsyncThunk(
   async (_, thunkAPI) => {
 
     const localData = getLocalStorageData('dailyQuizData');
-    if (localData) {
+    // console.log(localData);
+    if (localData.data.length > 0) {
       // console.log("local 데이터:", localData.data);
       // return { data: localData, message: '로컬 저장소에서 데이터를 가져왔습니다.' };
+      // console.log('로컬 데이터 사용:',localData.data);
       return localData.data;
     }
 
@@ -60,6 +123,7 @@ export const fetchDailyAll = createAsyncThunk(
       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/quiz/quizzes?cnt=${10}`
       const response = await axios.get(apiUrl); 
       setLocalStorageData('dailyQuizData', response.data);
+      // console.log('dispatch:', response.data);
       return response.data; // API에서 반환되는 데이터를 리턴
 
     } catch (error) {
@@ -89,12 +153,20 @@ export const fetchStageDetail = createAsyncThunk(
   'stageDetail/fetchStageDetail', 
   async (stageId, thunkAPI) => {
     
+    const localData = getLocalStageData(stageId);
+    if (localData.data.length > 0) {
+      // 로컬에 데이터가 있으면 그대로 사용
+      // console.log('로컬 데이터 사용:', localData.data);
+      return localData.data;
+    }
+
     try {
       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/quiz/stage/${stageId}`
       const response = await axios.get(apiUrl); 
-      // console.log('stageID:', response.data);
-      // console.log(apiUrl);
-      return response.data; // API에서 반환되는 데이터를 리턴
+
+      setLocalStageData(stageId, response.data);
+      // console.log('dispatch:', response.data);
+      return response.data;
 
     } catch (error) {
       console.log(error);

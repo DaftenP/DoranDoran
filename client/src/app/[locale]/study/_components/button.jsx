@@ -42,7 +42,7 @@ function TranslatedButton({ locale, type, index }) {
   return (
     <div>
       <div className='flex-col flex justify-center items-center'>
-        <button className='w-[50vw] h-[10vh] bg-blue-500 text-4xl md:text-6xl lg:text-8xl rounded-full'>Submit</button>
+        <button className='bg-[#000150] text-[#FFFFF0] text-2xl md:text-3xl lg:text-4xl rounded-full pl-5 pr-5 pt-1 pb-1'>Submit</button>
       </div>
     </div>
   );

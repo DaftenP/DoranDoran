@@ -49,6 +49,13 @@ function RanklistGroup({ myLeague }) {
 
   const myLeagueList = myLeague?.leagueMembers;
   const myLeagueNum = myLeague?.leagueInfo?.leagueNum;
+  const myLeagueTier = myLeague?.leagueInfo?.leagueRank;
+
+  const Tier = myLeagueTier === 5000 ? Diamond :
+               myLeagueTier === 4000 ? Platinum :
+               myLeagueTier === 3000 ? Gold :
+               myLeagueTier === 2000 ? Silver : Bronze;
+               
   // const myRank = myLeague.myRank;
 
   // const myRankRef = useRef([]);
@@ -65,7 +72,7 @@ function RanklistGroup({ myLeague }) {
       <section className="w-[90%] h-[70%] left-[5%] top-[22%] py-[2%] absolute bg-[#E6F3F2] bg-opacity-60 rounded-[30px]" >
         <article className="h-[14%] relative flex flex-row justify-center items-end">
           <Image
-            src={Gold}
+            src={Tier}
             alt="tier"
             className="w-auto h-[100%]"
           />
@@ -80,6 +87,7 @@ function RanklistGroup({ myLeague }) {
         {myLeagueList.map((item, index) => (
           <RankListGroup 
             key={item.userId} 
+            userChar={index}
             userOrder={item.order} 
             userName={item.userName} 
             userXP={item.userXP}

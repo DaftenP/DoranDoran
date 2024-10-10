@@ -5,6 +5,10 @@ import React, { forwardRef } from 'react';
 import RankUp from "@/public/icon2/rank-up.webp";
 import RankPlat from "@/public/icon2/rank-plat.webp";
 import RankDown from "@/public/icon2/rank-down.webp";
+import Bird1 from "@/public/shop-bird/bird (1).webp";
+import Bird2 from "@/public/shop-bird/bird (2).webp";
+import Bird3 from "@/public/shop-bird/bird (3).webp";
+import Bird4 from "@/public/shop-bird/bird (4).webp";
 
 export default forwardRef(function RankListGroup({userOrder, userChar, userName, myRank, userXP}, ref) {
 
@@ -24,6 +28,10 @@ export default forwardRef(function RankListGroup({userOrder, userChar, userName,
 
   const rankIconSize = rankdif === RankPlat ? 'h-[60%]' : 'h-[25%]';
 
+  const Char = userChar % 4 === 0 ? Bird1 :
+              userChar % 4 === 1 ? Bird2 :
+              userChar % 4 === 2 ? Bird3 : Bird4;
+
   return (
     <div 
       ref={ref} 
@@ -32,8 +40,8 @@ export default forwardRef(function RankListGroup({userOrder, userChar, userName,
     >
       <span className="font-bold" style={{ color: `${textColor}`, fontSize: '4vh' }}>{userOrder}</span>
       <Image
-        src={"https://ssafy-tailored.b-cdn.net/shop/bird/3.webp"}
-        alt="bird3"
+        src={Char}
+        alt="bird"
         width={200}
         height={100}
         className="w-auto h-[80%] left-[20%] absolute"

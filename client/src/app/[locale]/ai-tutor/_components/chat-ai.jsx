@@ -60,10 +60,10 @@ function TranslatedChatAi({ index, message, handleIsOver }) {
   const [score, setScore] = useState(0)
 
   useEffect(() => {
-    if (index !== 0 && message.pronunciation !== null && message.pronunciation !== undefined) {
+    if (index !== 0 && message.correctness !== null && message.correctness !== undefined) {
       setShowPronunciation(true);
     }
-  }, [message.pronunciation]);
+  }, [message.correctness]);
 
   const handlePlay = (index) => {
     speechSynthesis.cancel()
@@ -153,15 +153,15 @@ function TranslatedChatAi({ index, message, handleIsOver }) {
               exit={{ opacity: 0, y: -20 }}      // 사라질 때 애니메이션
               transition={{ duration: 0.5 }}     // 애니메이션 속도
               className={
-                parseFloat(message.pronunciation) <= 2 
+                parseFloat(message.correctness) <= 2 
                   ? 'text-xl md:text-2xl lg:text-4xl text-red-500'  // 2점 이하일 때 빨간색
-                  : parseFloat(message.pronunciation) > 2 && parseFloat(message.pronunciation) <= 3.5 
+                  : parseFloat(message.correctness) > 2 && parseFloat(message.correctness) <= 3.5 
                   ? 'text-xl md:text-2xl lg:text-4xl text-yellow-500'  // 2점 초과 3.5점 이하일 때 노란색
                   : 'text-xl md:text-2xl lg:text-4xl text-green-500'  // 3.5점 초과일 때 초록색
               }
             >
-              {parseFloat(message.pronunciation) <= 2 ? 'BAD' : 
-              parseFloat(message.pronunciation) > 2 && parseFloat(message.pronunciation) <= 3.5 ? 'NOT BAD' :
+              {parseFloat(message.correctness) <= 2 ? 'BAD' : 
+              parseFloat(message.correctness) > 2 && parseFloat(message.correctness) <= 3.5 ? 'NOT BAD' :
               'GOOD'}
             </motion.div>
           )}

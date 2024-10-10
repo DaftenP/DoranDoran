@@ -82,6 +82,35 @@ const MainContent = ({ children, modal }) => {
   }, [volume, isMainPlaying, isNightPlaying]);
 
 
+  // 백그라운드로 넘기면 BGM 재생 안되도록 하는 코드
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        // 백그라운드로 전환될 때 BGM 일시정지
+        if (audioMainRef.current && isMainPlaying) {
+          audioMainRef.current.pause();
+        }
+        if (audioNightRef.current && isNightPlaying) {
+          audioNightRef.current.pause();
+        }
+      } else if (document.visibilityState === 'visible') {
+        // 포그라운드로 돌아왔을 때 BGM 재생
+        if (audioMainRef.current && isMainPlaying) {
+          audioMainRef.current.play().catch(e => console.error("Audio playback failed:", e));
+        }
+        if (audioNightRef.current && isNightPlaying) {
+          audioNightRef.current.play().catch(e => console.error("Audio playback failed:", e));
+        }
+      }
+    };
+  
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+  
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isMainPlaying, isNightPlaying]);
+
   useEffect(() => {
     if ([`/${locale}/main`, `/${locale}/profile`, `/${locale}/profile/setting`, `/${locale}/ranking`, `/${locale}/study`, `/${locale}/ai-tutor`].includes(pathname) ||
       (pathname.startsWith(`/${locale}/ai-tutor`) && pathname.split('/').length === 4)) {

@@ -67,6 +67,26 @@ function TranslatedCharacter({ locale }) {
     return () => clearInterval(interval);
   }, []);
 
+  const triggerAnimation = () => {
+    setIsWobbling(true);
+
+    const randomTextIndex = Math.floor(Math.random() * textArray.length);
+    setRandomText(randomTextIndex);
+    setIsVisible(true);
+
+    setTimeout(() => {
+      setIsWobbling(false);
+    }, 1000);
+
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 4000);
+  };
+
+  const handleCharacterClick = () => {
+    triggerAnimation();
+  };
+
   const handleYesClick = (buttonLink) => {
     setIsOpenModal(false)
     if (buttonLink === 'main') {
@@ -147,8 +167,10 @@ function TranslatedCharacter({ locale }) {
         </div>
         <div className='flex flex-col'>
           <div className='relative flex items-center justify-center w-[100vw] bottom-5 md:bottom-9'>
-          <div className={isWobbling ? 'animate-wobble' : ''}>
-            <MyCharacter />
+          <div onClick={handleCharacterClick} className={isWobbling ? 'animate-wobble' : ''}>
+            <div className="relative pointer-events-none z-0">
+              <MyCharacter />
+            </div>
           </div>
           </div>
           <Image src={MainButton2} alt="main_button" className="absolute top-3/4 left-1/2 transform -translate-x-1/2 mt-[-2vh] h-[35vh] w-auto md:h-auto md:w-[70vw] md:mt-[-3.5vh]" />

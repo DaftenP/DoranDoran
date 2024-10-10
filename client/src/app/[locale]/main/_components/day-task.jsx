@@ -45,18 +45,21 @@ function TranslatedDayTask() {
       {dayArray.map((item, index) => (
         <div
           key={index}
-          className={`w-[12vw] h-[6vh] border border-[#CFF6F9] text-center text-sm md:text-2xl lg:text-4xl relative`}
+          className={`w-[12vw] h-[13vw] md:h-[12vw] border border-[#CFF6F9] text-center text-sm md:text-2xl lg:text-4xl relative`}
         >
-          {missionStatus[index] === '1' && (
-            <Image
-              src={Complete}
-              alt="Completed"
-              width={'12vw'}
-              height={'12vw'}
-              objectFit="contain"
-            />
-          )}
           {t(day[item])}
+          {missionStatus[index] === '1' && (
+            <div className='flex justify-center items-start h-[8vh] md:h-[9vh]'>
+              <Image
+                src={Complete}
+                alt="Completed"
+                width={'8vw'}
+                height={'8vw'}
+                objectFit="contain"
+                className='w-[7vw] h-auto md:w-[7vw]'
+              />
+            </div>
+          )}
         </div>
       ))}
     </div>

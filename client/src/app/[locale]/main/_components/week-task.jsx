@@ -49,8 +49,8 @@ function TranslatedWeekTask() {
 
       <div className="w-[90vw] h-[0.5vh] bg-gradient-to-r from-[#A2F1FF] to-[#CFF6F9]"></div>
 
-      <div className="w-[90vw] h-[8vh] bg-gradient-to-r from-[#CFF6F9] to-[#A2F1FF] flex justify-center items-center">
-        <div className="rounded-2xl w-[84vw] h-[6vh] bg-white/75 overflow-hidden">
+      <div className="w-[90vw] h-[17vw] md:h-[15vw] bg-gradient-to-r from-[#CFF6F9] to-[#A2F1FF] flex justify-center items-center">
+        <div className="rounded-2xl w-[84vw] h-[13vw] md:h-[12vw] bg-white/75 overflow-hidden">
           <DayTask />
         </div>
       </div>

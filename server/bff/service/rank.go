@@ -32,7 +32,7 @@ func GetLeagueRankService(userId string) (*http.Response, error) {
 // GET /api/v1/rank/leaderboard (type int, userId string)
 func GetLeaderboardService(typ int, userId string) (*http.Response, error) {
 	typeStr := strconv.Itoa(typ)
-	req, err := http.NewRequest(http.MethodGet, RankUrl+"/api/v1/rank/leaderboard?type="+string(typeStr)+"&userId="+userId, nil)
+	req, err := http.NewRequest(http.MethodGet, RankUrl+"/api/v1/leaderboard?type="+string(typeStr)+"&userId="+userId, nil)
 	if err != nil {
 		return nil, err
 	}

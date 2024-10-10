@@ -122,7 +122,7 @@ function TranslatedBottom() {
           {["color", "hat", "background"].map((tab) => (
             <div
               key={tab}
-              className={`w-full flex justify-center items-center text-xl rounded-[100px] m-1  backdrop-blur-md transition-colors duration-300
+              className={`w-full flex justify-center items-center text-xl rounded-[100px] m-1 p-1  backdrop-blur-md transition-colors duration-300
                 ${
                   activeTab === tab
                     ? "bg-[#151638]/90 border border-[#151638] text-[#FFFFF0]"

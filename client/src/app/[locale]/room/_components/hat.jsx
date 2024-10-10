@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useLocale, NextIntlClientProvider } from "next-intl";
+import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
 import axios from "axios";
 import Image from "next/image";
 
-// 모자 이미지 URL 매핑
 const hatImages = {
   1: "https://ssafy-tailored.b-cdn.net/shop/hat/1.webp",
   2: "https://ssafy-tailored.b-cdn.net/shop/hat/2.webp",
@@ -41,67 +40,71 @@ export default function Hat({ onSelectHat = () => {} }) {
   );
 }
 
-// 번역된 Hat 컴포넌트
 function TranslatedHat({ onSelectHat }) {
-  const [items, setItems] = useState([]); // 사용 가능한 모자 아이템 목록
-  const [selectedHat, setSelectedHat] = useState({ itemType: 2, itemId: null }); // 현재 선택된 모자
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL; // API 엔드포인트 URL
+  const t = useTranslations("index");
+  const [items, setItems] = useState([]);
+  const [selectedHat, setSelectedHat] = useState({ itemType: 2, itemId: null }); // 기본값을 null로 변경
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  // 컴포넌트 마운트 시 모자 아이템 목록 가져오기
   useEffect(() => {
     axios.get(`${apiUrl}/inventory/item`, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
       .then((response) => {
-        // itemType이 2인 아이템만 필터링 (모자 아이템)
-        const filteredItems = response.data.data.filter(
-          (item) => item.itemType === 2
-        );
+        const filteredItems = response.data.data.filter((item) => item.itemType === 2);
+        // 빈 값 아이템(미착용) 추가
+        filteredItems.unshift({ itemId: null, itemType: 2 });
         setItems(filteredItems);
       })
       .catch(error => console.error("아이템 불러오기 실패:", error));
   }, [apiUrl]);
 
-  // 모자 선택 처리 함수
+  useEffect(() => {
+    // 컴포넌트 마운트 시 기본 모자 선택 정보 전달 (미착용 상태)
+    onSelectHat(selectedHat);
+  }, []);
+
   const handleHatSelect = (itemId) => {
     const newSelectedHat = { itemType: 2, itemId };
     setSelectedHat(newSelectedHat);
-    onSelectHat(newSelectedHat); // 부모 컴포넌트에 선택 정보 전달
+    onSelectHat(newSelectedHat);
 
-    // 선택된 아이템 장착 요청
+    // 모든 아이템 선택 시 patch 요청 보내기 (null 아이템 포함)
     axios.patch(`${apiUrl}/inventory/equip`, newSelectedHat, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
       .then(() => {})
-      .catch();
+      .catch(error => console.error("모자 장착 실패:", error));
   };
 
-  // UI 렌더링
   return (
     <div className="w-full h-full overflow-hidden">
       <div className="w-full h-full overflow-y-auto">
-        {/* 3열 그리드 레이아웃, 각 행의 높이는 100px */}
         <div className="grid grid-cols-2 gap-3 p-3" style={{ gridAutoRows: "100px" }}>
-          {/* 각 모자 아이템을 그리드 아이템으로 렌더링 */}
           {items.map((item) => (
             <div
-              key={item.itemId}
+              key={item.itemId ?? 'no-hat'}
               className={`rounded-md transition-colors
                 transition-transform transform
-                ${selectedHat.itemId === item.itemId ? "bg-[#FFFFF0]/50 scale-105" : "bg-[#FFFFF0]/10"}`}
+                ${selectedHat.itemId === item.itemId ? "bg-[#FFFFF0]/50 scale-105" : "bg-[#FFFFF0]/10"}
+                ${item.itemId === null ? "border border-dashed border-gray-300" : ""}`}
               onClick={() => handleHatSelect(item.itemId)}
             >
               <div className="w-full h-full flex items-center justify-center">
-                {/* 모자 이미지 표시 */}
-                <Image 
-                  src={hatImages[item.itemId]} 
-                  alt="hat" 
-                  width={200} 
-                  height={100} 
-                  className="w-auto h-[60%] object-contain" 
-                />
+                {item.itemId !== null && (
+                  <Image 
+                    src={hatImages[item.itemId]} 
+                    alt="모자"
+                    width={200} 
+                    height={100} 
+                    className="w-auto h-[60%] object-contain" 
+                  />
+                )}
+                {item.itemId === null && (
+                  <span className="text-3xl md:text-5xl text-gray-400">{t("no")}</span>
+                )}
               </div>
             </div>
           ))}

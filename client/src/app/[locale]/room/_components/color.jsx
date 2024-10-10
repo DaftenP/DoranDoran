@@ -56,7 +56,9 @@ export default function Color({ onSelectCharacter }) {
                 ${selectedCharacter.itemId === item.itemId ? "bg-[#FFFFF0]/50 scale-105" : "bg-[#FFFFF0]/10"}`}
               onClick={() => handleCharacterSelect(item.itemId)}>
               <div className="w-full h-full flex items-center justify-center">
-                <BirdCharacter color={item.itemId} />
+                <div className="w-full md:w-[50%]">
+                  <BirdCharacter color={item.itemId} />
+                </div>
               </div>
             </div>
           ))}

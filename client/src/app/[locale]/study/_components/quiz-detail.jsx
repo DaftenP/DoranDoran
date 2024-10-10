@@ -65,8 +65,10 @@ function TranslatedQuiz({locale, type, index}) {
   const stageData = useSelector((state) => state.quiz.stage.data);
   // const quizList = useSelector((state) => state.quiz.stageDetail.data);
   
+  // console.log(stageData)
   const stageOrder = stageData[index]?.order;
   const stageId = stageData[index]?.id;
+  const stageName = stageData[index]?.stageName;
   const quizType = quizList[0]?.quizType;
   const totalQuizzes = quizList.length;
   const quizVoiceUrl = quizList[0]?.quizVoiceUrl;
@@ -137,7 +139,7 @@ function TranslatedQuiz({locale, type, index}) {
   useEffect(() => {
     // 퀴즈가 로드되었고, 퀴즈가 모두 풀렸을 때만 완료 처리
     if (isQuizzesLoaded && quizList.length === 0) {
-      markStageAsCompleted(stageId);
+      markStageAsCompleted(stageOrder);
       router.push(`/${locale}/study`);
     }
   }, [isQuizzesLoaded, quizList, stageId, router, locale]);
@@ -151,7 +153,8 @@ function TranslatedQuiz({locale, type, index}) {
   return (
     <div className="relative h-[90vh]">
       <div className="mb-[10vh]">
-        <div className="text-center text-3xl md:text-4xl lg:text-6xl">Stage-{stageId}</div>
+        {/* <div className="text-center text-3xl md:text-4xl lg:text-6xl">Stage-{stageOrder}</div> */}
+        <div className="text-center text-3xl md:text-4xl lg:text-6xl">{stageName}</div>
         <div className="text-center text-xl md:text-2xl lg:text-4xl">
           {/* {`[${1}/${totalQuizzes}]`}  */}
           남은 퀴즈 수 : {totalQuizzes}
@@ -182,7 +185,15 @@ function TranslatedQuiz({locale, type, index}) {
               style={{ width: "100%", height: "100%" }}
             />
           </div>
-          <div className={`ml-3 text-xl md:text-2xl lg:text-4xl`}>
+          <div 
+            className={`ml-3 flex justify-center items-center
+              ${String(text).length >= 20 ? "text-xs" :
+                String(text).length >= 8 ?  "text-sm" : "text-xl"}`}
+            style={{
+              width: "100%",    // 가로는 100%로 채우기
+              textAlign: "center", // 텍스트 가운데 정렬
+              overflow: "hidden",  // 텍스트가 넘치면 숨기기
+            }}>
             {/* {voiceText ? voiceText : answer} */}
             {text}
           </div>

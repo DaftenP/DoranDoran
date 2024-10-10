@@ -174,7 +174,15 @@ function TranslatedQuizDaily({ locale, type, index }) {
               style={{ width: "100%", height: "100%" }}
             />
           </div>
-          <div className={`ml-3 text-xl md:text-2xl lg:text-4xl`}>
+          <div 
+            className={`ml-3 flex justify-center items-center
+              ${String(text).length >= 20 ? "text-xs" :
+                String(text).length >= 10 ?  "text-sm" : "text-xl"}`}
+            style={{
+              width: "100%",    // 가로는 100%로 채우기
+              textAlign: "center", // 텍스트 가운데 정렬
+              overflow: "hidden",  // 텍스트가 넘치면 숨기기
+            }}>
             {/* {voiceText ? voiceText : answer} */}
             {text}
           </div>

@@ -25,7 +25,7 @@ export default function ChatAi ({ index, message, handleIsOver }) {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default); // 메시지 로드
       } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
+        // console.error(`Failed to load messages for locale: ${locale}`);
       }
     }
     loadMessages();
@@ -152,17 +152,17 @@ function TranslatedChatAi({ index, message, handleIsOver }) {
               animate={{ opacity: 1, y: 0 }}     // 나타날 때 애니메이션
               exit={{ opacity: 0, y: -20 }}      // 사라질 때 애니메이션
               transition={{ duration: 0.5 }}     // 애니메이션 속도
-              className={
+              className={`absolute -top-[4vh] ${
                 parseFloat(message.correctness) <= 2 
-                  ? 'text-xl md:text-2xl lg:text-4xl text-red-500'  // 2점 이하일 때 빨간색
+                  ? 'text-xxl md:text-2xl lg:text-4xl text-red-500'  // 2점 이하일 때 빨간색
                   : parseFloat(message.correctness) > 2 && parseFloat(message.correctness) <= 3.5 
-                  ? 'text-xl md:text-2xl lg:text-4xl text-yellow-500'  // 2점 초과 3.5점 이하일 때 노란색
-                  : 'text-xl md:text-2xl lg:text-4xl text-green-500'  // 3.5점 초과일 때 초록색
-              }
+                  ? 'text-xxl md:text-2xl lg:text-4xl text-yellow-500'  // 2점 초과 3.5점 이하일 때 노란색
+                  : 'text-xxl md:text-2xl lg:text-4xl text-green-500'  // 3.5점 초과일 때 초록색
+              }`}
             >
-              {parseFloat(message.correctness) <= 2 ? 'BAD' : 
-              parseFloat(message.correctness) > 2 && parseFloat(message.correctness) <= 3.5 ? 'NOT BAD' :
-              'GOOD'}
+              {parseFloat(message.correctness) <= 2 ? 'Try Again' : 
+              parseFloat(message.correctness) > 2 && parseFloat(message.correctness) <= 3.5 ? 'Good' :
+              'Excellent!'}
             </motion.div>
           )}
         </AnimatePresence>

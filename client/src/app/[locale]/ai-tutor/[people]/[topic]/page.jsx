@@ -27,7 +27,7 @@ export default function Conversation({ params }) {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default); // 메시지 로드
       } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
+        // console.error(`Failed to load messages for locale: ${locale}`);
       }
     }
     loadMessages();
@@ -57,7 +57,7 @@ function TranslatedTopicConversation({ params }) {
   const situation = params.topic;
   const effectVolume = useSelector((state) => state.sound.effectVolume)
   const user = useSelector((state) => state.user)
-  const [isTest, setIsTest] = useState(false)
+  const [isFinished, setIsFinished] = useState(false)
   const boxRef = useRef(null)
 
   // 스크롤을 제일 마지막으로 지속해서 이동
@@ -70,10 +70,10 @@ function TranslatedTopicConversation({ params }) {
 
   // 스크롤 이동
   useEffect(() => {
-    if (isTest && boxRef.current) {
+    if (isFinished && boxRef.current) {
       boxRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [isTest]);
+  }, [isFinished]);
   
   useEffect(() => {
     scrollToBottom();
@@ -84,6 +84,7 @@ function TranslatedTopicConversation({ params }) {
     const tutorData = JSON.parse(localStorage.getItem('tutor'));
     const storedData = localStorage.getItem('aiTutorState');
 
+    // 스토리지에 데이터가 없고, 튜터 데이터는 스토리지에 있지만 0개일 때 > 0개인데 강제로 접근
     if (!storedData && tutorData && tutorData.tutorLimit === 0) {
       setIsEnd(true)
       handleOpenModal(4)
@@ -122,7 +123,7 @@ function TranslatedTopicConversation({ params }) {
           dispatch(addMyMessage({ content: '', score: 0 }));
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
         });
     }
   }, [dispatch]);
@@ -180,13 +181,14 @@ function TranslatedTopicConversation({ params }) {
     setIsOpenModal(false)
     if (isEnd) {
       setIsEnd(false)
+      router.push(`/${locale}/main`)
     }
   }
 
   const handleIsOver = () => {
     // handleOpenModal(3)
     setIsEnd(true)
-    setIsTest(true)
+    setIsFinished(true)
   }
 
   const modalMessages = [
@@ -311,7 +313,7 @@ function TranslatedTopicConversation({ params }) {
             </motion.div>
           </div>
         )}
-        {isTest && 
+        {isFinished && 
           <div className='flex justify-center'>
             <div className="flex justify-center items-center w-[80vw] p-4 bg-gradient-to-r from-gray-500 to-gray-500 border-none rounded-full shadow-md text-center opacity-95">
               <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold text-white">

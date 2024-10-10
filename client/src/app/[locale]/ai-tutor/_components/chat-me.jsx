@@ -21,7 +21,7 @@ export default function ChatMe ({ message, params, index }) {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default); // 메시지 로드
       } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
+        // console.error(`Failed to load messages for locale: ${locale}`);
       }
     }
     loadMessages();
@@ -71,7 +71,7 @@ function TranslatedChatMe({ message, params, index }) {
   })
 
   return (
-    <div className='flex justify-end items-center m-[2vh]'>
+    <div className='flex justify-end items-center mr-[2vh] ml-[2vh] mt-[4vh] mb-[4vh]'>
       <div className={`rounded-[3vh] min-w-[40vw] max-w-[70vw] ${isListening ? 'bg-[#DFF8E1]/90' : 'bg-[#DFF8E1]/90'} border border-[#A8D5B6]/90 text-md md:text-2xl lg:text-4xl p-[2vh] transition-colors duration-500`}>
         {!isRecordingComplete ? (
           <Microphone handleListening={handleListening} onRecordingComplete={handleRecordingComplete} params={params} />

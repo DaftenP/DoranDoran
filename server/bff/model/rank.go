@@ -83,15 +83,26 @@ type RankInfoFromMSA struct {
 	LeagueId int `json:"leagueId"`
 }
 
-type LeaderBoardResponseFromMSA struct {
-	Data      LeaderBoardResponseFromMSAData `json:"data"`
-	Message   string                         `json:"message"`
-	TimeStamp string                         `json:"timestamp"`
+type ThisWeekLeaderBoardResponseFromMSA struct {
+	Data      ThisWeekLeaderBoardResponseFromMSAData `json:"data"`
+	Message   string                                 `json:"message"`
+	TimeStamp string                                 `json:"timestamp"`
 }
 
-type LeaderBoardResponseFromMSAData struct {
+type LastWeekLeaderBoardResponseFromMSA struct {
+	Data      LastWeekLeaderBoardResponseFromMSAData `json:"data"`
+	Message   string                                 `json:"message"`
+	TimeStamp string                                 `json:"timestamp"`
+}
+
+type ThisWeekLeaderBoardResponseFromMSAData struct {
 	MyLeaderBoard       LeaderBoardDataFromMSA   `json:"myLeaderBoard"`
 	ThisWeekLeaderBoard []LeaderBoardDataFromMSA `json:"thisWeekLeaderBoard"`
+}
+
+type LastWeekLeaderBoardResponseFromMSAData struct {
+	MyLeaderBoard       LeaderBoardDataFromMSA   `json:"myLeaderBoard"`
+	LastWeekLeaderBoard []LeaderBoardDataFromMSA `json:"lastWeekLeaderBoard"`
 }
 
 type LeaderBoardDataFromMSA struct {

@@ -114,8 +114,8 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 	var thisWeekData model.ThisWeekData
 	var lastWeekData model.LastWeekData
 
-	var leaderBoardResponseFromMSAThisWeek model.LeaderBoardResponseFromMSA
-	var leaderBoardResponseFromMSALastWeek model.LeaderBoardResponseFromMSA
+	var leaderBoardResponseFromMSAThisWeek model.ThisWeekLeaderBoardResponseFromMSA
+	var leaderBoardResponseFromMSALastWeek model.LastWeekLeaderBoardResponseFromMSA
 
 	var wg sync.WaitGroup
 	wg.Add(2) // We are launching 2 goroutines
@@ -206,7 +206,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 
 		// Get user IDs from the leaderboard
 		var userIds []int
-		for _, member := range leaderBoardResponseFromMSALastWeek.Data.ThisWeekLeaderBoard {
+		for _, member := range leaderBoardResponseFromMSALastWeek.Data.LastWeekLeaderBoard {
 			userIds = append(userIds, member.UserId)
 		}
 
@@ -238,7 +238,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 			LastWeekLeaderBoard: make([]model.LeaderBoardDataToClient, 0),
 		}
 
-		for _, member := range leaderBoardResponseFromMSALastWeek.Data.ThisWeekLeaderBoard {
+		for _, member := range leaderBoardResponseFromMSALastWeek.Data.LastWeekLeaderBoard {
 			leaderBoardData := model.LeaderBoardDataToClient{
 				LeaderBoardType: member.LeaderBoardType,
 				UserId:          member.UserId,
@@ -279,6 +279,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(leaderBoardResponseToClient); err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		fmt.Println(err)
 		return
 	}
 

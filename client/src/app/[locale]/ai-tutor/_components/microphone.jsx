@@ -4,8 +4,6 @@ import { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchChatMessages, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage, deleteMyMessage } from '@/store/ai-tutor';
 import Image from 'next/image';
-import MicrophoneNormal from '@/public/icon/microphone-normal.webp';
-import MicrophoneActive from '@/public/icon/microphone-active.webp';
 import MicrophoneNormal2 from '@/public/icon2/microphone2-normal.webp'
 import MicrophoneActive2 from '@/public/icon2/microphone2-active.webp'
 import MicrophoneActive3 from '@/public/icon2/microphone2-active2.webp'
@@ -299,7 +297,7 @@ export default function Microphone({ handleListening, onRecordingComplete, param
               className="absolute w-[11vh] h-[11vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer opacity-50"
             />
           ) : (
-            <Image src={MicrophoneActive3} alt="microphone_icon" className="absolute w-[11vh] h-[11vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 grayscale"
+            <Image src={MicrophoneNormal2} alt="microphone_icon" className="absolute w-[11vh] h-[11vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 grayscale"
             />
           )}
         </button>

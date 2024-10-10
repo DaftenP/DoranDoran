@@ -15,6 +15,7 @@ const birdImages = {
 };
 
 const hatImages = {
+  0: "",
   1: "https://ssafy-tailored.b-cdn.net/shop/hat/1.webp",
   2: "https://ssafy-tailored.b-cdn.net/shop/hat/2.webp",
   3: "https://ssafy-tailored.b-cdn.net/shop/hat/3.webp",
@@ -33,6 +34,7 @@ const hatImages = {
 };
 
 const hatStyles = {
+  0: "",
   1: { top: '-8%', left: '45%', width: '20%' },
   2: { top: '-8%', left: '45%', width: '20%' },
   3: { top: '-38%', left: '45%', width: '25%' },
@@ -47,7 +49,7 @@ const hatStyles = {
   12: { top: '-8%', left: '45%', width: '25%' },
   13: { top: '-15%', left: '42%', width: '30%', transform: 'scaleX(-1)' },
   14: { top: '-35%', left: '45%', width: '25%' },
-  15: { top: '-8%', left: '40%', width: '25%' },
+  15: { top: '-15%', left: '45%', width: '25%' },
 };
 
 export default function BirdCharacter({ color, hatId }) {

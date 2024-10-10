@@ -83,21 +83,37 @@ function TranslatedQuiz({locale, type, index}) {
   }, [quizVoiceUrl]);
 
   
-  useEffect(() => {
-    // if (index) {
-      dispatch(fetchStageDetail(index+1)); // Fetch the stage detail using the ID
-      if (!quizList.length) {
-        markStageAsCompleted(stageOrder);
-        router.push(`/${locale}/study`)
-      }
-    // }
-  }, [dispatch, index, quizList]);
-
   // useEffect(() => {
-  //   if (!quizList.length) {
-  //     router.push(`/${locale}/study`)
-  //   }
-  // }, [quizList]);
+  //   // if (index) {
+  //     dispatch(fetchStageDetail(index+1)); // Fetch the stage detail using the ID
+  //     if (!quizList.length) {
+  //       markStageAsCompleted(stageOrder);
+  //       router.push(`/${locale}/study`)
+  //     }
+  //   // }
+  // }, [dispatch, index, quizList]);
+
+  useEffect(() => {
+    // 스테이지 데이터를 받아오는 로직
+    dispatch(fetchStageDetail(index + 1)); // Fetch the stage detail using the ID
+  }, [dispatch, index]);
+  
+  const [isQuizzesLoaded, setIsQuizzesLoaded] = useState(false);
+  
+  useEffect(() => {
+    // quizList가 처음 로드될 때까지 기다림
+    if (quizList.length > 0) {
+      setIsQuizzesLoaded(true); // 퀴즈 데이터가 로드되었음을 표시
+    }
+  }, [quizList]);
+  
+  useEffect(() => {
+    // 퀴즈가 로드되었고, 퀴즈가 모두 풀렸을 때만 완료 처리
+    if (isQuizzesLoaded && quizList.length === 0) {
+      markStageAsCompleted(stageOrder);
+      router.push(`/${locale}/study`);
+    }
+  }, [isQuizzesLoaded, quizList, stageOrder, router, locale]);
 
   return (
     <div className='relative h-[80vh]'>

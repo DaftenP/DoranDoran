@@ -14,7 +14,7 @@ export const fetchRankList = createAsyncThunk(
         },
         withCredentials: true,
       }); 
-      console.log('leaderboard 호출 성공:',response.data)
+      // console.log('leaderboard 호출 성공:',response.data)
       return response.data; // API에서 반환되는 데이터를 리턴
     
     } catch (error) {

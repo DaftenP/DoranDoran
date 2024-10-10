@@ -7,6 +7,9 @@ import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useRef } from 'react';
 import RankListAll from './ranklist-all';
+import Bird5 from "@/public/shop-bird/bird (5).webp";
+import Bird6 from "@/public/shop-bird/bird (6).webp";
+import Bird7 from "@/public/shop-bird/bird (7).webp";
 
 
 export default function RankAll({ rankList }) {
@@ -43,14 +46,14 @@ function RanklistAll({ rankList }) {
   const locale = useLocale();
   const [selectedWeek, setSelectedWeek] = useState("this week");
 
-  const thisWeekRankList = rankList.thisWeek.thisWeekLeaderBoard;
-  const lastWeekRankList = rankList.lastWeek.lastWeekLeaderBoard;
-  const thisWeekMyRank = rankList.thisWeek.myLeaderBoard;
-  const lastWeekMyRank = rankList.lastWeek.myLeaderBoard;
+  const thisWeekRankList = rankList?.thisWeek?.thisWeekLeaderBoard;
+  const lastWeekRankList = rankList?.lastWeek?.lastWeekLeaderBoard;
+  const thisWeekMyRank = rankList?.thisWeek?.myLeaderBoard;
+  const lastWeekMyRank = rankList?.lastWeek?.myLeaderBoard;
 
   const myRankRef = useRef([]);
   const scrollToMyRank = () => {
-    const myRank = selectedWeek === "this week" ? thisWeekMyRank.order : lastWeekMyRank.order;
+    const myRank = selectedWeek === "this week" ? thisWeekMyRank?.order : lastWeekMyRank?.order;
     const ref = myRankRef.current[myRank - 1]; // 배열 인덱스는 0부터 시작하므로 -1
     if (ref) {
         ref.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -93,49 +96,49 @@ function RanklistAll({ rankList }) {
         <article className="h-[25%] relative flex justify-center items-end">
           <div className="w-[25%] h-[85%] grid place-items-center bg-[#d9d9d9] rounded-tl-[10px] rounded-tr-[10px]">
             <Image
-              src={"https://ssafy-tailored.b-cdn.net/shop/bird/2.webp"}
+              src={Bird5}
               alt="bird2"
               width={200}
               height={100}
               className="w-[auto] h-[30%] bottom-[85%] absolute"
             />
-            <div>
-              {selectedWeek === "this week" ? thisWeekRankList[1].userNickname : lastWeekRankList[1].userNickname}
+            <div className="text-xs">
+              {selectedWeek === "this week" ? thisWeekRankList[1]?.userNickname : lastWeekRankList[1]?.userNickname}
             </div>
             <div>
-              {selectedWeek === "this week" ? thisWeekRankList[1].gainXp : lastWeekRankList[1].gainXp}
+              {selectedWeek === "this week" ? thisWeekRankList[1]?.gainXp : lastWeekRankList[1]?.gainXp}
             </div>
             <div className="text-[20px] font-bold">2</div>
           </div>
           <div className="w-[25%] h-[100%] grid place-items-center text-center bg-[#f8d87b] rounded-tl-[10px] rounded-tr-[10px] mx-[2%]">
             <Image
-              src={"https://ssafy-tailored.b-cdn.net/shop/bird/2.webp"}
+              src={Bird6}
               alt="bird2"
               width={200}
               height={100}
               className="w-[auto] h-[30%] bottom-[100%] absolute"
             />
-            <div>
-              {selectedWeek === "this week" ? thisWeekRankList[0].userNickname : lastWeekRankList[0].userNickname}
+            <div className="text-xs">
+              {selectedWeek === "this week" ? thisWeekRankList[0]?.userNickname : lastWeekRankList[0]?.userNickname}
             </div>
             <div>
-              {selectedWeek === "this week" ? thisWeekRankList[0].gainXp : lastWeekRankList[0].gainXp}
+              {selectedWeek === "this week" ? thisWeekRankList[0]?.gainXp : lastWeekRankList[0]?.gainXp}
             </div>
             <div className="text-[30px] font-bold">1</div>
           </div>
           <div className="w-[25%] h-[70%] grid place-items-center text-center bg-[#e8a57e] rounded-tl-[10px] rounded-tr-[10px]">
             <Image
-              src={"https://ssafy-tailored.b-cdn.net/shop/bird/2.webp"}
+              src={Bird7}
               alt="bird2"
               width={200}
               height={100}
               className="w-[auto] h-[30%] bottom-[70%] absolute"
             />
-            <div>
-              {selectedWeek === "this week" ? thisWeekRankList[2].userNickname : lastWeekRankList[2].userNickname}
+            <div className="text-xs">
+              {selectedWeek === "this week" ? thisWeekRankList[2]?.userNickname : lastWeekRankList[2]?.userNickname}
             </div>
             <div>
-              {selectedWeek === "this week" ? thisWeekRankList[2].gainXp : lastWeekRankList[2].gainXp}
+              {selectedWeek === "this week" ? thisWeekRankList[2]?.gainXp : lastWeekRankList[2]?.gainXp}
             </div>
             <div className="text-[20px] font-bold">3</div>
           </div>
@@ -147,12 +150,14 @@ function RanklistAll({ rankList }) {
         {(selectedWeek === "this week" ? thisWeekRankList : lastWeekRankList).slice(3).map((item, index) => (
             <RankListAll
               key={item.userId}
+              userChar={index}
               userorder={item.order}
               userName={item.userNickname}
+              userTier={item.userRank}
               userXP={item.gainXp}
               borderColor={
-                (selectedWeek === "this week" && item.order === thisWeekMyRank.order) ||
-                (selectedWeek === "last week" && item.order === lastWeekMyRank.order)
+                (selectedWeek === "this week" && item?.order === thisWeekMyRank?.order) ||
+                (selectedWeek === "last week" && item?.order === lastWeekMyRank?.order)
                   ? "#1cbfff"
                   : "#bbbbbb"
               }
@@ -163,9 +168,11 @@ function RanklistAll({ rankList }) {
 
         <div className="w-[90%] h-[6%] bottom-[13vh] fixed" onClick={scrollToMyRank}>
           <RankListAll 
-            userorder={selectedWeek === "this week" ? thisWeekMyRank.order : lastWeekMyRank.order} 
-            userName={selectedWeek === "this week" ? thisWeekMyRank.userNickname : lastWeekMyRank.userNickname} 
-            userXP={selectedWeek === "this week" ? thisWeekMyRank.gainXp : lastWeekMyRank.gainXp} 
+            userorder={selectedWeek === "this week" ? thisWeekMyRank?.order : lastWeekMyRank?.order} 
+            userChar={1}
+            userName={selectedWeek === "this week" ? thisWeekMyRank?.userNickname : lastWeekMyRank?.userNickname} 
+            userTier={selectedWeek === "this week" ? thisWeekMyRank?.userRank : lastWeekMyRank?.userRank} 
+            userXP={selectedWeek === "this week" ? thisWeekMyRank?.gainXp : lastWeekMyRank?.gainXp} 
             borderColor={"#1cbfff"} />
         </div>
       </section>

@@ -53,16 +53,14 @@ function Ranklist() {
   const rankList = useSelector((state) => state.rankList.rankList.data);
 
   const [selectedTab, setSelectedTab] = useState('all'); // 기본은 'all'
-  console.log(selectedTab);
+  // console.log(selectedTab);
 
   return (
     <div className="w-[100vw] h-[100vh] relative">
       <section className="z-20">
         <div className="w-[40%] h-[5%] left-[30%] top-[10%] absolute flex items-center bg-[#dddddd] rounded-[20px] border border-[#bdbdbd]">
           <div
-            onClick={() => {
-              console.log("Group tab clicked");
-              setSelectedTab('group');}}
+            onClick={() => setSelectedTab('group')}
             className={`z-30 w-[50%] h-[100%] absolute flex justify-center items-center 
             ${selectedTab === 'group' ? 'bg-[#f1f3c2] border-[#d2c100]' : 'bg-[#dddddd]'} border rounded-[20px] cursor-pointer`}
           >

@@ -17,7 +17,7 @@ export default function InputForm({ quizType, onSubmit }) {
   };
 
   return (
-    <div className='absolute bottom-[6%] left-1/2 transform -translate-x-1/2'>
+    <div className='absolute bottom-[0%] left-1/2 transform -translate-x-1/2'>
       {quizType === 5001 && (
         <div className='hidden'>
         </div>

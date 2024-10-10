@@ -1,20 +1,19 @@
-'use client';
+"use client";
 
-import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
-import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteLocalDailyQuiz, deleteDailyQuiz, deleteQuiz } from '@/store/quiz';
-import { fetchQuizSolve } from '@/store/quiz';
-import { getLocalStorageData } from '@/store/quiz';
-import { getLocalStageData } from '@/store/quiz';
-import { updateLocalStorageQuiz } from '@/store/quiz';
-import { updateLocalStageQuiz } from '@/store/quiz';
+import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteLocalDailyQuiz, deleteDailyQuiz, deleteQuiz } from "@/store/quiz";
+import { fetchQuizSolve } from "@/store/quiz";
+import { getLocalStorageData } from "@/store/quiz";
+import { getLocalStageData } from "@/store/quiz";
+import { updateLocalStorageQuiz } from "@/store/quiz";
+import { updateLocalStageQuiz } from "@/store/quiz";
 import QuizContentImage from "./quiz-content-image";
 import QuizContentSpeak from "./quiz-content-speak";
-import Button from './button';
-import InputForm from './input-form';
-import { motion } from 'framer-motion'
-
+import Button from "./button";
+import InputForm from "./input-form";
+import { motion } from "framer-motion";
 
 export default function QuizContent({ type, index }) {
   const [messages, setMessages] = useState(null);
@@ -49,14 +48,13 @@ export default function QuizContent({ type, index }) {
     setClickedIndex(null); // 버튼 클릭 시 클릭된 인덱스 초기화
   };
 
-
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <TranslatedQuizContent 
-        type={type} 
-        index={index} 
-        clickedIndex={clickedIndex} 
-        onImageClick={handleImageClick} 
+      <TranslatedQuizContent
+        type={type}
+        index={index}
+        clickedIndex={clickedIndex}
+        onImageClick={handleImageClick}
         onResetIndex={handleResetIndex}
       />
     </NextIntlClientProvider>
@@ -64,7 +62,7 @@ export default function QuizContent({ type, index }) {
 }
 
 function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onResetIndex }) {
-  const t = useTranslations('index');
+  const t = useTranslations("index");
   const dispatch = useDispatch();
   // const localData = getLocalStorageData('dailyQuizData');
 
@@ -84,59 +82,59 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
 
   const [feedbackMessage, setFeedbackMessage] = useState(null); // 피드백 메시지 상태
   const [feedbackType, setFeedbackType] = useState(null); // 정답/오답 타입
-  const [recordedSTT, setRecordedSTT] = useState('');
+  const [recordedSTT, setRecordedSTT] = useState("");
 
   useEffect(() => {
     // 로컬 저장소에서 데이터가 업데이트되면 상태 갱신
-    const localData = getLocalStorageData('dailyQuizData');
+    const localData = getLocalStorageData("dailyQuizData");
     // setQuizList(localData.data);  // quizList 업데이트
   }, [quiz]);
 
   // console.log(quizList);
 
   const handleSubmitSTT = (data) => {
-    setRecordedSTT(data);  // 부모 컴포넌트로부터 받은 데이터를 상태에 저장
-    console.log(data)
+    setRecordedSTT(data); // 부모 컴포넌트로부터 받은 데이터를 상태에 저장
+    console.log(data);
   };
 
   const handleAnswerCheck = () => {
     if (quizType === 5001 || clickedIndex !== null) {
       if (String(clickedIndex + 1) === quizAnswer) {
-        setFeedbackMessage('정답입니다!');
-        setFeedbackType('correct');
+        setFeedbackMessage("정답입니다!");
+        setFeedbackType("correct");
         handleSubmit();
       } else {
-        setFeedbackMessage('오답입니다.');
-        setFeedbackType('wrong');
+        setFeedbackMessage("오답입니다.");
+        setFeedbackType("wrong");
       }
     } else if (recordedSTT && (quizType === 5002 || quizType === 5003)) {
       if (recordedSTT.trim() === quizAnswer) {
-        setFeedbackMessage('정답입니다!');
-        setFeedbackType('correct');
+        setFeedbackMessage("정답입니다!");
+        setFeedbackType("correct");
         handleSubmit();
       } else {
-        setFeedbackMessage('오답입니다.');
-        setFeedbackType('wrong');
+        setFeedbackMessage("오답입니다.");
+        setFeedbackType("wrong");
       }
     }
     onResetIndex(); // 클릭된 인덱스 리셋
-    setRecordedSTT(''); // STT 초기화
+    setRecordedSTT(""); // STT 초기화
     // 상태 초기화
     setTimeout(() => {
       setFeedbackMessage(null);
       setFeedbackType(null);
     }, 2000); // 2초 후 메시지 사라짐
   };
-  
+
   const handleSubmit = () => {
     dispatch(fetchQuizSolve({ quizId }));
-    
+
     setTimeout(() => {
-      if(type === 'daily'){
+      if (type === "daily") {
         dispatch(deleteLocalDailyQuiz());
         // updateLocalStorageQuiz('dailyQuizData');
-        const updatedQuizList = getLocalStorageData('dailyQuizData');
-        console.log('퀴즈 삭제 후 로컬 저장소 데이터:', updatedQuizList);
+        const updatedQuizList = getLocalStorageData("dailyQuizData");
+        console.log("퀴즈 삭제 후 로컬 저장소 데이터:", updatedQuizList);
         // setQuizList(updatedQuizList.data);
         // dispatch(deleteDailyQuiz());
       } else {
@@ -144,38 +142,44 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
         updateLocalStageQuiz(index+1);
       }
     }, 2000);
-  }
-  
+  };
+
   return (
-    <div className='flex-col flex justify-center items-center'>
-      <div className='h-[50%]'>
-        {quizType === 5001 ? (<QuizContentImage type={type} onButtonClick={onImageClick} clickedIndex={clickedIndex} index={index}/>) :
-        (quizType === 5002 || quizType === 5003) ? (<QuizContentSpeak type={type}/>) : ''
-        }
+    <div className="flex-col flex justify-center items-center">
+      <div className="h-[50%]">
+        {quizType === 5001 ? (
+          <QuizContentImage type={type} onButtonClick={onImageClick} clickedIndex={clickedIndex} />
+        ) : quizType === 5002 || quizType === 5003 ? (
+          <QuizContentSpeak type={type} />
+        ) : (
+          ""
+        )}
       </div>
-      {!recordedSTT && (
-        <InputForm quizType={quizType} onSubmit={handleSubmitSTT} />
-      )}
-      <div className='absolute bottom-[26%] right-1/3 transform -translate-x-1/2'>
-        {recordedSTT && ({recordedSTT})}
-      </div>
-      
-      <div onClick={handleAnswerCheck} className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
+      {!recordedSTT && <InputForm quizType={quizType} onSubmit={handleSubmitSTT} />}
+      <div
+        onClick={handleAnswerCheck}
+        className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
         {((quizType === 5001 && clickedIndex !== null) ||
-        ((quizType === 5002 || quizType === 5003) && recordedSTT)) && <Button type={type} index={index} onClick={handleAnswerCheck}/>}
+          ((quizType === 5002 || quizType === 5003) && recordedSTT)) && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}>
+            <Button type={type} index={index} onClick={handleAnswerCheck} />
+          </motion.div>
+        )}
       </div>
 
       {feedbackMessage && (
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        className={`absolute z-20 top-[40%] left-[30%] transform -translate-x-1/2 -translate-y-1/2 p-4 rounded-lg text-white text-xl 
-          ${feedbackType === 'correct' ? 'bg-green-500' : 'bg-red-500'}`}
-      >
-        {feedbackMessage}
-      </motion.div>
-    )}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          className={`absolute z-20 top-[40%] left-[30%] transform -translate-x-1/2 -translate-y-1/2 p-4 rounded-lg text-white text-xl 
+          ${feedbackType === "correct" ? "bg-green-500" : "bg-red-500"}`}>
+          {feedbackMessage}
+        </motion.div>
+      )}
     </div>
   );
 }

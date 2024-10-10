@@ -215,14 +215,17 @@ public class UserService {
         User sUser = userRepository.findById(playLogRequestDTO.getUserId());
         if (sUser != null) {
 
+            int xp = 10;
+            int gem = 10;
+
             PlayLog playLog = PlayLog.builder()
                     .puser(sUser)
-                    .xp(10) //Dummy Data
+                    .xp(xp)
                     .quizId(playLogRequestDTO.getQuizId())
                     .build();
 
 
-            if(userRepository.updateXpById(playLogRequestDTO.getUserId(), 10)> 0){
+            if(userRepository.updateXpById(playLogRequestDTO.getUserId(), xp)> 0 && userRepository.updateGemById(playLogRequestDTO.getUserId(), gem)>0){
 
                 try {
                     // 플레이 로그 추가
@@ -232,7 +235,7 @@ public class UserService {
                     // Kafka 메시지 생성 (Map 객체)
                     Map<String, Integer> message = new HashMap<>();
                     message.put("userId", playLogRequestDTO.getUserId());
-                    message.put("xp", 10);
+                    message.put("xp", xp);
 
                     log.info("KAFKA 메시지 전송");
 
@@ -318,35 +321,60 @@ public class UserService {
     public StatusCode solveDaily(PlayLogRequestDTO playLogRequestDTO){
         User sUser = userRepository.findById(playLogRequestDTO.getUserId());
         if(sUser != null){
-            if(sUser.isMissionCleared()){
-                //Mission
-                return StatusCode.MISSION_DONE;
-            }
-            else{
+
+            if(!sUser.isMissionCleared()){
                 sUser.increaseDaily();
                 //하나 증가하고
+            }
 
-                PlayLog playLog = PlayLog.builder()
-                        .puser(sUser)
-                        .xp(10)
-                        .quizId(playLogRequestDTO.getQuizId())
-                        .build();
+            int xp = 10;
+            int gem = 10;
 
-                userRepository.updateXpById(playLogRequestDTO.getUserId(),10);
+            if(sUser.getDailyStatus() == 10){
+                sUser.todayMissionCleared();
+                //오늘 미션 클리어 처리
+                //50씩 준다 xp, gem
+                xp += 40;
+                gem += 40;
+            }
+            PlayLog playLog = PlayLog.builder()
+                    .puser(sUser)
+                    .xp(xp)
+                    .quizId(playLogRequestDTO.getQuizId())
+                    .build();
 
-                sUser.getPlayLogList().add(playLog);
-                //넣고
-                userRepository.save(sUser);
-                //DB에 반영
+                if(userRepository.updateXpById(playLogRequestDTO.getUserId(), xp)> 0 && userRepository.updateGemById(playLogRequestDTO.getUserId(), gem)>0){
+
+                    try {
+                        // 플레이 로그 추가
+                        sUser.getPlayLogList().add(playLog);
+                        userRepository.save(sUser);  // 상태 변경 저장
+
+
+                        // Kafka 메시지 생성 (Map 객체)
+                        Map<String, Integer> message = new HashMap<>();
+                        message.put("userId", playLogRequestDTO.getUserId());
+                        message.put("xp", xp);
+
+                        log.info("KAFKA 메시지 전송");
+
+                        // Kafka 메시지를 동기적으로 전송하여 전송 성공 여부 확인
+                        kafkaTemplate.send("topic-rank-updateXP", message).get();
+
+                    } catch (Exception e) {
+                        // 카프카 전송 실패 시 예외 발생 -> 트랜잭션 롤백
+                        throw new RuntimeException("Kafka 메시지 전송 실패", e);
+                    }
+                }
 
                 if(sUser.getDailyStatus() == 10){
-                    sUser.todayMissionCleared();
-                    //오늘 미션 클리어 처리
-                    //50씩 준다 xp, gem
                     return StatusCode.DAILY_CLEARED;
                 }
-                return StatusCode.SUCCESS;
-            }
+                else{
+                    return StatusCode.SUCCESS;
+                }
+
+
         }
         else{
             return StatusCode.NO_EMAIL;

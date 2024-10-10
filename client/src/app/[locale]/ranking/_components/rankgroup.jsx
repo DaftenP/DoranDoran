@@ -82,7 +82,7 @@ function RanklistGroup({ myLeague }) {
           </div>
         </article>
 
-        <article className='w-[90%] left-[5%] top-[15%] absolute h-[76%] overflow-auto'>
+        <article className='w-[90%] left-[5%] top-[15%] absolute h-[76%] overflow-auto overflow-y-scroll hide-scrollbar'>
         {/* <article className='w-[90%] left-[5%] top-[15%] absolute h-[65%] overflow-auto'> */}
         {myLeagueList.map((item, index) => (
           <RankListGroup 

@@ -24,7 +24,7 @@ export default function Quiz({ type, index }) {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default); // 메시지 로드
       } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
+        // console.error(`Failed to load messages for locale: ${locale}`);
       }
     }
     loadMessages();
@@ -64,16 +64,17 @@ function TranslatedQuiz({locale, type, index}) {
 
   const stageData = useSelector((state) => state.quiz.stage.data);
   // const quizList = useSelector((state) => state.quiz.stageDetail.data);
-  // console.log('quizList:',quizList);
   
   const stageOrder = stageData[index]?.order;
+  const stageId = stageData[index]?.id;
   const quizType = quizList[0]?.quizType;
   const totalQuizzes = quizList.length;
   const quizVoiceUrl = quizList[0]?.quizVoiceUrl;
   const router = useRouter();
-
+  
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState(null);
+  const [voiceText, setVoiceText] = useState(null);
   const [answer, setAnswer] = useState(null);
 
   useEffect(() => {
@@ -128,6 +129,7 @@ function TranslatedQuiz({locale, type, index}) {
     // quizList가 처음 로드될 때까지 기다림
     if (quizList.length > 0) {
       setIsQuizzesLoaded(true); // 퀴즈 데이터가 로드되었음을 표시
+      setVoiceText(quizList[0]?.quizVoiceText);
       setAnswer(quizList[0]?.quizAnswer);
     }
   }, [quizList]);
@@ -135,51 +137,58 @@ function TranslatedQuiz({locale, type, index}) {
   useEffect(() => {
     // 퀴즈가 로드되었고, 퀴즈가 모두 풀렸을 때만 완료 처리
     if (isQuizzesLoaded && quizList.length === 0) {
-      markStageAsCompleted(stageOrder);
+      markStageAsCompleted(stageId);
       router.push(`/${locale}/study`);
     }
-  }, [isQuizzesLoaded, quizList, stageOrder, router, locale]);
+  }, [isQuizzesLoaded, quizList, stageId, router, locale]);
+
+  const text = voiceText ? voiceText : answer;
+  // const fontSize = text.length <= 8 ? 'text-xl' :
+  //                   text.length <= 15 ? 'text-md' : 'text-sm';
+  // const fontSizeMd = text.length <= 8 ? 'text-md' :
+  //                   text.length <= 15 ? 'text-sm' : 'text-xs';
 
   return (
-    <div className="relative h-[80vh]">
+    <div className="relative h-[90vh]">
       <div className="mb-[10vh]">
-        <div className="text-center text-3xl md:text-4xl lg:text-6xl">Stage-{stageOrder}</div>
+        <div className="text-center text-3xl md:text-4xl lg:text-6xl">Stage-{stageId}</div>
         <div className="text-center text-xl md:text-2xl lg:text-4xl">
           {/* {`[${1}/${totalQuizzes}]`}  */}
           남은 퀴즈 수 : {totalQuizzes}
         </div>
         <QuizTitle type={type} index={index} />
       </div>
-      {quizType === 5001 && (
-        <button
-          onClick={toggleAudio}
-          className="absolute z-10 top-[82%] left-[50%] transform -translate-x-1/2 flex-col flex justify-center items-center w-[30vw] h-[10vh]">
+      <button
+        onClick={toggleAudio}
+        className="absolute z-10 top-[73%] left-[50%] transform -translate-x-1/2 flex-col flex justify-center items-center w-[30vw] h-[10vh]">
+        <div
+          className="w-[50vw] flex justify-between items-center"
+          style={{
+            backgroundColor: "#23cccc",
+            padding: "2vw 5vw 2vw 2vw",
+            borderRadius: "50px",
+          }}>
           <div
-            className="w-[50vw] flex justify-between items-center"
             style={{
-              backgroundColor: "#23cccc",
-              padding: "2vw 5vw 2vw 2vw",
-              borderRadius: "50px",
+              backgroundColor: "#FFFFF0",
+              width: "13vw",
+              height: "13vw",
+              padding: "3vw",
+              borderRadius: "50%",
             }}>
-            <div
-              style={{
-                backgroundColor: "#FFFFF0",
-                width: "13vw",
-                height: "13vw",
-                padding: "3vw",
-                borderRadius: "50%",
-              }}>
-              <Image
-                src={isPlaying ? Pause : Play}
-                alt="play"
-                style={{ width: "100%", height: "100%" }}
-              />
-            </div>
-            <div className="ml-5 text-xl md:text-2xl lg:text-3xl">{answer}</div>
+            <Image
+              src={isPlaying ? Pause : Play}
+              alt="play"
+              style={{ width: "100%", height: "100%" }}
+            />
           </div>
-        </button>
-      )}
-      <div className="absolute top-[35%] w-[80%] h-[75%] left-1/2 transform -translate-x-1/2">
+          <div className={`ml-3 text-xl md:text-2xl lg:text-4xl`}>
+            {/* {voiceText ? voiceText : answer} */}
+            {text}
+          </div>
+        </div>
+      </button>
+      <div className="absolute top-[23%] w-[100%] h-[75%] left-1/2 transform -translate-x-1/2">
         <QuizContent type={type} index={index} />
       </div>
     </div>

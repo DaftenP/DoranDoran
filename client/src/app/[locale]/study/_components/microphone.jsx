@@ -47,7 +47,7 @@ export default function STTComponent({ onDataSend, onListeningChange }) {
       createNewRecognitionInstance(); // 새로운 recognition 인스턴스 생성
 
       recognitionRef.current.onstart = () => {
-        console.log("Speech recognition started");
+        // console.log("Speech recognition started");
         setIsListening(true); // 음성 인식이 시작되면 상태를 true로 설정
       };
 
@@ -64,12 +64,12 @@ export default function STTComponent({ onDataSend, onListeningChange }) {
       };
 
       recognitionRef.current.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
+        // console.error("Speech recognition error:", event.error);
         stopListening(); // 에러 발생 시 인식 중단
       };
 
       recognitionRef.current.onend = () => {
-        console.log("Speech recognition ended");
+        // console.log("Speech recognition ended");
         setIsListening(false); // 종료 시 상태를 false로 변경
         // sendSTT(); // 녹음이 종료되면 STT 데이터를 바로 전송
       };
@@ -93,7 +93,7 @@ export default function STTComponent({ onDataSend, onListeningChange }) {
   const stopListening = () => {
     if (recognitionRef.current) { 
       recognitionRef.current.stop(); // 음성 인식 중단
-      console.log("Speech recognition stopped");
+      // console.log("Speech recognition stopped");
     }
   };
 

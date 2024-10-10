@@ -29,7 +29,7 @@ export default function StudyList({ className }) {
   const locale = useLocale();
   const stageList = useSelector((state) => state.quiz.stage.data);
 
-  
+  // console.log(stageList)
   useEffect(() => {
     dispatch(fetchStageAll()); // 컴포넌트가 마운트될 때 stage 데이터 가져오기
   }, [dispatch]);

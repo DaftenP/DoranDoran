@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteLocalDailyQuiz, deleteDailyQuiz, deleteQuiz } from "@/store/quiz";
 import { fetchQuizSolve } from "@/store/quiz";
+import { fetchDailySolve } from "@/store/quiz";
 import { getLocalStorageData } from "@/store/quiz";
 import { getLocalStageData } from "@/store/quiz";
 import { updateLocalStorageQuiz } from "@/store/quiz";
@@ -26,7 +27,7 @@ export default function QuizContent({ type, index }) {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default); // 메시지 로드
       } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
+        // console.error(`Failed to load messages for locale: ${locale}`);
       }
     }
     loadMessages();
@@ -73,6 +74,7 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
                   ? (getLocalStorageData('dailyQuizData')?.data || [])  // dailyQuizData가 없으면 빈 배열 반환
                   : (getLocalStageData(index + 1)?.data || []);  // 해당 스테이지 데이터가 없으면 빈 배열 반환
 
+  // console.log(quizList);
 
   const quiz = quizList?.[0];
   const images = quizList[0]?.quizImages;
@@ -84,18 +86,24 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
   const [feedbackType, setFeedbackType] = useState(null); // 정답/오답 타입
   const [recordedSTT, setRecordedSTT] = useState("");
 
-  useEffect(() => {
-    // 로컬 저장소에서 데이터가 업데이트되면 상태 갱신
-    const localData = getLocalStorageData("dailyQuizData");
-    // setQuizList(localData.data);  // quizList 업데이트
-  }, [quiz]);
+  // useEffect(() => {
+  //   // 로컬 저장소에서 데이터가 업데이트되면 상태 갱신
+  //   const localData = getLocalStorageData("dailyQuizData");
+  //   // setQuizList(localData.data);  // quizList 업데이트
+  // }, [quiz]);
 
   // console.log(quizList);
 
   const handleSubmitSTT = (data) => {
     setRecordedSTT(data); // 부모 컴포넌트로부터 받은 데이터를 상태에 저장
-    console.log(data);
+    // console.log(data);
   };
+
+  function removeSpacesAndPeriods(text) {
+    return text.replace(/[\s.]/g, ''); // 공백(\s)과 .(마침표)를 모두 제거
+  }
+
+  
 
   const handleAnswerCheck = () => {
     if (quizType === 5001 || clickedIndex !== null) {
@@ -108,7 +116,8 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
         setFeedbackType("wrong");
       }
     } else if (recordedSTT && (quizType === 5002 || quizType === 5003)) {
-      if (recordedSTT.trim() === quizAnswer) {
+      // console.log(removeSpacesAndPeriods(quizAnswer))
+      if (removeSpacesAndPeriods(recordedSTT.trim()) === removeSpacesAndPeriods(quizAnswer)) {
         setFeedbackMessage("정답입니다!");
         setFeedbackType("correct");
         handleSubmit();
@@ -127,14 +136,18 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
   };
 
   const handleSubmit = () => {
-    dispatch(fetchQuizSolve({ quizId }));
-
+    if (type === "daily") {
+      dispatch(fetchDailySolve({ quizId }));
+    } else {
+      dispatch(fetchQuizSolve({ quizId }));
+    }
+      
     setTimeout(() => {
       if (type === "daily") {
-        dispatch(deleteLocalDailyQuiz());
-        // updateLocalStorageQuiz('dailyQuizData');
-        const updatedQuizList = getLocalStorageData("dailyQuizData");
-        console.log("퀴즈 삭제 후 로컬 저장소 데이터:", updatedQuizList);
+        // dispatch(deleteLocalDailyQuiz());
+        updateLocalStorageQuiz('dailyQuizData');
+        // const updatedQuizList = getLocalStorageData("dailyQuizData");
+        // console.log("퀴즈 삭제 후 로컬 저장소 데이터:", updatedQuizList);
         // setQuizList(updatedQuizList.data);
         // dispatch(deleteDailyQuiz());
       } else {
@@ -150,7 +163,7 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
         {quizType === 5001 ? (
           <QuizContentImage type={type} onButtonClick={onImageClick} clickedIndex={clickedIndex} index={index}/>
         ) : quizType === 5002 || quizType === 5003 ? (
-          <QuizContentSpeak type={type} />
+          <QuizContentSpeak type={type} index={index}/>
         ) : (
           ""
         )}
@@ -158,7 +171,7 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
       {!recordedSTT && <InputForm quizType={quizType} onSubmit={handleSubmitSTT} />}
       <div
         onClick={handleAnswerCheck}
-        className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+        className="absolute bottom-[5%] left-1/2 transform -translate-x-1/2">
         {((quizType === 5001 && clickedIndex !== null) ||
           ((quizType === 5002 || quizType === 5003) && recordedSTT)) && (
           <motion.div

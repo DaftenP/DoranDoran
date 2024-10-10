@@ -9,7 +9,8 @@ export default function QuizContentSpeak({ type, index }) {
   const quizList = type === 'daily' 
                   ? (getLocalStorageData('dailyQuizData')?.data || [])  // dailyQuizData가 없으면 빈 배열 반환
                   : (getLocalStageData(index + 1)?.data || []);  // 해당 스테이지 데이터가 없으면 빈 배열 반환
-  const image = quizList[0].quizImages[0];
+
+  const image = quizList[0]?.quizImages[0];
 
   return (
     <div className='flex-col flex justify-center items-center'>

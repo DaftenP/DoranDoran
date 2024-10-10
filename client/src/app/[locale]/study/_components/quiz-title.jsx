@@ -18,7 +18,7 @@ export default function QuizTitle({ type, index }) {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default); // 메시지 로드
       } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
+        // console.error(`Failed to load messages for locale: ${locale}`);
       }
     }
     loadMessages();
@@ -52,7 +52,7 @@ function TranslatedQuizTitle({ type, index }) {
 
   return (
     <div className='flex-col flex justify-center items-center text-center'>
-      <div className='p-[10%] text-lg md:text-2xl lg:text-4xl'>
+      <div className='p-[5%] text-lg md:text-2xl lg:text-4xl'>
         {quizTitle}
       </div>
     </div>

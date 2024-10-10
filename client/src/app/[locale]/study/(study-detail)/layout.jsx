@@ -6,10 +6,14 @@ import Link from 'next/link';
 import Image from "next/image";
 import Back from '@/public/icon/back.webp';
 import Manual from '@/public/icon/manual.webp';
+import { usePathname } from 'next/navigation';
 
 export default function Layout({ children }) {
   const locale = useLocale()
   const userBackground = useSelector((state) => state.user.profile.background);
+
+  const pathname = usePathname();
+  const path = pathname.startsWith(`/${locale}/study/daily`) ? 'main' : 'study';
 
   const renderBackground = () => {
     switch (userBackground) {
@@ -38,10 +42,10 @@ export default function Layout({ children }) {
       }}
     >
       <div className="flex justify-between mt-[2vh] relative z-10 p-1">
-        <Link href={`/${locale}/main`}>
+        <Link href={`/${locale}/${path}`}>
           <Image src={Back} alt="back" className="w-9 h-9 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-4" />
         </Link>
-        <Image src={Manual} alt="manual_icon" className="w-9 h-9 md:w-12 md:h-12 lg:w-16 lg:h-16 mr-4 pointer-events-none" />
+        <Image src={Manual} alt="manual_icon" className="w-9 h-9 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer mr-4" />
       </div>
       <div className="relative z-10 p-1">
         {children}

@@ -63,7 +63,7 @@ function TranslatedTop() {
         <Image src={rankImage[user.status.rank]} alt="gold_rank" className="w-auto h-5/6" />
       </div>
       <div className="flex-col flex justify-center">
-        <div className="text-sm overflow-hidden whitespace-nowrap text-ellipsis max-w-[27vw] text-sm md:text-2xl lg:text-4xl">
+        <div className="text-sm overflow-hidden whitespace-nowrap text-ellipsis max-w-[27vw] text-sm md:text-2xl lg:text-3xl">
           Lv. {Math.floor(user.status.xp / 100)} {user.profile.nickname}
         </div>
         <div className="w-[27vw] h-[1vh] rounded-full bg-[#70D7FF]/50">
@@ -73,7 +73,7 @@ function TranslatedTop() {
       <div className='flex items-center'>
         <Image src={Credit} alt="credit" className="w-auto h-3/4 z-10" />
         <div
-          className="w-[20vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white flex justify-center items-center text-sm md:text-3xl lg:text-5xl"
+          className="w-[20vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white flex justify-center items-center text-sm md:text-3xl lg:text-4xl"
           style={{ translate: '-1vw 0'}}
         >
           {user.status.gem}
@@ -84,7 +84,7 @@ function TranslatedTop() {
           <Image src={Megaphone} alt="megaphone" className="w-auto h-full p-0.5" />
         </div>
         <div
-          className="w-[15vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white flex justify-center items-center text-sm md:text-3xl lg:text-5xl"
+          className="w-[15vw] h-[3vh] rounded-tr-full rounded-br-full bg-[#575757] text-white flex justify-center items-center text-sm md:text-3xl lg:text-4xl"
           style={{ translate: '-1vw 0'}}
         >
           {tutorData ? `${tutorData.tutorLimit}/10` : 'No data'}

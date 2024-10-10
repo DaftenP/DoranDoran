@@ -42,6 +42,7 @@ export default function StudyList({ className }) {
   ];
 
   const quizPosition = ['93%','50%','7%','50%'];
+  // const quizPosition = ['50%','93%','50%','7%'];
   const topPositions = calculateTopPositions(stageList.length);
   const colorList = ['#FED9D0', '#E5CBF8', '#FDE1AF', '#E5CBF8'];
 

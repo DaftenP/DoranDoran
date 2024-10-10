@@ -127,7 +127,7 @@ export const fetchDailyAll = createAsyncThunk(
       return response.data; // API에서 반환되는 데이터를 리턴
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }
   }
@@ -143,7 +143,7 @@ export const fetchStageAll = createAsyncThunk(
       return response.data; // API에서 반환되는 데이터를 리턴
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }
   }
@@ -169,7 +169,7 @@ export const fetchStageDetail = createAsyncThunk(
       return response.data;
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }
   }
@@ -191,7 +191,29 @@ export const fetchQuizSolve = createAsyncThunk(
       
       return response.data; // API 응답 데이터 리턴
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
+    }
+  }
+);
+
+
+export const fetchDailySolve = createAsyncThunk(
+  'dailySolve/fetchDailySolve', 
+  async ({ quizId }, thunkAPI) => {
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/my-page/daily`; // 엔드포인트에 맞게 수정
+      const response = await axios.post(apiUrl, { quizId }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }); 
+      // console.log("post 성공!",quizId)
+      
+      return response.data; // API 응답 데이터 리턴
+    } catch (error) {
+      // console.log(error);
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }
   }
@@ -208,6 +230,7 @@ const initialState = {
         "quizAnswer": "42",
         "quizQuestion": "What is the answer to life, the universe, and everything?",
         "quizVoiceUrl": "sadas",
+        "quizVoiceText": "Text",
         "quizImages": [
             "https: //ssafy.com",
             "https: //ssafy.com",
@@ -244,6 +267,7 @@ const initialState = {
         "quizAnswer": "42",
         "quizQuestion": "What is the answer to life, the universe, and everything?",
         "quizVoiceUrl": "sadas",
+        "quizVoiceText": "Text",
         "quizImages": [
             "https: //ssafy.com",
             "https: //ssafy.com",
@@ -272,7 +296,7 @@ const stageSlice = createSlice({
   initialState,
   reducers: {
     deleteLocalDailyQuiz: (state) => {
-      updateLocalStorageQuiz('dailyQuizData');
+      // updateLocalStorageQuiz('dailyQuizData');
       state.dailyQuiz.data.shift(); // state에서도 첫 번째 퀴즈 삭제
       state.dailyQuiz.remainingCount -= 1;
     },

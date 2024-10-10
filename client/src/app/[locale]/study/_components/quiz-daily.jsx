@@ -23,7 +23,7 @@ export default function QuizDaily({ type }) {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default); // 메시지 로드
       } catch (error) {
-        console.error(`Failed to load messages for locale: ${locale}`);
+        // console.error(`Failed to load messages for locale: ${locale}`);
       }
     }
     loadMessages();
@@ -84,6 +84,8 @@ function TranslatedQuizDaily({ locale, type, index }) {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState(null);
+  const [voiceText, setVoiceText] = useState(null);
+  const [answer, setAnswer] = useState(null);
 
   useEffect(() => {
     if (quizVoiceUrl) {
@@ -116,13 +118,28 @@ function TranslatedQuizDaily({ locale, type, index }) {
   }, [audio]);
 
   useEffect(() => {
+    // quizList가 처음 로드될 때까지 기다림
+    if (quizList.length > 0) {
+      // setIsQuizzesLoaded(true); // 퀴즈 데이터가 로드되었음을 표시
+      setVoiceText(quizList[0]?.quizVoiceText);
+      setAnswer(quizList[0]?.quizAnswer);
+    }
+  }, [quizList]);
+
+  useEffect(() => {
     if (!quizList.length) {
       router.push(`/${locale}/main`);
     }
   }, [quizList]);
 
+  const text = voiceText ? voiceText : answer;
+  // const fontSize = text.length <= 8 ? 'text-xl' :
+  //                 text.length <= 15 ? 'text-md' : 'text-sm';
+  // const fontSizeMd = text.length <= 8 ? 'text-md' :
+  //                 text.length <= 15 ? 'text-sm' : 'text-xs';
+
   return (
-    <div className="relative h-[80vh]">
+    <div className="relative h-[90vh]">
       <div className="mb-[10vh]">
         <div className="text-center text-3xl md:text-4xl lg:text-6xl">
           {/* Stage-{stageOrder} */}
@@ -135,14 +152,35 @@ function TranslatedQuizDaily({ locale, type, index }) {
       </div>
       <button
         onClick={toggleAudio}
-        className="absolute z-10 top-[80%] left-[50%] transform -translate-x-1/2 flex-col flex justify-center items-center w-[30vw] h-[10vh]">
-        <Image
-          src={isPlaying ? Pause : Play}
-          alt="play"
-          className="w-[30%] h-auto" // CSS에서 비율을 맞추기 위해 w와 h를 설정
-        />
+        className="absolute z-10 top-[73%] left-[50%] transform -translate-x-1/2 flex-col flex justify-center items-center w-[30vw] h-[10vh]">
+        <div
+          className="w-[50vw] flex justify-between items-center"
+          style={{
+            backgroundColor: "#23cccc",
+            padding: "2vw 5vw 2vw 2vw",
+            borderRadius: "50px",
+          }}>
+          <div
+            style={{
+              backgroundColor: "#FFFFF0",
+              width: "13vw",
+              height: "13vw",
+              padding: "3vw",
+              borderRadius: "50%",
+            }}>
+            <Image
+              src={isPlaying ? Pause : Play}
+              alt="play"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </div>
+          <div className={`ml-3 text-xl md:text-2xl lg:text-4xl`}>
+            {/* {voiceText ? voiceText : answer} */}
+            {text}
+          </div>
+        </div>
       </button>
-      <div className="absolute top-[35%] w-[80%] h-[75%] left-1/2 transform -translate-x-1/2">
+      <div className="absolute top-[23%] w-[100%] h-[75%] left-1/2 transform -translate-x-1/2">
         <QuizContent type={type} index={index} />
       </div>
     </div>

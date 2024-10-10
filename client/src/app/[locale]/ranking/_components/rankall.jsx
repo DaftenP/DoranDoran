@@ -146,7 +146,7 @@ function RanklistAll({ rankList }) {
 
         <div className="w-[90%] h-[4%] left-[5%] absolute bg-[#9EEDE4] rounded-[5px]" />
 
-        <article className='w-[90%] left-[5%] top-[33%] absolute h-[50%] overflow-auto'>
+        <article className='w-[90%] left-[5%] top-[33%] absolute h-[50%] overflow-auto overflow-y-scroll hide-scrollbar'>
         {(selectedWeek === "this week" ? thisWeekRankList : lastWeekRankList).slice(3).map((item, index) => (
             <RankListAll
               key={item.userId}

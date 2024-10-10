@@ -177,7 +177,7 @@ function TranslatedQuizDaily({ locale, type, index }) {
           <div 
             className={`ml-3 flex justify-center items-center
               ${String(text).length >= 20 ? "text-xs" :
-                String(text).length >= 10 ?  "text-sm" : "text-xl"}`}
+                String(text).length >= 8 ?  "text-sm" : "text-xl"}`}
             style={{
               width: "100%",    // 가로는 100%로 채우기
               textAlign: "center", // 텍스트 가운데 정렬

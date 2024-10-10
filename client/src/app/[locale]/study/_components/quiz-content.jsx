@@ -174,11 +174,16 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
         className="absolute bottom-[5%] left-1/2 transform -translate-x-1/2">
         {((quizType === 5001 && clickedIndex !== null) ||
           ((quizType === 5002 || quizType === 5003) && recordedSTT)) && (
+            
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}>
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="flex flex-col items-center justify-center">
+
+            {recordedSTT && <div>record: {recordedSTT}</div>}
             <Button type={type} index={index} onClick={handleAnswerCheck} />
+            
           </motion.div>
         )}
       </div>

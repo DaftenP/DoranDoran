@@ -53,7 +53,8 @@ public class LeaderBoardBatch {
     public void updateLeaderBoard() {
         log.info("updateLeaderBoard start");
 
-        List<LeagueMember> leagueMembers = leagueMemberRepository.findAllByOrderByGainXP();
+        // xp 기준 내림차순 정렬
+        List<LeagueMember> leagueMembers = leagueMemberRepository.findAllByOrderByGainXPDesc();
 
         // 랭킹 관련 정보 모두 삭제
         String currentLeaderBoardKey = redisKeyGenerator.getLeaderboardKey(0L);

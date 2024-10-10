@@ -139,6 +139,14 @@ public class UserService {
             User newUser = new User(userRequestDTO.getNickname(), userRequestDTO.getEmail(),
                     bCryptPasswordEncoder.encode(userRequestDTO.getPassword()));
 
+            Set<ItemKey> items = newUser.getItems();
+            ItemKey basicItem = ItemKey.builder()
+                    .itemId(1)
+                    .itemType(1)
+                    .build();
+
+            items.add(basicItem);
+
             userRepository.save(newUser);
             //유저 저장한다.
             return StatusCode.REG_SUCCESS;

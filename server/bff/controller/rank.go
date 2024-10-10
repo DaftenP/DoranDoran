@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -110,8 +111,8 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 	userId := parts[0]
 
 	// Variables to store responses
-	var thisWeekData model.WeekData
-	var lastWeekData model.WeekData
+	var thisWeekData model.ThisWeekData
+	var lastWeekData model.LastWeekData
 
 	var leaderBoardResponseFromMSAThisWeek model.LeaderBoardResponseFromMSA
 	var leaderBoardResponseFromMSALastWeek model.LeaderBoardResponseFromMSA
@@ -160,7 +161,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Populate thisWeekData
-		thisWeekData = model.WeekData{
+		thisWeekData = model.ThisWeekData{
 			MyLeaderBoard: model.LeaderBoardDataToClient{
 				LeaderBoardType: leaderBoardResponseFromMSAThisWeek.Data.MyLeaderBoard.LeaderBoardType,
 				UserId:          leaderBoardResponseFromMSAThisWeek.Data.MyLeaderBoard.UserId,
@@ -225,7 +226,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Populate lastWeekData
-		lastWeekData = model.WeekData{
+		lastWeekData = model.LastWeekData{
 			MyLeaderBoard: model.LeaderBoardDataToClient{
 				LeaderBoardType: leaderBoardResponseFromMSALastWeek.Data.MyLeaderBoard.LeaderBoardType,
 				UserId:          leaderBoardResponseFromMSALastWeek.Data.MyLeaderBoard.UserId,
@@ -234,7 +235,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 				UserRank:        leaderBoardResponseFromMSALastWeek.Data.MyLeaderBoard.UserRank,
 				Order:           leaderBoardResponseFromMSALastWeek.Data.MyLeaderBoard.Order,
 			},
-			ThisWeekLeaderBoard: make([]model.LeaderBoardDataToClient, 0),
+			LastWeekLeaderBoard: make([]model.LeaderBoardDataToClient, 0),
 		}
 
 		for _, member := range leaderBoardResponseFromMSALastWeek.Data.LeaderBoard {
@@ -246,7 +247,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 				UserRank:        member.UserRank,
 				Order:           member.Order,
 			}
-			lastWeekData.ThisWeekLeaderBoard = append(lastWeekData.ThisWeekLeaderBoard, leaderBoardData)
+			lastWeekData.LastWeekLeaderBoard = append(lastWeekData.LastWeekLeaderBoard, leaderBoardData)
 		}
 		errCh <- nil
 	}()
@@ -259,6 +260,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 	for err := range errCh {
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			fmt.Println(err)
 			return
 		}
 	}

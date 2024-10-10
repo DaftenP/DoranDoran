@@ -1,9 +1,12 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"mime/multipart"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"com.doran.bff/service"
@@ -52,7 +55,53 @@ func SubmitPlayLogController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	util.ForwardRequest(w, r, http.MethodPost, service.UserUrl+"/api/v1/user/play-log/submit")
+	cookie, err := r.Cookie("refresh")
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
+
+	parts := strings.Split(cookie.Value, "%3A")
+	userID := parts[0]
+
+	userIdInt, err := strconv.Atoi(userID)
+	if err != nil {
+		http.Error(w, "Invalid userId", http.StatusBadRequest)
+		return
+	}
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Error reading request body", http.StatusInternalServerError)
+		return
+	}
+	defer r.Body.Close()
+
+	var data map[string]interface{}
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		http.Error(w, "Error parsing request body", http.StatusInternalServerError)
+		return
+	}
+
+	quizId, ok := data["quizId"].(float64)
+	if !ok {
+		http.Error(w, "Invalid quizId", http.StatusBadRequest)
+		return
+	}
+
+	res, err := service.SubmitPlayLogService(userIdInt, int(quizId))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// return response from MSA to client
+	w.WriteHeader(res.StatusCode)
+	util.CopyHeader(w.Header(), res.Header)
+	io.Copy(w, res.Body)
+
+	defer res.Body.Close()
 }
 
 // GET /api/v1/bff/quiz/play-log

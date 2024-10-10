@@ -10,5 +10,5 @@ type InitToClient struct {
 	DailyProgress int    `json:"dailyProgress"`
 	Gem           int    `json:"gem"`
 	Rank          int    `json:"rank"`
-	LeagueId      string `json:"leagueId"`
+	LeagueId      int    `json:"leagueId"`
 }

@@ -24,13 +24,18 @@ type LeaderBoardResponseToClient struct {
 }
 
 type LeaderBoardResponseToClientData struct {
-	ThisWeek WeekData `json:"thisWeek"`
-	LastWeek WeekData `json:"lastWeek"`
+	ThisWeek ThisWeekData `json:"thisWeek"`
+	LastWeek LastWeekData `json:"lastWeek"`
 }
 
-type WeekData struct {
+type ThisWeekData struct {
 	MyLeaderBoard       LeaderBoardDataToClient   `json:"myLeaderBoard"`
 	ThisWeekLeaderBoard []LeaderBoardDataToClient `json:"thisWeekLeaderBoard"`
+}
+
+type LastWeekData struct {
+	MyLeaderBoard       LeaderBoardDataToClient   `json:"myLeaderBoard"`
+	LastWeekLeaderBoard []LeaderBoardDataToClient `json:"lastWeekLeaderBoard"`
 }
 
 type LeaderBoardDataToClient struct {
@@ -73,9 +78,9 @@ type RankInfoResponseFromMSA struct {
 }
 
 type RankInfoFromMSA struct {
-	UserId   string `json:"userId"`
-	Rank     int    `json:"rank"`
-	LeagueId string `json:"leagueId"`
+	UserId   int `json:"userId"`
+	Rank     int `json:"rank"`
+	LeagueId int `json:"leagueId"`
 }
 
 type LeaderBoardResponseFromMSA struct {

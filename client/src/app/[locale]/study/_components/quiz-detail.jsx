@@ -5,11 +5,13 @@ import { useLocale, useTranslations, NextIntlClientProvider } from "next-intl";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchStageDetail } from "@/store/quiz";
+import { getLocalStageData } from "@/store/quiz";
 import QuizTitle from "@/app/[locale]/study/_components/quiz-title";
 import QuizContent from "@/app/[locale]/study/_components/quiz-content";
 import Play from "@/public/icon/play1.webp";
 import Pause from "@/public/icon/play2.webp";
 import { useRouter } from "next/navigation";
+import { markStageAsCompleted } from '@/store/quiz';
 
 export default function Quiz({ type, index }) {
   const dispatch = useDispatch();

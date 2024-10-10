@@ -148,7 +148,7 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
     <div className="flex-col flex justify-center items-center">
       <div className="h-[50%]">
         {quizType === 5001 ? (
-          <QuizContentImage type={type} onButtonClick={onImageClick} clickedIndex={clickedIndex} />
+          <QuizContentImage type={type} onButtonClick={onImageClick} clickedIndex={clickedIndex} index={index}/>
         ) : quizType === 5002 || quizType === 5003 ? (
           <QuizContentSpeak type={type} />
         ) : (

@@ -13,7 +13,7 @@ export default function Setting() {
   return (
     <div className="w-screen h-screen flex items-center flex-col">
       {/* 상단 메뉴바 */}
-      <div className="flex items-center w-full h-[7.5%] mt-[2vh]">
+      <div className="flex items-center w-full h-[7.5%] my-[2vh]">
         <div className="w-[20%] flex justify-center">
           <Link href={`/${locale}/profile`}>
             <Image src={Back} alt="back" className="w-9 h-9 md:w-12 md:h-12 lg:w-16 lg:h-16 ml-4" />

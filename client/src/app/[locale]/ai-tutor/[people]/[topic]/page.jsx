@@ -226,12 +226,12 @@ function TranslatedTopicConversation({ params }) {
 
   return (
     <div>
-      <div className='flex justify-between mt-[1vh]'>
+      <div className='flex justify-between mt-[2vh]'>
         <div>
-          <Image onClick={() => handleOpenModal(2)} src={Back} alt="back" className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-2" />
+          <Image onClick={() => handleOpenModal(2)} src={Back} alt="back" className="w-9 h-9 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-4" />
         </div>
         <div className="cursor-pointer">
-          <Image src={Manual} alt="manual_icon" className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 mr-2 pointer-events-none" />
+          <Image src={Manual} alt="manual_icon" className="w-9 h-9 md:w-12 md:h-12 lg:w-16 lg:h-16 mr-4 pointer-events-none" />
         </div>
       </div>
       <div className='flex-col flex justify-center items-center'>

@@ -299,7 +299,8 @@ export default function Microphone({ handleListening, onRecordingComplete, param
               className="absolute w-[11vh] h-[11vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer opacity-50"
             />
           ) : (
-            <Image src={MicrophoneNormal2} alt="microphone_icon" className="absolute w-[11vh] h-[11vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
+            <Image src={MicrophoneActive3} alt="microphone_icon" className="absolute w-[11vh] h-[11vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 grayscale"
+            />
           )}
         </button>
       </div>

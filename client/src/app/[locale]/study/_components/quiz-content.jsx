@@ -181,7 +181,7 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="flex flex-col items-center justify-center">
 
-            {recordedSTT && <div>record: {recordedSTT}</div>}
+            {recordedSTT && <div>record: {recordedSTT.trim()}</div>}
             <Button type={type} index={index} onClick={handleAnswerCheck} />
             
           </motion.div>

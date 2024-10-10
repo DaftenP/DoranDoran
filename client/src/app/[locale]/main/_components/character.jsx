@@ -162,7 +162,7 @@ function TranslatedCharacter({ locale }) {
   return (
     <div className='flex items-center justify-center mt-[3vh]'>
       <div className='relative'>
-        <div className={`transform translate-x-[30vw] rounded-full w-[60vw] h-[12vh] bg-[#FFFFFF]/80 flex justify-center items-center text-md md:text-3xl lg:text-4xl transition-opacity duration-1000 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'} p-[5vw] border border-gray-300 shadow-md`}>
+        <div className={`relative transform translate-x-[30vw] rounded-full w-[60vw] h-[12vh] bg-[#FFFFFF]/80 flex justify-center items-center text-md md:text-3xl lg:text-4xl transition-opacity duration-1000 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'} p-[5vw] border border-gray-300 shadow-md z-30`}>
           <div className='text-center'>
             {t(textArray[randomText])}
           </div> 

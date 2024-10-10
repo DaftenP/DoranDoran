@@ -57,14 +57,23 @@ function TranslatedTopicConversation({ params }) {
   const situation = params.topic;
   const effectVolume = useSelector((state) => state.sound.effectVolume)
   const user = useSelector((state) => state.user)
+  const [isTest, setIsTest] = useState(false)
+  const boxRef = useRef(null)
 
   // 스크롤을 제일 마지막으로 지속해서 이동
   const scrollToBottom = () => {
     const scrollableContainer = document.getElementById('chat-container');
     if (scrollableContainer) {
-      scrollableContainer.scrollTop = scrollableContainer.scrollHeight; // Scroll to the bottom
+      scrollableContainer.scrollTop = scrollableContainer.scrollHeight;
     }
   };
+
+  // 스크롤 이동
+  useEffect(() => {
+    if (isTest && boxRef.current) {
+      boxRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [isTest]);
   
   useEffect(() => {
     scrollToBottom();
@@ -170,15 +179,14 @@ function TranslatedTopicConversation({ params }) {
   const handleCloseModal = () => {
     setIsOpenModal(false)
     if (isEnd) {
-      dispatch(resetState())
       setIsEnd(false)
-      router.push(`/${locale}/main`)
     }
   }
 
   const handleIsOver = () => {
-    handleOpenModal(3)
+    // handleOpenModal(3)
     setIsEnd(true)
+    setIsTest(true)
   }
 
   const modalMessages = [
@@ -303,6 +311,17 @@ function TranslatedTopicConversation({ params }) {
             </motion.div>
           </div>
         )}
+        {isTest && 
+          <div className='flex justify-center'>
+            <div className="flex justify-center items-center w-[80vw] p-4 bg-gradient-to-r from-gray-500 to-gray-500 border-none rounded-full shadow-md text-center opacity-95">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold text-white">
+              {t("the-conversation-has-ended")}
+              <br />
+              {t("try-starting-a-new-topic")}
+              </h2>
+            </div>
+          </div>
+        }
       </div>
       {isOpenModal && 
         <div>

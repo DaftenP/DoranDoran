@@ -23,7 +23,7 @@ export const fetchChatMessages = createAsyncThunk(
       // 서버에서 받은 chatMessages 데이터를 반환
       return response.data;
     } catch (error) {
-      console.log(error)
+      // console.log(error)
 
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }
@@ -37,7 +37,7 @@ function saveToLocalStorage(state) {
     const serializedState = JSON.stringify({ chatMessages, messages, type });
     localStorage.setItem('aiTutorState', serializedState);
   } catch (error) {
-    console.error('Could not save state', error);
+    // console.error('Could not save state', error);
   }
 }
 
@@ -50,7 +50,7 @@ function loadFromLocalStorage() {
     }
     return JSON.parse(serializedState); // chatMessages와 messages 불러오기
   } catch (error) {
-    console.error('Could not load state', error);
+    // console.error('Could not load state', error);
     return undefined;
   }
 }
@@ -60,7 +60,7 @@ function clearLocalStorage() {
   try {
     localStorage.removeItem('aiTutorState');
   } catch (error) {
-    console.error('Could not clear local storage', error);
+    // console.error('Could not clear local storage', error);
   }
 }
 

@@ -25,7 +25,7 @@ export const buyItem = createAsyncThunk(
       }
       return response.data;
     } catch (error) {
-      console.log(error)
+      // console.log(error)
 
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }

@@ -38,7 +38,7 @@ export default function Room() {
         const loadedMessages = await import(`messages/${locale}.json`);
         setMessages(loadedMessages.default);
       } catch (error) {
-        console.error("Failed to load messages:", error);
+        // console.error("Failed to load messages:", error);
       }
     }
     loadMessages();

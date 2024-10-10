@@ -15,7 +15,7 @@ export const updateBirthday = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -35,7 +35,7 @@ export const updateNickname = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -55,7 +55,7 @@ export const fetchUserData = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }
   }
@@ -75,7 +75,7 @@ export const expGemUpdate = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error');
     }
   }

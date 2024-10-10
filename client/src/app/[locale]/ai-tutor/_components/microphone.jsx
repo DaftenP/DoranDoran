@@ -89,7 +89,7 @@ export default function Microphone({ handleListening, onRecordingComplete, param
       };
 
       recognitionRef.current.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
+        // console.error("Speech recognition error:", event.error);
       };
 
       recognitionRef.current.onend = () => {
@@ -239,7 +239,7 @@ export default function Microphone({ handleListening, onRecordingComplete, param
         }
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
       });
   };
 

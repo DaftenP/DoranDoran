@@ -117,7 +117,7 @@ const MainContent = ({ children, modal }) => {
         if (!isMainPlaying) {
           if (audioNightRef.current) audioNightRef.current.pause();
           audioMainRef.current.currentTime = 0;
-          audioMainRef.current.play().catch(e => console.error("Audio playback failed:", e));
+          audioMainRef.current.play();
           dispatch(playMainBgm());
 
           // 로컬 스토리지에 BGM 상태 저장
@@ -127,7 +127,7 @@ const MainContent = ({ children, modal }) => {
       if (!isNightPlaying) {
         if (audioMainRef.current) audioMainRef.current.pause();
         audioNightRef.current.currentTime = 0;
-        audioNightRef.current.play().catch(e => console.error("Audio playback failed:", e));
+        audioNightRef.current.play();
         dispatch(playNightBgm());
 
         // 로컬 스토리지에 BGM 상태 저장

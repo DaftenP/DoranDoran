@@ -60,7 +60,9 @@ function TranslatedBackground({ onSelectBackground }) {
         const filteredItems = response.data.data.filter((item) => item.itemType === 3);
         setItems(filteredItems);
       })
-      .catch(error => console.error("배경 아이템 불러오기 실패:", error));
+      .catch((error) => {
+       // console.error("배경 아이템 불러오기 실패:", error) 
+      });
   }, [apiUrl]);
 
   // 배경 선택 처리 함수

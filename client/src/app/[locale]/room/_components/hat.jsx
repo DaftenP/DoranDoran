@@ -60,7 +60,9 @@ function TranslatedHat({ onSelectHat }) {
         );
         setItems(filteredItems);
       })
-      .catch(error => console.error("아이템 불러오기 실패:", error));
+      .catch((error) => {
+        // console.error("아이템 불러오기 실패:", error) 
+       });
   }, [apiUrl]);
 
   // 모자 선택 처리 함수

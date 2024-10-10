@@ -23,7 +23,9 @@ export default function Color({ onSelectCharacter }) {
         const filteredItems = response.data.data.filter((item) => item.itemType === 1);
         setItems(filteredItems);
       })
-      .catch((error) => console.error("아이템 불러오기 실패:", error));
+      .catch((error) => {
+        // console.error("아이템 불러오기 실패:", error) 
+       });
   }, [apiUrl]);
 
   // 캐릭터 색상 선택 처리 함수

@@ -96,10 +96,10 @@ const MainContent = ({ children, modal }) => {
       } else if (document.visibilityState === 'visible') {
         // 포그라운드로 돌아왔을 때 BGM 재생
         if (audioMainRef.current && isMainPlaying) {
-          audioMainRef.current.play().catch(e => console.error("Audio playback failed:", e));
+          audioMainRef.current.play();
         }
         if (audioNightRef.current && isNightPlaying) {
-          audioNightRef.current.play().catch(e => console.error("Audio playback failed:", e));
+          audioNightRef.current.play();
         }
       }
     };

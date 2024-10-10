@@ -58,6 +58,11 @@ function TranslatedModal({ handleYesClick, handleCloseModal, message }) {
   return (
     <div className='fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center'>
       <div className="relative bg-white p-6 rounded-lg shadow-lg w-[80vw] h-[80vw] md:w-[60vw] md:h-[50vw] lg:w-[60vw] lg:h-[50vw] overflow-hidden z-9999">
+        {message.title && (
+          <div className='relative z-10 text-center text-2xl md:text-4xl lg:text-5xl mb-[8vh] text-purple-500'>
+            {t(message.title)}
+          </div>
+        )}
         <div className='relative z-10 text-center text-xl md:text-2xl lg:text-4xl'>
           {t(message.message)}
         </div>

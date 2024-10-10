@@ -240,6 +240,8 @@
     "when-was-the-last-time-you-laughed": "你上次笑是什么时候？",
     "do-you-know-any-good-stories": "你知道什么有趣的故事吗？",
     "the-conversation-has-ended": "对话已结束",
-    "try-starting-a-new-topic": "试着开始一个新话题吧！"
+    "try-starting-a-new-topic": "试着开始一个新话题吧！",
+    "email-does-not-exist": "邮箱不存在。",
+    "password-is-incorrect": "密码错误。"
   }
 }

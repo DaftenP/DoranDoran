@@ -241,6 +241,8 @@
     "do-you-know-any-good-stories": "Ты знаешь какие-нибудь интересные истории?",
     "the-conversation-has-ended-try-starting-a-new-topic!": "Беседа завершена. Попробуйте начать новую тему!",
     "the-conversation-has-ended": "Беседа завершена",
-    "try-starting-a-new-topic": "Попробуйте начать новую тему!"
+    "try-starting-a-new-topic": "Попробуйте начать новую тему!",
+    "email-does-not-exist": "Электронная почта не существует.",
+    "password-is-incorrect": "Неправильный пароль."
   }
 }

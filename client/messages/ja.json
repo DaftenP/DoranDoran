@@ -240,6 +240,8 @@
     "when-was-the-last-time-you-laughed": "最後に笑ったのはいつ？",
     "do-you-know-any-good-stories": "面白い話、知ってる？",
     "the-conversation-has-ended": "会話が終了しました",
-    "try-starting-a-new-topic": "新しい話題を始めてみましょう！"
+    "try-starting-a-new-topic": "新しい話題を始めてみましょう！",
+    "email-does-not-exist": "存在しないメールアドレスです。",
+    "password-is-incorrect": "パスワードが間違っています。"
   }
 }

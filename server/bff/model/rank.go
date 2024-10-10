@@ -50,8 +50,9 @@ type LeaderBoardDataToClient struct {
 ////////////////////////////////////////
 
 type LeagueInfoResponseFromMSA struct {
-	Data LeagueInfoResponseFromMSAData `json:"data"`
-	Msg  string                        `json:"msg"`
+	Data      LeagueInfoResponseFromMSAData `json:"data"`
+	Message   string                        `json:"message"`
+	Timestamp string                        `json:"timestamp"`
 }
 
 type LeagueInfoResponseFromMSAData struct {
@@ -60,7 +61,7 @@ type LeagueInfoResponseFromMSAData struct {
 }
 
 type LeagueInfo struct {
-	LeagueId   int    `json:"leagueId"`
+	LeagueId   string `json:"leagueId"`
 	CreatedAt  string `json:"createdAt"`
 	LeagueRank int    `json:"leagueRank"`
 	LeagueNum  int    `json:"leagueNum"`

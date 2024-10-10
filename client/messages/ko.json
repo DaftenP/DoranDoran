@@ -240,6 +240,8 @@
     "when-was-the-last-time-you-laughed": "네가 마지막으로 웃었던 건 언제야?",
     "do-you-know-any-good-stories": "혹시 재미있는 이야기 알고 있어?",
     "the-conversation-has-ended": "대화가 끝났습니다",
-    "try-starting-a-new-topic": "새로운 주제로 시작해보세요"
+    "try-starting-a-new-topic": "새로운 주제로 시작해보세요",
+    "email-does-not-exist": "존재하지 않는 이메일입니다.",
+    "password-is-incorrect": "비밀번호가 잘못되었습니다."
   }
 }

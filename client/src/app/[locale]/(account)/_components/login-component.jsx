@@ -81,8 +81,15 @@ function LoginFormContent() {
       })
       .catch((error) => {
         // 로그인 실패 시 처리
+        const errorMessage = error.response.data.message
+        if (errorMessage === '존재하지 않는 이메일입니다.') {
+          setModalMessage({title: "login-failed", message: "email-does-not-exist", background: "bird", buttonType: 2});
+        } else if (errorMessage === '비밀번호가 잘못되었습니다. 다시 시도해 주세요.') {
+          setModalMessage({title: "login-failed", message: "password-is-incorrect", background: "bird", buttonType: 2});
+        } else {
+          setModalMessage({title: "login-failed", background: "bird", buttonType: 2});
+        }
         setIsOpenModal(true);
-        setModalMessage({message: "login-failed", background: "bird", buttonType: 2});
       })
       .finally(() => {setIsLoading(false)});
     };

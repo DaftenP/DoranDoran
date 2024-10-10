@@ -240,6 +240,8 @@
     "when-was-the-last-time-you-laughed": "When was the last time you laughed?",
     "do-you-know-any-good-stories": "Do you know any good stories?",
     "the-conversation-has-ended": "The conversation has ended",
-    "try-starting-a-new-topic": "Try starting a new topic!"
+    "try-starting-a-new-topic": "Try starting a new topic!",
+    "email-does-not-exist": "The email does not exist.",
+    "password-is-incorrect": "The password is incorrect."
   }
 }

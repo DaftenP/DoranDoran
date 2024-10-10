@@ -22,7 +22,7 @@ export default function QuizContentImage({ type, onButtonClick, clickedIndex, in
   };
 
   return (
-    <div className=' grid grid-cols-2'>
+    <div className='grid grid-cols-2'>
       {images.length > 0 ? (
         images.map((item, index) => (
           <div key={index} onClick={() => handleClick(index)}>

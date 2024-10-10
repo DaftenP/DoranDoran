@@ -152,7 +152,9 @@ function TranslatedQuizDaily({ locale, type, index }) {
       </div>
       <button
         onClick={toggleAudio}
-        className="absolute z-10 top-[73%] left-[50%] transform -translate-x-1/2 flex-col flex justify-center items-center w-[30vw] h-[10vh]">
+        className={`absolute z-10 
+          ${quizType === 5001 ? "top-[77%]" : "top-[65%]"} 
+        left-[50%] transform -translate-x-1/2 flex-col flex justify-center items-center w-[30vw] h-[10vh]`}>
         <div
           className="w-[50vw] flex justify-between items-center"
           style={{

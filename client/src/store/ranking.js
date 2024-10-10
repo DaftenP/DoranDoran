@@ -18,7 +18,7 @@ export const fetchRankList = createAsyncThunk(
       return response.data; // API에서 반환되는 데이터를 리턴
     
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error'); 
     }
   }
@@ -39,7 +39,7 @@ export const fetchMyLeague = createAsyncThunk(
       return response.data; // API에서 반환되는 데이터를 리턴
     
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return thunkAPI.rejectWithValue(error.response?.data || 'Server Error'); 
     }
   }

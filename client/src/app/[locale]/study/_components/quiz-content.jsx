@@ -181,23 +181,31 @@ function TranslatedQuizContent({ type, index, clickedIndex, onImageClick, onRese
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="flex flex-col items-center justify-center">
 
-            {recordedSTT && <div>record: {recordedSTT.trim()}</div>}
+            {recordedSTT && (
+              <div className="my-1 bg-[#ffffff] border border-2 border-[#d7aefb] p-2 text-center w-full max-w-xs rounded-full">
+                <p className={` 
+                ${String(recordedSTT.trim()).length >= 10 ? "text-xs" :
+                String(recordedSTT.trim()).length >= 5 ?  "text-sm" : "text-md"}`}>
+                  {recordedSTT.trim()}</p>
+              </div>
+            )}
             <Button type={type} index={index} onClick={handleAnswerCheck} />
             
           </motion.div>
         )}
       </div>
-
-      {feedbackMessage && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          className={`absolute z-20 top-[40%] left-[30%] transform -translate-x-1/2 -translate-y-1/2 p-4 rounded-lg text-white text-xl 
-          ${feedbackType === "correct" ? "bg-green-500" : "bg-red-500"}`}>
-          {feedbackMessage}
-        </motion.div>
-      )}
+      <div className="flex items-center justify-center absolute top-0 left-0 w-full h-[40%]">
+        {feedbackMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className={`z-30 top-[50%] p-4 rounded-lg text-white text-xl 
+              ${feedbackType === "correct" ? "bg-green-500" : "bg-red-500"} relative`}>
+            {feedbackMessage}
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 }

@@ -60,7 +60,7 @@ type LeagueInfoResponseFromMSAData struct {
 }
 
 type LeagueInfo struct {
-	LeagueId   string `json:"leagueId"`
+	LeagueId   int    `json:"leagueId"`
 	CreatedAt  string `json:"createdAt"`
 	LeagueRank int    `json:"leagueRank"`
 	LeagueNum  int    `json:"leagueNum"`
@@ -90,8 +90,8 @@ type LeaderBoardResponseFromMSA struct {
 }
 
 type LeaderBoardResponseFromMSAData struct {
-	MyLeaderBoard LeaderBoardDataFromMSA   `json:"myLeaderBoard"`
-	LeaderBoard   []LeaderBoardDataFromMSA `json:"leaderBoard"`
+	MyLeaderBoard       LeaderBoardDataFromMSA   `json:"myLeaderBoard"`
+	ThisWeekLeaderBoard []LeaderBoardDataFromMSA `json:"thisWeekLeaderBoard"`
 }
 
 type LeaderBoardDataFromMSA struct {

@@ -22,5 +22,7 @@ public class QuizResponseDto {
 
     private String quizVoiceUrl;
 
+    private String quizVoiceText;
+
     private List<String> quizImages;
 }

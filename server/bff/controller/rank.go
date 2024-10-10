@@ -141,7 +141,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 
 		// Get user IDs from the leaderboard
 		var userIds []int
-		for _, member := range leaderBoardResponseFromMSAThisWeek.Data.LeaderBoard {
+		for _, member := range leaderBoardResponseFromMSAThisWeek.Data.ThisWeekLeaderBoard {
 			userIds = append(userIds, member.UserId)
 		}
 
@@ -173,7 +173,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 			ThisWeekLeaderBoard: make([]model.LeaderBoardDataToClient, 0),
 		}
 
-		for _, member := range leaderBoardResponseFromMSAThisWeek.Data.LeaderBoard {
+		for _, member := range leaderBoardResponseFromMSAThisWeek.Data.ThisWeekLeaderBoard {
 			leaderBoardData := model.LeaderBoardDataToClient{
 				LeaderBoardType: member.LeaderBoardType,
 				UserId:          member.UserId,
@@ -206,7 +206,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 
 		// Get user IDs from the leaderboard
 		var userIds []int
-		for _, member := range leaderBoardResponseFromMSALastWeek.Data.LeaderBoard {
+		for _, member := range leaderBoardResponseFromMSALastWeek.Data.ThisWeekLeaderBoard {
 			userIds = append(userIds, member.UserId)
 		}
 
@@ -238,7 +238,7 @@ func GetLeaderBoard(w http.ResponseWriter, r *http.Request) {
 			LastWeekLeaderBoard: make([]model.LeaderBoardDataToClient, 0),
 		}
 
-		for _, member := range leaderBoardResponseFromMSALastWeek.Data.LeaderBoard {
+		for _, member := range leaderBoardResponseFromMSALastWeek.Data.ThisWeekLeaderBoard {
 			leaderBoardData := model.LeaderBoardDataToClient{
 				LeaderBoardType: member.LeaderBoardType,
 				UserId:          member.UserId,

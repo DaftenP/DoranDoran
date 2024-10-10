@@ -38,6 +38,9 @@ public class Quiz {
     @Column(name = "quiz_voice_url")
     private String quizVoiceUrl;
 
+    @Column(name = "quiz_voice_text")
+    private String quizVoiceText;
+
     @CreatedDate
     @Column(name = "quiz_created_at", columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime quizCreatedAt;

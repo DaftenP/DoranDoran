@@ -47,8 +47,8 @@ function RanklistGroup({ myLeague }) {
 
   const locale = useLocale();
 
-  const myLeagueList = myLeague.leagueMembers;
-  const myLeagueNum = myLeague.leagueInfo.leagueNum;
+  const myLeagueList = myLeague?.leagueMembers;
+  const myLeagueNum = myLeague?.leagueInfo?.leagueNum;
   // const myRank = myLeague.myRank;
 
   // const myRankRef = useRef([]);

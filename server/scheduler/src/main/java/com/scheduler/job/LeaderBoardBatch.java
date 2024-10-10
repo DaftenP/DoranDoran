@@ -79,7 +79,7 @@ public class LeaderBoardBatch {
                     .build();
 
             // 1. Sorted Set에 사용자 랭킹 데이터 저장
-            zSetOperations.add(currentLeaderBoardKey, member.getUserId(), member.getGainXp());
+            zSetOperations.add(currentLeaderBoardKey, member.getUserId(), member.getOrder());
             // 2. Redis Hash에 전체 객체 저장 (userId와 leaderboardType을 조합한 키로 저장)
             String memberKey = redisKeyGenerator.getMemberKey(member.getUserId(), member.getLeaderboardType());
             hashOperations.put(currentLeaderBoardHashKey, memberKey, member); // userId와 leaderboardType을 조합한 키로 저장
@@ -134,7 +134,7 @@ public class LeaderBoardBatch {
                     .build();
 
             // 1. Sorted Set에 사용자 랭킹 데이터 저장
-            zSetOperations.add(previousLeaderBoardKey, member.getUserId(), member.getGainXp());
+            zSetOperations.add(previousLeaderBoardKey, member.getUserId(), member.getOrder());
             // 2. Redis Hash에 전체 객체 저장 (userId와 leaderboardType을 조합한 키로 저장)
             String memberKey = redisKeyGenerator.getMemberKey(member.getUserId(), member.getLeaderboardType());
             hashOperations.put(previousLeaderBoardHashKey, memberKey, member); // userId와 leaderboardType을 조합한 키로 저장

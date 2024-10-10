@@ -76,7 +76,7 @@ public class LeaderBoardService {
         String hashKey = redisKeyGenerator.getLeaderboardHashKey(leaderboardType);
 
         // 1. 상위 10명의 사용자 조회
-        Set<ZSetOperations.TypedTuple<Object>> top10 = zSetOperations.reverseRangeWithScores(key, 0, 9);
+        Set<ZSetOperations.TypedTuple<Object>> top10 = zSetOperations.rangeWithScores(key, 0, 9);
 
         if (top10 == null) {
             throw new RestApiException(StatusCode.NO_SUCH_ELEMENT);

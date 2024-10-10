@@ -23,7 +23,9 @@ export default function Color({ onSelectCharacter }) {
         }
         setItems(filteredItems);
       })
-      .catch();
+      .catch((error) => {
+        // console.error("아이템 불러오기 실패:", error) 
+       });
   }, [apiUrl]);
 
   useEffect(() => {

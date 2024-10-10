@@ -175,7 +175,7 @@ function TranslatedCharacter({ locale }) {
             </div>
           </div>
           </div>
-          <Image src={MainButton2} alt="main_button" className="absolute top-3/4 left-1/2 transform -translate-x-1/2 mt-[-2vh] h-[35vh] w-auto md:h-auto md:w-[70vw] md:mt-[-3.5vh]" />
+          <Image src={MainButton2} alt="main_button" className="absolute top-3/4 left-1/2 transform -translate-x-1/2 mt-[-2vh] h-[35vh] w-auto md:h-auto md:w-[65vw] md:mt-[-3.5vh]" />
           <div onClick={handleFastQuiz} className="absolute top-3/4 left-1/2 transform -translate-x-1/2 mt-[7vh] h-[10vh] w-[50vw] md:h-[12vh] md:w-[40vw] md:mt-[7vh]"></div>
         </div>
         {isOpenModal && 

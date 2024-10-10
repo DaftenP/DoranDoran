@@ -37,7 +37,7 @@ export default function Layout({ children }) {
         backgroundPosition: 'center',
       }}
     >
-      <div className="flex justify-between pt-[2vh] relative z-10 p-1">
+      <div className="flex justify-between mt-[2vh] relative z-10 p-1">
         <Link href={`/${locale}/main`}>
           <Image src={Back} alt="back" className="w-9 h-9 md:w-12 md:h-12 lg:w-16 lg:h-16 cursor-pointer ml-4" />
         </Link>

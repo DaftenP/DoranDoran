@@ -8,6 +8,7 @@ import Modal from '@/components/modal/modal'
 import { buyItem } from '@/store/shop'
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import Credit from "@/public/icon/credit.webp";
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Itemlist({ setBuyComplete, itemType, itemName, itemIcon, itemCost }) {
   const [messages, setMessages] = useState(null);
@@ -154,31 +155,65 @@ function TranslatedItemlist({ setBuyComplete, itemType, itemName, itemIcon, item
     },
   ]
 
+  const itemSet = {
+    1: [0, 1],
+    2: [2, 3],
+    3: [4, 5],
+  };
+  
+  const getItemDelay = (itemType) => {
+    for (const [setKey, items] of Object.entries(itemSet)) {
+      if (items.includes(itemType)) {
+        return setKey * 0.2;
+      }
+    }
+    return 0;
+  };
+
+  const delay = getItemDelay(itemType);
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay } },
+    hover: { scale: 0.9, transition: { duration: 0.3 } },
+  };
+
   return (
-    <div className={`${itemType === 1 || itemType === 2 || itemType === 3 ? '' : 'opacity-30 pointer-events-none'}`}>
-      <div onClick={itemType === 1 || itemType === 2 || itemType === 3 ? () => handleOpenModal(itemType) : null} className="w-[35vw] h-[19vh] relative border border-[#D1D6DE] p-4 rounded-[10px] bg-[#8E9094] bg-opacity-80" >
+    <div>
+    <motion.div
+      variants={itemVariants}
+      initial="hidden"
+      animate="visible"
+      whileHover="hover"
+      className={`${itemType === 1 || itemType === 2 || itemType === 3 ? '' : 'pointer-events-none'}`}
+    >
+      <div
+        onClick={itemType === 1 || itemType === 2 || itemType === 3 ? () => handleOpenModal(itemType) : null}
+        className={`w-[35vw] h-[19vh] relative border border-[#D1D6DE] p-4 rounded-[10px] bg-[#8E9094] bg-opacity-80 ${itemType === 1 || itemType === 2 || itemType === 3 ? '' : 'opacity-30 pointer-events-none'}`}
+      >
         <div className="left-[50%] transform -translate-x-1/2 top-[5%] absolute text-white text-center text-lg md:text-2xl lg:text-4xl">
           {itemName}
         </div>
         <div className="w-[75%] h-[1px] left-[50%] transform -translate-x-1/2 top-[25%] absolute border border-white"></div>
-        
+
         <Image src={itemIcon} alt={itemName} className="w-[12vw] h-auto md:w-[8vw] md:h-auto lg:w-[8vw] lg:h-auto left-[50%] top-[30%] absolute transform -translate-x-1/2" />
 
         <div className="w-[90%] h-[30%] left-[5%] bottom-[5%] absolute bg-[#b0b0b0] rounded-[10px] flex items-center justify-center">
-          <div className="w-[90%] h-[40%] left-[5%] top-[10%] absolute bg-[#d1d6de] rounded-[10px] flex items-center justify-center" style={{ boxShadow: '0 1px 5px rgba(0, 0, 0, 0.5)'}}>
+          <div className="w-[90%] h-[40%] left-[5%] top-[10%] absolute bg-[#d1d6de] rounded-[10px] flex items-center justify-center" style={{ boxShadow: '0 1px 5px rgba(0, 0, 0, 0.5)' }}>
             <Image src={Credit} alt="credit" className="w-auto h-[110%] left-[0%] absolute" />
-            <div className="text-white" >{itemCost}</div>
+            <div className="text-white">{itemCost}</div>
           </div>
           <div className="absolute bottom-[0%] text-black cursor-pointer">
-          {t('purchase')}
+            {t('purchase')}
           </div>
         </div>
       </div>
-      {isOpenModal && 
+    </motion.div>
+      {isOpenModal && (
         <div className="relative z-30">
           <Modal handleYesClick={handleYesClick} handleCloseModal={handleCloseModal} message={modalMessage} />
         </div>
-      }
+      )}
     </div>
   );
 }

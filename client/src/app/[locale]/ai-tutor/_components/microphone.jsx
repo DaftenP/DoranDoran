@@ -227,7 +227,7 @@ export default function Microphone({ handleListening, onRecordingComplete, param
         audio.volume = effectVolume
         audio.play();
         const messageContent = recordMessageRef.current || 'Please speak';
-        dispatch(addMyMessage({ content: messageContent, score: response.data.pronunciation }));
+        dispatch(addMyMessage({ content: messageContent, score: response.data.correctness }));
         dispatch(addSimpleMyMessage({ content: messageContent }));
         dispatch(addResponseMessage(response.data));
         dispatch(addSimpleResponseMessage(response.data));

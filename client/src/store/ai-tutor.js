@@ -59,7 +59,6 @@ function loadFromLocalStorage() {
 function clearLocalStorage() {
   try {
     localStorage.removeItem('aiTutorState');
-    console.log('aiTutorState has been removed from local storage');
   } catch (error) {
     console.error('Could not clear local storage', error);
   }

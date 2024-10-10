@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChatMessages, typeChange, changeChatMessages, changeMessages, resetState, addResponseMessage, addMyMessage, addSimpleResponseMessage, addSimpleMyMessage } from '@/store/ai-tutor';
-import { updateTutorLimit } from '@/store/user';
+import { updateTutorLimit, fetchUserData } from '@/store/user';
 import Modal from '@/components/modal/modal'
 import Link from 'next/link';
 import Image from 'next/image';
@@ -56,6 +56,7 @@ function TranslatedTopicConversation({ params }) {
   const role = params.people;
   const situation = params.topic;
   const effectVolume = useSelector((state) => state.sound.effectVolume)
+  const user = useSelector((state) => state.user)
 
   // 스크롤을 제일 마지막으로 지속해서 이동
   const scrollToBottom = () => {
@@ -70,6 +71,7 @@ function TranslatedTopicConversation({ params }) {
   }, [chatMessages]);
 
   useEffect(() => {
+    dispatch(fetchUserData())
     const tutorData = JSON.parse(localStorage.getItem('tutor'));
     const storedData = localStorage.getItem('aiTutorState');
 

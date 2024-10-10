@@ -90,8 +90,8 @@ type LeaderBoardResponseFromMSA struct {
 }
 
 type LeaderBoardResponseFromMSAData struct {
-	MyLeaderBoard LeaderBoardDataFromMSA   `json:"myLeaderBoard"`
-	LeaderBoard   []LeaderBoardDataFromMSA `json:"leaderBoard"`
+	MyLeaderBoard       LeaderBoardDataFromMSA   `json:"myLeaderBoard"`
+	ThisWeekLeaderBoard []LeaderBoardDataFromMSA `json:"thisWeekLeaderBoard"`
 }
 
 type LeaderBoardDataFromMSA struct {

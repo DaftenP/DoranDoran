@@ -10,7 +10,6 @@ export default function Sound() {
   const [messages, setMessages] = useState(null);
   const locale = useLocale();
 
-  // 현재 로케일에 맞는 메시지 로드
   useEffect(() => {
     async function loadMessages() {
       try {
@@ -73,6 +72,7 @@ function VolumeControl({ label, value, onChange }) {
       <div className="flex flex-col w-full pr-4">
         <p className="md:text-3xl">{label}</p>
         <div className="relative w-full h-[30px]">
+          {/* 볼륨 조절 슬라이더 */}
           <input type="range" min="0" max="1" step="0.01" value={value}
             onChange={onChange}
             className="w-full h-full appearance-none bg-[#FFFBF2] rounded-full outline-none"
@@ -89,6 +89,7 @@ function VolumeControl({ label, value, onChange }) {
           `}</style>
         </div>
       </div>
+      {/* 현재 볼륨 퍼센트 표시 */}
       <p className="md:text-3xl">{(value * 100).toFixed(0)}%</p>
     </div>
   );

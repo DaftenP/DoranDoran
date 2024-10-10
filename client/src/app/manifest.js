@@ -13,13 +13,13 @@ export default function manifest() {
         src: "/bird144.webp",
         sizes: "144x144",
         type: "image/webp",
-        purpose: "any",
+        purpose: "maskable",
       },
       {
         src: "/bird192.webp",
         sizes: "192x192",
         type: "image/webp",
-        purpose: "maskable",
+        purpose: "any",
       },
       {
         src: "/bird256.webp",

@@ -140,12 +140,18 @@ public class UserService {
                     bCryptPasswordEncoder.encode(userRequestDTO.getPassword()));
 
             Set<ItemKey> items = newUser.getItems();
-            ItemKey basicItem = ItemKey.builder()
+            ItemKey defaultBird = ItemKey.builder()
                     .itemId(1)
                     .itemType(1)
                     .build();
 
-            items.add(basicItem);
+            ItemKey defaultBackground = ItemKey.builder()
+                    .itemId(1)
+                    .itemType(3)
+                    .build();
+
+            items.add(defaultBird);
+            items.add(defaultBackground);
 
             userRepository.save(newUser);
             //유저 저장한다.
@@ -240,7 +246,7 @@ public class UserService {
                     log.info("KAFKA 메시지 전송");
 
                     // Kafka 메시지를 동기적으로 전송하여 전송 성공 여부 확인
-                    kafkaTemplate.send("topic-rank-updateXP", message).get();
+                    //kafkaTemplate.send("topic-rank-updateXP", message).get();
 
 
                 } catch (Exception e) {
@@ -359,7 +365,7 @@ public class UserService {
                         log.info("KAFKA 메시지 전송");
 
                         // Kafka 메시지를 동기적으로 전송하여 전송 성공 여부 확인
-                        kafkaTemplate.send("topic-rank-updateXP", message).get();
+                        //kafkaTemplate.send("topic-rank-updateXP", message).get();
 
                     } catch (Exception e) {
                         // 카프카 전송 실패 시 예외 발생 -> 트랜잭션 롤백

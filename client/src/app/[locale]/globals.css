@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Sunflower:wght@300;500;700&family=Noto+Sans+KR:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&family=Itim&family=Gamja+Flower&family=Oswald:wght@400;700&family=Kosugi+Maru:wght@400;700&family=ZCOOL+KuaiLe:wght@400;700&family=Noto+Sans:wght@400;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffff;
+    --foreground: #171717;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Noto Sans', Arial, Helvetica, sans-serif;
+}
+
+html:lang(en) body {
+  font-family: 'Itim', 'Gamja Flower', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-weight: 600;
+}
+
+html:lang(ko) body {
+  font-family: 'Sunflower', 'Noto Sans KR', 'Gamja Flower', 'Itim', 'Oswald', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-weight: 500;
+}
+
+html:lang(ru) body {
+  font-family: 'Noto Sans', 'Oswald', 'Gamja Flower', 'Itim', 'Kosugi Maru', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-weight: 600;
+}
+
+html:lang(ja) body {
+  font-family: 'Noto Sans JP', 'Kosugi Maru', 'Gamja Flower', 'Itim', 'Oswald', 'ZCOOL KuaiLe', Arial, Helvetica, sans-serif;
+  font-weight: 600;
+}
+
+html:lang(zh) body {
+  font-family: 'Noto Sans SC', 'ZCOOL KuaiLe', 'Gamja Flower', 'Itim', 'Oswald', 'Kosugi Maru', Arial, Helvetica, sans-serif;
+  font-weight: 600;
+}
+
+/* 스크롤바 숨기는 CSS */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes wobble {
+  0%, 100% {
+    transform: rotate(0deg); /* 원래 위치 */
+  }
+  15% {
+    transform: rotate(-10deg); /* 왼쪽으로 살짝 기울기 */
+  }
+  30% {
+    transform: rotate(10deg); /* 오른쪽으로 살짝 기울기 */
+  }
+  45% {
+    transform: rotate(-6deg); /* 다시 왼쪽 */
+  }
+  60% {
+    transform: rotate(6deg); /* 다시 오른쪽 */
+  }
+  75% {
+    transform: rotate(-2deg); /* 미세한 흔들림 */
+  }
+  90% {
+    transform: rotate(2deg); /* 미세한 흔들림 */
+  }
+}
+
+.animate-wobble {
+  animation: wobble 1s ease-in-out infinite;
+
+  animation-iteration-count: infinite; /* 무한 반복 */
+}
+
+

@@ -89,12 +89,6 @@
 
 ![아키텍쳐](img/architecture.png)
 
-## 트러블 슈팅
-- MSA 구조에서 JWT를 구현하려다 보니 MiddleWare에서
-
-## 산출물
-
-
 ## 기대효과
 - **개인 맞춤형 학습**  
     AI 기반 튜터가 학습자의 수준에 맞춘 맞춤형 학습 가이드와 실시간 피드백을 제공해 학습 효율성을 높입니다.
@@ -106,9 +100,65 @@
     랭킹 시스템과 티어 제도로 학습자들이 경쟁하며 학습 성과를 높이고, 더 많은 혜택과 도전 과제를 통해 지속적인 동기부여를 얻을 수 있습니다.
 
 ## 개발 환경
+### BE
+- Java 17
+- Spring Boot 3.3.4
+- MySQL 8.0
+- Redis 6.2
+- Kafka
+- Spring Security (User Service)
+- Spring Batch (Rank Service)
+- Spring Data JPA
+- Spring AI
 
-알아서 작성할 것
+### FE
+- HTML5/CSS3/JavaScript
+- React 18
+- Next.js 14
+- Redux Toolkit
+- Tailwind CSS
+
+### Infra
+- Google Cloud Platform
+- BunnyCDN
+- Docker
+- Kubernetes
+- Jenkins
+- Go
+
+### Collaboration
+- GitLab
+- Gerrit
+- Jira
 
 ## 팀원 및 역할
-
-card형식으로 ㄱㄱ
+<!-- 카드 형식으로 -->
+<table>
+    <tr>
+        <td align="center"><a href="https://github.com/DaftenP">박지용</a></td>
+        <td align="center"><a href="https://github.com/picel">김상범</a></td>
+        <td align="center"><a href="https://github.com/hsusj996">김세진</a></td>
+        <td align="center"><a href="https://github.com/dbdbais">이강우</a></td>
+        <td align="center"><a href="https://github.com/everev1">김지환</a></td>
+        <td align="center"><a href="https://github.com/there2989">노재훈</a></td>
+        <td align="center"><a href="https://github.com/kdhn97">김동현</a></td>
+    </tr>
+    <tr>
+        <td align="center"><a href="https://github.com/DaftenP"><img src="https://avatars.githubusercontent.com/u/80443975?v=4" width="100px;" alt=""/><sub></sub></a></td>
+        <td align="center"><a href="https://github.com/picel"><img src="https://avatars.githubusercontent.com/u/30901178?v=4" width="100px;" alt=""/><sub></sub></a></td>
+        <td align="center"><a href="https://github.com/hsusj996"><img src="https://avatars.githubusercontent.com/u/84006404?v=4" width="100px;" alt=""/><sub></sub></a></td>
+        <td align="center"><a href="https://github.com/dbdbais"><img src="https://avatars.githubusercontent.com/u/99540674?v=4" width="100px;" alt=""/><sub></sub></a></td>
+        <td align="center"><a href="https://github.com/everev1"><img src="https://avatars.githubusercontent.com/u/156268564?v=4" width="100px;" alt=""/><sub></sub></a></td>
+        <td align="center"><a href="https://github.com/there2989"><img src="https://avatars.githubusercontent.com/u/156268473?v=4" width="100px;" alt=""/><sub></sub></a></td>
+        <td align="center"><a href="https://github.com/kdhn97"><img src="https://avatars.githubusercontent.com/u/139952024?v=4" width="100px;" alt=""/><sub></sub></a></td>
+    </tr>
+    <tr>
+        <td align="center"><b>PM, Backend</b></td>
+        <td align="center"><b>Backend, Infra</b></td>
+        <td align="center"><b>Backend</b></td>
+        <td align="center"><b>Backend</b></td>
+        <td align="center"><b>Frontend</b></td>
+        <td align="center"><b>Frontend</b></td>
+        <td align="center"><b>Frontend</b></td>
+    </tr>
+</table>

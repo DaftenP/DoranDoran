@@ -1,15 +1,32 @@
 # 도란도란
 
+---
 
 ## 목차
 
+---
 
-## 프로젝트 소개💼
+1. [프로젝트 개요](#프로젝트-개요)
+2. [서비스 소개](#서비스-소개)
+3. [동작 영상](#동작-영상)
+4. [기술 스택](#기술-스택)
+5. [아키텍쳐 구조도](#아키텍쳐-구조도)
+6. [개발 환경](#개발-환경)
+7. [팀원 및 역할](#팀원-및-역할)
+8. [아키텍쳐 구조도](#아키텍쳐-구조도)
 
-- [Notion](https://daftenp.notion.site/SSAFY-11-E102-4566a5414e52444393a44e6b64139708?pvs=4)
+## 프로젝트 개요
+
+---
+
+외국인을 위한 한국어 학습 애플리케이션
+
+- 프로젝트 노션 : [Notion](https://daftenp.notion.site/SSAFY-11-E102-4566a5414e52444393a44e6b64139708?pvs=4)
 - 프로젝트 기간 : 2024-08-19 ~ 24.10.11
 
 ## 서비스 소개
+
+---
 
 ### 주요 기능
 
@@ -25,20 +42,35 @@
 
 - 사용자의 학습 수준에 따라 티어가 설정됩니다. 상위 티어로 올라갈수록 더 많은 혜택과 도전 과제가 제공됩니다.
 
+### 특징
+
+- **개인 맞춤형 학습**  
+  AI 기반 튜터가 학습자의 수준에 맞춘 맞춤형 학습 가이드와 실시간 피드백을 제공해 학습 효율성을 높입니다.
+
+- **학습 동기부여**  
+  재화와 경험치 시스템, 캐릭터 커스터마이징 등으로 학습자들이 더 적극적으로 학습에 참여하게 하고, 성취감을 느낄 수 있습니다.
+
+- **경쟁을 통한 성취감 강화**  
+  랭킹 시스템과 티어 제도로 학습자들이 경쟁하며 학습 성과를 높이고, 더 많은 혜택과 도전 과제를 통해 지속적인 동기부여를 얻을 수 있습니다.
+
+
 ## 동작 영상
-|          AI tutor          |           상점            |
-|:--------------------------:|:-----------------------:|
-| ![로그인](/img/ai-tutor.gif)  |  ![상점](/img/store.gif)  |
-|           마이페이지            |           랭킹            |
-| ![마이페이지](/img/my-page.gif) | ![상점](/img/ranking.gif) |
-|             학습             |           퀴즈            |
-|  ![마이페이지](/img/study.gif)  |  ![상점](/img/daily.gif)  |
 
+---
 
+|            AI tutor            |           상점            |
+|:------------------------------:|:-----------------------:|
+| ![AI tutor](/img/ai-tutor.gif) |  ![상점](/img/store.gif)  |
+|             마이페이지              |           랭킹            |
+|   ![마이페이지](/img/my-page.gif)   | ![랭킹](/img/ranking.gif) |
+|               학습               |           퀴즈            |
+|     ![학습](/img/study.gif)      |  ![퀴즈](/img/daily.gif)  |
 
 움짤 추가 예정
 
 ## 기술 스택
+
+---
 
 ### - Backend
 
@@ -86,20 +118,16 @@
 
 ## 아키텍쳐 구조도
 
+---
+
 ![아키텍쳐](img/architecture.png)
 
-## 기대효과
-- **개인 맞춤형 학습**  
-  AI 기반 튜터가 학습자의 수준에 맞춘 맞춤형 학습 가이드와 실시간 피드백을 제공해 학습 효율성을 높입니다.
-
-- **학습 동기부여**  
-  재화와 경험치 시스템, 캐릭터 커스터마이징 등으로 학습자들이 더 적극적으로 학습에 참여하게 하고, 성취감을 느낄 수 있습니다.
-
-- **경쟁을 통한 성취감 강화**  
-  랭킹 시스템과 티어 제도로 학습자들이 경쟁하며 학습 성과를 높이고, 더 많은 혜택과 도전 과제를 통해 지속적인 동기부여를 얻을 수 있습니다.
-
 ## 개발 환경
+
+---
+
 ### BE
+
 - Java 17
 - Spring Boot 3.3.4
 - MySQL 8.0
@@ -111,6 +139,7 @@
 - Spring AI
 
 ### FE
+
 - HTML5/CSS3/JavaScript
 - React 18
 - Next.js 14
@@ -118,6 +147,7 @@
 - Tailwind CSS
 
 ### Infra
+
 - Google Cloud Platform
 - BunnyCDN
 - Docker
@@ -126,11 +156,15 @@
 - Go
 
 ### Collaboration
+
 - GitLab
 - Gerrit
 - Jira
 
 ## 팀원 및 역할
+
+---
+
 <table>
     <tr>
         <td align="center"><a href="https://github.com/DaftenP">박지용</a></td>
@@ -161,31 +195,36 @@
     </tr>
 </table>
 
-## 역할 분담
+### 역할 분담
+
 - **Backend**
     - 박지용
-        - 프로젝트 매니지먼트
-        - Quiz Micro Service 구현
+        - 프로젝트 관리 및 기획 총괄
+        - Quiz Micro Service 구현 (Spring Boot)
         - 퀴즈 컨텐츠 설계 및 제작
         - whisper model fine-tuning
 
-	- 김상범
-		- Gerrit / Jenkins 설정, CI/CD 파이프라인 설계/구축/관리
-		- Gerrit 가이드 문서 작성, clone/push 자동화 스크립트 개발, 개발자 교육, 이슈 대응
-		- Kubernetes 클러스터 구축 (1 Master, 2 Worker)
-		- BunnyCDN AI 이미지 생성 도구 자동화
-		- Go 언어로 BFF 작성
-		- Prometheus/Grafana 모니터링 시스템 구축
-		- 포팅 스크립트 (bash shell) 작성
-	
-	- 김세진
-		- AI tutor Micro Service 구현 (Spring Boot)
-		- Ranking Mircro Service 구현 (Spring Boot)
-		- Spring AI 기반 LLM 기능 개발
-		- 리그 시스템 설계 및 배치 스케줄러 구현 (Spring Boot)
-			
-	- 이강우
+    - 김상범
+        - Gerrit / Jenkins 설정, CI/CD 파이프라인 설계/구축/관리
+        - Gerrit 가이드 문서 작성, clone/push 자동화 스크립트 개발, 개발자 교육, 이슈 대응
+        - Kubernetes 클러스터 구축 (1 Master, 2 Worker)
+        - BunnyCDN AI 이미지 생성 도구 자동화
+        - Go 언어로 BFF 작성
+        - Prometheus/Grafana 모니터링 시스템 구축
+        - 포팅 스크립트 (bash shell) 작성
 
+    - 김세진
+        - AI tutor Micro Service 구현 (Spring Boot)
+        - Ranking Mircro Service 구현 (Spring Boot)
+        - Spring AI 기반 LLM 기능 개발
+        - 리그 시스템 설계 및 배치 스케줄러 구현 (Spring Boot)
+
+    - 이강우
+      - JWT 토큰과 Redis를 이용한 회원가입, 로그인 인증 구현 (Spring Boot)
+      - 상점 기능, 아이템 착용 기능 및 로그 구현 (Spring Boot)
+      - Kafka Consumer, Producer를 통한 데이터 일관성 유지 (Spring Boot)
+      - 데일리 미션 및 스케줄러 구현 (Spring Boot)
+      - SMTP 이용한 이메일 인증 구현 (Spring Boot)
 
 - **Frontend**
     - 노재훈
@@ -197,17 +236,17 @@
         - 메인 페이지, 상점 페이지 제작
         - AI Tutor 서비스 구현
 
-	- 김동현
-		- Next PWA 설정
-		- 로그인, 회원가입 구현
-		- 프로필 페이지 구현
-		- 옷장 페이지 구현
-		
-	- 김지환
-		- 랭킹 페이지 구현
-		- 학습 페이지 구현
-		- 퀴즈 페이지 구현
-		- 상점 페이지 디자인
-		- 퀴즈 정답 처리(POST 요청, 로컬 저장소)	
+    - 김동현
+        - Next PWA 설정
+        - 로그인, 회원가입 구현
+        - 프로필 페이지 구현
+        - 옷장 페이지 구현
+
+    - 김지환
+        - 랭킹 페이지 구현
+        - 학습 페이지 구현
+        - 퀴즈 페이지 구현
+        - 상점 페이지 디자인
+        - 퀴즈 정답 처리(POST 요청, 로컬 저장소)	
 
     
